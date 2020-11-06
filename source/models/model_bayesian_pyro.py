@@ -34,6 +34,7 @@ from pyro.nn import PyroSample
 VERBOSE = False
 
 
+
 # MODEL_URI = get_model_uri(__file__)
 
 
