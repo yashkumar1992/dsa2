@@ -1,6 +1,13 @@
-"""Shabadoo models for very easy regression."""
+####Shabadoo models for very easy regression
 """
 
+
+Version 1
+https://florianwilhelm.info/2020/10/bayesian_hierarchical_modelling_at_scale/
+
+
+
+Version 2
 https://github.com/nolanbconaway/shabadoo
 
 
