@@ -117,17 +117,17 @@ def bayesian_pyro(path_model_out) :
         , 'model_path': path_model_out
         , 'model_pars': {'input_width': 112, }  # default
         , 'post_process_fun': post_process_fun
-        
-                                 },
+                                 
+        , 'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
+                               }
+                                 },          
+                  
       'compute_pars': {'compute_pars': {'n_iter': 1200, 'learning_rate': 0.01}
-          , 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-                            'explained_variance_score', 'r2_score', 'median_absolute_error']
-          , 'max_size': 1000000
-          , 'num_samples': 300
-        , 'pre_process_pars': {'y_norm_fun' : pre_process_fun,
-                               }        
-
-                                   },
+                     , 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
+                                       'explained_variance_score', 'r2_score', 'median_absolute_error']
+                     , 'max_size': 1000000
+                     , 'num_samples': 300
+       },
       'data_pars': {
           'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]    
          ,'cols_model': []  # cols['colcat_model'],
