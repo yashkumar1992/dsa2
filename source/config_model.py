@@ -129,7 +129,7 @@ def bayesian_pyro(path_model_out) :
                      , 'num_samples': 300
        },
       'data_pars': {
-          'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]    
+          'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]
          ,'cols_model': []  # cols['colcat_model'],
          ,'coly': []        # cols['coly']
          ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
@@ -138,7 +138,7 @@ def bayesian_pyro(path_model_out) :
                 
                   
 
-def glm() :
+def glm( path_model_out) :
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='norm')
 
@@ -146,7 +146,7 @@ def glm() :
         return y_norm(y, inverse=False, mode='norm')
 
 
-    cols['cols_model'] = cols["colnum_onehot"] + cols["colcat_onehot"]  # cols[ "colcross_onehot"]
+
     model_dict = {'model_pars': {'model_name': 'TweedieRegressor'  # Ridge
         , 'model_path': path_model_out
         , 'model_pars': {'power': 0, 'link': 'identity'}  # default ones
@@ -155,10 +155,13 @@ def glm() :
                   'compute_pars': {'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
                                                    'explained_variance_score',  'r2_score', 'median_absolute_error']
                                   },
-                  'data_pars': {
-                      'cols_model': cols['cols_model'],
-                      'coly': cols['coly']
-                  }}
+      'data_pars': {
+          'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]
+         ,'cols_model': []  # cols['colcat_model'],
+         ,'coly': []        # cols['coly']
+         ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
+                  }
+    }
     return model_dict               
                
                   

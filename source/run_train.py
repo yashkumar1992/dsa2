@@ -1,4 +1,4 @@
-# pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
+# pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330,E221
 # -*- coding: utf-8 -*-
 """
 cd analysis
@@ -294,6 +294,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     data_pars['data_type'] = 'ram'
     data_pars['train'] = {'Xtrain': dfX[colsX].iloc[:itrain, :],
                           'ytrain': dfX[coly].iloc[:itrain],
+
                           'Xtest':  dfX[colsX].iloc[itrain:ival, :],
                           'ytest':  dfX[coly].iloc[itrain:ival],
 
@@ -354,16 +355,18 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
     cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
     log(cols_group)
 
+
     log("#### Model Dynamic loading  ######################################################")
     model_dict_fun = load_function_uri(uri_name= path_config_model + ":" + model_name)    
     # model_dict_fun = getattr(importlib.import_module("config_model"), model_name)
     model_dict     = model_dict_fun(path_model_out)
 
+
     log("#### Preprocess  #################################################################")
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
     filter_pars     = model_dict['data_pars']['filter_pars']    
-    dfXy, cols = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample, 
-                            preprocess_pars, filter_pars)
+    dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
+                                 preprocess_pars, filter_pars)
     model_dict['data_pars']['coly'] = cols['coly']
     
     ### Get actual column names from colum groups : colnum , colcat
@@ -374,7 +377,7 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
     log("######### Train model: ###########################################################")
     log(str(model_dict)[:1000])
     post_process_fun = model_dict['model_pars']['post_process_fun']    
-    dfXy, dfXytest = train(model_dict, dfXy, cols, post_process_fun)
+    dfXy, dfXytest   = train(model_dict, dfXy, cols, post_process_fun)
 
 
     log("######### export #################################", )
