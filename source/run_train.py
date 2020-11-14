@@ -26,21 +26,18 @@ import pickle
 import scipy
 import importlib
 
-# from tqdm import tqdm_notebook
 import cloudpickle as pickle
 from sklearn.metrics import mean_squared_error, roc_auc_score, roc_curve
+
+
+#### Add path for python import
+sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
+import util_feature
 
 
 #### Root folder analysis
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
-sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
-import util_feature
-
-
-# from diskcache import Cache
-# cache = Cache('db.cache')
-# cache.reset('size_limit', int(2e9))
 
 
 ####################################################################################################
@@ -141,15 +138,15 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ##### column names for feature generation ###############################################
     log(cols_group)
-    coly = cols_group['coly']  # 'salary'
-    colid = cols_group['colid']  # "jobId"
-    colcat = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
-    colnum = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
+    coly            = cols_group['coly']  # 'salary'
+    colid           = cols_group['colid']  # "jobId"
+    colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
+    colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
     
-    colcross_single =  cols_group.get('colcross', [])   ### List of single columns
-    coltext = cols_group.get('coltext', [])
-    coldate = cols_group.get('coldate', [])
-    colall = colnum + colcat + coltext + coldate
+    colcross_single = cols_group.get('colcross', [])   ### List of single columns
+    coltext         = cols_group.get('coltext', [])
+    coldate         = cols_group.get('coldate', [])
+    colall          = colnum + colcat + coltext + coldate
     log(colall)
 
     ##### Load data ########################################################################
@@ -187,7 +184,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                                                 colonehot=None, return_val="dataframe,param")
     log(colnum_onehot)
 
-    ##### Colcat processing   ################################################################
+    ##### Colcat List of category values   ##########################################################
     colcat_map = pd_colcat_mapping(df, colcat)
     log(df[colcat].dtypes, colcat_map)
 
@@ -246,14 +243,14 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colX.remove(coly)
 
     cols_family = {
-        'colid': colid,    'coly': coly, 'colall': colall,
-        'colnum': colnum,
-        'colnum_bin': colnum_bin,
-        'colnum_onehot': colnum_onehot,
+        'colid'           : colid,    'coly': coly, 'colall': colall,
+        'colnum'          : colnum,
+        'colnum_bin'      : colnum_bin,
+        'colnum_onehot'   : colnum_onehot,
         
-        'colcat_bin': colcat_bin,
-        'colcat_onehot': colcat_onehot,
-        'colcross_onehot': colcross_onehot,
+        'colcat_bin'      : colcat_bin,
+        'colcat_onehot'   : colcat_onehot,
+        'colcross_onehot' : colcross_onehot,
     }
     return dfX, cols_family
 
@@ -261,6 +258,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 ####################################################################################################
 ##### train    #####################################################################################
 def map_model(model_name):
+    """
+     return class instance of the model from string name
+
+    """
     try :
        ##  'models.model_bayesian_pyro'   'model_widedeep'
        mod    = f'models.{model_name}'
@@ -278,9 +279,9 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     """
     """
     model_pars, compute_pars = model_dict['model_pars'], model_dict['compute_pars']
-    data_pars = model_dict['data_pars']
-    model_name, model_path = model_pars['model_name'], model_pars['model_path']
-    metric_list = compute_pars['metric_list']
+    data_pars                = model_dict['data_pars']
+    model_name, model_path   = model_pars['model_name'], model_pars['model_path']
+    metric_list              = compute_pars['metric_list']
 
     #### Data preparation #############################################################
     log(dfX.shape)
@@ -288,8 +289,8 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     itrain = int(0.6 * len(dfX))
     ival   = int(0.8 * len(dfX))
     colid = cols_family['colid']
-    colsX = data_pars['cols_model']
-    coly  = data_pars['coly']
+    colsX = data_pars['cols_model']   # used by model
+    coly  = data_pars['coly']         # target values
     data_pars['data_type'] = 'ram'
     data_pars['train'] = {'Xtrain': dfX[colsX].iloc[:itrain, :],
                           'ytrain': dfX[coly].iloc[:itrain],
@@ -301,7 +302,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
                           }
     
     log("#### Model Instance ##########################################################")
-    # from config_model import map_model    
+    # Get model class  
     modelx = map_model(model_name)    
     log(modelx)
     modelx.reset()
@@ -309,14 +310,14 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     modelx.fit(data_pars, compute_pars)
 
     log("#### Metrics #################################################################")
-    stats = {}
-    ypred = modelx.predict(dfX[colsX], compute_pars=compute_pars)
+    ypred               = modelx.predict(dfX[colsX], compute_pars=compute_pars)
     dfX[coly + '_pred'] = ypred  # y_norm(ypred, inverse=True)
-    dfX[coly] = post_process_fun(dfX[coly].values)
+    dfX[coly]           = post_process_fun(dfX[coly].values)
 
     metrics_test = util_feature.sk_metrics_eval(metric_list,
                                                 ytrue=dfX[coly].iloc[ival:],
                                                 ypred=dfX[coly + '_pred'].iloc[ival:], )
+    stats = {}
     stats['metrics_test'] = metrics_test
     log(stats)
 
@@ -339,20 +340,21 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
       Configuration of the model is in config_model.py file
 
     """
-    path_output = root + path_output
-    path_data   = root + path_data
-    log(path_output)
+    path_output       = root + path_output
+    path_data         = root + path_data
     path_pipeline_out = path_output + "/pipeline/"
-    path_model_out = path_output + "/model/"
-    path_check_out = path_output + "/check/"
-    path_train_X   = path_data   + "/features.zip"
-    path_train_y   = path_data   + "/target_values.zip"
+    path_model_out    = path_output + "/model/"
+    path_check_out    = path_output + "/check/"
+    path_train_X      = path_data   + "/features.zip"
+    path_train_y      = path_data   + "/target_values.zip"
+    log(path_output)
+
 
     log("#### load input column family  ###################################################")
     cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
     log(cols_group)
 
-    log("#### Model loading  ##############################################################")
+    log("#### Model Dynamic loading  ######################################################")
     model_dict_fun = load_function_uri(uri_name= path_config_model + ":" + model_name)    
     # model_dict_fun = getattr(importlib.import_module("config_model"), model_name)
     model_dict     = model_dict_fun(path_model_out)
@@ -382,6 +384,7 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
     dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data
     dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data
     log("######### finish #################################", )
+
 
 if __name__ == "__main__":
     import fire

@@ -207,7 +207,7 @@ def estimator_bootstrap(err, custom_stat=None, alpha=0.05, n_iter=10000):
 def test_heteroscedacity(y, y_pred, pred_value_only=1):
     ss = """
        Test  Heteroscedacity :  Residual**2  = Linear(X, Pred, Pred**2)
-       F pvalues < 0.01 : Rejected
+       F pvalues < 0.01 : Null is Rejected  ---> Not Homoscedastic
        het_breuschpagan
     
     """
@@ -227,9 +227,8 @@ def test_heteroscedacity(y, y_pred, pred_value_only=1):
 
 def test_normality(error, distribution="norm", test_size_limit=5000):
     """
-       Test  Is Normal distributionr
+       Test  Is Normal distribution
        F pvalues < 0.01 : Rejected
-       het_breuschpagan
     
     """
     from scipy.stats import shapiro, anderson, kstest
@@ -496,9 +495,7 @@ def pd_colcat_tonum(df, colcat="all", drop_single_label=False, drop_fact_dict=Tr
 
 def pd_colcat_mapping(df, colname):
     """
-     for col in colcat :
-        df[col] = df[col].apply(lambda x : colcat_map["cat_map"][col].get(x)  )
-
+       map category to integers
     :param df:
     :param colname:
     :return:
