@@ -63,7 +63,7 @@ def sk_metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, 
 
         if metric_name in ["roc_auc_score"]:
             metric_scorer = getattr(importlib.import_module(mod), metric_name)
-            mval = metric_scorer(ytrue, ypred_proba)
+            mval = metric_scorer(ytrue, ypred)
 
         if metric_name in ["root_mean_squared_error"]:
             metric_scorer = getattr(importlib.import_module(mod), "mean_squared_error")
@@ -207,7 +207,7 @@ def estimator_bootstrap(err, custom_stat=None, alpha=0.05, n_iter=10000):
 def test_heteroscedacity(y, y_pred, pred_value_only=1):
     ss = """
        Test  Heteroscedacity :  Residual**2  = Linear(X, Pred, Pred**2)
-       F pvalues < 0.01 : Null is Rejected  ---> Not Homoscedastic
+       F pvalues < 0.01 : Rejected
        het_breuschpagan
     
     """
@@ -227,8 +227,9 @@ def test_heteroscedacity(y, y_pred, pred_value_only=1):
 
 def test_normality(error, distribution="norm", test_size_limit=5000):
     """
-       Test  Is Normal distribution
+       Test  Is Normal distributionr
        F pvalues < 0.01 : Rejected
+       het_breuschpagan
     
     """
     from scipy.stats import shapiro, anderson, kstest
@@ -495,7 +496,9 @@ def pd_colcat_tonum(df, colcat="all", drop_single_label=False, drop_fact_dict=Tr
 
 def pd_colcat_mapping(df, colname):
     """
-       map category to integers
+     for col in colcat :
+        df[col] = df[col].apply(lambda x : colcat_map["cat_map"][col].get(x)  )
+
     :param df:
     :param colname:
     :return:
