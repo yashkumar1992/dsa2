@@ -61,7 +61,7 @@ def elasticnetcv(path_model_out):
                                }
                                  },
       'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-                                        'explained_variance_score',  'r2_score', 'median_absolute_error']
+                                       'explained_variance_score', 'r2_score', 'median_absolute_error']
                       },
       'data_pars': {
           'cols_model_group': [ 'colnum_onehot', 'colcat_onehot', 'colcross_onehot' ]    
@@ -84,15 +84,14 @@ def lightgbm(path_model_out) :
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'model_name': 'LGBMRegressor'
+    model_dict = {'model_pars': {'model_name': 'LGBMClassifier'
         , 'model_path': path_model_out
-        , 'model_pars': {'objective': 'huber', }  # default
+        , 'model_pars': {'objective': 'binary','learning_rate':0.03,'boosting_type':'gbdt' }  # default
         , 'post_process_fun': post_process_fun
-        , 'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
+        , 'pre_process_pars': {'y_norm_fun' :  None ,
                                }
                                  },
-      'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-                                        'explained_variance_score', 'r2_score', 'median_absolute_error']
+      'compute_pars': { 'metric_list': ['roc_auc_score','accuracy_score','average_precision_score']
                       },
     
       'data_pars': {
@@ -100,7 +99,7 @@ def lightgbm(path_model_out) :
           'cols_model_group': [ 'colnum', 'colcat_bin']    
          ,'cols_model': []  # cols['colcat_model'],
          ,'coly': []        # cols['coly']
-         ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
+         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }   ### Filter data
          
          }}
     return model_dict               
@@ -129,7 +128,7 @@ def bayesian_pyro(path_model_out) :
                      , 'num_samples': 300
        },
       'data_pars': {
-          'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]
+          'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]    
          ,'cols_model': []  # cols['colcat_model'],
          ,'coly': []        # cols['coly']
          ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
@@ -138,7 +137,7 @@ def bayesian_pyro(path_model_out) :
                 
                   
 
-def glm( path_model_out) :
+def glm() :
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='norm')
 
@@ -146,7 +145,7 @@ def glm( path_model_out) :
         return y_norm(y, inverse=False, mode='norm')
 
 
-
+    cols['cols_model'] = cols["colnum_onehot"] + cols["colcat_onehot"]  # cols[ "colcross_onehot"]
     model_dict = {'model_pars': {'model_name': 'TweedieRegressor'  # Ridge
         , 'model_path': path_model_out
         , 'model_pars': {'power': 0, 'link': 'identity'}  # default ones
@@ -155,16 +154,13 @@ def glm( path_model_out) :
                   'compute_pars': {'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
                                                    'explained_variance_score',  'r2_score', 'median_absolute_error']
                                   },
-      'data_pars': {
-          'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]
-         ,'cols_model': []  # cols['colcat_model'],
-         ,'coly': []        # cols['coly']
-         ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
-                  }
-    }
+                  'data_pars': {
+                      'cols_model': cols['cols_model'],
+                      'coly': cols['coly']
+                  }}
     return model_dict               
                
                   
- 
+#('roc_auc_score', 'accuracy_score','average_precision_score',  'f1_score', 'log_loss)
     
 
