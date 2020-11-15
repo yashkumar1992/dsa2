@@ -89,6 +89,11 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/"):
     colnum_binmap  = load(f'{path_pipeline}/colnum_binmap.pkl')
     colnum_onehot  = load(f'{path_pipeline}/colnum_onehot.pkl')
 
+
+    ### OneHot column selected for cross features
+    colcross_single_onehot_select = load(f'{path_pipeline}/colcross_single_onehot_select.pkl')
+
+
     log("###### Colcat to onehot ############################################")
     df_cat_hot, _ = pd_col_to_onehot(df[colcat],  colname=colcat,
                                                   colonehot=colcat_onehot, return_val="dataframe,param")
@@ -114,19 +119,22 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/"):
                                      colonehot=colnum_onehot, return_val="dataframe,param")
     log(df_num_hot[colnum_onehot].head(5))
 
-    log("####### colcross cross features   ######################################")
-    df_onehot = df_cat_hot.join(df_num_hot, on=colid, how='left')
 
-    colcat_onehot2 = [x for x in colcat_onehot if 'companyId' not in x]
-    # log(colcat_onehot2)
-    colcross_single = colnum_onehot + colcat_onehot2
-    df_onehot = df_onehot[colcross_single]
-    dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single,
-                                                            pct_threshold=0.02,
-                                                            m_combination=2)
-    log(dfcross_hot.head(2).T)
-    colcross_onehot = list(dfcross_hot.columns)
-    del df_onehot ;    gc.collect()
+    log("####### colcross cross features   ######################################")
+    dfcross_hot = pd.DataFrame()
+    if colcross_onehot is not None :
+        df_onehot = df_cat_hot.join(df_num_hot, on=colid, how='left')
+
+        # colcat_onehot2 = [x for x in colcat_onehot if 'companyId' not in x]
+        # log(colcat_onehot2)
+        # colcross_single = colnum_onehot + colcat_onehot2
+        df_onehot = df_onehot[colcross_single_onehot_select]
+        dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
+                                                                pct_threshold=0.02,
+                                                                m_combination=2)
+        log(dfcross_hot.head(2).T)
+        colcross_onehot = list(dfcross_hot.columns)
+        del df_onehot ;    gc.collect()
 
     log("##### Merge data type together  :   ###################### ")
     dfmerge = pd.concat((df[colnum], df_num, df_num_hot,

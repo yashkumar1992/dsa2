@@ -104,7 +104,7 @@ def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
         Xpred = get_dataset(data_pars, task_type="predict")
 
     ypred = model.model.predict(Xpred)
-    ypred = post_process_fun(ypred)
+    #ypred = post_process_fun(ypred)
     return ypred
 
 

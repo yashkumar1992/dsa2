@@ -1,4 +1,4 @@
-## Install
+### Install
 
 
 pip install pyro-ppl lightgbm pandas scikit-learn scipy matplotlib
@@ -6,9 +6,9 @@ pip install pyro-ppl lightgbm pandas scikit-learn scipy matplotlib
 
 
 
+### Command line
+=======
 
-
-## Command line
 cd dsa2
 ! source activate py36 
 
@@ -21,10 +21,23 @@ python source/run_inference.py  run_predict  --n_sample 1000  --model_name light
 
 
 
-### data/input  : Input data
-    cols_group.json : name of columns per feature category.
-    features.zip : csv file of the inputs
-    target-values : csv file of the label to predict.
+
+### data/input  : Input data format
+
+    data/input/titanic/raw/  : the raw files
+    data/input/titanic/raw2/ : the raw files  split manually
+
+
+    File names Are FIXED, please create sub-folder  
+        data/input/titanic/train/ :   features.zip ,  target.zip, cols_group.json  names are FIXED
+             cols_group.json : name of columns per feature category.
+             features.zip :    csv file of the inputs
+             target.zip :      csv file of the label to predict.
+
+        data/input/titanic/test/ :   features.zip  names are FIXED     
+
+
+
 
 
 
@@ -36,6 +49,8 @@ python source/run_inference.py  run_predict  --n_sample 1000  --model_name light
 
 
    config_model.py   :  file containing custom parameter for each specific model.
+
+                        Please insert your model config there.
 
 
 ```

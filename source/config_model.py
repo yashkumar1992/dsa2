@@ -61,7 +61,7 @@ def elasticnetcv(path_model_out):
                                }
                                  },
       'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-                                        'explained_variance_score',  'r2_score', 'median_absolute_error']
+                                       'explained_variance_score', 'r2_score', 'median_absolute_error']
                       },
       'data_pars': {
           'cols_model_group': [ 'colnum_onehot', 'colcat_onehot', 'colcross_onehot' ]    
@@ -70,7 +70,6 @@ def elasticnetcv(path_model_out):
          ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
                   }}
     return model_dict               
-
 
 
 def lightgbm(path_model_out) :
@@ -106,6 +105,40 @@ def lightgbm(path_model_out) :
     return model_dict               
 
 
+def lightgbm_titanic(path_model_out) :
+    """
+
+       titanic 
+    """
+    def post_process_fun(y):
+        ### After prediction is done
+        return  y.astype('int')
+
+    def pre_process_fun(y):
+        ### Before the prediction is done      
+        return  y.astype('int')
+
+    model_dict = {'model_pars': {'model_name': 'LGBMClassifier'
+        , 'model_path': path_model_out
+        , 'model_pars': {'objective': 'binary','learning_rate':0.03,'boosting_type':'gbdt' }  # default
+        , 'post_process_fun': post_process_fun
+        , 'pre_process_pars': {'y_norm_fun' :  None ,
+                               }
+                                 },
+      'compute_pars': { 'metric_list': ['roc_auc_score','accuracy_score','average_precision_score']
+                      },
+    
+      'data_pars': {
+          # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+          'cols_model_group': [ 'colnum', 'colcat_bin']    
+         ,'cols_model': []  # cols['colcat_model'],
+         ,'coly': []        # cols['coly']
+         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }   ### Filter data
+         
+         }}
+    return model_dict               
+
+
 def bayesian_pyro(path_model_out) :
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='boxcox')
@@ -129,7 +162,7 @@ def bayesian_pyro(path_model_out) :
                      , 'num_samples': 300
        },
       'data_pars': {
-          'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]
+          'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]    
          ,'cols_model': []  # cols['colcat_model'],
          ,'coly': []        # cols['coly']
          ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
@@ -164,7 +197,9 @@ def glm( path_model_out) :
     }
     return model_dict               
                
+                            
+               
                   
- 
+#('roc_auc_score', 'accuracy_score','average_precision_score',  'f1_score', 'log_loss)
     
 
