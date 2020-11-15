@@ -138,4 +138,5 @@ if __name__ == "__main__":
     #dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data
     dfXytest.to_csv(path_check_out + "/dfXtest.csv")  # Test input data
 
-    lo
+ 
+"""
