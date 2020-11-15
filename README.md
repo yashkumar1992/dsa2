@@ -6,11 +6,9 @@ pip install pyro-ppl lightgbm pandas scikit-learn scipy matplotlib
 
 
 
-
-
-
-
 ### Command line
+=======
+
 cd dsa2
 ! source activate py36 
 
