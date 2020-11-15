@@ -211,8 +211,9 @@ def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
     path_pipeline = path_model + "/pipeline/"
     log(path_data, path_model, path_output)
 
+    colid          = load(f'{path_pipeline}/colid.pkl')
 
-    df               = load_dataset(path_data, n_sample)
+    df               = load_dataset(path_data, n_sample,colid)
   
     dfX, cols_family = preprocess(df, path_pipeline)
     
