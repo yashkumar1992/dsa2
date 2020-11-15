@@ -71,20 +71,19 @@ def run_profile(path_data=None,  path_output="data/out/ztmp/", n_sample=5000):
     colall          = colnum + colcat + coltext + coldate
     log(colall)
 
-
     #coly = 'Survived'
-	#colid = "PassengerId"
-	#colcat = [ 'Sex', 'Embarked']
-	#colnum = ['Pclass', 'Age','SibSp', 'Parch','Fare']
-	#coltext = ['Name','Ticket']
-	#coldate = []
+    #colid = "PassengerId"
+    #colcat = [ 'Sex', 'Embarked']
+    #colnum = ['Pclass', 'Age','SibSp', 'Parch','Fare']
+    #coltext = ['Name','Ticket']
+    #coldate = []
 
-	#### Pandas Profiling for features in train  ######################
-	df = pd.read_csv( path_train_X ) # path + f"/new_data/Titanic_Features.csv")
+    #### Pandas Profiling for features in train  ######################
+    df = pd.read_csv( path_train_X ) # path + f"/new_data/Titanic_Features.csv")
 
     try :
-        dfy = pd.read_csv(path_train_y # + f"/new_data/Titanic_Labels.csv")
-	    df  = pd.merge(df, dfy, on =colid,  how="left")
+        dfy = pd.read_csv(path_train_y)  # + f"/new_data/Titanic_Labels.csv")
+        df  = pd.merge(df, dfy, on =colid,  how="left")
     except : 
           pass
 
@@ -109,14 +108,14 @@ if __name__ == "__main__":
 """
 
 
-	#### Test dataset  ################################################
-	df = pd.read_csv(path + f"/new_data/Titanic_test.csv")
-	df = df.set_index(colid)
-	for x in colcat:
-	    df[x] = df[x].factorize()[0]
+    #### Test dataset  ################################################
+    df = pd.read_csv(path + f"/new_data/Titanic_test.csv")
+    df = df.set_index(colid)
+    for x in colcat:
+        df[x] = df[x].factorize()[0]
 
-	profile = df.profile_report(title='Profile Test data')
-	profile.to_file(output_file=path + "/analysis/00_features_test_report.html")
+    profile = df.profile_report(title='Profile Test data')
+    profile.to_file(output_file=path + "/analysis/00_features_test_report.html")
 
 
 
