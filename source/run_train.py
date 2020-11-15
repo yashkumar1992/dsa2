@@ -31,11 +31,15 @@ import cloudpickle as pickle
 from sklearn.metrics import mean_squared_error, roc_auc_score, roc_curve
 
 
+
+#### Add path for python import
+sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
+import util_feature
+
+
 #### Root folder analysis
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
-sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
-import util_feature
 
 
 # from diskcache import Cache
@@ -311,10 +315,10 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 
     log("#### Metrics #################################################################")
     stats = {}
-    ypred =modelx.predict(dfX[colsX], compute_pars=compute_pars).astype('int64')
+    ypred =modelx.predict(dfX[colsX], compute_pars=compute_pars)
     dfX[coly + '_pred'] = ypred  # y_norm(ypred, inverse=True)
-    #dfX[coly] = post_process_fun(dfX[coly].values).astype('int64')
-    dfX[coly] = dfX[coly].values.astype('int64')
+    dfX[coly] = post_process_fun(dfX[coly].values).astype('int64')
+    # dfX[coly] = dfX[coly].values.astype('int64')
 
     metrics_test = util_feature.sk_metrics_eval(metric_list,
                                                 ytrue=dfX[coly].iloc[ival:],
@@ -341,29 +345,32 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
       Configuration of the model is in config_model.py file
 
     """
-    path_output = root + path_output
-    path_data   = root + path_data
-    log(path_output)
+    path_output       = root + path_output
+    path_data         = root + path_data
     path_pipeline_out = path_output + "/pipeline/"
-    path_model_out = path_output + "/model/"
-    path_check_out = path_output + "/check/"
-    path_train_X   = path_data   + "/Titanic_Features.csv"
-    path_train_y   = path_data   + "/Titanic_Labels.csv"
+    path_model_out    = path_output + "/model/"
+    path_check_out    = path_output + "/check/"
+    path_train_X      = path_data   + "/features.zip"
+    path_train_y      = path_data   + "/target.zip"
+    log(path_output)
+
 
     log("#### load input column family  ###################################################")
     cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
     log(cols_group)
 
-    log("#### Model loading  ##############################################################")
+
+    log("#### Model Dynamic loading  ######################################################")
     model_dict_fun = load_function_uri(uri_name= path_config_model + ":" + model_name)    
     # model_dict_fun = getattr(importlib.import_module("config_model"), model_name)
     model_dict     = model_dict_fun(path_model_out)
 
+
     log("#### Preprocess  #################################################################")
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
     filter_pars     = model_dict['data_pars']['filter_pars']    
-    dfXy, cols = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample, 
-                            preprocess_pars, filter_pars)
+    dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
+                                 preprocess_pars, filter_pars)
     model_dict['data_pars']['coly'] = cols['coly']
     
     ### Get actual column names from colum groups : colnum , colcat
@@ -374,20 +381,17 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
     log("######### Train model: ###########################################################")
     log(str(model_dict)[:1000])
     post_process_fun = model_dict['model_pars']['post_process_fun']    
-    dfXy, dfXytest = train(model_dict, dfXy, cols, post_process_fun)
+    dfXy, dfXytest   = train(model_dict, dfXy, cols, post_process_fun)
 
 
     log("######### export #################################", )
     os.makedirs(path_check_out, exist_ok=True)
     colexport = [cols['colid'], cols['coly'], cols['coly'] + "_pred"]
     dfXy[colexport].to_csv(path_check_out + "/pred_check.csv")  # Only results
-    #dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data
-    dfXy.to_csv(path_check_out + "/dfX.csv")  # train input data
-
-    #dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data
-    dfXytest.to_csv(path_check_out + "/dfXtest.csv")  # Test input data
-
+    dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data
+    dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data
     log("######### finish #################################", )
+
 
 if __name__ == "__main__":
     import fire
