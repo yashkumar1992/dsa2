@@ -16,6 +16,8 @@ import numpy as np
 import pandas as pd
 
 import pandas_profiling as pp
+import sys, json
+
 
 ###################################################################
 #### Add path for python import
@@ -27,6 +29,12 @@ import util_feature
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
 
+
+def log(*s, n=0, m=0):
+    sspace = "#" * n
+    sjump = "\n" * m
+    ### Implement pseudo Logging
+    print(sjump, sspace, s, sspace, flush=True)
 
 
 
@@ -41,8 +49,8 @@ def run_profile(path_data=None,  path_output="data/out/ztmp/", n_sample=5000):
     os.makedirs(path_output, exist_ok=True)
     log(path_output)
 
-    path_train_X   = path_data   + "/features.csv"
-    path_train_y   = path_data   + "/target.csv"
+    path_train_X   = path_data   + "/features.zip"
+    path_train_y   = path_data   + "/target.zip"
 
     log("#### load input column family  ###################################################")
     cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
@@ -64,7 +72,7 @@ def run_profile(path_data=None,  path_output="data/out/ztmp/", n_sample=5000):
     log(colall)
 
 
-	#coly = 'Survived'
+    #coly = 'Survived'
 	#colid = "PassengerId"
 	#colcat = [ 'Sex', 'Embarked']
 	#colnum = ['Pclass', 'Age','SibSp', 'Parch','Fare']
@@ -74,18 +82,18 @@ def run_profile(path_data=None,  path_output="data/out/ztmp/", n_sample=5000):
 	#### Pandas Profiling for features in train  ######################
 	df = pd.read_csv( path_train_X ) # path + f"/new_data/Titanic_Features.csv")
 
-	try :
-   	    dfy = pd.read_csv(path_train_y # + f"/new_data/Titanic_Labels.csv")
-	    df  = pd.nerge(df, dfy, on =colid,  how="left")
+    try :
+        dfy = pd.read_csv(path_train_y # + f"/new_data/Titanic_Labels.csv")
+	    df  = pd.merge(df, dfy, on =colid,  how="left")
     except : 
-    	pass
+          pass
 
-	df = df.set_index(colid)
-	for x in colcat:
-	    df[x] = df[x].factorize()[0]
+    df = df.set_index(colid)
+    for x in colcat:
+       df[x] = df[x].factorize()[0]
 
-	profile = df.profile_report(title='Profile data')
-	profile.to_file(output_file=path_output + "/00_features_report.html")
+    profile = df.profile_report(title='Profile data')
+    profile.to_file(output_file=path_output + "/00_features_report.html")
 
 
     log("######### finish #################################", )

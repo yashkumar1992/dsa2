@@ -26,7 +26,8 @@ print(dir_data)
 
 ############################################################################
 ############################################################################
-run_train.run_train('lightgbm', '/input/titanic/train/', '/data/output/a01_lightgbm_classifier/', "source/config_model.py", -1)
+run_train.run_train('titanic_lightgbm', '/input/titanic/train/', '/data/output/a01_lightgbm_classifier/', 
+                	path_config_model="source/config_model.py" , n_sample = -1)
 
 
 from source.util_feature import load
@@ -65,8 +66,8 @@ print(dfX.shape,  dfXtest.shape )
 
 
 #### Feature importance on training data
-from sklearn.inspection import permutation_importance
-lgb_featimpt_train,_ = util_feature.feature_importance_perm(modelx, dfX[colused], dfy, colused, n_repeats=1,  scoring='accuracy' )
+lgb_featimpt_train,_ = util_feature.feature_importance_perm(modelx, dfX[colused], dfy, colused, n_repeats=1,  
+	                                                        scoring='accuracy_score' )
 
 print(lgb_featimpt_train)
 
