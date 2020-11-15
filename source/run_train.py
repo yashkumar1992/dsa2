@@ -145,20 +145,20 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ##### column names for feature generation ###############################################
     log(cols_group)
-    coly = cols_group['coly']  # 'salary'
-    colid = cols_group['colid']  # "jobId"
-    colcat = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
-    colnum = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
+    coly            = cols_group['coly']  # 'salary'
+    colid           = cols_group['colid']  # "jobId"
+    colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
+    colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
     
-    colcross_single =  cols_group.get('colcross', [])   ### List of single columns
-    #coltext = cols_group.get('coltext', [])
-    coltext=cols_group['coltext']
-    coldate = cols_group.get('coldate', [])
-    colall = colnum + colcat + coltext + coldate
+    colcross_single = cols_group.get('colcross', [])   ### List of single columns
+    #coltext        = cols_group.get('coltext', [])
+    coltext         = cols_group['coltext']
+    coldate         = cols_group.get('coldate', [])
+    colall          = colnum + colcat + coltext + coldate
     log(colall)
 
     ##### Load data ########################################################################
-    df =load_dataset(path_train_X, path_train_y, colid, n_sample=-1)
+    df =load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
 
 
     ##### Filtering / cleaning rows :   ####################################################
@@ -222,6 +222,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colcross_onehot = list(dfcross_hot.columns)
     del df_onehot
     gc.collect()
+
+
 
     ################################################################################################
     ##### Save pre-processor meta-parameters
@@ -363,7 +365,7 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
     log("#### Model Dynamic loading  ######################################################")
     model_dict_fun = load_function_uri(uri_name= path_config_model + ":" + model_name)    
     # model_dict_fun = getattr(importlib.import_module("config_model"), model_name)
-    model_dict     = model_dict_fun(path_model_out)
+    model_dict     = model_dict_fun(path_model_out)   ### params
 
 
     log("#### Preprocess  #################################################################")
