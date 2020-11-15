@@ -160,7 +160,7 @@ def titanic_lightgbm(path_model_out) :
         , 'pre_process_pars': {'y_norm_fun' :  None ,
                                }
                                  },
-      'compute_pars': { 'metric_list': ['roc_auc_score','accuracy_score','average_precision_score']
+      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
                       },
     
       'data_pars': {
