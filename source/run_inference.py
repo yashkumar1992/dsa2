@@ -122,7 +122,7 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/"):
 
     log("####### colcross cross features   ######################################")
     dfcross_hot = pd.DataFrame()
-    if colcross_onehot is not None :
+    if colcross_single_onehot_select is not None :
         df_onehot = df_cat_hot.join(df_num_hot, on=colid, how='left')
 
         # colcat_onehot2 = [x for x in colcat_onehot if 'companyId' not in x]

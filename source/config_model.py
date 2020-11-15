@@ -105,7 +105,42 @@ def lightgbm(path_model_out) :
     return model_dict               
 
 
-def lightgbm_titanic(path_model_out) :
+
+def salary_lightgbm(path_model_out) :
+    """
+      Huber Loss includes L1  regurarlization         
+      We test different features combinaison, default params is optimal
+    """
+    def post_process_fun(y):
+        return y_norm(y, inverse=True, mode='boxcox')
+
+    def pre_process_fun(y):
+        return y_norm(y, inverse=False, mode='boxcox')
+
+    model_dict = {'model_pars': {'model_name': 'LGBMRegressor'
+        , 'model_path': path_model_out
+        , 'model_pars': {'objective': 'huber', }  # default
+        , 'post_process_fun': post_process_fun
+        , 'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
+                               }
+                                 },
+      'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
+                                        'explained_variance_score', 'r2_score', 'median_absolute_error']
+                      },
+    
+      'data_pars': {
+          # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+          'cols_model_group': [ 'colnum', 'colcat_bin']    
+         ,'cols_model': []  # cols['colcat_model'],
+         ,'coly': []        # cols['coly']
+         ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
+         
+         }}
+    return model_dict    
+
+
+
+def titanic_lightgbm(path_model_out) :
     """
 
        titanic 
@@ -118,7 +153,7 @@ def lightgbm_titanic(path_model_out) :
         ### Before the prediction is done      
         return  y.astype('int')
 
-    model_dict = {'model_pars': {'model_name': 'LGBMClassifier'
+    model_dict = {'model_pars': {'model_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
         , 'model_path': path_model_out
         , 'model_pars': {'objective': 'binary','learning_rate':0.03,'boosting_type':'gbdt' }  # default
         , 'post_process_fun': post_process_fun
@@ -139,7 +174,7 @@ def lightgbm_titanic(path_model_out) :
     return model_dict               
 
 
-def bayesian_pyro(path_model_out) :
+def bayesian_pyro_salary(path_model_out) :
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='boxcox')
 
@@ -171,7 +206,7 @@ def bayesian_pyro(path_model_out) :
                 
                   
 
-def glm( path_model_out) :
+def glm_salary( path_model_out) :
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='norm')
 
