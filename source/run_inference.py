@@ -22,19 +22,20 @@ import importlib
 import cloudpickle as pickle
 
 
-from diskcache import Cache
-cache = Cache('d:/ztmp/diskcache_db.cache')
-cache.reset('size_limit', int(2e9))
+#from diskcache import Cache
+#cache = Cache('d:/ztmp/diskcache_db.cache')
+#cache.reset('size_limit', int(2e9))
 
+
+#### Add path for python import
+sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
+import util_feature
 
 
 #### Root folder analysis
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
-package_path = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/") + "/"
-print(package_path)
-sys.path.append( package_path)
-import util_feature
+
 
 
 ####################################################################################################
@@ -62,14 +63,14 @@ def load(name):
 
 ####################################################################################################
 ####################################################################################################
-def load_dataset(path_data, n_sample=-1, colid="PassengerId"):
+def load_dataset(path_data, n_sample=-1, colid="jobId"):
     log('loading', colid, path_data)
-    df = pd.read_csv(path_data + "/Titanic_test.csv")
+    df = pd.read_csv(path_data + "/features.zip")
     df = df.set_index(colid)
     if n_sample > 0:
         df = df.iloc[:n_sample, :]        
     try:
-        dfy = pd.read_csv(path_data + "/Titanic_Labels.csv")
+        dfy = pd.read_csv(path_data + "/target.zip")
         df = df.join(dfy.set_index(colid), on=colid, how='left', )
     except:
         pass
@@ -205,17 +206,18 @@ def predict(model_name, path_model, dfX, cols_family):
 ####################################################################################################
 ############CLI Command ############################################################################
 def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
-    path_output = root + path_output
-    path_data = root + path_data
-    path_model = root + path_model
+    path_output   = root + path_output
+    path_data     = root + path_data
+    path_model    = root + path_model
     path_pipeline = path_model + "/pipeline/"
     log(path_data, path_model, path_output)
 
-    df = load_dataset(path_data, n_sample)
-
+    df               = load_dataset(path_data, n_sample)
+  
     dfX, cols_family = preprocess(df, path_pipeline)
     
-    ypred = predict(model_name, path_model, dfX, cols_family)
+    ypred            = predict(model_name, path_model, dfX, cols_family)
+
 
     log("Saving prediction", ypred.shape, path_output)
     os.makedirs(path_output, exist_ok=True)
@@ -223,12 +225,13 @@ def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
     df.to_csv(f"{path_output}/prediction.csv")
     log(df.head(8))
 
-    #####  Export Specific
+    log("#####  Export only prediction ############ ")
     df[cols_family["coly"]] = ypred
-    df[[cols_family["coly"]]].to_csv(f"{path_output}/test_survived.csv")
+    df[[cols_family["coly"]]].to_csv(f"{path_output}/pred_only.csv")
 
 
-def run_check(path_data, path_data_ref, path_model, path_output, sample_ratio=0.5):
+
+def run_check_data(path_data, path_data_ref, path_model, path_output, sample_ratio=0.5):
     """
      Calcualata Dataset Shift before prediction.
     """
@@ -260,3 +263,7 @@ if __name__ == "__main__":
     import fire
 
     fire.Fire()
+
+
+
+
