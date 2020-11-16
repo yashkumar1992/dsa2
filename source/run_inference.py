@@ -42,7 +42,8 @@ def log(*s, n=0, m=1):
 
 
 def save(path, name_list, glob):
-    import pickle, os
+    import cloudpickle as pickle
+    import os
     os.makedirs(path, exist_ok=True)
     for t in name_list:
         log(t)
@@ -50,9 +51,11 @@ def save(path, name_list, glob):
 
 
 def load(name):
-    import cloudpickle as pickle
-    return pickle.load(open(f'{name}', mode='rb'))
-
+    try :
+      import cloudpickle as pickle
+      return pickle.load(open(f'{name}', mode='rb'))
+    except :
+        return None
 
 ####################################################################################################
 ####################################################################################################
@@ -94,13 +97,13 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/"):
     colcross_single_onehot_select = load(f'{path_pipeline}/colcross_single_onehot_select.pkl')
 
 
-    log("###### Colcat to onehot ############################################")
+    log("###### Colcat to onehot ###############################################")
     df_cat_hot, _ = pd_col_to_onehot(df[colcat],  colname=colcat,
                                                   colonehot=colcat_onehot, return_val="dataframe,param")
 
     log(df_cat_hot[colcat_onehot].head(5))
 
-    log("###### Colcat as integer encoded  ##################################")
+    log("###### Colcat as integer encoded  ####################################")
     df_cat_bin, _ = pd_colcat_toint(df[colcat],  colname=colcat,
                                                  colcat_map=colcat_bin_map, suffix="_int")
     colcat_bin = list(df_cat_bin.columns)
@@ -136,7 +139,7 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/"):
         colcross_onehot = list(dfcross_hot.columns)
         del df_onehot ;    gc.collect()
 
-    log("##### Merge data type together  :   ###################### ")
+    log("##### Merge data type together  :   #######################3########## ")
     dfmerge = pd.concat((df[colnum], df_num, df_num_hot,
                          df[colcat], df_cat_bin, df_cat_hot,
                          dfcross_hot
@@ -211,8 +214,9 @@ def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
     path_pipeline = path_model + "/pipeline/"
     log(path_data, path_model, path_output)
 
+    colid          = load(f'{path_pipeline}/colid.pkl')
 
-    df               = load_dataset(path_data, n_sample)
+    df               = load_dataset(path_data, n_sample,colid)
   
     dfX, cols_family = preprocess(df, path_pipeline)
     
