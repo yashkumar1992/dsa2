@@ -27,7 +27,7 @@ print(dir_data)
 
 ############################################################################
 ############################################################################
-run_train.run_train('lightgbm_titanic', 'data/input/titanic/train/', '/data/output/a01_lightgbm_classifier/', 
+run_train.run_train('titanic_lightgbm', 'data/input/titanic/train/', '/data/output/a01_lightgbm_classifier/', 
                 	path_config_model="source/config_model.py" , n_sample = -1)
 
 
