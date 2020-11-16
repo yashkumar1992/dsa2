@@ -276,6 +276,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         
         'colcat_bin': colcat_bin,
         'colcat_onehot': colcat_onehot,
+
+        'colcross_single_onehot_select' : colcross_single_onehot_select
+       ,'colcross_pair_onehot':           colcross_pair_onehot
         #'colcross_onehot': colcross_onehot,
     }
     return dfX, cols_family
