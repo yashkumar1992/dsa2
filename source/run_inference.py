@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 """
 
- ! activate py36 && python source/run_inference.py  run_predict  --n_sample 1000  --model_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
+ ! activate py36 && python source/run_inference.py  run_predict  --n_sample 1000  --config_model_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
  
 
 """
@@ -42,7 +42,8 @@ def log(*s, n=0, m=1):
 
 
 def save(path, name_list, glob):
-    import pickle, os
+    import cloudpickle as pickle
+    import os
     os.makedirs(path, exist_ok=True)
     for t in name_list:
         log(t)
@@ -50,9 +51,11 @@ def save(path, name_list, glob):
 
 
 def load(name):
-    import cloudpickle as pickle
-    return pickle.load(open(f'{name}', mode='rb'))
-
+    try :
+      import cloudpickle as pickle
+      return pickle.load(open(f'{name}', mode='rb'))
+    except :
+        return None
 
 ####################################################################################################
 ####################################################################################################
@@ -94,13 +97,13 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/"):
     colcross_single_onehot_select = load(f'{path_pipeline}/colcross_single_onehot_select.pkl')
 
 
-    log("###### Colcat to onehot ############################################")
+    log("###### Colcat to onehot ###############################################")
     df_cat_hot, _ = pd_col_to_onehot(df[colcat],  colname=colcat,
                                                   colonehot=colcat_onehot, return_val="dataframe,param")
 
     log(df_cat_hot[colcat_onehot].head(5))
 
-    log("###### Colcat as integer encoded  ##################################")
+    log("###### Colcat as integer encoded  ####################################")
     df_cat_bin, _ = pd_colcat_toint(df[colcat],  colname=colcat,
                                                  colcat_map=colcat_bin_map, suffix="_int")
     colcat_bin = list(df_cat_bin.columns)
@@ -122,7 +125,7 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/"):
 
     log("####### colcross cross features   ######################################")
     dfcross_hot = pd.DataFrame()
-    if colcross_onehot is not None :
+    if colcross_single_onehot_select is not None :
         df_onehot = df_cat_hot.join(df_num_hot, on=colid, how='left')
 
         # colcat_onehot2 = [x for x in colcat_onehot if 'companyId' not in x]
@@ -136,7 +139,7 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/"):
         colcross_onehot = list(dfcross_hot.columns)
         del df_onehot ;    gc.collect()
 
-    log("##### Merge data type together  :   ###################### ")
+    log("##### Merge data type together  :   #######################3########## ")
     dfmerge = pd.concat((df[colnum], df_num, df_num_hot,
                          df[colcat], df_cat_bin, df_cat_hot,
                          dfcross_hot
@@ -172,13 +175,13 @@ def map_model(model_name):
 
 def predict(model_name, path_model, dfX, cols_family):
     """
-    if model_name in ['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
+    if config_model_name in ['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
         from models import model_sklearn as modelx
 
-    elif model_name == 'model_bayesian_pyro':
+    elif config_model_name == 'model_bayesian_pyro':
         from models import model_bayesian_pyro as modelx
 
-    elif model_name == 'model_widedeep':
+    elif config_model_name == 'model_widedeep':
         from models import model_widedeep as modelx
     """
     modelx = map_model(model_name)    
@@ -190,8 +193,11 @@ def predict(model_name, path_model, dfX, cols_family):
 
     modelx.model = load(path_model + "/model/model.pkl")
     # stats = load(path_model + "/model/info.pkl")
-    colsX = load(path_model + "/model/colsX.pkl")   ## column name
+    colsX       = load(path_model + "/model/colsX.pkl")   ## column name
     # coly  = load( path_model + "/model/coly.pkl"   )
+    assert colsX is not None
+    assert modelx.model is not None
+
     log(modelx.model.model)
 
     ### Prediction
@@ -211,8 +217,9 @@ def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
     path_pipeline = path_model + "/pipeline/"
     log(path_data, path_model, path_output)
 
+    colid            = load(f'{path_pipeline}/colid.pkl')
 
-    df               = load_dataset(path_data, n_sample)
+    df               = load_dataset(path_data, n_sample,colid)
   
     dfX, cols_family = preprocess(df, path_pipeline)
     
@@ -242,10 +249,12 @@ def run_check(path_data, path_data_ref, path_model, path_output, sample_ratio=0.
 
     os.makedirs(path_output, exist_ok=True)
 
-    df1 = load_dataset(path_data_ref)
+    colid          = load(f'{path_pipeline}/colid.pkl')
+
+    df1 = load_dataset(path_data_ref,colid=colid)
     dfX1, cols_family1 = preprocess(df1, path_pipeline)
 
-    df2 = load_dataset(path_data)
+    df2 = load_dataset(path_data,colid=colid)
     dfX2, cols_family2 = preprocess(df2, path_pipeline)
 
     colsX       = cols_family1["colnum_bin"] + cols_family1["colcat_bin"]
