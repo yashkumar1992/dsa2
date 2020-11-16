@@ -300,6 +300,7 @@ def map_model(model_name):
     
     return modelx
 
+
 def train(model_dict, dfX, cols_family, post_process_fun):
     """
     """
@@ -308,7 +309,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     model_name, model_path = model_pars['model_name'], model_pars['model_path']
     metric_list = compute_pars['metric_list']
 
-    #### Data preparation #############################################################
+    log("#### Data preparation #############################################################")
     log(dfX.shape)
     dfX = dfX.sample(frac=1.0)
     itrain = int(0.6 * len(dfX))
