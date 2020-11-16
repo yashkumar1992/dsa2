@@ -219,18 +219,19 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ####### colcross cross features   ##############################################################
     df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
-    colonehot_select = []
+    colcross_single_onehot_select = []
     for t in list(df_onehot) :
         for c1 in colcross_single :
             if c1 in t :
-               colonehot_select.append(t)
+               colcross_single_onehot_select.append(t)
         
-    df_onehot = df_onehot[colonehot_select ]
-    dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colonehot_select,
+
+    df_onehot = df_onehot[colcross_single_onehot_select ]
+    dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
                                                            pct_threshold=0.02,
                                                            m_combination=2)
     log(dfcross_hot.head(2).T)
-    colcross_onehot = list(dfcross_hot.columns)
+    colcross_pair_onehot = list(dfcross_hot.columns)
     save_features(dfcross_hot, 'dfcross_onehot', path_train_features )
     del df_onehot
     gc.collect()
@@ -244,7 +245,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     for t in ['colid',
               "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
               "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
-              "colcross_onehot", 'colcross_single', 'colcross_pair',  #### colcross columns
+              'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+
               "coly", "y_norm_fun"
               ]:
         tfile = f'{path_pipeline_export}/{t}.pkl'
