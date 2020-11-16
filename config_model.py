@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+  List of model configuration per dataset
+
+
+"""
 
 import copy
 
@@ -46,7 +51,7 @@ def y_norm(y, inverse=True, mode='boxcox'):
         
 
 ##############################################################################################  
-def elasticnetcv(path_model_out):
+def salary_elasticnetcv(path_model_out):
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='boxcox')
 
@@ -72,7 +77,7 @@ def elasticnetcv(path_model_out):
     return model_dict               
 
 
-def lightgbm(path_model_out) :
+def salary_lightgbm(path_model_out) :
     """
       Huber Loss includes L1  regurarlization         
       We test different features combinaison, default params is optimal
@@ -138,43 +143,7 @@ def salary_lightgbm(path_model_out) :
          }}
     return model_dict    
 
-
-
-def titanic_lightgbm(path_model_out) :
-    """
-
-       titanic 
-    """
-    def post_process_fun(y):
-        ### After prediction is done
-        return  y.astype('int')
-
-    def pre_process_fun(y):
-        ### Before the prediction is done      
-        return  y.astype('int')
-
-    model_dict = {'model_pars': {'config_model_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
-        , 'model_path': path_model_out
-        , 'model_pars': {'objective': 'binary','learning_rate':0.03,'boosting_type':'gbdt' }  # default
-        , 'post_process_fun': post_process_fun
-        , 'pre_process_pars': {'y_norm_fun' :  None ,
-                               }
-                                 },
-      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
-                      },
-    
-      'data_pars': {
-          # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
-          'cols_model_group': [ 'colnum', 'colcat_bin']    
-         ,'cols_model': []  # cols['colcat_model'],
-         ,'coly': []        # cols['coly']
-         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }   ### Filter data
-         
-         }}
-    return model_dict               
-
-
-def bayesian_pyro_salary(path_model_out) :
+def salary_bayesian_pyro(path_model_out) :
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='boxcox')
 
@@ -204,9 +173,8 @@ def bayesian_pyro_salary(path_model_out) :
                   }}
     return model_dict               
                 
-                  
 
-def glm_salary( path_model_out) :
+def salary_glm( path_model_out) :
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='norm')
 
@@ -232,9 +200,55 @@ def glm_salary( path_model_out) :
     }
     return model_dict               
                
-                            
-               
-                  
+
+
+########################################################################################################
+########################################################################################################
+def titanic_lightgbm(path_model_out) :
+    """
+       titanic
+    """
+    def post_process_fun(y):
+        ### After prediction is done
+        return  y.astype('int')
+
+    def pre_process_fun(y):
+        ### Before the prediction is done
+        return  y.astype('int')
+
+
+    model_dict = {'model_pars': {'config_model_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
+        , 'model_path': path_model_out
+        , 'model_pars': {'objective': 'binary','learning_rate':0.03,'boosting_type':'gbdt' }  # default
+        , 'post_process_fun': post_process_fun
+        , 'pre_process_pars': {'y_norm_fun' :  None ,
+                               }
+                                 },
+      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
+                      },
+
+      'data_pars': {
+          'cols_input_type' : {
+                     "coly"   :   "Survived"
+                    ,"colid"  :   "PassengerId"
+                    ,"colcat" :   [  "Sex", "Embarked" ]
+                    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
+                    ,"coltext" :  ["Name","Ticket"]
+                    ,"coldate" :  []
+                    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+                   },
+
+          # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+          'cols_model_group': [ 'colnum', 'colcat_bin']
+         ,'cols_model':       []  # cols['colcat_model'],
+         ,'coly':             []        # cols['coly']
+         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }   ### Filter data
+
+         }}
+    return model_dict
+
+
+
 #('roc_auc_score', 'accuracy_score','average_precision_score',  'f1_score', 'log_loss)
     
 
