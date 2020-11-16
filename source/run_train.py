@@ -276,7 +276,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         
         'colcat_bin': colcat_bin,
         'colcat_onehot': colcat_onehot,
-        'colcross_onehot': colcross_onehot,
+
+        'colcross_single_onehot_select' : colcross_single_onehot_select
+       ,'colcross_pair_onehot':           colcross_pair_onehot
+        #'colcross_onehot': colcross_onehot,
     }
     return dfX, cols_family
 
@@ -297,6 +300,7 @@ def map_model(model_name):
     
     return modelx
 
+
 def train(model_dict, dfX, cols_family, post_process_fun):
     """
     """
@@ -305,7 +309,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     model_name, model_path = model_pars['model_name'], model_pars['model_path']
     metric_list = compute_pars['metric_list']
 
-    #### Data preparation #############################################################
+    log("#### Data preparation #############################################################")
     log(dfX.shape)
     dfX = dfX.sample(frac=1.0)
     itrain = int(0.6 * len(dfX))
