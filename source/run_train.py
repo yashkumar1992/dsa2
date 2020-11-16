@@ -130,9 +130,15 @@ def load_dataset(path_train_X, path_train_y, colid, n_sample=-1):
     return df
 
 
+def save_features(df, name, path):
+    if path is not None :
+       os.makedirs( f"{path}/{name}" )
+       df.to_parquet( f"{path}/{name}/features.parquet")
+
+
 # @cache.memoize(typed=True,  tag='fib')  ### allow caching results
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
-               preprocess_pars={}, filter_pars={}):
+               preprocess_pars={}, filter_pars={}, path_train_features=None):
     """
       FUNCTIONNAL approach is used for pre-processing pipeline, (vs sklearn tranformer class..)
       so the code can be EASILY extensible to PYSPPARK.
@@ -182,6 +188,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                                                bins=10, suffix="_bin", method="uniform",
                                                return_val="dataframe,param")
     log(colnum_binmap)
+    save_features(dfnum_bin, 'dfnum_binmap', path_train_features )
+
 
     ### Renaming colunm_bin with suffix 
     colnum_bin = [x + "_bin" for x in list(colnum_binmap.keys())]
@@ -191,6 +199,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     dfnum_hot, colnum_onehot = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
                                                 colonehot=None, return_val="dataframe,param")
     log(colnum_onehot)
+    save_features(dfnum_hot, 'dfnum_onehot', path_train_features )
 
     ##### Colcat processing   ################################################################
     colcat_map = pd_colcat_mapping(df, colcat)
@@ -200,26 +209,30 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     dfcat_hot, colcat_onehot = pd_col_to_onehot(df[colcat], colname=colcat,
                                                 colonehot=None, return_val="dataframe,param")
     log(dfcat_hot[colcat_onehot].head(5))
+    save_features(dfcat_hot, 'dfcat_onehot', path_train_features )
 
     #### Colcat to integer encoding
     dfcat_bin, colcat_bin_map = pd_colcat_toint(df[colcat], colname=colcat,
                                                 colcat_map=None, suffix="_int")
     colcat_bin = list(dfcat_bin.columns)
+    save_features(dfcat_bin, 'dfcat_bin', path_train_features )
 
     ####### colcross cross features   ##############################################################
     df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
-    colonehot_select = []
+    colcross_single_onehot_select = []
     for t in list(df_onehot) :
         for c1 in colcross_single :
             if c1 in t :
-               colonehot_select.append(t)
+               colcross_single_onehot_select.append(t)
         
-    df_onehot = df_onehot[colonehot_select ]
-    dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colonehot_select,
+
+    df_onehot = df_onehot[colcross_single_onehot_select ]
+    dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
                                                            pct_threshold=0.02,
                                                            m_combination=2)
     log(dfcross_hot.head(2).T)
-    colcross_onehot = list(dfcross_hot.columns)
+    colcross_pair_onehot = list(dfcross_hot.columns)
+    save_features(dfcross_hot, 'dfcross_onehot', path_train_features )
     del df_onehot
     gc.collect()
 
@@ -232,7 +245,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     for t in ['colid',
               "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
               "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
-              "colcross_onehot", 'colcross_single', 'colcross_pair',  #### colcross columns
+              'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+
               "coly", "y_norm_fun"
               ]:
         tfile = f'{path_pipeline_export}/{t}.pkl'
@@ -249,6 +263,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                      dfcross_hot,
                      df[coly]
                      ), axis=1)
+    save_features(dfX, 'dfX', path_train_features )
+
     colX = list(dfX.columns)
     colX.remove(coly)
 
@@ -316,15 +332,17 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     modelx.fit(data_pars, compute_pars)
 
     log("#### Metrics #################################################################")
+    from util_feature import  sk_metrics_eval
+
     stats = {}
-    ypred =modelx.predict(dfX[colsX], compute_pars=compute_pars)
+    ypred               = modelx.predict(dfX[colsX], compute_pars=compute_pars)
     dfX[coly + '_pred'] = ypred  # y_norm(ypred, inverse=True)
-    dfX[coly] = post_process_fun(dfX[coly].values).astype('int64')
+    dfX[coly]           = post_process_fun(dfX[coly].values)
     # dfX[coly] = dfX[coly].values.astype('int64')
 
-    metrics_test = util_feature.sk_metrics_eval(metric_list,
-                                                ytrue=dfX[coly].iloc[ival:],
-                                                ypred=dfX[coly + '_pred'].iloc[ival:], )
+    metrics_test = sk_metrics_eval(metric_list,
+                                   ytrue= dfX[coly].iloc[ival:],
+                                   ypred= dfX[coly + '_pred'].iloc[ival:], )
     stats['metrics_test'] = metrics_test
     log(stats)
 
@@ -342,7 +360,8 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 
 ####################################################################################################
 ############CLI Command ############################################################################
-def run_train(model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000):
+def run_train(model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
+              run_preprocess=1,):
     """
       Configuration of the model is in config_model.py file
 
@@ -370,8 +389,10 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
 
     log("#### Preprocess  #################################################################")
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
-    filter_pars     = model_dict['data_pars']['filter_pars']    
-    dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
+    filter_pars     = model_dict['data_pars']['filter_pars']
+
+    if run_preprocess :
+        dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
                                  preprocess_pars, filter_pars)
     model_dict['data_pars']['coly'] = cols['coly']
     
