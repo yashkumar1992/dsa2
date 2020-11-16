@@ -379,16 +379,18 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     path_train_y      = path_data   + "/target.zip"
     log(path_output)
 
-
-    log("#### load input column family  ###################################################")
-    cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
-    log(cols_group)
-
-
     log("#### Model Dynamic loading  ######################################################")
     model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_model_name)
     # model_dict_fun = getattr(importlib.import_module("config_model"), config_model_name)
     model_dict     = model_dict_fun(path_model_out)   ### params
+
+
+    log("#### load input column family  ###################################################")
+    try :
+        cols_group = model_dict['data_pars']['cols_input_type']  ### the model config file
+    except :
+        cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
+    log(cols_group)
 
 
     log("#### Preprocess  #################################################################")
