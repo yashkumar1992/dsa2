@@ -3,9 +3,9 @@
 """
 cd analysis
 
-python source/run_train.py  run_train --model_name elasticnet  --path_data data/input/train/    --path_output data/output/a01_elasticnet/
+python source/run_train.py  run_train --config_model_name elasticnet  --path_data data/input/train/    --path_output data/output/a01_elasticnet/
 
-! activate py36 && python source/run_train.py  run_train   --n_sample 100  --model_name lightgbm  --path_model_config source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/    
+! activate py36 && python source/run_train.py  run_train   --n_sample 100  --config_model_name lightgbm  --path_model_config source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/
 
 
 
@@ -64,8 +64,8 @@ def save_list(path, name_list, glob):
     import pickle, os
     os.makedirs(path, exist_ok=True)
     for t in name_list:
-        log(t)
-        pickle.dump(glob[t], open(f'{t}', mode='wb'))
+        log(t, f'{path}/{t}.pkl')
+        pickle.dump(glob[t], open(f'{path}/{t}.pkl', mode='wb'))
 
 
 def save(obj, path):
@@ -92,7 +92,7 @@ def load_function_uri(uri_name="path_norm"):
     
     import importlib, sys
     from pathlib import Path
-    pkg = uri_name.split(":")
+    pkg = uri_name.split("::")
 
     assert len(pkg) > 1, "  Missing :   in  uri_name module_name:function_or_class "
     package, name = pkg[0], pkg[1]
@@ -111,7 +111,7 @@ def load_function_uri(uri_name="path_norm"):
             #### import Absolute Path model_tf.1_lstm
             model_name   = Path(package).stem  # remove .py
             package_name = str(Path(package).parts[-2]) + "." + str(model_name)
-            #log(package_name, model_name)
+            #log(package_name, config_model_name)
             return  getattr(importlib.import_module(package_name), name)
 
         except Exception as e2:
@@ -310,7 +310,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     """
     model_pars, compute_pars = model_dict['model_pars'], model_dict['compute_pars']
     data_pars = model_dict['data_pars']
-    model_name, model_path = model_pars['model_name'], model_pars['model_path']
+    model_name, model_path = model_pars['config_model_name'], model_pars['model_path']
     metric_list = compute_pars['metric_list']
 
     log("#### Data preparation #############################################################")
@@ -368,8 +368,8 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 
 ####################################################################################################
 ############CLI Command ############################################################################
-def run_train(model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-              run_preprocess=1,):
+def run_train(config_model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
+              run_preprocess=1, ):
     """
       Configuration of the model is in config_model.py file
 
@@ -383,16 +383,18 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
     path_train_y      = path_data   + "/target.zip"
     log(path_output)
 
+    log("#### Model Dynamic loading  ######################################################")
+    model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_model_name)
+    # model_dict_fun = getattr(importlib.import_module("config_model"), config_model_name)
+    model_dict     = model_dict_fun(path_model_out)   ### params
+
 
     log("#### load input column family  ###################################################")
-    cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
+    try :
+        cols_group = model_dict['data_pars']['cols_input_type']  ### the model config file
+    except :
+        cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
     log(cols_group)
-
-
-    log("#### Model Dynamic loading  ######################################################")
-    model_dict_fun = load_function_uri(uri_name= path_config_model + ":" + model_name)    
-    # model_dict_fun = getattr(importlib.import_module("config_model"), model_name)
-    model_dict     = model_dict_fun(path_model_out)   ### params
 
 
     log("#### Preprocess  #################################################################")
