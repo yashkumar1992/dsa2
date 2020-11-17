@@ -421,8 +421,10 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     os.makedirs(path_check_out, exist_ok=True)
     colexport = [cols['colid'], cols['coly'], cols['coly'] + "_pred"]
     dfXy[colexport].to_csv(path_check_out + "/pred_check.csv")  # Only results
-    dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data
-    dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data
+    dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data generate parquet
+    #dfXy.to_csv(path_check_out + "/dfX.csv")  # train input data generate csv
+    dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data  generate parquet
+    #dfXytest.to_csv(path_check_out + "/dfXtest.csv")  # Test input data  generate csv
     log("######### finish #################################", )
 
 
