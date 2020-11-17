@@ -52,10 +52,10 @@ def cardif_lightgbm(path_model_out) :
         return  y.astype('int')
 
     model_dict = {'model_pars': {'config_model_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
-        , 'model_path': path_model_out
-        , 'model_pars': {'objective': 'binary','learning_rate':0.1,'boosting_type':'gbdt' }  # default
-        , 'post_process_fun': post_process_fun
-        , 'pre_process_pars': {'y_norm_fun' :  None ,
+        , 'model_path'       : path_model_out
+        , 'model_pars'       : {'objective': 'binary','learning_rate':0.1,'boosting_type':'gbdt' }  # default
+        , 'post_process_fun' : post_process_fun
+        , 'pre_process_pars' : {'y_norm_fun' :  None ,
                                }
                                  },
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
@@ -88,10 +88,10 @@ def cardif_lightgbm(path_model_out) :
 def train():
     from source import run_train
 
-    run_train.run_train(config_model_name = 'cardif_lightgbm',
+    run_train.run_train(config_model_name =  'cardif_lightgbm',
                         path_data         =  'data/input/cardif/train/',
                         path_output       =  'data/output/cardif/a01_lightgbm/',
-                        path_config_model =  root + "/run_cardiff.py" , n_sample = 1000)
+                        path_config_model =  root + "/run_cardiff.py" , n_sample = 100)
 
 
 ###################################################################################
