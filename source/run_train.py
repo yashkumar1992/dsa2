@@ -370,7 +370,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 ####################################################################################################
 ############CLI Command ############################################################################
 def run_train(config_model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-              run_preprocess=1, ):
+              run_preprocess=1, use_feature_store= False):
     """
       Configuration of the model is in config_model.py file
 
@@ -407,6 +407,9 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
         dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
                                  preprocess_pars, filter_pars, path_train_features)
     model_dict['data_pars']['coly'] = cols['coly']
+
+    if use_feature_store:
+        dfXy=pd.read_parquet(path_train_features + "/dfX/features.parquet")
     
     ### Get actual column names from colum groups : colnum , colcat
     model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])                
