@@ -136,7 +136,8 @@ def load_dataset(path_train_X, path_train_y, colid, n_sample=-1):
 
 def save_features(df, name, path):
     if path is not None :
-       os.makedirs( f"{path}/{name}" )
+       os.makedirs( f"{path}/{name}", exist_ok=True)
+
        df.to_parquet( f"{path}/{name}/features.parquet")
 
 
@@ -381,6 +382,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     path_check_out    = path_output + "/check/"
     path_train_X      = path_data   + "/features.zip"
     path_train_y      = path_data   + "/target.zip"
+    path_train_features = path_output + '/features_store/'
     log(path_output)
 
     log("#### Model Dynamic loading  ######################################################")
@@ -403,7 +405,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
 
     if run_preprocess :
         dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
-                                 preprocess_pars, filter_pars)
+                                 preprocess_pars, filter_pars, path_train_features)
     model_dict['data_pars']['coly'] = cols['coly']
     
     ### Get actual column names from colum groups : colnum , colcat

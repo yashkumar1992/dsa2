@@ -4,9 +4,9 @@
 You can put hardcode here, specific to cardif dataet
 All in one file config
 
-!  python run_cardiff.py  train
-!  python run_cardiff.py  check
-!  python run_cardiff.py  predict
+!  python cardiff_classifier.py  train
+!  python cardiff_classifier.py  check
+!  python cardiff_classifier.py  predict
 
 
 
@@ -91,7 +91,7 @@ def train():
     run_train.run_train(config_model_name =  'cardif_lightgbm',
                         path_data         =  'data/input/cardif/train/',
                         path_output       =  'data/output/cardif/a01_lightgbm/',
-                        path_config_model =  root + "/run_cardiff.py" , n_sample = 100)
+                        path_config_model =  root + "/cardiff_classifier.py" , n_sample = 100)
 
 
 ###################################################################################
