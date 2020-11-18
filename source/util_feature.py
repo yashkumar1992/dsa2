@@ -8,14 +8,12 @@ util_feature: input/output is pandas
 
 """
 import copy
-import math
 import os
-from collections import Counter, OrderedDict
+from collections import OrderedDict
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import scipy as sci
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 #############################################################################################
 print("os.getcwd", os.getcwd())
@@ -89,6 +87,19 @@ def load_function_uri(uri_name="path_norm"):
         except Exception as e2:
             raise NameError(f"Module {pkg} notfound, {e1}, {e2}")
 
+
+def load_dataset(path_data, n_sample=-1, colid="jobId"):
+    log('loading', colid, path_data)
+    df = pd.read_csv(path_data + "/features.zip")
+    df = df.set_index(colid)
+    if n_sample > 0:
+        df = df.iloc[:n_sample, :]
+    try:
+        dfy = pd.read_csv(path_data + "/target_values.zip")
+        df = df.join(dfy.set_index(colid), on=colid, how='left', )
+    except:
+        pass
+    return df
 
 
 #############################################################################################
@@ -244,7 +255,6 @@ def estimator_bootstrap(err, custom_stat=None, alpha=0.05, n_iter=10000):
 
     """
     import bootstrapped.bootstrap as bs
-    import bootstrapped.stats_functions as bs_stats
     res = bs.bootstrap(err, stat_func=custom_stat, alpha=alpha, num_iterations=n_iter)
     return res
 
@@ -852,7 +862,6 @@ def pd_stat_jupyter_profile(df, savefile="report.html", title="Pandas Profile"):
         #Pandas-Profiling 2.0.0
         df.profile_report()
     """
-    import pandas_profiling as pp
 
     print("start profiling")
     profile = df.profile_report(title=title)
