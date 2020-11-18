@@ -103,10 +103,10 @@ def check():
     import sys
     from source import models
     sys.modules['models'] = models
-    model_tag =  "a01_titanic_lightgbm"
+    model_tag =  "a01_lightgbm"
 
 
-    dir_model    = dir_data + f"/output/{model_tag}/"
+    dir_model    = dir_data + f"/output/titanic/{model_tag}/"
     modelx.model = load( dir_model + "/model/model.pkl" )
     stats        = load( dir_model + "/model/info.pkl" )
     colsX        = load( dir_model + "/model/colsX.pkl"   )
@@ -143,7 +143,7 @@ def predict():
     from source import run_inference
     run_inference.run_predict('LGBMClassifier',
                               path_model  = '/data/output/titanic/a01_lightgbm/',
-                              path_data   = 'data/input/titanic/test/',
+                              path_data   = '/data/input/titanic/test/',
                               path_output = '/data/output/titanic/pred_a01_titanic_lightgbm/',
                               n_sample    = -1)
 
@@ -153,5 +153,3 @@ if __name__ == "__main__":
     import fire
     fire.Fire()
 
-
-train()

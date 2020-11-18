@@ -121,13 +121,13 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
            dfX = pd.concat((dfX, locals()[t] ), axis=1)
 
     colX = list(dfX.columns)
-    colX.remove(coly)
+    #colX.remove(coly)
     del df ;    gc.collect()
 
 
     log("###### Export columns group   ##########################################################")
     cols_family = {}
-    for t in ['colid',
+    for t in ['colid','coly', #added 'coly'
               "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
               "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
               'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
@@ -185,7 +185,8 @@ def predict(model_name, path_model, dfX, cols_family):
     log(modelx.model.model)
 
     ### Prediction
-    ypred = modelx.predict(dfX[colsX])
+    dfX1=dfX.reindex(columns=colsX)   #reindex included
+    ypred = modelx.predict(dfX1)
 
     return ypred
 
@@ -199,11 +200,12 @@ def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
     path_data     = root + path_data
     path_model    = root + path_model
     path_pipeline = path_model + "/pipeline/"
+    path_test_X = path_data + "/features.zip"   #added path to testing features
     log(path_data, path_model, path_output)
 
     colid            = load(f'{path_pipeline}/colid.pkl')
 
-    df               = load_dataset(path_data, n_sample,colid)
+    df               = load_dataset(path_test_X, n_sample,colid)
   
     dfX, cols_family = preprocess(df, path_pipeline)
     
