@@ -115,7 +115,7 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
 
 
     log("##### Merge data type together  :   #######################3############################ ")
-    dfX = df
+    dfX = df[ colnum + colcat ]
     for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',   ] :
         if t in locals() :
            dfX = pd.concat((dfX, locals()[t] ), axis=1)
