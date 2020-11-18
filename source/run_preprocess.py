@@ -40,7 +40,9 @@ def log(*s, n=0, m=1):
     print(sjump, sspace, s, sspace, flush=True)
 
 
-from util_feature import  load_function_uri, save
+from util_feature import  save, load_function_uri
+
+
 
 ####################################################################################################
 ####################################################################################################
@@ -236,7 +238,7 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
 
 
     log("#### Model parameters Dynamic loading  ############################################")
-    model_dict_fun = load_function_uri(uri_name= path_config_model + ":" + model_name)
+    model_dict_fun = load_function_uri(uri_name= path_config_model + "::" + model_name)
     model_dict     = model_dict_fun(path_model_out)   ### params
 
 
