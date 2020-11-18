@@ -41,21 +41,8 @@ def log(*s, n=0, m=1):
     print(sjump, sspace, s, sspace, flush=True)
 
 
-def save(path, name_list, glob):
-    import cloudpickle as pickle
-    import os
-    os.makedirs(path, exist_ok=True)
-    for t in name_list:
-        log(t)
-        pickle.dump(glob[t], open(f'{t}', mode='wb'))
+from util_feature import  load_function_uri, save, load, save_list
 
-
-def load(name):
-    try :
-      import cloudpickle as pickle
-      return pickle.load(open(f'{name}', mode='rb'))
-    except :
-        return None
 
 ####################################################################################################
 ####################################################################################################
