@@ -1,10 +1,10 @@
 {
      "coly"   : "target"
     ,"colid"  : "ID"
-    ,"colcat" : ["v3", "v22"]
+    ,"colcat" : ["v3", "v24"]
     ,"colnum" : ["v128", "v65", "v5"]    
     ,"coltext" : []
     , "coldate" : []
-    ,"colcross" : ["v128", "v65", "v5", "v3", "v22", "v31"]
+    ,"colcross" : ["v128", "v65", "v5", "v3", "v24"]
     
 }
