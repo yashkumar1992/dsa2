@@ -33,7 +33,7 @@ def log(*s, n=0, m=1):
     print(sjump, sspace, s, sspace, flush=True)
 
 
-from util_feature import load
+from util_feature import load, load_function_uri
 
 ####################################################################################################
 ####################################################################################################
