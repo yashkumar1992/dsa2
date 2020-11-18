@@ -24,6 +24,6 @@ pip install ipykernel==5.1.4  spyder-kernels==0.5.2
 pip install pyro
 
 
-
+pip install peak-engines
 
 

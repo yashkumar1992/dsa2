@@ -1,6 +1,18 @@
 # pylint: disable=C0321,C0103,C0301,E1305,E1121,C0302,C0330,C0111,W0613,W0611,R1705
 # -*- coding: utf-8 -*-
 """
+pip install peak-engines
+
+import peak_engines
+model = peak_engines.WarpedLinearRegressionModel()
+model.fit(X_train, y_train)
+
+
+https://github.com/rnburn/peak-engines/blob/master/example/warped_linear_regression/boston_housing.ipynb
+
+
+
+
 Generic template for new model.
 (n_estimators=100, *, criterion='mse', max_depth=None, min_samples_split=2,
  min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features='auto', 

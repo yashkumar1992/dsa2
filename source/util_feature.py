@@ -32,17 +32,63 @@ class dict2(object):
         self.__dict__ = d
 
 
-def save(path, name_list, glob):
-    import cloudpickle as pickle, os
+
+def save_list(path, name_list, glob):
+    import pickle, os
     os.makedirs(path, exist_ok=True)
     for t in name_list:
-        log(f'{path}/{t}.pkl')
-        pickle.dump(glob[t], open(f'{path}/{t}.pkl', mode='wb'))
+        log(t)
+        pickle.dump(glob[t], open(f'{t}', mode='wb'))
+
+def save(obj, path):
+    import cloudpickle as pickle, os
+    if os.path.isfile(path) :
+       os.makedirs(  os.path.dirname( path), exist_ok=True)
+    log(f'{path}')
+    pickle.dump(obj, open(f'{path}', mode='wb'))
 
 
 def load(file_name):
     import cloudpickle  as pickle
     return pickle.load(open(f'{file_name}', mode='rb'))
+
+
+def load_function_uri(uri_name="path_norm"):
+    """
+    #load dynamically function from URI
+    ###### Pandas CSV case : Custom MLMODELS One
+    #"dataset"        : "mlmodels.preprocess.generic:pandasDataset"
+    ###### External File processor :
+    #"dataset"        : "MyFolder/preprocess/myfile.py:pandasDataset"
+    """
+
+    import importlib, sys
+    from pathlib import Path
+    pkg = uri_name.split(":")
+
+    assert len(pkg) > 1, "  Missing :   in  uri_name module_name:function_or_class "
+    package, name = pkg[0], pkg[1]
+
+    try:
+        #### Import from package mlmodels sub-folder
+        return  getattr(importlib.import_module(package), name)
+
+    except Exception as e1:
+        try:
+            ### Add Folder to Path and Load absoluate path module
+            path_parent = str(Path(package).parent.parent.absolute())
+            sys.path.append(path_parent)
+            log(path_parent)
+
+            #### import Absolute Path model_tf.1_lstm
+            model_name   = Path(package).stem  # remove .py
+            package_name = str(Path(package).parts[-2]) + "." + str(model_name)
+            #log(package_name, model_name)
+            return  getattr(importlib.import_module(package_name), name)
+
+        except Exception as e2:
+            raise NameError(f"Module {pkg} notfound, {e1}, {e2}")
+
 
 
 #############################################################################################
