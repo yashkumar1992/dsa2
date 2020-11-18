@@ -65,11 +65,11 @@ def cardif_lightgbm(path_model_out) :
           'cols_input_type' : {
                      "coly"   :   "target"
                     ,"colid"  :   "ID"
-                    ,"colcat" :   ["v3", "v22",]
+                    ,"colcat" :   ["v3", "v24"]
                     ,"colnum" :   ["v128", "v65", "v5"]
                     ,"coltext" :  []
                     ,"coldate" :  []
-                    ,"colcross" : [ "v128", "v65", "v5", "v3", "v22",]
+                    ,"colcross" : ["v128", "v65", "v5", "v3", "v24"]
                    },
 
           # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
@@ -91,7 +91,7 @@ def train():
     run_train.run_train(config_model_name =  'cardif_lightgbm',
                         path_data         =  'data/input/cardif/train/',
                         path_output       =  'data/output/cardif/a01_lightgbm/',
-                        path_config_model =  root + "/cardiff_classifier.py" , n_sample = 100)
+                        path_config_model =  root + "/cardiff_classifier.py" , n_sample =-1)
 
 
 ###################################################################################
@@ -156,3 +156,6 @@ if __name__ == "__main__":
     fire.Fire()
 
 
+train()
+check()
+predict()
