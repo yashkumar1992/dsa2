@@ -3,9 +3,9 @@
 """
 cd analysis
 
-python source/run_train.py  run_train --model_name elasticnet  --path_data data/input/train/    --path_output data/output/a01_elasticnet/
+python source/run_train.py  run_train --config_model_name elasticnet  --path_data data/input/train/    --path_output data/output/a01_elasticnet/
 
-! activate py36 && python source/run_train.py  run_train   --n_sample 100  --model_name lightgbm  --path_model_config source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/    
+! activate py36 && python source/run_train.py  run_train   --n_sample 100  --config_model_name lightgbm  --path_model_config source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/
 
 
 
@@ -80,7 +80,8 @@ def load_dataset(path_train_X, path_train_y, colid, n_sample=-1):
 
 def save_features(df, name, path):
     if path is not None :
-       os.makedirs( f"{path}/{name}" )
+       os.makedirs( f"{path}/{name}", exist_ok=True)
+
        df.to_parquet( f"{path}/{name}/features.parquet")
 
 
@@ -109,7 +110,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     """
     model_pars, compute_pars = model_dict['model_pars'], model_dict['compute_pars']
     data_pars = model_dict['data_pars']
-    model_name, model_path = model_pars['model_name'], model_pars['model_path']
+    model_name, model_path = model_pars['config_model_name'], model_pars['model_path']
     metric_list = compute_pars['metric_list']
 
     log("#### Data preparation #############################################################")
@@ -167,8 +168,8 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 
 ####################################################################################################
 ############CLI Command ############################################################################
-def run_train(model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-              run_preprocess=1,):
+def run_train(config_model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
+              run_preprocess=1, use_feature_store= False):
     """
       Configuration of the model is in config_model.py file
 
@@ -180,18 +181,21 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
     path_check_out    = path_output + "/check/"
     path_train_X      = path_data   + "/features.zip"
     path_train_y      = path_data   + "/target.zip"
+    path_train_features = path_output + '/features_store/'
     log(path_output)
+
+    log("#### Model Dynamic loading  ######################################################")
+    model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_model_name)
+    # model_dict_fun = getattr(importlib.import_module("config_model"), config_model_name)
+    model_dict     = model_dict_fun(path_model_out)   ### params
 
 
     log("#### load input column family  ###################################################")
-    cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
+    try :
+        cols_group = model_dict['data_pars']['cols_input_type']  ### the model config file
+    except :
+        cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
     log(cols_group)
-
-
-    log("#### Model Dynamic loading  ######################################################")
-    model_dict_fun = load_function_uri(uri_name= path_config_model + ":" + model_name)    
-    # model_dict_fun = getattr(importlib.import_module("config_model"), model_name)
-    model_dict     = model_dict_fun(path_model_out)   ### params
 
 
     log("#### Preprocess  #################################################################")
@@ -200,8 +204,11 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
 
     if run_preprocess :
         dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
-                                 preprocess_pars, filter_pars)
+                                 preprocess_pars, filter_pars, path_train_features)
     model_dict['data_pars']['coly'] = cols['coly']
+
+    if use_feature_store:
+        dfXy=pd.read_parquet(path_train_features + "/dfX/features.parquet")
     
     ### Get actual column names from colum groups : colnum , colcat
     model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])                
@@ -218,8 +225,10 @@ def run_train(model_name, path_data, path_output, path_config_model="source/conf
     os.makedirs(path_check_out, exist_ok=True)
     colexport = [cols['colid'], cols['coly'], cols['coly'] + "_pred"]
     dfXy[colexport].to_csv(path_check_out + "/pred_check.csv")  # Only results
-    dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data
-    dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data
+    dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data generate parquet
+    #dfXy.to_csv(path_check_out + "/dfX.csv")  # train input data generate csv
+    dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data  generate parquet
+    #dfXytest.to_csv(path_check_out + "/dfXtest.csv")  # Test input data  generate csv
     log("######### finish #################################", )
 
 

@@ -1,12 +1,12 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to titatinic dataet
+You can put hardcode here, specific to cardif dataet
 All in one file config
 
-!  python titanic_classifier.py  train
-!  python titanic_classifier.py  check
-!  python titanic_classifier.py  predict
+!  python cardiff_classifier.py  train
+!  python cardiff_classifier.py  check
+!  python cardiff_classifier.py  predict
 
 
 
@@ -39,9 +39,9 @@ print(dir_data)
 
 
 ##### Params#######################################################################
-def titanic_lightgbm(path_model_out) :
+def cardif_lightgbm(path_model_out) :
     """
-       titanic
+       cardif
     """
     def post_process_fun(y):
         ### After prediction is done
@@ -52,10 +52,10 @@ def titanic_lightgbm(path_model_out) :
         return  y.astype('int')
 
     model_dict = {'model_pars': {'config_model_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
-        , 'model_path': path_model_out
-        , 'model_pars': {'objective': 'binary','learning_rate':0.03,'boosting_type':'gbdt' }  # default
-        , 'post_process_fun': post_process_fun
-        , 'pre_process_pars': {'y_norm_fun' :  None ,
+        , 'model_path'       : path_model_out
+        , 'model_pars'       : {'objective': 'binary','learning_rate':0.1,'boosting_type':'gbdt' }  # default
+        , 'post_process_fun' : post_process_fun
+        , 'pre_process_pars' : {'y_norm_fun' :  None ,
                                }
                                  },
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
@@ -63,13 +63,13 @@ def titanic_lightgbm(path_model_out) :
 
       'data_pars': {
           'cols_input_type' : {
-                     "coly"   :   "Survived"
-                    ,"colid"  :   "PassengerId"
-                    ,"colcat" :   [  "Sex", "Embarked" ]
-                    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-                    ,"coltext" :  ["Name","Ticket"]
+                     "coly"   :   "target"
+                    ,"colid"  :   "ID"
+                    ,"colcat" :   ["v3", "v22",]
+                    ,"colnum" :   ["v128", "v65", "v5"]
+                    ,"coltext" :  []
                     ,"coldate" :  []
-                    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+                    ,"colcross" : [ "v128", "v65", "v5", "v3", "v22",]
                    },
 
           # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
@@ -88,10 +88,10 @@ def titanic_lightgbm(path_model_out) :
 def train():
     from source import run_train
 
-    run_train.run_train(config_model_name = 'titanic_lightgbm',
-                        path_data         =  'data/input/titanic/train/',
-                        path_output       =  'data/output/titanic/a01_lightgbm/',
-                        path_config_model =  root + "/titanic_classifier.py" , n_sample = -1)
+    run_train.run_train(config_model_name =  'cardif_lightgbm',
+                        path_data         =  'data/input/cardif/train/',
+                        path_output       =  'data/output/cardif/a01_lightgbm/',
+                        path_config_model =  root + "/cardiff_classifier.py" , n_sample = 100)
 
 
 ###################################################################################
@@ -103,10 +103,10 @@ def check():
     import sys
     from source import models
     sys.modules['models'] = models
-    model_tag =  "a01_titanic_lightgbm"
+    model_tag =  "a01_lightgbm"
 
 
-    dir_model    = dir_data + f"/output/{model_tag}/"
+    dir_model    = dir_data + f"/output/cardif/{model_tag}/"
     modelx.model = load( dir_model + "/model/model.pkl" )
     stats        = load( dir_model + "/model/info.pkl" )
     colsX        = load( dir_model + "/model/colsX.pkl"   )
@@ -118,11 +118,13 @@ def check():
     stats['metrics_test']
 
     #### Loading training data  #######################################################
-    dfX     = pd.read_csv(dir_model + "/check/dfX.csv")
+    dfX     = pd.read_csv(dir_model + "/check/dfX.csv")  #to load csv
+    #dfX = pd.read_parquet(dir_model + "/check/dfX.parquet")    #to load parquet
     dfy     = dfX[coly]
     colused = colsX
 
-    dfXtest = pd.read_csv(dir_model + "/check/dfXtest.csv")
+    dfXtest = pd.read_csv(dir_model + "/check/dfXtest.csv")    #to load csv
+    #dfXtest = pd.read_parquet(dir_model + "/check/dfXtest.parquet"    #to load parquet
     dfytest = dfXtest[coly]
     print(dfX.shape,  dfXtest.shape )
 
@@ -142,9 +144,9 @@ def check():
 def predict():
     from source import run_inference
     run_inference.run_predict('LGBMClassifier',
-                              path_model  = '/data/output/titanic/a01_lightgbm/',
-                              path_data   = 'data/input/titanic/test/',
-                              path_output = '/data/output/titanic/pred_a01_titanic_lightgbm/',
+                              path_model  = '/data/output/cardif/a01_lightgbm/',
+                              path_data   = 'data/input/cardif/test/',
+                              path_output = '/data/output/cardif/pred_a01_cardif_lightgbm/',
                               n_sample    = -1)
 
 
@@ -154,4 +156,3 @@ if __name__ == "__main__":
     fire.Fire()
 
 
-train()
