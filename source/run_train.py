@@ -41,7 +41,7 @@ def log(*s, n=0, m=0):
     ### Implement pseudo Logging
     print(sjump, sspace, s, sspace, flush=True)
 
-from util_feature import   load, save_list, load_function_uri
+from util_feature import   load, save_list, load_function_uri, save
 
 
 
@@ -128,12 +128,13 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     log("saving model, dfX, columns", model_path)
     os.makedirs(model_path, exist_ok=True)
     modelx.save(model_path, stats)
-    
+    save(colsX, model_path + "/colsX.pkl")
+    save(coly, model_path + "/coly.pkl")
+
     log(modelx.model.model_pars, modelx.model.compute_pars)
     a = load(model_path + "/model.pkl")
     log("check re-loaded", a.model_pars)
     
-    save_list(model_path, ['colsX', 'coly'], locals())
     return dfX.iloc[:ival, :].reset_index(), dfX.iloc[ival:, :].reset_index()
 
 
