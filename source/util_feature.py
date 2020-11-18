@@ -52,7 +52,7 @@ def load(file_name):
 
 
 
-def load_dataset(path_data_x, path_data_y,  colid="jobId", n_sample=-1):
+def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
     log('loading', colid, path_data_x)
     df = pd.read_csv(path_data_x) # + "/features.zip")
     df = df.set_index(colid)
