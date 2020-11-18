@@ -195,7 +195,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
    
     ######  Merge AlL  #############################################################################
-    dfX = df[colnum]
+    dfX = df
     for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',   ] :
         if t in locals() :
            dfX = pd.concat((dfX, locals()[t] ), axis=1)
