@@ -45,7 +45,7 @@ print(root)
 
 ####################################################################################################
 ####################################################################################################
-def log(*s, n=0, m=0):
+def log(*s, n=0, m=1):
     sspace = "#" * n
     sjump = "\n" * m
     ### Implement pseudo Logging
@@ -62,6 +62,7 @@ def load_dataset(path_train_X, path_train_y, colid, n_sample=-1):
     if n_sample > 0:
         df = df.sample(frac=1.0)
         df = df.iloc[:n_sample, :]
+    ### Load labels
     try :
       dfy = pd.read_csv(path_train_y)
       df = df.join(dfy.set_index(colid), on=colid, how="left")
@@ -104,85 +105,99 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colall          = colnum + colcat + coltext + coldate
     log(colall)
 
+    pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+    pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
+
     ##### Load data ########################################################################
     df =load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
 
 
     ##### Filtering / cleaning rows :   ####################################################
-    ymin, ymax = filter_pars.get('ymin', -9999999999.0), filter_pars.get('ymax', 999999999.0) 
-    df = df[df[coly] > ymin]
-    df = df[df[coly] < ymax]
+    if "filter" in pipe_list :
+        ymin, ymax = filter_pars.get('ymin', -9999999999.0), filter_pars.get('ymax', 999999999.0)
+        df = df[df[coly] > ymin]
+        df = df[df[coly] < ymax]
+
 
     ##### Label processing   ##############################################################
-    # Target coly processing, Normalization process  , customize by model
-    y_norm_fun = preprocess_pars.get('y_norm_fun', None)
-    if y_norm_fun is not None:
-        df[coly] = df[coly].apply(lambda x: y_norm_fun(x))
+    if "label" in pipe_list :
+        # Target coly processing, Normalization process  , customize by model
+        y_norm_fun = preprocess_pars.get('y_norm_fun', None)
+        if y_norm_fun is not None:
+            df[coly] = df[coly].apply(lambda x: y_norm_fun(x))
+
 
     ########### colnum procesing   #########################################################
     for x in colnum:
         df[x] = df[x].astype("float32")
     log(df[colall].dtypes)
 
-    ### Map numerics to Category bin
-    dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=colnum, colexclude=None, colbinmap=None,
-                                               bins=10, suffix="_bin", method="uniform",
-                                               return_val="dataframe,param")
-    log(colnum_binmap)
-    save_features(dfnum_bin, 'dfnum_binmap', path_train_features )
+
+    if "dfnum_bin" in pipe_list :
+        log("### Map numerics to Category bin  ###########################################")
+        dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=colnum, colexclude=None, colbinmap=None,
+                                                   bins=10, suffix="_bin", method="uniform",
+                                                   return_val="dataframe,param")
+        log(colnum_binmap)
+        ### Renaming colunm_bin with suffix
+        colnum_bin = [x + "_bin" for x in list(colnum_binmap.keys())]
+        log(colnum_bin)
+        save_features(dfnum_bin, 'dfnum_binmap', path_train_features )
 
 
-    ### Renaming colunm_bin with suffix 
-    colnum_bin = [x + "_bin" for x in list(colnum_binmap.keys())]
-    log(colnum_bin)
+    if "dfnum_hot" in pipe_list :
+        log("### colnum bin to One Hot")
+        dfnum_hot, colnum_onehot = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
+                                                    colonehot=None, return_val="dataframe,param")
+        log(colnum_onehot)
+        save_features(dfnum_hot, 'dfnum_onehot', path_train_features )
 
-    ### colnum bin to One Hot
-    dfnum_hot, colnum_onehot = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
-                                                colonehot=None, return_val="dataframe,param")
-    log(colnum_onehot)
-    save_features(dfnum_hot, 'dfnum_onehot', path_train_features )
 
     ##### Colcat processing   ################################################################
     colcat_map = pd_colcat_mapping(df, colcat)
     log(df[colcat].dtypes, colcat_map)
 
-    #### colcat to onehot
-    dfcat_hot, colcat_onehot = pd_col_to_onehot(df[colcat], colname=colcat,
-                                                colonehot=None, return_val="dataframe,param")
-    log(dfcat_hot[colcat_onehot].head(5))
-    save_features(dfcat_hot, 'dfcat_onehot', path_train_features )
-
-    #### Colcat to integer encoding
-    dfcat_bin, colcat_bin_map = pd_colcat_toint(df[colcat], colname=colcat,
-                                                colcat_map=None, suffix="_int")
-    colcat_bin = list(dfcat_bin.columns)
-    save_features(dfcat_bin, 'dfcat_bin', path_train_features )
-
-    ####### colcross cross features   ##############################################################
-    df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
-    colcross_single_onehot_select = []
-    for t in list(df_onehot) :
-        for c1 in colcross_single :
-            if c1 in t :
-               colcross_single_onehot_select.append(t)
-        
-
-    df_onehot = df_onehot[colcross_single_onehot_select ]
-    dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
-                                                           pct_threshold=0.02,
-                                                           m_combination=2)
-    log(dfcross_hot.head(2).T)
-    colcross_pair_onehot = list(dfcross_hot.columns)
-    save_features(dfcross_hot, 'dfcross_onehot', path_train_features )
-    del df_onehot
-    gc.collect()
+    if "dfcat_hot" in pipe_list :
+        log("#### colcat to onehot")
+        dfcat_hot, colcat_onehot = pd_col_to_onehot(df[colcat], colname=colcat,
+                                                    colonehot=None, return_val="dataframe,param")
+        log(dfcat_hot[colcat_onehot].head(5))
+        save_features(dfcat_hot, 'dfcat_onehot', path_train_features )
 
 
+    if "dfcat_bin" in pipe_list :
+        #### Colcat to integer encoding
+        dfcat_bin, colcat_bin_map = pd_colcat_toint(df[colcat], colname=colcat,
+                                                    colcat_map=None, suffix="_int")
+        colcat_bin = list(dfcat_bin.columns)
+        save_features(dfcat_bin, 'dfcat_bin', path_train_features )
 
-    ################################################################################################
+
+    if "dfcross_hot" in pipe_list :
+        ####### colcross cross features   ####################################################
+        df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
+        colcross_single_onehot_select = []
+        for t in list(df_onehot) :
+            for c1 in colcross_single :
+                if c1 in t :
+                   colcross_single_onehot_select.append(t)
+
+        df_onehot = df_onehot[colcross_single_onehot_select ]
+        dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
+                                                               pct_threshold=0.02,
+                                                               m_combination=2)
+        log(dfcross_hot.head(2).T)
+        colcross_pair_onehot = list(dfcross_hot.columns)
+        save_features(dfcross_hot, 'dfcross_onehot', path_train_features )
+        del df_onehot ; gc.collect()
+
+
+    ##################################################################################################
     ##### Save pre-processor meta-parameters
     os.makedirs(path_pipeline_export, exist_ok=True)
     log(path_pipeline_export)
+    cols_family = {}
+
     for t in ['colid',
               "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
               "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
@@ -192,43 +207,39 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
               ]:
         tfile = f'{path_pipeline_export}/{t}.pkl'
         log(tfile)
-        save(locals()[t], tfile)
+        t_val = locals().get(t, None)
+        if t_val is not None :
+           save(t_val, tfile)
+           cols_family[t] = t_val
 
     log("y_norm.pkl")
     save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
 
    
     ######  Merge AlL  #############################################################################
-    dfX = pd.concat((df[colnum], dfnum_bin, dfnum_hot,
-                     dfcat_bin, dfcat_hot,
-                     dfcross_hot,
-                     df[coly]
-                     ), axis=1)
+    dfX = df[colnum]
+    for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',   ] :
+        if t in locals() :
+           dfX = pd.concat((dfX, locals()[t] ))
     save_features(dfX, 'dfX', path_train_features )
 
     colX = list(dfX.columns)
     colX.remove(coly)
+    cols_family['colX'] = colX
 
-    cols_family = {
-        'colid': colid,    'coly': coly, 'colall': colall,
-        'colnum': colnum,
-        'colnum_bin': colnum_bin,
-        'colnum_onehot': colnum_onehot,
-        
-        'colcat_bin': colcat_bin,
-        'colcat_onehot': colcat_onehot,
-
-        'colcross_single_onehot_select' : colcross_single_onehot_select
-       ,'colcross_pair_onehot':           colcross_pair_onehot
-        #'colcross_onehot': colcross_onehot,
-    }
+    ###### Return values  #########################################################################
     return dfX, cols_family
+
+
+def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
+               preprocess_pars={}, filter_pars={}, path_train_features=None):
+  return  None, None
 
 
 ####################################################################################################
 ############CLI Command ############################################################################
 def run_preprocess(model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-              run_preprocess=1,):
+              mode='run_process',):
     """
       Configuration of the model is in config_model.py file
 
@@ -258,9 +269,15 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
     filter_pars     = model_dict['data_pars']['filter_pars']
 
-    if run_preprocess :
+    if mode == "run_preprocess" :
         dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
                                  preprocess_pars, filter_pars)
+
+    elif mode == "load_preprocess" :
+        dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
+                                 preprocess_pars, filter_pars)
+
+
     model_dict['data_pars']['coly'] = cols['coly']
     
     ### Get actual column names from colum groups : colnum , colcat
