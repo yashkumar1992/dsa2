@@ -18,37 +18,19 @@ python source/run_train.py  run_train --config_model_name elasticnet  --path_dat
 import warnings
 warnings.filterwarnings('ignore')
 import sys
-import gc
 import os
-import logging
-from datetime import datetime
-import warnings
-import numpy as np
-import pandas as pd
 import json
-import pickle
-import scipy
 import importlib
 
 # from tqdm import tqdm_notebook
-import cloudpickle as pickle
-from sklearn.metrics import mean_squared_error, roc_auc_score, roc_curve
-
 
 
 #### Add path for python import
 sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
-import util_feature
-
 
 #### Root folder analysis
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
-
-
-# from diskcache import Cache
-# cache = Cache('db.cache')
-# cache.reset('size_limit', int(2e9))
 
 
 ####################################################################################################
@@ -59,23 +41,11 @@ def log(*s, n=0, m=0):
     ### Implement pseudo Logging
     print(sjump, sspace, s, sspace, flush=True)
 
-from util_feature import  load_function_uri, save, load, save_list
+from util_feature import  load_function_uri, load, save_list
 
 
 ####################################################################################################
 ####################################################################################################
-def load_dataset(path_train_X, path_train_y, colid, n_sample=-1):
-    df = pd.read_csv(path_train_X)
-    if n_sample > 0:
-        df = df.sample(frac=1.0)
-        df = df.iloc[:n_sample, :]
-    try :
-      dfy = pd.read_csv(path_train_y)
-      df = df.join(dfy.set_index(colid), on=colid, how="left")
-    except : 
-      pass  
-    df = df.set_index(colid)
-    return df
 
 
 def save_features(df, name, path):
@@ -85,7 +55,7 @@ def save_features(df, name, path):
        df.to_parquet( f"{path}/{name}/features.parquet")
 
 
-from run_preprocess import  preprocess
+from run_preprocess import  preprocess, preprocess_load
 
 
 ####################################################################################################
@@ -115,20 +85,20 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 
     log("#### Data preparation #############################################################")
     log(dfX.shape)
-    dfX = dfX.sample(frac=1.0)
+    dfX    = dfX.sample(frac=1.0)
     itrain = int(0.6 * len(dfX))
     ival   = int(0.8 * len(dfX))
-    colid = cols_family['colid']
-    colsX = data_pars['cols_model']
-    coly  = data_pars['coly']
+    colid  = cols_family['colid']
+    colsX  = data_pars['cols_model']
+    coly   = data_pars['coly']
     data_pars['data_type'] = 'ram'
-    data_pars['train'] = {'Xtrain': dfX[colsX].iloc[:itrain, :],
-                          'ytrain': dfX[coly].iloc[:itrain],
-                          'Xtest':  dfX[colsX].iloc[itrain:ival, :],
-                          'ytest':  dfX[coly].iloc[itrain:ival],
+    data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
+                          'ytrain' : dfX[coly].iloc[:itrain],
+                          'Xtest'  : dfX[colsX].iloc[itrain:ival, :],
+                          'ytest'  : dfX[coly].iloc[itrain:ival],
 
-                          'Xval':   dfX[colsX].iloc[ival:, :],
-                          'yval':   dfX[coly].iloc[ival:],
+                          'Xval'   : dfX[colsX].iloc[ival:, :],
+                          'yval'   : dfX[coly].iloc[ival:],
                           }
     
     log("#### Model Instance ##########################################################")
@@ -169,24 +139,23 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 ####################################################################################################
 ############CLI Command ############################################################################
 def run_train(config_model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-              run_preprocess=1, use_feature_store= False):
+              run_preprocess=1,  mode="run_preprocess"):
     """
       Configuration of the model is in config_model.py file
 
     """
     path_output       = root + path_output
     path_data         = root + path_data
-    path_pipeline_out = path_output + "/pipeline/"
-    path_model_out    = path_output + "/model/"
-    path_check_out    = path_output + "/check/"
-    path_train_X      = path_data   + "/features.zip"
-    path_train_y      = path_data   + "/target.zip"
+    path_pipeline_out = path_output   + "/pipeline/"
+    path_model_out    = path_output   + "/model/"
+    path_check_out    = path_output   + "/check/"
+    path_train_X      = path_data     + "/features.zip"
+    path_train_y      = path_data     + "/target.zip"
     path_train_features = path_output + '/features_store/'
     log(path_output)
 
-    log("#### Model Dynamic loading  ######################################################")
+    log("#### Model Params Dynamic loading  ###############################################")
     model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_model_name)
-    # model_dict_fun = getattr(importlib.import_module("config_model"), config_model_name)
     model_dict     = model_dict_fun(path_model_out)   ### params
 
 
@@ -201,14 +170,17 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     log("#### Preprocess  #################################################################")
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
     filter_pars     = model_dict['data_pars']['filter_pars']
-
-    if run_preprocess :
+     
+    if mode == "run_preprocess" :
         dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
-                                 preprocess_pars, filter_pars, path_train_features)
+                                 preprocess_pars, filter_pars)
+
+    elif mode == "load_preprocess" :
+        dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
+                                 preprocess_pars, filter_pars)
+                                    
     model_dict['data_pars']['coly'] = cols['coly']
 
-    if use_feature_store:
-        dfXy=pd.read_parquet(path_train_features + "/dfX/features.parquet")
     
     ### Get actual column names from colum groups : colnum , colcat
     model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])                

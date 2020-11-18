@@ -12,26 +12,14 @@ warnings.filterwarnings('ignore')
 import sys
 import gc
 import os
-import logging
-from datetime import datetime
-import warnings
-import numpy as np
 import pandas as pd
 import json
-import pickle
-import scipy
-import importlib
 
 # from tqdm import tqdm_notebook
-import cloudpickle as pickle
-from sklearn.metrics import mean_squared_error, roc_auc_score, roc_curve
-
 
 
 #### Add path for python import
 sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
-import util_feature
-
 
 #### Root folder analysis
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
@@ -52,24 +40,12 @@ def log(*s, n=0, m=1):
     print(sjump, sspace, s, sspace, flush=True)
 
 
-from util_feature import  load_function_uri, save, load, save_list
-
+from util_feature import  load_function_uri, save
 
 ####################################################################################################
 ####################################################################################################
-def load_dataset(path_train_X, path_train_y, colid, n_sample=-1):
-    df = pd.read_csv(path_train_X)
-    if n_sample > 0:
-        df = df.sample(frac=1.0)
-        df = df.iloc[:n_sample, :]
-    ### Load labels
-    try :
-      dfy = pd.read_csv(path_train_y)
-      df = df.join(dfy.set_index(colid), on=colid, how="left")
-    except : 
-      pass  
-    df = df.set_index(colid)
-    return df
+from util_feature import  load_dataset
+
 
 
 def save_features(df, name, path):
@@ -220,7 +196,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     dfX = df[colnum]
     for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',   ] :
         if t in locals() :
-           dfX = pd.concat((dfX, locals()[t] ))
+           dfX = pd.concat((dfX, locals()[t] ), axis=1)
     save_features(dfX, 'dfX', path_train_features )
 
     colX = list(dfX.columns)
@@ -261,7 +237,6 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
 
     log("#### Model parameters Dynamic loading  ############################################")
     model_dict_fun = load_function_uri(uri_name= path_config_model + ":" + model_name)
-    # model_dict_fun = getattr(importlib.import_module("config_model"), model_name)
     model_dict     = model_dict_fun(path_model_out)   ### params
 
 

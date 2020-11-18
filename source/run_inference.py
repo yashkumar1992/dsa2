@@ -10,16 +10,8 @@ warnings.filterwarnings('ignore')
 import sys
 import gc
 import os
-import logging
-from datetime import datetime
-import warnings
-import numpy as np
 import pandas as pd
-import json
 import importlib
-import cloudpickle as pickle
-
-
 
 #### Add path for python import
 sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
@@ -41,32 +33,20 @@ def log(*s, n=0, m=1):
     print(sjump, sspace, s, sspace, flush=True)
 
 
-from util_feature import  load_function_uri, save, load, save_list
-
+from util_feature import load
 
 ####################################################################################################
 ####################################################################################################
-def load_dataset(path_data, n_sample=-1, colid="jobId"):
-    log('loading', colid, path_data)
-    df = pd.read_csv(path_data + "/features.zip")
-    df = df.set_index(colid)
-    if n_sample > 0:
-        df = df.iloc[:n_sample, :]        
-    try:
-        dfy = pd.read_csv(path_data + "/target_values.zip")
-        df = df.join(dfy.set_index(colid), on=colid, how='left', )
-    except:
-        pass
-    return df
+from util_feature import  load_dataset
 
 
 # @cache.memoize(typed=True,  tag='fib')  ### allow caching results
-def preprocess(df, path_pipeline="data/pipeline/pipe_01/"):
+def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
     """
       FUNCTIONNAL approach is used for pre-processing, so the code can be EASILY extensible to PYSPPARK.
       PYSPARK  supports better UDF, lambda function
     """
-    from util_feature import (pd_colnum_tocat, pd_col_to_onehot, pd_colcat_mapping, pd_colcat_toint,
+    from util_feature import (pd_colnum_tocat, pd_col_to_onehot, pd_colcat_toint,
                               pd_feature_generate_cross)
     log("########### Load column by column type ##################################")
     colid          = load(f'{path_pipeline}/colid.pkl')
@@ -78,69 +58,86 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/"):
     colnum         = load(f'{path_pipeline}/colnum.pkl')
     colnum_binmap  = load(f'{path_pipeline}/colnum_binmap.pkl')
     colnum_onehot  = load(f'{path_pipeline}/colnum_onehot.pkl')
-
-
     ### OneHot column selected for cross features
     colcross_single_onehot_select = load(f'{path_pipeline}/colcross_single_onehot_select.pkl')
 
+    pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+    pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
 
-    log("###### Colcat to onehot ###############################################")
-    df_cat_hot, _ = pd_col_to_onehot(df[colcat],  colname=colcat,
+
+    if "dfcat_hot" in pipe_list :
+       log("###### Colcat to onehot ###############################################")
+       df_cat_hot, _ = pd_col_to_onehot(df[colcat],  colname=colcat,
                                                   colonehot=colcat_onehot, return_val="dataframe,param")
-
-    log(df_cat_hot[colcat_onehot].head(5))
-
-    log("###### Colcat as integer encoded  ####################################")
-    df_cat_bin, _ = pd_colcat_toint(df[colcat],  colname=colcat,
-                                                 colcat_map=colcat_bin_map, suffix="_int")
-    colcat_bin = list(df_cat_bin.columns)
-
-    log("###### Colnum Preprocess   ###########################################")
-    df_num, _ = pd_colnum_tocat(df, colname=colnum, colexclude=None,
-                                     colbinmap=colnum_binmap,
-                                     bins=-1, suffix="_bin", method="",
-                                     return_val="dataframe,param")
-    log(colnum_binmap)
-    colnum_bin = [x + "_bin" for x in list(colnum_binmap.keys())]
-    log(df_num[colnum_bin].head(5))
-
-    ###### Map numerics bin to One Hot
-    df_num_hot, _ = pd_col_to_onehot(df_num[colnum_bin], colname=colnum_bin,
-                                     colonehot=colnum_onehot, return_val="dataframe,param")
-    log(df_num_hot[colnum_onehot].head(5))
+       log(df_cat_hot[colcat_onehot].head(5))
 
 
-    log("####### colcross cross features   ######################################")
-    dfcross_hot = pd.DataFrame()
-    if colcross_single_onehot_select is not None :
-        df_onehot = df_cat_hot.join(df_num_hot, on=colid, how='left')
+    if "dfcat_bin" in pipe_list :
+        log("###### Colcat as integer encoded  ####################################")
+        df_cat_bin, _ = pd_colcat_toint(df[colcat],  colname=colcat,
+                                                     colcat_map=colcat_bin_map, suffix="_int")
+        colcat_bin = list(df_cat_bin.columns)
 
-        # colcat_onehot2 = [x for x in colcat_onehot if 'companyId' not in x]
-        # log(colcat_onehot2)
-        # colcross_single = colnum_onehot + colcat_onehot2
-        df_onehot = df_onehot[colcross_single_onehot_select]
-        dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
-                                                                pct_threshold=0.02,
-                                                                m_combination=2)
-        log(dfcross_hot.head(2).T)
-        colcross_onehot = list(dfcross_hot.columns)
-        del df_onehot ;    gc.collect()
+    if "dfnum_bin" in pipe_list :
+        log("###### Colnum Preprocess   ###########################################")
+        dfnum_bin, _ = pd_colnum_tocat(df, colname=colnum, colexclude=None,
+                                         colbinmap=colnum_binmap,
+                                         bins=-1, suffix="_bin", method="",
+                                         return_val="dataframe,param")
+        log(colnum_binmap)
+        colnum_bin = [x + "_bin" for x in list(colnum_binmap.keys())]
+        log(dfnum_bin[colnum_bin].head(5))
 
-    log("##### Merge data type together  :   #######################3########## ")
-    dfmerge = pd.concat((df[colnum], df_num, df_num_hot,
-                         df[colcat], df_cat_bin, df_cat_hot,
-                         dfcross_hot
-                         ), axis=1)
-    col_merge = list(dfmerge.columns)
+
+    if "dfnum_hot" in pipe_list :
+        ###### Map numerics bin to One Hot
+        df_num_hot, _ = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
+                                         colonehot=colnum_onehot, return_val="dataframe,param")
+        log(df_num_hot[colnum_onehot].head(5))
+
+
+    if "dfcross_hot" in pipe_list :
+        log("####### colcross cross features   ###################################################")
+        dfcross_hot = pd.DataFrame()
+        if colcross_single_onehot_select is not None :
+            df_onehot = df_cat_hot.join(df_num_hot, on=colid, how='left')
+
+            # colcat_onehot2 = [x for x in colcat_onehot if 'companyId' not in x]
+            # log(colcat_onehot2)
+            # colcross_single = colnum_onehot + colcat_onehot2
+            df_onehot = df_onehot[colcross_single_onehot_select]
+            dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
+                                                                    pct_threshold=0.02,
+                                                                    m_combination=2)
+            log(dfcross_hot.head(2).T)
+            colcross_onehot = list(dfcross_hot.columns)
+            del df_onehot ;    gc.collect()
+
+
+    log("##### Merge data type together  :   #######################3############################ ")
+    dfX = df[colnum]
+    for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',   ] :
+        if t in locals() :
+           dfX = pd.concat((dfX, locals()[t] ), axis=1)
+
+    colX = list(dfX.columns)
+    colX.remove(coly)
     del df ;    gc.collect()
+
 
     log("###### Export columns group   ##########################################################")
     cols_family = {}
-    for coli in ['coly', 'colid', "colnum", "colnum_bin", "colnum_onehot", "colcat", "colcat_bin",
-                 "colcat_onehot", "colcross_onehot", 'col_merge']:
-        cols_family[coli] = locals()[coli]
+    for t in ['colid',
+              "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+              "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+              'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+              ]:
+        t_val = locals().get(t, None)
+        if t_val is not None :
+           cols_family[t] = t_val
 
-    return dfmerge, cols_family
+
+    return dfX, cols_family
 
 
 ####################################################################################################
