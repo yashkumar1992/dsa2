@@ -204,6 +204,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colX = list(dfX.columns)
     colX.remove(coly)
     cols_family['colX'] = colX
+    save(colX, f'{path_pipeline_export}/colsX.pkl' )
 
     ###### Return values  #########################################################################
     return dfX, cols_family

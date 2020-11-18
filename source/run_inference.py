@@ -67,16 +67,16 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
 
     if "dfcat_hot" in pipe_list :
        log("###### Colcat to onehot ###############################################")
-       df_cat_hot, _ = pd_col_to_onehot(df[colcat],  colname=colcat,
+       dfcat_hot, _ = pd_col_to_onehot(df[colcat],  colname=colcat,
                                                   colonehot=colcat_onehot, return_val="dataframe,param")
-       log(df_cat_hot[colcat_onehot].head(5))
+       log(dfcat_hot[colcat_onehot].head(5))
 
 
     if "dfcat_bin" in pipe_list :
         log("###### Colcat as integer encoded  ####################################")
-        df_cat_bin, _ = pd_colcat_toint(df[colcat],  colname=colcat,
+        dfcat_bin, _ = pd_colcat_toint(df[colcat],  colname=colcat,
                                                      colcat_map=colcat_bin_map, suffix="_int")
-        colcat_bin = list(df_cat_bin.columns)
+        colcat_bin = list(dfcat_bin.columns)
 
     if "dfnum_bin" in pipe_list :
         log("###### Colnum Preprocess   ###########################################")
@@ -91,16 +91,16 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
 
     if "dfnum_hot" in pipe_list :
         ###### Map numerics bin to One Hot
-        df_num_hot, _ = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
+        dfnum_hot, _ = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
                                          colonehot=colnum_onehot, return_val="dataframe,param")
-        log(df_num_hot[colnum_onehot].head(5))
+        log(dfnum_hot[colnum_onehot].head(5))
 
 
     if "dfcross_hot" in pipe_list :
         log("####### colcross cross features   ###################################################")
         dfcross_hot = pd.DataFrame()
         if colcross_single_onehot_select is not None :
-            df_onehot = df_cat_hot.join(df_num_hot, on=colid, how='left')
+            df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
 
             # colcat_onehot2 = [x for x in colcat_onehot if 'companyId' not in x]
             # log(colcat_onehot2)
@@ -119,9 +119,9 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
     for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',   ] :
         if t in locals() :
            dfX = pd.concat((dfX, locals()[t] ), axis=1)
+           # log(t, list(dfX.columns))
 
     colX = list(dfX.columns)
-    colX.remove(coly)
     del df ;    gc.collect()
 
 
@@ -131,6 +131,7 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
               "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
               "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
               'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+              'colsX', 'coly'
               ]:
         t_val = locals().get(t, None)
         if t_val is not None :
@@ -196,14 +197,14 @@ def predict(model_name, path_model, dfX, cols_family):
 ############CLI Command ############################################################################
 def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
     path_output   = root + path_output
-    path_data     = root + path_data
+    path_data     = root + path_data + "/features.zip"
     path_model    = root + path_model
     path_pipeline = path_model + "/pipeline/"
     log(path_data, path_model, path_output)
 
     colid            = load(f'{path_pipeline}/colid.pkl')
 
-    df               = load_dataset(path_data, n_sample,colid)
+    df               = load_dataset(path_data, path_data_y=None, colid=colid, n_sample=n_sample)
   
     dfX, cols_family = preprocess(df, path_pipeline)
     
