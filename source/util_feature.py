@@ -51,6 +51,22 @@ def load(file_name):
     return pickle.load(open(f'{file_name}', mode='rb'))
 
 
+
+def load_dataset(path_data_x, path_data_y,  colid="jobId", n_sample=-1):
+    log('loading', colid, path_data_x)
+    df = pd.read_csv(path_data_x) # + "/features.zip")
+    df = df.set_index(colid)
+    if n_sample > 0:
+        df = df.iloc[:n_sample, :]
+    try:
+        dfy = pd.read_csv(path_data_y) # + "/target_values.zip")
+        df = df.join(dfy.set_index(colid), on=colid, how='left', )
+    except:
+        pass
+    return df
+
+
+
 def load_function_uri(uri_name="path_norm"):
     """
     #load dynamically function from URI
@@ -62,7 +78,7 @@ def load_function_uri(uri_name="path_norm"):
 
     import importlib, sys
     from pathlib import Path
-    pkg = uri_name.split(":")
+    pkg = uri_name.split("::")
 
     assert len(pkg) > 1, "  Missing :   in  uri_name module_name:function_or_class "
     package, name = pkg[0], pkg[1]
@@ -86,20 +102,6 @@ def load_function_uri(uri_name="path_norm"):
 
         except Exception as e2:
             raise NameError(f"Module {pkg} notfound, {e1}, {e2}")
-
-
-def load_dataset(path_data, n_sample=-1, colid="jobId"):
-    log('loading', colid, path_data)
-    df = pd.read_csv(path_data + "/features.zip")
-    df = df.set_index(colid)
-    if n_sample > 0:
-        df = df.iloc[:n_sample, :]
-    try:
-        dfy = pd.read_csv(path_data + "/target_values.zip")
-        df = df.join(dfy.set_index(colid), on=colid, how='left', )
-    except:
-        pass
-    return df
 
 
 #############################################################################################

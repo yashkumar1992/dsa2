@@ -41,7 +41,8 @@ def log(*s, n=0, m=0):
     ### Implement pseudo Logging
     print(sjump, sspace, s, sspace, flush=True)
 
-from util_feature import  load_function_uri, load, save_list
+from util_feature import   load, save_list, load_function_uri
+
 
 
 ####################################################################################################
