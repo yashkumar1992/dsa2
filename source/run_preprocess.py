@@ -218,7 +218,7 @@ def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", c
 ####################################################################################################
 ############CLI Command ############################################################################
 def run_preprocess(model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-              mode='run_process',):
+              mode='run_preprocess',):     #prefix "pre" added, in order to make if loop possible
     """
       Configuration of the model is in config_model.py file
 
