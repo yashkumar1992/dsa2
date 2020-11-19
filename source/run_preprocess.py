@@ -151,8 +151,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         save_features(dfcat_bin, 'dfcat_bin', path_features_store)
 
 
+    ####### colcross cross features from Onehot features  ####################################################
     if "dfcross_hot" in pipe_list :
-        ####### colcross cross features   ####################################################
         df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
         colcross_single_onehot_select = []
         for t in list(df_onehot) :
