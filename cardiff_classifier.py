@@ -43,17 +43,17 @@ opt ={
 }
 
 
-config_name = 'cardif_lightgbm'
-model_name  = 'LGBMClassifier'
-model_tag =  "a01_lightgbm"
+config_name       = 'cardif_lightgbm'
+model_name        = 'LGBMClassifier'
+model_tag         = "a01_lightgbm"
 
 
 path_config_model = root + f"/{config_file}"
-path_model = f'data/output/{data_name}/a01_{model_name}/'
-path_data_train = f'data/input/{data_name}/train/'
-path_data_test = 'data/input/cardif/test/'
-path_output_pred = '/data/output/cardif/pred_a01_cardif_lightgbm/'
-n_sample = -1
+path_model        = f'data/output/{data_name}/a01_{model_name}/'
+path_data_train   = f'data/input/{data_name}/train/'
+path_data_test    = 'data/input/cardif/test/'
+path_output_pred  = '/data/output/cardif/pred_a01_cardif_lightgbm/'
+n_sample          = -1
 
 
 
