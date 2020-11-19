@@ -185,7 +185,21 @@ def predict():
                               n_sample    = n_sample)
 
 
+def run_all():
+    train()
+    check()
+    predict()
 
+
+
+###########################################################################################################
+###########################################################################################################
+"""
+python  cardiff_classifier.py  train
+python  cardiff_classifier.py  check
+python  cardiff_classifier.py  predict
+python  cardiff_classifier.py  run_all
+"""
 if __name__ == "__main__":
     import fire
     fire.Fire()
