@@ -52,7 +52,7 @@ from util_feature import  load_dataset
 
 def save_features(df, name, path):
     if path is not None :
-       os.makedirs( f"{path}/{name}" )
+       os.makedirs( f"{path}/{name}" , exist_ok=True)
        df.to_parquet( f"{path}/{name}/features.parquet")
 
 
@@ -211,7 +211,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
 def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
-               preprocess_pars={}, filter_pars={}, path_store_features=None):
+               preprocess_pars={}, filter_pars={}, path_features_store=None):
   return  None, None
 
 
