@@ -48,6 +48,13 @@ model_name  = 'LGBMClassifier'
 model_tag =  "a01_lightgbm"
 
 
+path_config_model = root + f"/{config_file}"
+path_model = f'data/output/{data_name}/a01_{model_name}/'
+path_data_train = f'data/input/{data_name}/train/'
+path_data_test = 'data/input/cardif/test/'
+path_output_pred = '/data/output/cardif/pred_a01_cardif_lightgbm/'
+n_sample = -1
+
 
 
 ####################################################################################
@@ -102,9 +109,9 @@ def train():
     from source import run_train
 
     run_train.run_train(config_model_name =  config_name,
-                        path_data         =  f'data/input/{data_name}/train/',
-                        path_output       =  f'data/output/{data_name}/a01_{model_name}/',
-                        path_config_model =  root + f"/{config_file}" , n_sample =-1)
+                        path_data         =  path_data_train,
+                        path_output       =  path_model,
+                        path_config_model =  path_config_model , n_sample = n_sample)
 
 
 ###################################################################################
@@ -117,7 +124,7 @@ def check():
     from source import models
     sys.modules['models'] = models
 
-    dir_model    = dir_data + f"/output/{data_name}/{model_tag}/"
+    dir_model    = path_model
     modelx.model = load( dir_model + "/model/model.pkl" )
     stats        = load( dir_model + "/model/info.pkl" )
     colsX        = load( dir_model + "/model/colsX.pkl"   )
@@ -154,11 +161,11 @@ def check():
 ####### Inference ######################################################################
 def predict():
     from source import run_inference
-    run_inference.run_predict('LGBMClassifier',
-                              path_model  = '/data/output/cardif/a01_lightgbm/',
-                              path_data   = 'data/input/cardif/test/',
-                              path_output = '/data/output/cardif/pred_a01_cardif_lightgbm/',
-                              n_sample    = -1)
+    run_inference.run_predict(model_name,
+                              path_model  = path_model,
+                              path_data   = path_data_test,
+                              path_output = path_output_pred,
+                              n_sample    = n_sample)
 
 
 
