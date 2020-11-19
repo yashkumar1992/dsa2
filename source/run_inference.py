@@ -43,11 +43,8 @@ from util_feature import  load_dataset
 # @cache.memoize(typed=True,  tag='fib')  ### allow caching results
 def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
     """
-
-    :param df:
-    :param path_pipeline:
-    :param preprocess_pars:
-    :return:
+      FUNCTIONNAL approach is used for pre-processing, so the code can be EASILY extensible to PYSPPARK.
+      PYSPARK  supports better UDF, lambda function
     """
     from util_feature import (pd_colnum_tocat, pd_col_to_onehot, pd_colcat_toint,
                               pd_feature_generate_cross)
@@ -148,10 +145,6 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
 ####################################################################################################
 ####################################################################################################
 def map_model(model_name):
-    """
-    :param model_name:
-    :return:
-    """
     try :
        ##  'models.model_bayesian_pyro'   'model_widedeep'
        mod    = f'models.{model_name}'
@@ -168,12 +161,14 @@ def map_model(model_name):
 
 def predict(model_name, path_model, dfX, cols_family):
     """
+    if config_model_name in ['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
+        from models import model_sklearn as modelx
 
-    :param model_name:
-    :param path_model:
-    :param dfX:
-    :param cols_family:
-    :return:
+    elif config_model_name == 'model_bayesian_pyro':
+        from models import model_bayesian_pyro as modelx
+
+    elif config_model_name == 'model_widedeep':
+        from models import model_widedeep as modelx
     """
     modelx = map_model(model_name)    
     modelx.reset()
@@ -203,14 +198,6 @@ def predict(model_name, path_model, dfX, cols_family):
 ####################################################################################################
 ############CLI Command ############################################################################
 def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
-    """
-    :param model_name:
-    :param path_model:
-    :param path_data:
-    :param path_output:
-    :param n_sample:
-    :return:
-    """
     path_output   = root + path_output
     path_data     = root + path_data + "/features.zip"
     path_model    = root + path_model
