@@ -132,3 +132,4 @@ dmypy.json
 /*.sublime-project
 /*.sublime-workspace
 /.idea
+/data/input/cardif/train/features_store
