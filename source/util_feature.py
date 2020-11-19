@@ -36,7 +36,7 @@ def save_list(path, name_list, glob):
     os.makedirs(path, exist_ok=True)
     for t in name_list:
         log(t)
-        pickle.dump(glob[t], open(f'{t}', mode='wb'))
+        pickle.dump(glob[t], open(f'{path}/{t}.pkl', mode='wb'))        #problem with not saving in right folder solved
 
 def save(obj, path):
     import cloudpickle as pickle, os
@@ -120,7 +120,7 @@ def sk_metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, 
     for metric_name in metric_list:
         mod = "sklearn.metrics"
 
-        if metric_name in ["roc_auc_score"]:
+        if metric_name in ["roc_auc_score"]:                                            #y_pred_proba is not defined
             metric_scorer = getattr(importlib.import_module(mod), metric_name)
             mval = metric_scorer(ytrue, ypred_proba)
 
@@ -424,11 +424,13 @@ def pd_feature_generate_cross(df, cols, cols_cross_input=None, pct_threshold=0.2
     # col_cross = [ col   for col,x in msize.items() if x > pct_threshold ]
     # print(col_cross)
     dfX_cross = dfX.iloc[:, :1]
+
     for coli, colj, _ in col_cross:
         # coli, colj = colij.split("-")[0], colij.split("-")[1]
         dfX_cross[coli + "-" + colj] = dfX[coli] * dfX[colj]
 
-    del dfX_cross[cols[0]]
+      
+    del dfX_cross[cols[0]]      #when colcross is empty, this make problem
     return dfX_cross, col_cross
 
 
