@@ -233,7 +233,47 @@ def glm_salary( path_model_out) :
     return model_dict               
                
                             
-               
+def cardif_lightgbm(path_model_out) :      #Cardif model added here, because run_preprocess is calling it from this file
+    """
+       cardif
+    """
+    def post_process_fun(y):
+        ### After prediction is done
+        return  y.astype('int')
+
+    def pre_process_fun(y):
+        ### Before the prediction is done
+        return  y.astype('int')
+
+    model_dict = {'model_pars': {'config_model_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
+        , 'model_path'       : path_model_out
+        , 'model_pars'       : {'objective': 'binary','learning_rate':0.1,'boosting_type':'gbdt' }  # default
+        , 'post_process_fun' : post_process_fun
+        , 'pre_process_pars' : {'y_norm_fun' :  None ,
+                               }
+                                 },
+      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
+                      },
+
+      'data_pars': {
+          'cols_input_type' : {
+                     "coly"   :   "target"
+                    ,"colid"  :   "ID"
+                    ,"colcat" :   ["v3","v30", "v31", "v47", "v52", "v56", "v66", "v71", "v74", "v75", "v79", "v91", "v107", "v110", "v112", "v113", "v125"]
+                    ,"colnum" :   ["v1", "v2", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16", "v17", "v18", "v19", "v20", "v21", "v23", "v25", "v26", "v27", "v28", "v29", "v32", "v33", "v34", "v35", "v36", "v37", "v38", "v39", "v40", "v41", "v42", "v43", "v44", "v45", "v46", "v48", "v49", "v50", "v51", "v53", "v54", "v55", "v57", "v58", "v59", "v60", "v61", "v62", "v63", "v64", "v65", "v67", "v68", "v69", "v70", "v72", "v73", "v76", "v77", "v78", "v80", "v81", "v82", "v83", "v84", "v85", "v86", "v87", "v88", "v89", "v90", "v92", "v93", "v94", "v95", "v96", "v97", "v98", "v99", "v100", "v101", "v102", "v103", "v104", "v105", "v106", "v108", "v109", "v111", "v114", "v115", "v116", "v117", "v118", "v119", "v120", "v121", "v122", "v123", "v124", "v126", "v127", "v128", "v129", "v130", "v131"]
+                    ,"coltext" :  []
+                    ,"coldate" :  []
+                    ,"colcross" : ["v3"]   #when 
+                   },
+
+          # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+          'cols_model_group': [ 'colnum', 'colcat_bin']
+         ,'cols_model':       []  # cols['colcat_model'],
+         ,'coly':             []        # cols['coly']
+         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }   ### Filter data
+
+         }}
+    return model_dict        
                   
 #('roc_auc_score', 'accuracy_score','average_precision_score',  'f1_score', 'log_loss)
     
