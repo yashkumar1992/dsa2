@@ -47,8 +47,6 @@ from util_feature import   load, save_list, load_function_uri, save
 
 ####################################################################################################
 ####################################################################################################
-
-
 def save_features(df, name, path):
     if path is not None :
        os.makedirs( f"{path}/{name}", exist_ok=True)
@@ -129,7 +127,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     os.makedirs(model_path, exist_ok=True)
     modelx.save(model_path, stats)
     save(colsX, model_path + "/colsX.pkl")
-    save(coly, model_path + "/coly.pkl")
+    save(coly,  model_path + "/coly.pkl")
 
     log(modelx.model.model_pars, modelx.model.compute_pars)
     a = load(model_path + "/model.pkl")
@@ -153,7 +151,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     path_check_out    = path_output   + "/check/"
     path_train_X      = path_data     + "/features.zip"
     path_train_y      = path_data     + "/target.zip"
-    path_features_store = path_data + '/features_store/'
+    path_features_store = path_data   + '/features_store/'
     log(path_output)
 
     log("#### Model Params Dynamic loading  ###############################################")
@@ -179,7 +177,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
 
     elif mode == "load_preprocess" :
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
-                                 preprocess_pars, filter_pars, path_feature_stores=path_features_store)
+                                 preprocess_pars, filter_pars, path_features_store=path_features_store)
                                     
     model_dict['data_pars']['coly'] = cols['coly']
 
