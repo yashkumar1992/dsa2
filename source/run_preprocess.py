@@ -41,11 +41,15 @@ def log(*s, n=0, m=1):
 
 
 from util_feature import  save, load_function_uri
+
+
+
+####################################################################################################
+####################################################################################################
 from util_feature import  load_dataset
 
 
-####################################################################################################
-####################################################################################################
+
 def save_features(df, name, path):
     if path is not None :
        os.makedirs( f"{path}/{name}" , exist_ok=True)
@@ -56,24 +60,19 @@ def save_features(df, name, path):
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={}, filter_pars={}, path_features_store=None):
     """
-
-    :param path_train_X:
-    :param path_train_y:
-    :param path_pipeline_export:
-    :param cols_group:
-    :param n_sample:
-    :param preprocess_pars:
-    :param filter_pars:
-    :param path_features_store:
-    :return:
+      FUNCTIONNAL approach is used for pre-processing pipeline, (vs sklearn tranformer class..)
+      so the code can be EASILY extensible to PYSPPARK.
+      PYSPARK  supports better UDF, lambda function.
+      Pyspark cannot support Class type processing on Dataframe (ie sklearn transformer class)
+      
     """
     from util_feature import (pd_colnum_tocat, pd_col_to_onehot, pd_colcat_mapping, pd_colcat_toint,
                               pd_feature_generate_cross)
 
     ##### column names for feature generation ###############################################
     log(cols_group)
-    coly            = cols_group['coly']    # 'salary'
-    colid           = cols_group['colid']   # "jobId"
+    coly            = cols_group['coly']  # 'salary'
+    colid           = cols_group['colid']  # "jobId"
     colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
     colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
     
@@ -132,7 +131,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         save_features(dfnum_hot, 'dfnum_onehot', path_features_store)
 
 
-    ##### Colcat processing   #########################################################################
+    ##### Colcat processing   ################################################################
     colcat_map = pd_colcat_mapping(df, colcat)
     log(df[colcat].dtypes, colcat_map)
 
@@ -152,7 +151,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         save_features(dfcat_bin, 'dfcat_bin', path_features_store)
 
 
-    ####### colcross cross features from Onehot features  #############################################
+    ####### colcross cross features from Onehot features  ####################################################
     if "dfcross_hot" in pipe_list :
         df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
         colcross_single_onehot_select = []
@@ -219,7 +218,7 @@ def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", c
 ####################################################################################################
 ############CLI Command ############################################################################
 def run_preprocess(model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-              mode='run_process',):
+              mode='run_preprocess',):     #prefix "pre" added, in order to make if loop possible
     """
       Configuration of the model is in config_model.py file
 
