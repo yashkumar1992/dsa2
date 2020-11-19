@@ -58,7 +58,7 @@ def save_features(df, name, path):
 
 # @cache.memoize(typed=True,  tag='fib')  ### allow caching results
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
-               preprocess_pars={}, filter_pars={}, path_train_features=None):
+               preprocess_pars={}, filter_pars={}, path_features_store=None):
     """
       FUNCTIONNAL approach is used for pre-processing pipeline, (vs sklearn tranformer class..)
       so the code can be EASILY extensible to PYSPPARK.
@@ -87,7 +87,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
 
     ##### Load data ########################################################################
-    df =load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
+    df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
 
 
     ##### Filtering / cleaning rows :   ####################################################
@@ -120,7 +120,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         ### Renaming colunm_bin with suffix
         colnum_bin = [x + "_bin" for x in list(colnum_binmap.keys())]
         log(colnum_bin)
-        save_features(dfnum_bin, 'dfnum_binmap', path_train_features )
+        save_features(dfnum_bin, 'dfnum_binmap', path_features_store)
 
 
     if "dfnum_hot" in pipe_list :
@@ -128,7 +128,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         dfnum_hot, colnum_onehot = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
                                                     colonehot=None, return_val="dataframe,param")
         log(colnum_onehot)
-        save_features(dfnum_hot, 'dfnum_onehot', path_train_features )
+        save_features(dfnum_hot, 'dfnum_onehot', path_features_store)
 
 
     ##### Colcat processing   ################################################################
@@ -140,7 +140,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         dfcat_hot, colcat_onehot = pd_col_to_onehot(df[colcat], colname=colcat,
                                                     colonehot=None, return_val="dataframe,param")
         log(dfcat_hot[colcat_onehot].head(5))
-        save_features(dfcat_hot, 'dfcat_onehot', path_train_features )
+        save_features(dfcat_hot, 'dfcat_onehot', path_features_store)
 
 
     if "dfcat_bin" in pipe_list :
@@ -148,7 +148,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         dfcat_bin, colcat_bin_map = pd_colcat_toint(df[colcat], colname=colcat,
                                                     colcat_map=None, suffix="_int")
         colcat_bin = list(dfcat_bin.columns)
-        save_features(dfcat_bin, 'dfcat_bin', path_train_features )
+        save_features(dfcat_bin, 'dfcat_bin', path_features_store)
 
 
     if "dfcross_hot" in pipe_list :
@@ -166,7 +166,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                                                                m_combination=2)
         log(dfcross_hot.head(2).T)
         colcross_pair_onehot = list(dfcross_hot.columns)
-        save_features(dfcross_hot, 'dfcross_onehot', path_train_features )
+        save_features(dfcross_hot, 'dfcross_onehot', path_features_store)
         del df_onehot ; gc.collect()
 
 
@@ -199,7 +199,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',   ] :
         if t in locals() :
            dfX = pd.concat((dfX, locals()[t] ), axis=1)
-    save_features(dfX, 'dfX', path_train_features )
+    save_features(dfX, 'dfX', path_features_store)
 
     colX = list(dfX.columns)
     colX.remove(coly)
@@ -211,7 +211,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
 def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
-               preprocess_pars={}, filter_pars={}, path_train_features=None):
+               preprocess_pars={}, filter_pars={}, path_store_features=None):
   return  None, None
 
 
