@@ -55,7 +55,11 @@ def titanic_lightgbm(path_model_out) :
         , 'model_path': path_model_out
         , 'model_pars': {'objective': 'binary','learning_rate':0.03,'boosting_type':'gbdt' }  # default
         , 'post_process_fun': post_process_fun
-        , 'pre_process_pars': {'y_norm_fun' :  None ,
+        , 'pre_process_pars': {'y_norm_fun' :  None
+                               ### Pipeline to preprocess data
+                              ,'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+                               # 'path_features_store': dir_data +"/"
+
                                }
                                  },
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
