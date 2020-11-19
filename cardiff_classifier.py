@@ -11,12 +11,6 @@ All in one file config
 
 
 """
-"""
-%load_ext autoreload
-%autoreload
-%matplotlib inline
-%config IPCompleter.greedy=True
-"""
 import warnings, copy
 warnings.filterwarnings('ignore')
 import os, sys
@@ -26,8 +20,7 @@ import pandas as pd
 from source import util_feature
 
 
-
-###### Path ################################################################
+###### Path #########################################################################
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
@@ -37,8 +30,27 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
+####################################################################################
+config_file = "cardiff_classifier.py"
+data_name   = "cardif"
 
-##### Params#######################################################################
+opt ={
+  'cardif_lightgbm' :  {
+      'model_name' : 'LGBMClassifier'
+  }
+
+}
+
+
+config_name = 'cardif_lightgbm'
+model_name  = 'LGBMClassifier'
+model_tag =  "a01_lightgbm"
+
+
+
+
+####################################################################################
+##### Params #######################################################################
 def cardif_lightgbm(path_model_out) :
     """
        cardif
@@ -83,15 +95,15 @@ def cardif_lightgbm(path_model_out) :
 
 
 
-############################################################################
-########## Train ###########################################################
+###################################################################################
+########## Train ##################################################################
 def train():
     from source import run_train
 
-    run_train.run_train(config_model_name =  'cardif_lightgbm',
-                        path_data         =  'data/input/cardif/train/',
-                        path_output       =  'data/output/cardif/a01_lightgbm/',
-                        path_config_model =  root + "/cardiff_classifier.py" , n_sample =-1)
+    run_train.run_train(config_model_name =  config_name,
+                        path_data         =  f'data/input/{data_name}/train/',
+                        path_output       =  f'data/output/{data_name}/a01_{model_name}/',
+                        path_config_model =  root + f"/{config_file}" , n_sample =-1)
 
 
 ###################################################################################
@@ -103,10 +115,8 @@ def check():
     import sys
     from source import models
     sys.modules['models'] = models
-    model_tag =  "a01_lightgbm"
 
-
-    dir_model    = dir_data + f"/output/cardif/{model_tag}/"
+    dir_model    = dir_data + f"/output/{data_name}/{model_tag}/"
     modelx.model = load( dir_model + "/model/model.pkl" )
     stats        = load( dir_model + "/model/info.pkl" )
     colsX        = load( dir_model + "/model/colsX.pkl"   )
