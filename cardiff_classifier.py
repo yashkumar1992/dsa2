@@ -19,6 +19,10 @@ import pandas as pd
 ############################################################################
 from source import util_feature
 from source import run_preprocess
+# from template_run import *
+
+
+
 
 
 ###### Path #########################################################################
@@ -52,12 +56,13 @@ def cardif_lightgbm(path_model_out="") :
 
     config_name       = 'cardif_lightgbm'
     model_name        = 'LGBMClassifier'
+    tag               = "a01"
 
     path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
+    path_model        = f'data/output/{data_name}/{config_name}_{tag}/'
     path_data_train   = f'data/input/{data_name}/train/'
     path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_cardif_lightgbm/'
+    path_output_pred  = f'/data/output/{data_name}/pred_{config_name}_{tag}/'
     n_sample          = -1
 
 
@@ -87,7 +92,7 @@ def cardif_lightgbm(path_model_out="") :
                     ,"colnum" :   ["v1", "v2", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16", "v17", "v18", "v19", "v20", "v21", "v23", "v25", "v26", "v27", "v28", "v29", "v32", "v33", "v34", "v35", "v36", "v37", "v38", "v39", "v40", "v41", "v42", "v43", "v44", "v45", "v46", "v48", "v49", "v50", "v51", "v53", "v54", "v55", "v57", "v58", "v59", "v60", "v61", "v62", "v63", "v64", "v65", "v67", "v68", "v69", "v70", "v72", "v73", "v76", "v77", "v78", "v80", "v81", "v82", "v83", "v84", "v85", "v86", "v87", "v88", "v89", "v90", "v92", "v93", "v94", "v95", "v96", "v97", "v98", "v99", "v100", "v101", "v102", "v103", "v104", "v105", "v106", "v108", "v109", "v111", "v114", "v115", "v116", "v117", "v118", "v119", "v120", "v121", "v122", "v123", "v124", "v126", "v127", "v128", "v129", "v130", "v131"]
                     ,"coltext" :  []
                     ,"coldate" :  []
-                    ,"colcross" : ["v3"]   #when 
+                    ,"colcross" : ["v3"]   #when
                    },
 
           # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
@@ -110,12 +115,62 @@ def cardif_sklearn(path_model_out="") :
 
 
 
+
+
+
+
+
+
+
+
+
 ####################################################################################################
 ########## Init variable ###########################################################################
 globals()[config_name]()
+print(config_name, path_model)
+
+
+import template_run
+template_run.config_name       = config_name
+template_run.path_config_model = path_config_model
+template_run.path_model        = path_model
+template_run.path_data_train   = path_data_train
+template_run.path_data_test    = path_data_test
+template_run.path_output_pred  = path_output_pred
+template_run.n_sample          = n_sample
+template_run.model_name        = model_name
+
+print( template_run.config_name )
+train                          = template_run.train
+predict                        = template_run.predict
+run_all                        = template_run.run_all
 
 
 
+###########################################################################################################
+############### CLI #######################################################################################
+"""
+python  cardiff_classifier.py  train
+python  cardiff_classifier.py  check
+python  cardiff_classifier.py  predict
+python  cardiff_classifier.py  run_all
+"""
+if __name__ == "__main__":
+    import fire
+    fire.Fire()
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 
 
 ###################################################################################
@@ -191,25 +246,5 @@ def run_all():
     predict()
 
 
-
-###########################################################################################################
-###########################################################################################################
 """
-python  cardiff_classifier.py  train
-python  cardiff_classifier.py  check
-python  cardiff_classifier.py  predict
-python  cardiff_classifier.py  run_all
-"""
-if __name__ == "__main__":
-    import fire
-    fire.Fire()
-
-
-run_preprocess.run_preprocess(model_name='cardif_lightgbm', 
-                              path_data=f'data/input/{data_name}/train/', 
-                              path_output=f'data/output/{data_name}/a01_{model_name}/', 
-                              path_config_model="source/config_model.py", 
-                              n_sample=5000,
-                              mode='run_preprocess'
-                              )
 
