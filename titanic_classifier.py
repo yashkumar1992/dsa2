@@ -92,7 +92,7 @@ def titanic_lightgbm(path_model_out) :
 def train():
     from source import run_train
 
-    run_train.run_train(config_model_name = 'titanic_lightgbm',
+    run_train.run_train(config_model_name =  'titanic_lightgbm',
                         path_data         =  'data/input/titanic/train/',
                         path_output       =  'data/output/titanic/a01_lightgbm/',
                         path_config_model =  root + "/titanic_classifier.py" , n_sample = -1)
