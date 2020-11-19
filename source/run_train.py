@@ -22,9 +22,6 @@ import os
 import json
 import importlib
 
-# from tqdm import tqdm_notebook
-
-
 #### Add path for python import
 sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
 
@@ -60,6 +57,10 @@ from run_preprocess import  preprocess, preprocess_load
 ####################################################################################################
 ##### train    #####################################################################################
 def map_model(model_name):
+    """
+    :param model_name:
+    :return:
+    """
     try :
        ##  'models.model_bayesian_pyro'   'model_widedeep'
        mod    = f'models.{model_name}'
@@ -76,6 +77,12 @@ def map_model(model_name):
 
 def train(model_dict, dfX, cols_family, post_process_fun):
     """
+
+    :param model_dict:
+    :param dfX:
+    :param cols_family:
+    :param post_process_fun:
+    :return:
     """
     model_pars, compute_pars = model_dict['model_pars'], model_dict['compute_pars']
     data_pars = model_dict['data_pars']
@@ -142,7 +149,14 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
               run_preprocess=1,  mode="run_preprocess"):
     """
       Configuration of the model is in config_model.py file
-
+    :param config_model_name:
+    :param path_data:
+    :param path_output:
+    :param path_config_model:
+    :param n_sample:
+    :param run_preprocess:
+    :param mode:
+    :return:
     """
     path_output       = root + path_output
     path_data         = root + path_data
@@ -193,7 +207,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     dfXy, dfXytest   = train(model_dict, dfXy, cols, post_process_fun)
 
 
-    log("######### export #################################", )
+    log("######### export ###############################################################", )
     os.makedirs(path_check_out, exist_ok=True)
     colexport = [cols['colid'], cols['coly'], cols['coly'] + "_pred"]
     dfXy[colexport].to_csv(path_check_out + "/pred_check.csv")  # Only results
