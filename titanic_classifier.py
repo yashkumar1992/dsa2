@@ -71,7 +71,13 @@ def titanic_lightgbm(path_model_out="") :
         , 'pre_process_pars' : {'y_norm_fun' :  None ,
                                 
                                 ### Pipeline for data processing.
-                               'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+                               'pipe_list'  : [ 'filter',     ### Fitler the data
+                                                'label',      ### Normalize the label
+                                                'dfnum_bin',
+                                                'dfnum_hot',
+                                                'dfcat_bin',
+                                                'dfcat_hot',
+                                                'dfcross_hot', ]
                                }
                                  },
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
