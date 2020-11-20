@@ -3,9 +3,9 @@
 """
 You can put hardcode here, specific to titatinic dataet
 All in one file config
-!  python salary_regression.py  train
-!  python salary_regression.py  check
-!  python salary_regression.py  predict
+!  python airbnb_regression.py  train
+!  python airbnb_regression.py  check
+!  python airbnb_regression.py  predict
 """
 import warnings, copy
 warnings.filterwarnings('ignore')
@@ -27,11 +27,11 @@ print(dir_data)
 
 
 ####################################################################################
-config_file  = "salary_regression.py"
-data_name    = "salary"
+config_file  = "airbnb_regression.py"
+data_name    = "airbnb"
 
 
-config_name  = 'salary_lightgbm'
+config_name  = 'airbnb_lightgbm'
 n_sample     = -1
 
 
@@ -69,9 +69,21 @@ def y_norm(y, inverse=True, mode='boxcox'):
 ####################################################################################
 ##### Params########################################################################  
 
+"""
+colnum = [  "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
+colcat = [ "cancellation_policy", "host_response_rate", "host_response_time" ]
+coltext = ["house_rules", "neighborhood_overview", "notes", "street"  ]
+coldate = [  "calendar_last_scraped", "first_review", "host_since" ]
+
+
+
+"""
+
+
+
 #global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
 
-def salary_elasticnetcv(path_model_out=""):
+def airbnb_elasticnetcv(path_model_out=""):
 
 	global model_name
 	model_name        = 'ElasticNetCV'
@@ -97,13 +109,13 @@ def salary_elasticnetcv(path_model_out=""):
 									},
 	'data_pars': {
 			'cols_input_type' : {
-								 "coly"   :   "salary"
-								,"colid"  :   "jobId"
-								,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
-								,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
-								,"coltext" :  []
-								,"coldate" :  []
-								,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
+								 "coly"   :   "price"
+								,"colid"  :   "id"
+								,"colcat" :   [ "cancellation_policy", "host_response_rate", "host_response_time" ]
+								,"colnum" :   [ "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
+								,"coltext" :  [ "house_rules", "neighborhood_overview", "notes", "street"  ]
+								,"coldate" :  [ "calendar_last_scraped", "first_review", "host_since" ]
+								,"colcross" : [  ]
 							 },
 
 			'cols_model_group': [ 'colnum_onehot', 'colcat_onehot', 'colcross_onehot' ]
@@ -114,7 +126,7 @@ def salary_elasticnetcv(path_model_out=""):
 	return model_dict
 
 
-def salary_lightgbm(path_model_out="") :
+def airbnb_lightgbm(path_model_out="") :
 	"""
 		Huber Loss includes L1  regurarlization
 		We test different features combinaison, default params is optimal
@@ -144,13 +156,13 @@ def salary_lightgbm(path_model_out="") :
 
 	'data_pars': {
 			'cols_input_type' : {
-								 "coly"   :   "salary"
-								,"colid"  :   "jobId"
-								,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
-								,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
-								,"coltext" :  []
-								,"coldate" :  []
-								,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
+								 "coly"   :   "price"
+								,"colid"  :   "id"
+								,"colcat" :   [ "cancellation_policy", "host_response_rate", "host_response_time" ]
+								,"colnum" :   [ "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
+								,"coltext" :  [ "house_rules", "neighborhood_overview", "notes", "street"  ]
+								,"coldate" :  [ "calendar_last_scraped", "first_review", "host_since" ]
+								,"colcross" : [  ]
 							 }
 			# cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
 			,'cols_model_group': [ 'colnum', 'colcat_bin']
@@ -162,7 +174,7 @@ def salary_lightgbm(path_model_out="") :
 	return model_dict
  
 
-def salary_bayesian_pyro(path_model_out="") :
+def airbnb_bayesian_pyro(path_model_out="") :
 	global model_name
 	model_name        = 'model_bayesian_pyro'
 	def post_process_fun(y):
@@ -191,13 +203,13 @@ def salary_bayesian_pyro(path_model_out="") :
 	 },
 	'data_pars':  {
 			'cols_input_type' : {
-								 "coly"   :   "salary"
-								,"colid"  :   "jobId"
-								,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
-								,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
-								,"coltext" :  []
-								,"coldate" :  []
-								,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
+								 "coly"   :   "price"
+								,"colid"  :   "id"
+								,"colcat" :   [ "cancellation_policy", "host_response_rate", "host_response_time" ]
+								,"colnum" :   [ "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
+								,"coltext" :  [ "house_rules", "neighborhood_overview", "notes", "street"  ]
+								,"coldate" :  [ "calendar_last_scraped", "first_review", "host_since" ]
+								,"colcross" : [  ]
 							 }
 			,'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]
 		 ,'cols_model': []  # cols['colcat_model'],
@@ -207,7 +219,7 @@ def salary_bayesian_pyro(path_model_out="") :
 	return model_dict
 								
 
-def salary_glm( path_model_out="") :
+def airbnb_glm( path_model_out="") :
 	global model_name
 	model_name        = 'TweedieRegressor'
 	def post_process_fun(y):
@@ -231,7 +243,7 @@ def salary_glm( path_model_out="") :
 															},
 	'data_pars': {
 			'cols_input_type' : {
-								 "coly"   :   "salary"
+								 "coly"   :   "airbnb"
 								,"colid"  :   "jobId"
 								,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
 								,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
@@ -362,11 +374,11 @@ def run_all():
 ###########################################################################################################
 ###########################################################################################################
 """
-python  salary_regression.py  preprocess
-python  salary_regression.py  train
-python  salary_regression.py  check
-python  salary_regression.py  predict
-python  salary_regression.py  run_all
+python  airbnb_regression.py  preprocess
+python  airbnb_regression.py  train
+python  airbnb_regression.py  check
+python  airbnb_regression.py  predict
+python  airbnb_regression.py  run_all
 """
 if __name__ == "__main__":
 		import fire
