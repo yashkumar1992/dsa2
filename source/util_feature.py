@@ -54,12 +54,32 @@ def load(file_name):
 
 def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
     log('loading', colid, path_data_x)
-    df = pd.read_csv(path_data_x) # + "/features.zip")
+    import glob 
+
+    flist = glob.glob( path_data_x )
+    flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] ]
+    print(flist)
+    df    = None
+    for fi in flist :
+        if ".parquet" in fi :  dfi = pd.read_parquet(fi) # + "/features.zip")
+        if ".zip" in fi  :     dfi = pd.read_csv(fi) # + "/features.zip")
+        df = pd.concat((df, dfi))  if df is not None else dfi
+
+    # df = pd.read_csv(path_data_x) # + "/features.zip")
     df = df.set_index(colid)
-    if n_sample > 0:
+    if n_sample > 0: 
         df = df.iloc[:n_sample, :]
     try:
-        dfy = pd.read_csv(path_data_y) # + "/target_values.zip")
+        flist = glob.glob( path_data_y )
+        flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] ]
+        dfy   = pd.DataFrame()
+        dfi   = None
+        for fi in flist :
+            if ".parquet" in fi :  dfi = pd.read_parquet(fi) # + "/features.zip")
+            if ".zip" in fi  :     dfi = pd.read_csv(fi) # + "/features.zip")
+            dfy = pd.concat((dfy, dfi)) 
+
+        # dfy = pd.read_csv(path_data_y) # + "/target_values.zip")
         df = df.join(dfy.set_index(colid), on=colid, how='left', )
     except:
         pass
@@ -122,11 +142,11 @@ def sk_metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, 
 
         if metric_name in ["roc_auc_score"]:                                            #y_pred_proba is not defined
             metric_scorer = getattr(importlib.import_module(mod), metric_name)
-            mval = metric_scorer(ytrue, ypred_proba)
+            mval          = metric_scorer(ytrue, ypred_proba)
 
         if metric_name in ["root_mean_squared_error"]:
             metric_scorer = getattr(importlib.import_module(mod), "mean_squared_error")
-            mval = np.sqrt(metric_scorer(ytrue, ypred))
+            mval          = np.sqrt(metric_scorer(ytrue, ypred))
 
         else:
             metric_scorer = getattr(importlib.import_module(mod), metric_name)
@@ -270,13 +290,13 @@ def test_heteroscedacity(y, y_pred, pred_value_only=1):
     
     """
     from statsmodels.stats.diagnostic import het_breuschpagan, het_white
-    error = y_pred - y
+    error    = y_pred - y
 
     ypred_df = pd.DataFrame({"pcst": [1.0] * len(y), "pred": y_pred, "pred2": y_pred * y_pred})
-    labels = ["LM Statistic", "LM-Test p-value", "F-Statistic", "F-Test p-value"]
-    test1 = het_breuschpagan(error * error, ypred_df.values)
-    test2 = het_white(error * error, ypred_df.values)
-    ddict = {"het-breuschpagan": dict(zip(labels, test1)),
+    labels   = ["LM Statistic", "LM-Test p-value", "F-Statistic", "F-Test p-value"]
+    test1    = het_breuschpagan(error * error, ypred_df.values)
+    test2    = het_white(error * error, ypred_df.values)
+    ddict    = {"het-breuschpagan": dict(zip(labels, test1)),
              "het-white": dict(zip(labels, test2)),
              }
 
@@ -294,16 +314,16 @@ def test_normality(error, distribution="norm", test_size_limit=5000):
     error2 = error
 
     error2 = error2[np.random.choice(len(error2), 5000)]  # limit test
-    test1 = shapiro(error2)
+    test1  = shapiro(error2)
     ddict1 = dict(zip(["shapiro", "W-p-value"], test1))
 
-    test2 = anderson(error2, dist=distribution)
+    test2  = anderson(error2, dist=distribution)
     ddict2 = dict(zip(["anderson", "p-value", "P critical"], test2))
 
-    test3 = kstest(error2, distribution)
+    test3  = kstest(error2, distribution)
     ddict3 = dict(zip(["kstest", "p-value"], test3))
 
-    ddict = dict(zip(["shapiro", "anderson", "kstest"], [ddict1, ddict2, ddict3]))
+    ddict  = dict(zip(["shapiro", "anderson", "kstest"], [ddict1, ddict2, ddict3]))
 
     return ddict
 
@@ -363,10 +383,10 @@ def feature_selection_multicolinear(df, threshold=1.0):
     from scipy.cluster import hierarchy
     from collections import defaultdict
 
-    cols = list(df.columns)
-    corr = spearmanr(df).correlation  # Ordinalon
-    corr_linkage = hierarchy.ward(corr)
-    cluster_ids = hierarchy.fcluster(corr_linkage, threshold, criterion='distance')
+    cols                      = list(df.columns)
+    corr                      = spearmanr(df).correlation  # Ordinalon
+    corr_linkage              = hierarchy.ward(corr)
+    cluster_ids               = hierarchy.fcluster(corr_linkage, threshold, criterion='distance')
     cluster_id_to_feature_ids = defaultdict(list)
     for idx, cluster_id in enumerate(cluster_ids):
         cluster_id_to_feature_ids[cluster_id].append(idx)
@@ -487,8 +507,8 @@ def pd_colcat_mergecol(df, col_list, x0, colid="easy_id"):
     """
     dfz = pd.DataFrame({colid: df[colid].values})
     for t in col_list:
-        ix = t.rfind("_")
-        val = int(t[ix + 1:])
+        ix     = t.rfind("_")
+        val    = int(t[ix + 1:])
         print(ix, t[ix + 1:])
         dfz[t] = df[t].apply(lambda x: val if x > 0 else 0)
 
@@ -581,7 +601,7 @@ def pd_colcat_toint(dfref, colname, colcat_map=None, suffix=None):
     if colcat_map is not None:
         for col in colname:
             print(col, col + suffix)
-            ddict = colcat_map[col]["encode"]
+            ddict            = colcat_map[col]["encode"]
             # print(ddict)
             df[col + suffix] = df[col].apply(lambda x: ddict.get(x))
             colname_new.append(col + suffix)
@@ -590,8 +610,8 @@ def pd_colcat_toint(dfref, colname, colcat_map=None, suffix=None):
 
     colcat_map = {}
     for col in colname:
-        colcat_map[col] = {}
-        df[col + suffix], label = df[col].factorize()
+        colcat_map[col]           = {}
+        df[col + suffix], label   = df[col].factorize()
         colcat_map[col]["decode"] = {i: t for i, t in enumerate(list(label))}
         colcat_map[col]["encode"] = {t: i for i, t in enumerate(list(label))}
         colname_new.append(col + suffix)
@@ -599,8 +619,7 @@ def pd_colcat_toint(dfref, colname, colcat_map=None, suffix=None):
     return df[colname_new], colcat_map
 
 
-def pd_colnum_tocat(
-        df, colname=None, colexclude=None, colbinmap=None, bins=5, suffix="_bin",
+def pd_colnum_tocat(  df, colname=None, colexclude=None, colbinmap=None, bins=5, suffix="_bin",
         method="uniform", na_value=-1, return_val="dataframe,param",
         params={"KMeans_n_clusters": 8, "KMeans_init": 'k-means++', "KMeans_n_init": 10,
                 "KMeans_max_iter": 300, "KMeans_tol": 0.0001, "KMeans_precompute_distances": 'auto',
@@ -616,18 +635,18 @@ def pd_colnum_tocat(
     """
 
     colexclude = [] if colexclude is None else colexclude
-    colname = colname if colname is not None else list(df.columns)
-    colnew = []
-    col_stat = OrderedDict()
-    colmap = OrderedDict()
+    colname    = colname if colname is not None else list(df.columns)
+    colnew     = []
+    col_stat   = OrderedDict()
+    colmap     = OrderedDict()
 
     # Bin Algo
     # p = dict2(params)  # Bin  model params
     def bin_create(dfc, bins):
-        mi, ma = dfc.min(), dfc.max()
-        space = (ma - mi) / bins
-        lbins = [mi + i * space for i in range(bins + 1)]
-        lbins[0] -= 0.0001
+        mi, ma     = dfc.min(), dfc.max()
+        space      = (ma - mi) / bins
+        lbins      = [mi + i * space for i in range(bins + 1)]
+        lbins[0]  -= 0.0001
         return lbins
 
     def bin_create_quantile(dfc, bins):
@@ -669,14 +688,14 @@ def pd_colnum_tocat(
         # if method == 'cluster':
         #     df.loc[non_nan_index][cbin] = lbins
         # else:
-        labels = np.arange(0, len(lbins) - 1)
+        labels   = np.arange(0, len(lbins) - 1)
         df[cbin] = pd.cut(df[c], bins=lbins, labels=labels)
 
         # NA processing
-        df[cbin] = df[cbin].astype("float")
-        df[cbin] = df[cbin].apply(lambda x: x if x >= 0.0 else na_value)  # 3 NA Values
-        df[cbin] = df[cbin].astype("int")
-        col_stat = df.groupby(cbin).agg({c: {"size", "min", "mean", "max"}})
+        df[cbin]  = df[cbin].astype("float")
+        df[cbin]  = df[cbin].apply(lambda x: x if x >= 0.0 else na_value)  # 3 NA Values
+        df[cbin]  = df[cbin].astype("int")
+        col_stat  = df.groupby(cbin).agg({c: {"size", "min", "mean", "max"}})
         colmap[c] = lbins
         colnew.append(cbin)
 
@@ -1015,27 +1034,27 @@ def pd_colnum_tocat_stat(df, feature, target_col, bins, cuts=0):
 
     df_grouped = df.groupby([cut_series], as_index=True).agg(
         {target_col: [np.size, np.mean], feature: [np.mean]})
-    df_grouped.columns = ['_'.join(cols).strip() for cols in df_grouped.columns.values]
+    df_grouped.columns                = ['_'.join(cols).strip() for cols in df_grouped.columns.values]
     df_grouped[df_grouped.index.name] = df_grouped.index
-    df_grouped.reset_index(inplace=True, drop=True)
-    df_grouped = df_grouped[[feature] + list(df_grouped.columns[0:3])]
-    df_grouped = df_grouped.rename(index=str, columns={target_col + '_size': 'Samples_in_bin'})
-    df_grouped = df_grouped.reset_index(drop=True)
-    corrected_bin_name = '[' + str(min(df[feature])) + ', ' + str(df_grouped.loc[0, feature]).split(',')[1]
-    df_grouped[feature] = df_grouped[feature].astype('category')
-    df_grouped[feature] = df_grouped[feature].cat.add_categories(corrected_bin_name)
-    df_grouped.loc[0, feature] = corrected_bin_name
+    df_grouped.reset_index(inplace    = True, drop=True)
+    df_grouped                        = df_grouped[[feature] + list(df_grouped.columns[0:3])]
+    df_grouped                        = df_grouped.rename(index=str, columns={target_col + '_size': 'Samples_in_bin'})
+    df_grouped                        = df_grouped.reset_index(drop=True)
+    corrected_bin_name                = '[' + str(min(df[feature])) + ', ' + str(df_grouped.loc[0, feature]).split(',')[1]
+    df_grouped[feature]               = df_grouped[feature].astype('category')
+    df_grouped[feature]               = df_grouped[feature].cat.add_categories(corrected_bin_name)
+    df_grouped.loc[0, feature]        = corrected_bin_name
 
     if has_null == 1:
-        grouped_null = df_grouped.loc[0:0, :].copy()
-        grouped_null[feature] = grouped_null[feature].astype('category')
-        grouped_null[feature] = grouped_null[feature].cat.add_categories('Nulls')
-        grouped_null.loc[0, feature] = 'Nulls'
-        grouped_null.loc[0, 'Samples_in_bin'] = len(data_null)
+        grouped_null                              = df_grouped.loc[0:0, :].copy()
+        grouped_null[feature]                     = grouped_null[feature].astype('category')
+        grouped_null[feature]                     = grouped_null[feature].cat.add_categories('Nulls')
+        grouped_null.loc[0, feature]              = 'Nulls'
+        grouped_null.loc[0, 'Samples_in_bin']     = len(data_null)
         grouped_null.loc[0, target_col + '_mean'] = data_null[target_col].mean()
-        grouped_null.loc[0, feature + '_mean'] = np.nan
-        df_grouped[feature] = df_grouped[feature].astype('str')
-        df_grouped = pd.concat([grouped_null, df_grouped], axis=0)
+        grouped_null.loc[0, feature + '_mean']    = np.nan
+        df_grouped[feature]                       = df_grouped[feature].astype('str')
+        df_grouped                                = pd.concat([grouped_null, df_grouped], axis=0)
         df_grouped.reset_index(inplace=True, drop=True)
 
     df_grouped[feature] = df_grouped[feature].astype('str').astype('category')
@@ -1054,18 +1073,18 @@ def pd_stat_shift_trend_changes(df, feature, target_col, threshold=0.03):
     :param threshold: minimum % difference required to count as trend change
     :return: number of trend chagnes for the feature
     """
-    df = df.loc[df[feature] != 'Nulls', :].reset_index(drop=True)
-    target_diffs = df[target_col + '_mean'].diff()
-    target_diffs = target_diffs[~np.isnan(target_diffs)].reset_index(drop=True)
-    max_diff = df[target_col + '_mean'].max() - df[target_col + '_mean'].min()
-    target_diffs_mod = target_diffs.fillna(0).abs()
-    low_change = target_diffs_mod < threshold * max_diff
-    target_diffs_norm = target_diffs.divide(target_diffs_mod)
+    df                            = df.loc[df[feature] != 'Nulls', :].reset_index(drop=True)
+    target_diffs                  = df[target_col + '_mean'].diff()
+    target_diffs                  = target_diffs[~np.isnan(target_diffs)].reset_index(drop=True)
+    max_diff                      = df[target_col + '_mean'].max() - df[target_col + '_mean'].min()
+    target_diffs_mod              = target_diffs.fillna(0).abs()
+    low_change                    = target_diffs_mod < threshold * max_diff
+    target_diffs_norm             = target_diffs.divide(target_diffs_mod)
     target_diffs_norm[low_change] = 0
-    target_diffs_norm = target_diffs_norm[target_diffs_norm != 0]
-    target_diffs_lvl2 = target_diffs_norm.diff()
-    changes = target_diffs_lvl2.fillna(0).abs() / 2
-    tot_trend_changes = int(changes.sum()) if ~np.isnan(changes.sum()) else 0
+    target_diffs_norm             = target_diffs_norm[target_diffs_norm != 0]
+    target_diffs_lvl2             = target_diffs_norm.diff()
+    changes                       = target_diffs_lvl2.fillna(0).abs() / 2
+    tot_trend_changes             = int(changes.sum()) if ~np.isnan(changes.sum()) else 0
     return (tot_trend_changes)
 
 
@@ -1078,11 +1097,11 @@ def pd_stat_shift_trend_correlation(df, df_test, colname, target_col):
     :param target_col: target column name
     :return: trend correlation between train and test
     """
-    df = df[df[colname] != 'Nulls'].reset_index(drop=True)
+    df      = df[df[colname] != 'Nulls'].reset_index(drop=True)
     df_test = df_test[df_test[colname] != 'Nulls'].reset_index(drop=True)
 
     if df_test.loc[0, colname] != df.loc[0, colname]:
-        df_test[colname] = df_test[colname].cat.add_categories(df.loc[0, colname])
+        df_test[colname]        = df_test[colname].cat.add_categories(df.loc[0, colname])
         df_test.loc[0, colname] = df.loc[0, colname]
     df_test_train = df.merge(df_test[[colname, target_col + '_mean']], on=colname,
                              how='left',
@@ -1123,11 +1142,11 @@ def pd_stat_shift_changes(df, target_col, features_list=0, bins=10, df_test=0):
             ignored.append(colname)
         else:
             cuts, df_grouped = pd_colnum_tocat_stat(df=df, colname=colname, target_col=target_col, bins=bins)
-            trend_changes = pd_stat_shift_trend_correlation(df=df_grouped, colname=colname, target_col=target_col)
+            trend_changes    = pd_stat_shift_trend_correlation(df=df_grouped, colname=colname, target_col=target_col)
             if has_test:
-                df_test = pd_colnum_tocat_stat(df=df_test.reset_index(drop=True), colname=colname,
-                                               target_col=target_col, bins=bins, cuts=cuts)
-                trend_corr = pd_stat_shift_trend_correlation(df_grouped, df_test, colname, target_col)
+                df_test            = pd_colnum_tocat_stat(df=df_test.reset_index(drop=True), colname=colname,
+                                                          target_col  = target_col, bins=bins, cuts=cuts)
+                trend_corr         = pd_stat_shift_trend_correlation(df_grouped, df_test, colname, target_col)
                 trend_changes_test = pd_stat_shift_changes(df=df_test, colname=colname,
                                                            target_col=target_col)
                 stats = [colname, trend_changes, trend_changes_test, trend_corr]
@@ -1143,3 +1162,8 @@ def pd_stat_shift_changes(df, target_col, features_list=0, bins=10, df_test=0):
 
     print('Returning stats for all numeric features')
     return (stats_all_df)
+
+
+
+
+

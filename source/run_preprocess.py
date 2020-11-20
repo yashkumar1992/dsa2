@@ -274,8 +274,8 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
     path_pipeline_out = path_output + "/pipeline/"
     path_model_out    = path_output + "/model/"
     path_check_out    = path_output + "/check/"
-    path_train_X      = path_data   + "/features.zip"
-    path_train_y      = path_data   + "/target.zip"
+    path_train_X      = path_data   + "/features*"    ### Can be a list of zip or parquet files
+    path_train_y      = path_data   + "/target*"      ### Can be a list of zip or parquet files
     log(path_output)
 
 
