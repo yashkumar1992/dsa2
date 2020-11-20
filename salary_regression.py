@@ -32,7 +32,7 @@ data_name    = "salary"
 
 
 config_name  = 'salary_lightgbm'
-
+n_sample     = -1
 
 
 
@@ -93,7 +93,7 @@ def salary_elasticnetcv(path_model_out=""):
 													 }
 														 },
 	'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-																	 'explained_variance_score', 'r2_score', 'median_absolute_error']
+									  'explained_variance_score', 'r2_score', 'median_absolute_error']
 									},
 	'data_pars': {
 			'cols_input_type' : {
@@ -139,7 +139,7 @@ def salary_lightgbm(path_model_out="") :
 													 }
 														 },
 	'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-																		'explained_variance_score', 'r2_score', 'median_absolute_error']
+									  'explained_variance_score', 'r2_score', 'median_absolute_error']
 									},
 
 	'data_pars': {
@@ -185,7 +185,7 @@ def salary_bayesian_pyro(path_model_out="") :
 
 	'compute_pars': {'compute_pars': {'n_iter': 1200, 'learning_rate': 0.01}
 								 , 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-																	 'explained_variance_score', 'r2_score', 'median_absolute_error']
+													'explained_variance_score', 'r2_score', 'median_absolute_error']
 								 , 'max_size': 1000000
 								 , 'num_samples': 300
 	 },
@@ -227,7 +227,7 @@ def salary_glm( path_model_out="") :
 					   'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ] }
 														 },
 							'compute_pars': {'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-																							 'explained_variance_score',  'r2_score', 'median_absolute_error']
+															 'explained_variance_score',  'r2_score', 'median_absolute_error']
 															},
 	'data_pars': {
 			'cols_input_type' : {
@@ -270,7 +270,7 @@ path_model        = f'data/output/{data_name}/a01_{model_name}/'
 path_data_train   = f'data/input/{data_name}/train/'
 path_data_test    = f'data/input/{data_name}/test/'
 path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-n_sample          = -1
+
 
 ###################################################################################
 ########## Preprocess #############################################################
