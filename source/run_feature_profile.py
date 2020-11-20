@@ -93,7 +93,7 @@ def run_profile(path_data=None,  path_output="data/out/ztmp/", n_sample=5000):
 
     profile = df.profile_report(title='Profile data')
     profile.to_file(output_file=path_output + "/00_features_report.html")
-
+    log( path_output + "/00_features_report.html")
 
     log("######### finish #################################", )
 
