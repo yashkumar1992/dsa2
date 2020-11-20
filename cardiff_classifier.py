@@ -71,7 +71,7 @@ def cardif_lightgbm(path_model_out="") :
         , 'pre_process_pars' : {'y_norm_fun' :  None ,
                                 
                                 ### Pipeline for data processing.
-                               ,'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+                               'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 
                                }
                                  },
@@ -212,4 +212,3 @@ python  cardiff_classifier.py  run_all
 if __name__ == "__main__":
     import fire
     fire.Fire()
-

@@ -87,6 +87,9 @@ def salary_elasticnetcv(path_model_out=""):
 				, 'model_pars': {}  # default ones
 				, 'post_process_fun': post_process_fun 
 				, 'pre_process_pars': {'y_norm_fun' : pre_process_fun,
+                                
+                                ### Pipeline for data processing.
+                               'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 															 }
 																 },
 			'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
@@ -130,6 +133,9 @@ def salary_lightgbm(path_model_out="") :
 				,'model_pars': {'objective': 'huber', }  # default
 				,'post_process_fun': post_process_fun
 				,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
+                                
+                                ### Pipeline for data processing.
+                               'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 															 }
 																 },
 			'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
@@ -171,6 +177,9 @@ def salary_bayesian_pyro(path_model_out="") :
 				, 'post_process_fun': post_process_fun
 																 
 				, 'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
+                                
+                                ### Pipeline for data processing.
+                               'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 															 }
 																 },          
 									
@@ -212,7 +221,10 @@ def salary_glm( path_model_out="") :
 		model_dict = {'model_pars': {'config_model_name': 'TweedieRegressor'  # Ridge
 				, 'model_path': path_model_out
 				, 'model_pars': {'power': 0, 'link': 'identity'}  # default ones
-				, 'pre_process_pars': {'y_norm_fun' : pre_process_fun }
+				, 'pre_process_pars': {'y_norm_fun' : pre_process_fun,
+                                
+                                ### Pipeline for data processing.
+                               'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ] }
 																 },
 									'compute_pars': {'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
 																									 'explained_variance_score',  'r2_score', 'median_absolute_error']
