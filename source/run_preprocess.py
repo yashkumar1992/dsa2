@@ -189,13 +189,49 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         save_features(dfcross_hot, 'dfcross_onehot', path_features_store)
         del df_onehot ; gc.collect()
 
+
     ##### Coltext processing   ################################################################
     if "dftext" in pipe_list :
         from utils import util_text, util_text_embedding
-        dftext = pd.DataFrame()
-        # dfext = df[coltext]
-        save_features(dftext, 'dftext', path_features_store)
 
+        ### Remoe common words  #############################################
+        import json
+        import string
+        punctuations = string.punctuation
+        stopwords = json.load(open("stopwords_en.json") )["word"]
+        stopwords = [ t for t in string.punctuation ] + stopwords
+        stopwords = [ "", " ", ",", ".", "-", "*", '€', "+", "/" ] + stopwords
+        stopwords =list(set( stopwords ))
+        stopwords.sort()
+        print( stopwords )
+        stopwords = set(stopwords)
+
+        def pipe_text(df, col, ntoken=100):
+            df[col] =  df[col].fillna("")
+            print( df[col].isnull().sum() )
+            dftext = util_text.pd_coltext_clean( df[col], col, stopwords= stopwords )                 
+            print(dftext.head(6))
+
+            coltext_freq =  util_text.pd_coltext_wordfreq(dftext, col)                                 
+            word_tokeep = coltext_freq[col]["word"].values[:ntoken]
+            word_tokeep = [  t for t in word_tokeep if t not in stopwords   ]
+             
+            dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
+                                                                    word_tokeep= word_tokeep ,
+                                                                    return_val= "dataframe,param"  )
+            ###  Dimesnion reduction for Sparse Matrix
+            dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict, 
+                                                           colname=None,
+                                                           model_pretrain=None,                       
+                                                           colprefix= col + "_svd",
+                                                           method="svd",  dimpca=2,  return_val="dataframe,param")            
+            return dftext_svd_list
+
+        dftext = None
+        for coltext_i in coltext :
+            dftext_i =   pipe_text( df[[coltext_i ]], coltext_i, n_token = 100 ) 
+            save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
+            dftext  = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
 
 
 
@@ -203,9 +239,16 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     ##### Coldate processing   ################################################################
     if "dfdate" in pipe_list :
         from utils import util_date
-        dfdate = pd.DataFrame()
-        # dfdate = df[coldate]
-        save_features(dfdate, 'dfdate', path_features_store)
+
+
+
+        dfdate = None
+        for coldate_i in coldate :
+            dfdate_i = pd.DataFrame()
+
+            save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
+            dfdate  = pd.concat((dfdate, dfdate_i))  if dfdate is not None else dftext_i
+
 
 
 
