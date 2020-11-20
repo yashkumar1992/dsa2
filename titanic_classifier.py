@@ -134,6 +134,17 @@ def titanic_sklearn(path_model_out="") :
 ########## Init variable ###########################################################################
 globals()[config_name]()
 
+
+###################################################################################
+########## Profile data #############################################################
+def data_profile():
+   from source.run_feature_profile import run_profile
+   run_profile(path_data   = path_data_train,
+               path_output = path_model + "/profile/",  
+               n_sample    = 5000,
+              ) 
+
+
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess():
