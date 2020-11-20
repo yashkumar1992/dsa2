@@ -12,11 +12,11 @@ warnings.filterwarnings('ignore')
 import os, sys
 import pandas as pd
 
-############################################################################
+###################################################################################
 from source import util_feature
 
 
-###### Path ################################################################
+###### Path ########################################################################
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
@@ -28,7 +28,7 @@ print(dir_data)
 
 ####################################################################################
 config_file  = "titanic_classifier.py"
-data_name    = "titanic"
+data_name    = "titanic"     ### in data/input/
 
 
 config_name  = 'titanic_lightgbm'
@@ -45,7 +45,7 @@ def titanic_lightgbm(path_model_out="") :
     """
     global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
 
-    config_name       = 'titanic_lightgbm'
+    #config_name       = 'titanic_lightgbm'
     model_name        = 'LGBMClassifier'
 
     path_config_model = root + f"/{config_file}"
@@ -66,8 +66,17 @@ def titanic_lightgbm(path_model_out="") :
 
     model_dict = {'model_pars': {'config_model_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
         , 'model_path'       : path_model_out
-        , 'model_pars'       : {'objective': 'binary','learning_rate':0.03,'boosting_type':'gbdt' }  # default
+
+        ### LightGBM API model
+        , 'model_pars'       : {'objective': 'binary',
+                                'learning_rate':0.03,'boosting_type':'gbdt'
+
+                               }  # default
+
+        ### After prediction
         , 'post_process_fun' : post_process_fun
+
+
         , 'pre_process_pars' : {'y_norm_fun' :  None ,
                                 
                                 ### Pipeline for data processing.
@@ -94,11 +103,18 @@ def titanic_lightgbm(path_model_out="") :
                     ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
                    },
 
+          ### used for the model input
           # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
           'cols_model_group': [ 'colnum', 'colcat_bin']
-         ,'cols_model':       []  # cols['colcat_model'],
-         ,'coly':             []        # cols['coly']
-         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }   ### Filter data
+
+
+          ### Actual column namaes to be filled automatically
+         ,'cols_model':       []      # cols['colcat_model'],
+         ,'coly':             []      # cols['coly']
+
+
+          ### Filter data rows
+         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
 
          }}
     return model_dict
@@ -176,8 +192,9 @@ def check():
 
 
         #### Feature importance on training data
-        lgb_featimpt_train,_ = util_feature.feature_importance_perm(modelx, dfX[colused], dfy, colused, n_repeats=1,
-                                                                    scoring='accuracy' )
+        from util_feature import  feature_importance_perm
+        lgb_featimpt_train,_ = feature_importance_perm(modelx, dfX[colused], dfy, colused, n_repeats=1,
+                                                       scoring='accuracy' )
 
         print(lgb_featimpt_train)
     except :

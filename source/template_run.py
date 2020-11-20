@@ -29,12 +29,12 @@ model_name = None
 def preprocess():
    from source import run_preprocess
    run_preprocess.run_preprocess(model_name='cardif_lightgbm',
-                              path_data=f'data/input/{data_name}/train/',
-                              path_output=f'data/output/{data_name}/a01_{model_name}/',
-                              path_config_model="source/config_model.py",
-                              n_sample=5000,
-                              mode='run_preprocess'
-                              )
+                                 path_data=f'data/input/{data_name}/train/',
+                                 path_output=f'data/output/{data_name}/a01_{model_name}/',
+                                 path_config_model="config_model.py",
+                                 n_sample=5000,
+                                 mode='run_preprocess'
+                                 )
 
 
 
