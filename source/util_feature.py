@@ -879,22 +879,7 @@ def pd_stat_distribution_colnum(df):
 
 
    """
-    coldes = [
-        "col",
-        "coltype",
-        "dtype",
-        "count",
-        "min",
-        "max",
-        "nb_na",
-        "pct_na",
-        "median",
-        "mean",
-        "std",
-        "25%",
-        "75%",
-        "outlier",
-    ]
+    coldes = ["col", "coltype", "dtype", "count", "min", "max", "nb_na", "pct_na", "median", "mean", "std", "25%", "75%", "outlier",]
 
     def getstat(col):
         """
