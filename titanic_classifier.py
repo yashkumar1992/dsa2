@@ -208,3 +208,28 @@ python  titanic_classifier.py  run_all
 if __name__ == "__main__":
     import fire
     fire.Fire()
+    
+"""
+
+
+import template_run
+template_run.config_name       = config_name
+template_run.path_config_model = path_config_model
+template_run.path_model        = path_model
+template_run.path_data_train   = path_data_train
+template_run.path_data_test    = path_data_test
+template_run.path_output_pred  = path_output_pred
+template_run.n_sample          = n_sample
+template_run.model_name        = model_name
+
+print( template_run.config_name )
+train                          = template_run.train
+predict                        = template_run.predict
+run_all                        = template_run.run_all
+
+
+
+"""
+    
+    
+    
