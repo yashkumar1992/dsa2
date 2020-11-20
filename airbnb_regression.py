@@ -101,7 +101,10 @@ def airbnb_elasticnetcv(path_model_out=""):
 		, 'pre_process_pars': {'y_norm_fun' : pre_process_fun,
 
 						### Pipeline for data processing.
-					   'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+					   'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot',
+                                        'dfdate', 'dftext'
+
+					    ]
 													 }
 														 },
 	'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
@@ -243,13 +246,13 @@ def airbnb_glm( path_model_out="") :
 															},
 	'data_pars': {
 			'cols_input_type' : {
-								 "coly"   :   "airbnb"
-								,"colid"  :   "jobId"
-								,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
-								,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
-								,"coltext" :  []
-								,"coldate" :  []
-								,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
+								 "coly"   :   "price"
+								,"colid"  :   "id"
+								,"colcat" :   [ "cancellation_policy", "host_response_rate", "host_response_time" ]
+								,"colnum" :   [ "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
+								,"coltext" :  [ "house_rules", "neighborhood_overview", "notes", "street"  ]
+								,"coldate" :  [ "calendar_last_scraped", "first_review", "host_since" ]
+								,"colcross" : [  ]
 							 }
 			,'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]
 		 ,'cols_model': []  # cols['colcat_model'],
