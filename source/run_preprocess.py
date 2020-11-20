@@ -207,18 +207,17 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         stopwords = set(stopwords)
 
         def pipe_text(df, col, ntoken=100):
-            df[col] =  df[col].fillna("")
-            print( df[col].isnull().sum() )
-            dftext = util_text.pd_coltext_clean( df[col], col, stopwords= stopwords )                 
+            df      = df[col].fillna("")
+            dftext  = util_text.pd_coltext_clean( df[col], col, stopwords= stopwords )                 
             print(dftext.head(6))
 
-            coltext_freq =  util_text.pd_coltext_wordfreq(dftext, col)                                 
-            word_tokeep = coltext_freq[col]["word"].values[:ntoken]
-            word_tokeep = [  t for t in word_tokeep if t not in stopwords   ]
+            coltext_freq = util_text.pd_coltext_wordfreq(dftext, col)                                 
+            word_tokeep  = coltext_freq[col]["word"].values[:ntoken]
+            word_tokeep  = [  t for t in word_tokeep if t not in stopwords   ]
              
             dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
-                                                                    word_tokeep= word_tokeep ,
-                                                                    return_val= "dataframe,param"  )
+                                                                    word_tokeep = word_tokeep ,
+                                                                    return_val  = "dataframe,param"  )
             ###  Dimesnion reduction for Sparse Matrix
             dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict, 
                                                            colname=None,
@@ -239,19 +238,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     ##### Coldate processing   ################################################################
     if "dfdate" in pipe_list :
         from utils import util_date
-
-
-
         dfdate = None
         for coldate_i in coldate :
-            dfdate_i = pd.DataFrame()
+            dfdate_i =  util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
 
             save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
             dfdate  = pd.concat((dfdate, dfdate_i))  if dfdate is not None else dftext_i
-
-
-
-
 
 
 
