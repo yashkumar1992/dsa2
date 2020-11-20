@@ -31,8 +31,9 @@ config_file  = "titanic_classifier.py"
 data_name    = "titanic"     ### in data/input/
 
 
-config_name  = 'titanic_lightgbm'
 
+config_name  = 'titanic_lightgbm'
+n_sample     = -1
 
 
 
@@ -53,8 +54,7 @@ def titanic_lightgbm(path_model_out="") :
     path_data_train   = f'data/input/{data_name}/train/'
     path_data_test    = f'data/input/{data_name}/test/'
     path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-    n_sample          = -1
-    
+
 
     def post_process_fun(y):
         ### After prediction is done
@@ -64,19 +64,19 @@ def titanic_lightgbm(path_model_out="") :
         ### Before the prediction is done
         return  y.astype('int')
 
-    model_dict = {'model_pars': {'config_model_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
-        , 'model_path'       : path_model_out
+    model_dict = {'model_pars': {
+        'model_path'       : path_model_out
 
-        ### LightGBM API model
-        , 'model_pars'       : {'objective': 'binary',
+        ### LightGBM API model       ###################################
+        ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
+        ,'model_pars'       : {'objective': 'binary',
                                 'learning_rate':0.03,'boosting_type':'gbdt'
 
-                               }  # default
 
-        ### After prediction
+                               }
+
+        ### After prediction  ##########################################
         , 'post_process_fun' : post_process_fun
-
-
         , 'pre_process_pars' : {'y_norm_fun' :  None ,
                                 
                                 ### Pipeline for data processing.
@@ -88,7 +88,7 @@ def titanic_lightgbm(path_model_out="") :
                                                 'dfcat_hot',
                                                 'dfcross_hot', ]
                                }
-                                 },
+        },
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
                       },
 
@@ -122,8 +122,83 @@ def titanic_lightgbm(path_model_out="") :
 
 
 
-def titanic_sklearn(path_model_out="") :
-   pass
+def titanic_randomforest(path_model_out="") :
+    """
+       titanic
+    """
+    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
+
+    #config_name       = 'titanic_lightgbm'
+    model_name        = 'RandomForest'
+
+    path_config_model = root + f"/{config_file}"
+    path_model        = f'data/output/{data_name}/a01_{model_name}/'
+    path_data_train   = f'data/input/{data_name}/train/'
+    path_data_test    = f'data/input/{data_name}/test/'
+    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
+
+    def post_process_fun(y):
+        ### After prediction is done
+        return  y.astype('int')
+
+    def pre_process_fun(y):
+        ### Before the prediction is done
+        return  y.astype('int')
+
+    model_dict = {'model_pars': {
+        'model_path'       : path_model_out
+
+        ### LightGBM API model       ###################################
+        ,'config_model_name': model_name   ## ACTUAL Class name for model_sklearn.py
+        ,'model_pars'       : {
+
+
+                               }
+
+        ### After prediction  ##########################################
+        , 'post_process_fun' : post_process_fun
+        , 'pre_process_pars' : {'y_norm_fun' :  None ,
+
+                                ### Pipeline for data processing.
+                               'pipe_list'  : [ 'filter',     ### Fitler the data
+                                                'label',      ### Normalize the label
+                                                'dfnum_bin',
+                                                'dfnum_hot',
+                                                'dfcat_bin',
+                                                'dfcat_hot',
+                                                'dfcross_hot', ]
+                               }
+        },
+      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
+                      },
+
+      'data_pars': {
+          'cols_input_type' : {
+                     "coly"   :   "Survived"
+                    ,"colid"  :   "PassengerId"
+                    ,"colcat" :   [  "Sex", "Embarked" ]
+                    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
+                    ,"coltext" :  ["Name","Ticket"]
+                    ,"coldate" :  []
+                    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+                   },
+
+          ### used for the model input
+          # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+          'cols_model_group': [ 'colnum', 'colcat_bin']
+
+
+          ### Actual column namaes to be filled automatically
+         ,'cols_model':       []      # cols['colcat_model'],
+         ,'coly':             []      # cols['coly']
+
+
+          ### Filter data rows
+         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
+
+         }}
+    return model_dict
 
 
 
