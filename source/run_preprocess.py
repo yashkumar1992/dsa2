@@ -13,7 +13,7 @@ import sys
 import gc
 import os
 import pandas as pd
-import json
+import json, copy
 
 # from tqdm import tqdm_notebook
 
@@ -51,6 +51,13 @@ from util_feature import  load_dataset
 
 
 def save_features(df, name, path):
+    """
+
+    :param df:
+    :param name:
+    :param path:
+    :return:
+    """
     if path is not None :
        os.makedirs( f"{path}/{name}" , exist_ok=True)
        df.to_parquet( f"{path}/{name}/features.parquet")
@@ -60,11 +67,16 @@ def save_features(df, name, path):
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={}, filter_pars={}, path_features_store=None):
     """
-      FUNCTIONNAL approach is used for pre-processing pipeline, (vs sklearn tranformer class..)
-      so the code can be EASILY extensible to PYSPPARK.
-      PYSPARK  supports better UDF, lambda function.
-      Pyspark cannot support Class type processing on Dataframe (ie sklearn transformer class)
-      
+
+    :param path_train_X:
+    :param path_train_y:
+    :param path_pipeline_export:
+    :param cols_group:
+    :param n_sample:
+    :param preprocess_pars:
+    :param filter_pars:
+    :param path_features_store:
+    :return:
     """
     from util_feature import (pd_colnum_tocat, pd_col_to_onehot, pd_colcat_mapping, pd_colcat_toint,
                               pd_feature_generate_cross)
@@ -78,13 +90,15 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     
     colcross_single = cols_group.get('colcross', [])   ### List of single columns
     #coltext        = cols_group.get('coltext', [])
-    coltext         = cols_group['coltext']
+    coltext         = cols_group.get('coltext', [])
     coldate         = cols_group.get('coldate', [])
     colall          = colnum + colcat + coltext + coldate
     log(colall)
 
+    #### Pipeline Execution
     pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
     pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
+
 
     ##### Load data ########################################################################
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
@@ -98,11 +112,14 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     ##### Label processing   ##############################################################
+    y_norm_fun = None
     if "label" in pipe_list :
         # Target coly processing, Normalization process  , customize by model
+        log("y_norm_fun preprocess_pars")
         y_norm_fun = preprocess_pars.get('y_norm_fun', None)
         if y_norm_fun is not None:
             df[coly] = df[coly].apply(lambda x: y_norm_fun(x))
+            save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
 
 
     ########### colnum procesing   #########################################################
@@ -123,7 +140,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         save_features(dfnum_bin, 'dfnum_binmap', path_features_store)
 
 
-    if "dfnum_hot" in pipe_list :
+    if "dfnum_hot" in pipe_list and "dfnum_bin" in pipe_list  :
         log("### colnum bin to One Hot")
         dfnum_hot, colnum_onehot = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
                                                     colonehot=None, return_val="dataframe,param")
@@ -151,9 +168,13 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         save_features(dfcat_bin, 'dfcat_bin', path_features_store)
 
 
-    ####### colcross cross features from Onehot features  ####################################################
+    ####### colcross cross features from Onehot features  #####################################
     if "dfcross_hot" in pipe_list :
-        df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
+        try :
+           df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
+        except :
+           df_onehot = copy.deepcopy(dfcat_hot)
+
         colcross_single_onehot_select = []
         for t in list(df_onehot) :
             for c1 in colcross_single :
@@ -162,12 +183,35 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
         df_onehot = df_onehot[colcross_single_onehot_select ]
         dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
-                                                               pct_threshold=0.02,
-                                                               m_combination=2)
+                                                               pct_threshold=0.02,  m_combination=2)
         log(dfcross_hot.head(2).T)
         colcross_pair_onehot = list(dfcross_hot.columns)
         save_features(dfcross_hot, 'dfcross_onehot', path_features_store)
         del df_onehot ; gc.collect()
+
+    ##### Coltext processing   ################################################################
+    if "dftext" in pipe_list :
+        from utils import util_text, util_text_embedding
+        dftext = pd.DataFrame()
+        # dfext = df[coltext]
+        save_features(dftext, 'dftext', path_features_store)
+
+
+
+
+
+    ##### Coldate processing   ################################################################
+    if "dfdate" in pipe_list :
+        from utils import util_date
+        dfdate = pd.DataFrame()
+        # dfdate = df[coldate]
+        save_features(dfdate, 'dfdate', path_features_store)
+
+
+
+
+
+
 
 
     ##################################################################################################
@@ -181,6 +225,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
               "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
               'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
 
+              'coldate',
+              'coltext',
+
               "coly", "y_norm_fun"
               ]:
         tfile = f'{path_pipeline_export}/{t}.pkl'
@@ -190,24 +237,23 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            save(t_val, tfile)
            cols_family[t] = t_val
 
-    log("y_norm.pkl")
-    save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
 
-   
     ######  Merge AlL  #############################################################################
-    dfX = df[colnum + colcat + [coly] ]
-    for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',   ] :
+    dfXy = df[colnum + colcat + [coly] ]
+    for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',
+               'dfdate',  'dftext'  ] :
         if t in locals() :
-           dfX = pd.concat((dfX, locals()[t] ), axis=1)
-    save_features(dfX, 'dfX', path_features_store)
+           dfXy = pd.concat((dfXy, locals()[t] ), axis=1)
+    save_features(dfXy, 'dfX', path_features_store)
 
-    colX = list(dfX.columns)
-    colX.remove(coly)
-    cols_family['colX'] = colX
-    save(colX, f'{path_pipeline_export}/colsX.pkl' )
+    colXy = list(dfXy.columns)
+    colXy.remove(coly)    ##### Only X columns
+    cols_family['colX'] = colXy
+    save(colXy, f'{path_pipeline_export}/colsX.pkl' )
+
 
     ###### Return values  #########################################################################
-    return dfX, cols_family
+    return dfXy, cols_family
 
 
 def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
