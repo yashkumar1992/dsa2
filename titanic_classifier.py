@@ -236,6 +236,7 @@ def run_all():
 ###########################################################################################################
 ###########################################################################################################
 """
+python  titanic_classifier.py  data_profile
 python  titanic_classifier.py  preprocess
 python  titanic_classifier.py  train
 python  titanic_classifier.py  check
