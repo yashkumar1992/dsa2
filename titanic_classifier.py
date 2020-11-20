@@ -158,7 +158,7 @@ def check():
         stats['metrics_test']
 
         #### Loading training data  #######################################################
-        ddfX     = pd.read_csv(dir_model + "/check/dfX.csv")  #to load csv
+        dfX     = pd.read_csv(dir_model + "/check/dfX.csv")  #to load csv
         #dfX = pd.read_parquet(dir_model + "/check/dfX.parquet")    #to load parquet
         dfy     = dfX[coly]
         colused = colsX

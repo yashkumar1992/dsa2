@@ -39,30 +39,30 @@ config_name  = 'salary_lightgbm'
 
 ####### y normalization #############################################################   
 def y_norm(y, inverse=True, mode='boxcox'):
-		## Normalize the input/output
-		if mode == 'boxcox':
-				width0 = 53.0  # 0,1 factor
-				k1 = 0.6145279599674994  # Optimal boxCox lambda for y
-				if inverse:
-						y2 = y * width0
-						y2 = ((y2 * k1) + 1) ** (1 / k1)
-						return y2
-				else:
-						y1 = (y ** k1 - 1) / k1
-						y1 = y1 / width0
-						return y1
-
-		if mode == 'norm':
-				m0, width0 = 0.0, 350.0  ## Min, Max
-				if inverse:
-						y1 = (y * width0 + m0)
-						return y1
-
-				else:
-						y2 = (y - m0) / width0
-						return y2
+	## Normalize the input/output
+	if mode == 'boxcox':
+		width0 = 53.0  # 0,1 factor
+		k1 = 0.6145279599674994  # Optimal boxCox lambda for y
+		if inverse:
+				y2 = y * width0
+				y2 = ((y2 * k1) + 1) ** (1 / k1)
+				return y2
 		else:
-				return y
+				y1 = (y ** k1 - 1) / k1
+				y1 = y1 / width0
+				return y1
+
+	if mode == 'norm':
+		m0, width0 = 0.0, 350.0  ## Min, Max
+		if inverse:
+				y1 = (y * width0 + m0)
+				return y1
+
+		else:
+				y2 = (y - m0) / width0
+				return y2
+	else:
+			return y
 
 
 
@@ -73,179 +73,179 @@ def y_norm(y, inverse=True, mode='boxcox'):
 
 def salary_elasticnetcv(path_model_out=""):
 
-		global model_name
-		model_name        = 'ElasticNetCV'
+	global model_name
+	model_name        = 'ElasticNetCV'
 
-		def post_process_fun(y):
-			return y_norm(y, inverse=True, mode='boxcox')
+	def post_process_fun(y):
+		return y_norm(y, inverse=True, mode='boxcox')
 
-		def pre_process_fun(y):
-			return y_norm(y, inverse=False, mode='boxcox')
+	def pre_process_fun(y):
+		return y_norm(y, inverse=False, mode='boxcox')
 
-		model_dict = {'model_pars': {'config_model_name': 'ElasticNetCV'
-				, 'model_path': path_model_out
-				, 'model_pars': {}  # default ones
-				, 'post_process_fun': post_process_fun 
-				, 'pre_process_pars': {'y_norm_fun' : pre_process_fun,
-                                
-                                ### Pipeline for data processing.
-                               'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
-															 }
-																 },
-			'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-																			 'explained_variance_score', 'r2_score', 'median_absolute_error']
-											},
-			'data_pars': {
-					'cols_input_type' : {
-										 "coly"   :   "salary"
-										,"colid"  :   "jobId"
-										,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
-										,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
-										,"coltext" :  []
-										,"coldate" :  []
-										,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
-									 },
+	model_dict = {'model_pars': {'config_model_name': 'ElasticNetCV'
+		, 'model_path': path_model_out
+		, 'model_pars': {}  # default ones
+		, 'post_process_fun': post_process_fun
+		, 'pre_process_pars': {'y_norm_fun' : pre_process_fun,
 
-					'cols_model_group': [ 'colnum_onehot', 'colcat_onehot', 'colcross_onehot' ]    
-				 ,'cols_model': []  # cols['colcat_model'],
-				 ,'coly': []        # cols['coly']
-				 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
-									}}
-		return model_dict               
+						### Pipeline for data processing.
+					   'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+													 }
+														 },
+	'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
+																	 'explained_variance_score', 'r2_score', 'median_absolute_error']
+									},
+	'data_pars': {
+			'cols_input_type' : {
+								 "coly"   :   "salary"
+								,"colid"  :   "jobId"
+								,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
+								,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
+								,"coltext" :  []
+								,"coldate" :  []
+								,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
+							 },
+
+			'cols_model_group': [ 'colnum_onehot', 'colcat_onehot', 'colcross_onehot' ]
+		 ,'cols_model': []  # cols['colcat_model'],
+		 ,'coly': []        # cols['coly']
+		 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
+							}}
+	return model_dict
 
 
 def salary_lightgbm(path_model_out="") :
-		"""
-			Huber Loss includes L1  regurarlization         
-			We test different features combinaison, default params is optimal
-		"""
-		global model_name
-		model_name        = 'LGBMRegressor'
+	"""
+		Huber Loss includes L1  regurarlization
+		We test different features combinaison, default params is optimal
+	"""
+	global model_name
+	model_name        = 'LGBMRegressor'
 
-		def post_process_fun(y):
-			return y_norm(y, inverse=True, mode='boxcox')
+	def post_process_fun(y):
+		return y_norm(y, inverse=True, mode='boxcox')
 
-		def pre_process_fun(y):
-			return y_norm(y, inverse=False, mode='boxcox')
+	def pre_process_fun(y):
+		return y_norm(y, inverse=False, mode='boxcox')
 
-		model_dict = {'model_pars': {'config_model_name': 'LGBMRegressor'
-				,'model_path': path_model_out
-				,'model_pars': {'objective': 'huber', }  # default
-				,'post_process_fun': post_process_fun
-				,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
-                                
-                                ### Pipeline for data processing.
-                               'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
-															 }
-																 },
-			'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-																				'explained_variance_score', 'r2_score', 'median_absolute_error']
-											},
-		
-			'data_pars': {
-					'cols_input_type' : {
-										 "coly"   :   "salary"
-										,"colid"  :   "jobId"
-										,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
-										,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
-										,"coltext" :  []
-										,"coldate" :  []
-										,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
-									 }
-					# cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
-					,'cols_model_group': [ 'colnum', 'colcat_bin']    
-				 ,'cols_model': []  # cols['colcat_model'],
-				 ,'coly': []        # cols['coly']
-				 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
-				 
-				 }}
-		return model_dict               
+	model_dict = {'model_pars': {'config_model_name': 'LGBMRegressor'
+		,'model_path': path_model_out
+		,'model_pars': {'objective': 'huber', }  # default
+		,'post_process_fun': post_process_fun
+		,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
+
+						### Pipeline for data processing.
+					   'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+													 }
+														 },
+	'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
+																		'explained_variance_score', 'r2_score', 'median_absolute_error']
+									},
+
+	'data_pars': {
+			'cols_input_type' : {
+								 "coly"   :   "salary"
+								,"colid"  :   "jobId"
+								,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
+								,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
+								,"coltext" :  []
+								,"coldate" :  []
+								,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
+							 }
+			# cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+			,'cols_model_group': [ 'colnum', 'colcat_bin']
+		 ,'cols_model': []  # cols['colcat_model'],
+		 ,'coly': []        # cols['coly']
+		 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
+
+		 }}
+	return model_dict
  
 
 def salary_bayesian_pyro(path_model_out="") :
-		global model_name
-		model_name        = 'model_bayesian_pyro'
-		def post_process_fun(y):
-			return y_norm(y, inverse=True, mode='boxcox')
+	global model_name
+	model_name        = 'model_bayesian_pyro'
+	def post_process_fun(y):
+		return y_norm(y, inverse=True, mode='boxcox')
 
-		def pre_process_fun(y):
-			return y_norm(y, inverse=False, mode='boxcox')
+	def pre_process_fun(y):
+		return y_norm(y, inverse=False, mode='boxcox')
 
-		model_dict = {'model_pars': {'config_model_name': 'model_bayesian_pyro'
-				, 'model_path': path_model_out
-				, 'model_pars': {'input_width': 112, }  # default
-				, 'post_process_fun': post_process_fun
-																 
-				, 'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
-                                
-                                ### Pipeline for data processing.
-                               'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
-															 }
-																 },          
-									
-			'compute_pars': {'compute_pars': {'n_iter': 1200, 'learning_rate': 0.01}
-										 , 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-																			 'explained_variance_score', 'r2_score', 'median_absolute_error']
-										 , 'max_size': 1000000
-										 , 'num_samples': 300
-			 },
-			'data_pars':  {
-					'cols_input_type' : {
-										 "coly"   :   "salary"
-										,"colid"  :   "jobId"
-										,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
-										,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
-										,"coltext" :  []
-										,"coldate" :  []
-										,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
-									 }
-					,'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]    
-				 ,'cols_model': []  # cols['colcat_model'],
-				 ,'coly': []        # cols['coly']
-				 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
-									}}
-		return model_dict               
+	model_dict = {'model_pars': {'config_model_name': 'model_bayesian_pyro'
+		, 'model_path': path_model_out
+		, 'model_pars': {'input_width': 112, }  # default
+		, 'post_process_fun': post_process_fun
+
+		, 'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
+
+						### Pipeline for data processing.
+					   'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+													 }
+														 },
+
+	'compute_pars': {'compute_pars': {'n_iter': 1200, 'learning_rate': 0.01}
+								 , 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
+																	 'explained_variance_score', 'r2_score', 'median_absolute_error']
+								 , 'max_size': 1000000
+								 , 'num_samples': 300
+	 },
+	'data_pars':  {
+			'cols_input_type' : {
+								 "coly"   :   "salary"
+								,"colid"  :   "jobId"
+								,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
+								,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
+								,"coltext" :  []
+								,"coldate" :  []
+								,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
+							 }
+			,'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]
+		 ,'cols_model': []  # cols['colcat_model'],
+		 ,'coly': []        # cols['coly']
+		 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
+							}}
+	return model_dict
 								
 
 def salary_glm( path_model_out="") :
-		global model_name
-		model_name        = 'TweedieRegressor'
-		def post_process_fun(y):
-			return y_norm(y, inverse=True, mode='norm')
+	global model_name
+	model_name        = 'TweedieRegressor'
+	def post_process_fun(y):
+		return y_norm(y, inverse=True, mode='norm')
 
-		def pre_process_fun(y):
-			return y_norm(y, inverse=False, mode='norm')
+	def pre_process_fun(y):
+		return y_norm(y, inverse=False, mode='norm')
 
 
 
-		model_dict = {'model_pars': {'config_model_name': 'TweedieRegressor'  # Ridge
-				, 'model_path': path_model_out
-				, 'model_pars': {'power': 0, 'link': 'identity'}  # default ones
-				, 'pre_process_pars': {'y_norm_fun' : pre_process_fun,
-                                
-                                ### Pipeline for data processing.
-                               'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ] }
-																 },
-									'compute_pars': {'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-																									 'explained_variance_score',  'r2_score', 'median_absolute_error']
-																	},
-			'data_pars': {
-					'cols_input_type' : {
-										 "coly"   :   "salary"
-										,"colid"  :   "jobId"
-										,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
-										,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
-										,"coltext" :  []
-										,"coldate" :  []
-										,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
-									 }
-					,'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]
-				 ,'cols_model': []  # cols['colcat_model'],
-				 ,'coly': []        # cols['coly']
-				 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
-									}
-		}
-		return model_dict               
+	model_dict = {'model_pars': {'config_model_name': 'TweedieRegressor'  # Ridge
+		, 'model_path': path_model_out
+		, 'model_pars': {'power': 0, 'link': 'identity'}  # default ones
+		, 'pre_process_pars': {'y_norm_fun' : pre_process_fun,
+
+						### Pipeline for data processing.
+					   'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ] }
+														 },
+							'compute_pars': {'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
+																							 'explained_variance_score',  'r2_score', 'median_absolute_error']
+															},
+	'data_pars': {
+			'cols_input_type' : {
+								 "coly"   :   "salary"
+								,"colid"  :   "jobId"
+								,"colcat" :   [ "companyId", "jobType", "degree", "major", "industry" ]
+								,"colnum" :   ["yearsExperience", "milesFromMetropolis"]
+								,"coltext" :  []
+								,"coldate" :  []
+								,"colcross" : [ "jobType", "degree", "major", "industry", "yearsExperience", "milesFromMetropolis" ]
+							 }
+			,'cols_model_group': [ 'colnum_onehot', 'colcat_onehot' ]
+		 ,'cols_model': []  # cols['colcat_model'],
+		 ,'coly': []        # cols['coly']
+		 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
+								}
+	}
+	return model_dict
 							 
 
 
@@ -275,87 +275,87 @@ n_sample          = -1
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess():
-		from source import run_preprocess
+	from source import run_preprocess
 
-		run_preprocess.run_preprocess(model_name        =  config_name, 
-																	path_data         =  path_data_train, 
-																	path_output       =  path_model, 
-																	path_config_model =  path_config_model, 
-																	n_sample          =  n_sample,
-																	mode              =  'run_preprocess')
+	run_preprocess.run_preprocess(model_name        =  config_name,
+																path_data         =  path_data_train,
+																path_output       =  path_model,
+																path_config_model =  path_config_model,
+																n_sample          =  n_sample,
+																mode              =  'run_preprocess')
 
 ############################################################################
 ########## Train ###########################################################
 def train():
-		from source import run_train
+	from source import run_train
 
-		run_train.run_train(config_model_name =  config_name,
-												path_data         =  path_data_train,
-												path_output       =  path_model,
-												path_config_model =  path_config_model , n_sample = n_sample)
+	run_train.run_train(config_model_name =  config_name,
+											path_data         =  path_data_train,
+											path_output       =  path_model,
+											path_config_model =  path_config_model , n_sample = n_sample)
 
 
 ###################################################################################
 ######### Check model #############################################################
 def check():
-		try :
-				#### Load model
-				from source.util_feature import load
-				from source.models import model_sklearn as modelx
-				import sys
-				from source import models
-				sys.modules['models'] = models
+	try :
+		#### Load model
+		from source.util_feature import load
+		from source.models import model_sklearn as modelx
+		import sys
+		from source import models
+		sys.modules['models'] = models
 
-				dir_model    = path_model
-				modelx.model = load( dir_model + "/model/model.pkl" )
-				stats        = load( dir_model + "/model/info.pkl" )
-				colsX        = load( dir_model + "/model/colsX.pkl"   )
-				coly         = load( dir_model + "/model/coly.pkl"   )
-				print(stats)
-				print(modelx.model.model)
+		dir_model    = path_model
+		modelx.model = load( dir_model + "/model/model.pkl" )
+		stats        = load( dir_model + "/model/info.pkl" )
+		colsX        = load( dir_model + "/model/colsX.pkl"   )
+		coly         = load( dir_model + "/model/coly.pkl"   )
+		print(stats)
+		print(modelx.model.model)
 
-				### Metrics on test data
-				stats['metrics_test']
+		### Metrics on test data
+		stats['metrics_test']
 
-				#### Loading training data  #######################################################
-				ddfX     = pd.read_csv(dir_model + "/check/dfX.csv")  #to load csv
-				#dfX = pd.read_parquet(dir_model + "/check/dfX.parquet")    #to load parquet
-				dfy     = dfX[coly]
-				colused = colsX
+		#### Loading training data  #######################################################
+		ddfX     = pd.read_csv(dir_model + "/check/dfX.csv")  #to load csv
+		#dfX = pd.read_parquet(dir_model + "/check/dfX.parquet")    #to load parquet
+		dfy     = dfX[coly]
+		colused = colsX
 
-				dfXtest = pd.read_csv(dir_model + "/check/dfXtest.csv")    #to load csv
-				#dfXtest = pd.read_parquet(dir_model + "/check/dfXtest.parquet"    #to load parquet
-				dfytest = dfXtest[coly]
-				print(dfX.shape,  dfXtest.shape )
+		dfXtest = pd.read_csv(dir_model + "/check/dfXtest.csv")    #to load csv
+		#dfXtest = pd.read_parquet(dir_model + "/check/dfXtest.parquet"    #to load parquet
+		dfytest = dfXtest[coly]
+		print(dfX.shape,  dfXtest.shape )
 
 
-				#### Feature importance on training data
-				lgb_featimpt_train,_ = util_feature.feature_importance_perm(modelx, dfX[colused], dfy, colused, n_repeats=1,
-																																		scoring='neg_root_mean_squared_error' )
+		#### Feature importance on training data
+		lgb_featimpt_train,_ = util_feature.feature_importance_perm(modelx, dfX[colused], dfy, colused, n_repeats=1,
+																																scoring='neg_root_mean_squared_error' )
 
-				print(lgb_featimpt_train)
-		except :
-				pass
-		#! python source/run_inference.py  run_predict  --config_model_name  LGBMRegressor  --n_sample 1000   --path_model /data/output/a01_lightgbm_huber/    --path_output /data/output/pred_a01_lightgbm_huber/    --path_data /data/input/train/
+		print(lgb_featimpt_train)
+	except :
+			pass
+	#! python source/run_inference.py  run_predict  --config_model_name  LGBMRegressor  --n_sample 1000   --path_model /data/output/a01_lightgbm_huber/    --path_output /data/output/pred_a01_lightgbm_huber/    --path_data /data/input/train/
 
 
 
 ########################################################################################
 ####### Inference ######################################################################
 def predict():
-		from source import run_inference
-		run_inference.run_predict(model_name,
-															path_model  = path_model,
-															path_data   = path_data_test,
-															path_output = path_output_pred,
-															n_sample    = n_sample)
+	from source import run_inference
+	run_inference.run_predict(model_name,
+							path_model  = path_model,
+							path_data   = path_data_test,
+							path_output = path_output_pred,
+							n_sample    = n_sample)
 
 
 def run_all():
-		preprocess()
-		train()
-		check()
-		predict()
+	preprocess()
+	train()
+	check()
+	predict()
 
 
 
