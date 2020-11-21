@@ -70,7 +70,6 @@ def data_profile(config_uri='titanic_classifier.py::titanic_lightgbm'):
               ) 
 
 
-
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess(config_uri='titanic_classifier.py::titanic_lightgbm'):
@@ -109,6 +108,13 @@ def check(config_uri='titanic_classifier.py::titanic_lightgbm'):
     m = mdict['global_pars']
     log(mdict)
     pass
+
+
+
+
+
+
+
 
 ########################################################################################
 ####### Inference ######################################################################

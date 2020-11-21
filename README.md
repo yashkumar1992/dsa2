@@ -59,9 +59,13 @@
 
 ###  Column Preprocessing pipeline dataframe   :
      pipe_list = [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',
-                   'dfdate',  'dftext'  ] :
+                   'dfdate',  'odftext'  ] :
 
+    'dfnum_bin', 'colnum_bin'  : Float columns into categorical bins
+    'dfnum_hot', 'colnum_hot'  : catagorical numeric value into One Hot Encoding.
 
+    
+    
 
 ### Command line usage advanced
     cd dsa2
