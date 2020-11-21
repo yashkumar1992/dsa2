@@ -122,11 +122,25 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
 
 
-    ########### colnum procesing   #########################################################
+    ########### colnum procesing   #############################################################
     for x in colnum:
         df[x] = df[x].astype("float32")
     log(df[colall].dtypes)
 
+
+    if "dfnum_norm" in pipe_list :
+        pass
+        """
+        log("### Normalize  ###########################################")
+        dfnum_norm, colnum_norm = pd_colnum_norm(df, colname=colnum, colexclude=None, colbinmap=None,
+                                                  suffix="_norm", method="uniform",
+                                                   return_val="dataframe,param")
+        ### Renaming colunm_bin with suffix
+        colnum_norm = [x + "_norm" for x in list(colnum_binmap.keys())]
+        log(colnum_norm)
+        save_features(dfnum_norm, 'dfnum_binmap', path_features_store)
+        """
+   
 
     if "dfnum_bin" in pipe_list :
         log("### Map numerics to Category bin  ###########################################")
@@ -192,7 +206,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ##### Coltext processing   ################################################################
     if "dftext" in pipe_list :
-        from utils import util_text, util_text_embedding
+        from utils import util_text, util_text_embedding, util_model
 
         ### Remoe common words  #############################################
         import json
