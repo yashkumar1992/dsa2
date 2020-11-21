@@ -34,7 +34,8 @@
              target.zip   or target.parquet    :  csv file of the label to predict.
 
 
-    data/input/titanic/test/ :   features.zip  , used for predictions
+    data/input/titanic/test/ :   
+             features.zip or parquet format  , used for predictions
 
     File names Are FIXED, please create sub-folder  
 
