@@ -30,9 +30,9 @@
 
 
     data/input/titanic/train/ :   features.zip ,  target.zip, cols_group.json  names are FIXED
-             cols_group.json : name of columns per feature category.
-             features.zip :    csv file of the inputs
-             target.zip :      csv file of the label to predict.
+             features.zip or features.parquet  :  csv file of the inputs
+             target.zip   or target.parquet    :  csv file of the label to predict.
+
 
     data/input/titanic/test/ :   features.zip  , used for predictions
 
