@@ -120,6 +120,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         if y_norm_fun is not None:
             df[coly] = df[coly].apply(lambda x: y_norm_fun(x))
             save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
+            save_features(df[coly], 'dfy', path_features_store)
 
 
     ########### colnum procesing   #############################################################
@@ -315,6 +316,12 @@ def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", c
 
     dfXy        = pd.read_parquet(path_features_store + "/dfX/features.parquet")
 
+    try :
+       dfy  = pd.read_parquet(path_features_store + "/dfy/features.parquet")  
+       dfXy = dfXy.join(dfy, on= cols_group['colid']  , how="left") 
+    except :
+       log('Error no label', path_features_store + "/dfy/features.parquet")
+     
     cols_family = load(f'{path_pipeline_export}/cols_family.pkl')
 
     return  dfXy, cols_family
