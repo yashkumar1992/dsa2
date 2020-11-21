@@ -709,7 +709,7 @@ def pd_colnum_tocat(  df, colname=None, colexclude=None, colbinmap=None, bins=5,
         return df[colnew], colmap
 
 
-def pd_colnum_normalize(df, colnum_log, colproba):
+def pd_colnum_normalize(df0, colname, pars, suffix="_norm", return_val='dataframe,param'):
     """
 
     :param df:
@@ -717,23 +717,19 @@ def pd_colnum_normalize(df, colnum_log, colproba):
     :param colproba:
     :return:
     """
+    df = df0[colname]
+    for x in colname:
+        for t in pars['pipe_list'] :
+            try:
+                if t['name'] == 'log'         : df[x] = np.log(df[x].values.astype(np.float64))
+                if t['name'] == 'fillna'      : df[x] = df[x].fillna( t['na_val'] )
+                if t['name'] == 'minmax_norm' : df[x] = (df[x] - df[x].min() )/ ( df[x].max() - df[x].min() )
+            except Exception as e:
+                pass
 
-    for x in colnum_log:
-        try:
-            df[x] = np.log(df[x].values.astype(np.float64) + 1.1)
-            df[x] = df[x].replace(-np.inf, 0)
-            df[x] = df[x].fillna(0)
-            print(x, df[x].min(), df[x].max())
-            df[x] = df[x] / df[x].max()
-        except BaseException:
-            pass
-
-    for x in colproba:
-        print(x)
-        df[x] = df[x].replace(-1, 0.5)
-        df[x] = df[x].fillna(0.5)
-
-    return df
+    df.columns  = [ t + suffix for t in df.columns ]
+    colnum_norm = list(df.columns)
+    return df, colnum_norm
 
 
 def pd_col_merge_onehot(df, colname):
