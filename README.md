@@ -4,7 +4,45 @@
 
 
 
-### Command line usage
+
+### Basic usage
+    cd dsa2
+    python run.py data_profile --config_uri titanic_classifier.py::titanic_lightgbm
+    python run.py preprocess --config_uri titanic_classifier.py::titanic_lightgbm
+    python run.py train --config_uri titanic_classifier.py::titanic_lightgbm
+    python run.py predict --config_uri titanic_classifier.py::titanic_lightgbm
+
+
+
+### Basic usage 2
+    python  titanic_classifier.py  data_profile
+    python  titanic_classifier.py  preprocess
+    python  titanic_classifier.py  train
+    python  titanic_classifier.py  check
+    python  titanic_classifier.py  predict
+    python  titanic_classifier.py  run_all
+
+
+### data/input  : Input data format
+
+    data/input/titanic/raw/  : the raw files
+    data/input/titanic/raw2/ : the raw files  split manually
+
+
+    data/input/titanic/train/ :   features.zip ,  target.zip, cols_group.json  names are FIXED
+             cols_group.json : name of columns per feature category.
+             features.zip :    csv file of the inputs
+             target.zip :      csv file of the label to predict.
+
+    data/input/titanic/test/ :   features.zip  , used for predictions
+
+    File names Are FIXED, please create sub-folder  
+
+
+
+
+
+### Command line usage advanced
     cd dsa2
     source activate py36 
     python source/run_train.py  run_train   --n_sample 100  --model_name lightgbm  --path_config_model source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/    
@@ -14,21 +52,6 @@
     python source/run_inference.py  run_predict  --n_sample 1000  --model_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
 
 
-
-
-### data/input  : Input data format
-
-    data/input/titanic/raw/  : the raw files
-    data/input/titanic/raw2/ : the raw files  split manually
-
-
-    File names Are FIXED, please create sub-folder  
-        data/input/titanic/train/ :   features.zip ,  target.zip, cols_group.json  names are FIXED
-             cols_group.json : name of columns per feature category.
-             features.zip :    csv file of the inputs
-             target.zip :      csv file of the label to predict.
-
-        data/input/titanic/test/ :   features.zip  , used for predictions
 
 
 
