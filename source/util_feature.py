@@ -40,8 +40,7 @@ def save_list(path, name_list, glob):
 
 def save(obj, path):
     import cloudpickle as pickle, os
-    if os.path.isfile(path) :
-       os.makedirs(  os.path.dirname( path), exist_ok=True)
+    os.makedirs(  os.path.dirname( path), exist_ok=True)
     log(f'{path}')
     pickle.dump(obj, open(f'{path}', mode='wb'))
 
