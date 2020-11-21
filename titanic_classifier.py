@@ -46,7 +46,7 @@ def titanic_lightgbm(path_model_out="") :
     """
     global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
 
-    #config_name       = 'titanic_lightgbm'
+    config_name       = 'titanic_lightgbm'
     model_name        = 'LGBMClassifier'
 
     path_config_model = root + f"/{config_file}"
@@ -54,6 +54,8 @@ def titanic_lightgbm(path_model_out="") :
     path_data_train   = f'data/input/{data_name}/train/'
     path_data_test    = f'data/input/{data_name}/test/'
     path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
+    n_sample    = 1000
 
 
     def post_process_fun(y):
@@ -116,7 +118,18 @@ def titanic_lightgbm(path_model_out="") :
           ### Filter data rows
          ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
 
-         }}
+         }
+
+     ,'global_pars' : {}
+      }
+
+    lvars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train', 
+              'path_data_test', 'path_output_pred', 'n_sample'
+            ]
+    for t in lvars:
+      model_dict['global_pars'][t] = globals()[t] 
+
+
     return model_dict
 
 
@@ -197,7 +210,16 @@ def titanic_randomforest(path_model_out="") :
           ### Filter data rows
          ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
 
-         }}
+      }
+     ,'global_pars' : {}
+      }
+
+    lvars = [ 'model_name', 'path_config_model', 'path_model', 'path_data_train', 'path_data_test', 'path_output_pred'
+    ]
+    for t in lvars:
+      model_dict['global_pars'][t] = globals()[t]  
+      
+
     return model_dict
 
 
@@ -210,14 +232,6 @@ def titanic_randomforest(path_model_out="") :
 globals()[config_name]()
 
 
-###################################################################################
-########## Profile data #############################################################
-def data_profile():
-   from source.run_feature_profile import run_profile
-   run_profile(path_data   = path_data_train,
-               path_output = path_model + "/profile/",  
-               n_sample    = 5000,
-              ) 
 
 
 ###################################################################################
