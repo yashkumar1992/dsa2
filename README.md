@@ -40,6 +40,26 @@
     File names Are FIXED, please create sub-folder  
 
 
+###  Column Group for model  :
+    ['colid',
+    "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+    
+    
+    "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+    
+    
+    'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+
+    'coldate',
+    'coltext',
+
+    "coly"
+    ]
+
+
+###  Column Preprocessing pipeline dataframe   :
+     pipe_list = [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',
+                   'dfdate',  'dftext'  ] :
 
 
 
