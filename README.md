@@ -8,9 +8,9 @@
 ### Basic usage
     cd dsa2
     python run.py data_profile --config_uri titanic_classifier.py::titanic_lightgbm
-    python run.py preprocess --config_uri titanic_classifier.py::titanic_lightgbm
-    python run.py train --config_uri titanic_classifier.py::titanic_lightgbm
-    python run.py predict --config_uri titanic_classifier.py::titanic_lightgbm
+    python run.py preprocess   --config_uri titanic_classifier.py::titanic_lightgbm
+    python run.py train        --config_uri titanic_classifier.py::titanic_lightgbm
+    python run.py predict      --config_uri titanic_classifier.py::titanic_lightgbm
 
 
 
