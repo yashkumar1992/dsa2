@@ -220,7 +220,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         print( stopwords )
         stopwords = set(stopwords)
 
-        def pipe_text(df, col, ntoken=100):
+        def pipe_text(df, col, pars={}):
+            ntoken= pars['n_token']
             df      = df[col].fillna("")
             dftext  = util_text.pd_coltext_clean( df[col], col, stopwords= stopwords )                 
             print(dftext.head(6))
@@ -240,9 +241,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                                                            method="svd",  dimpca=2,  return_val="dataframe,param")            
             return dftext_svd_list
 
+        pars = {'n_token' : 100 }
         dftext = None
         for coltext_i in coltext :
-            dftext_i =   pipe_text( df[[coltext_i ]], coltext_i, n_token = 100 ) 
+            dftext_i =   pipe_text( df[[coltext_i ]], coltext_i, pars ) 
             save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
             dftext  = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
 
