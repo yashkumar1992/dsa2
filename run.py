@@ -132,11 +132,11 @@ def predict(config_uri='titanic_classifier.py::titanic_lightgbm'):
                               )
 
 
-def run_all():
-    preprocess()
-    train()
-    check()
-    predict()
+def run_all(config_uri='titanic_classifier.py::titanic_lightgbm'):
+    preprocess(config_uri)
+    train(config_uri)
+    check(config_uri)
+    predict(config_uri)
 
 
 
