@@ -8,6 +8,17 @@ All in one file config
 !  python house_regression.py  predict
 
 
+# 'pipe_list'  : 
+	'filter', 
+	'label', 
+	'dfnum_bin' 
+	'dfnum_hot'  
+	'dfcat_bin' 
+	'dfcat_hot'
+	'dfcross_hot'
+
+
+
 
 """
 import warnings, copy
@@ -28,7 +39,7 @@ data_name    = "house_price"
 
 config_name  = 'house_price_lightgbm'
 n_sample     = 1000
-
+tag_job      = 'aa1'  ## to have a unique tag for the run
 
 
 
@@ -87,9 +98,9 @@ def house_price_elasticnetcv(path_model_out=""):
 
 	model_name        = 'ElasticNetCV'
 	path_config_model = root + f"/{config_file}"
-	path_model        = f'data/output/{data_name}/a01_{model_name}/'
-	path_data_train   = f'data/input/{data_name}/train/'
-	path_data_test    = f'data/input/{data_name}/test/'
+	path_model        = f'/data/output/{data_name}/a01_{model_name}/'
+	path_data_train   = f'/data/input/{data_name}/train/'
+	path_data_test    = f'/data/input/{data_name}/test/'
 	path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
 
 
@@ -130,7 +141,7 @@ def house_price_elasticnetcv(path_model_out=""):
 			      "BsmtFinSF1", "BsmtFinSF2", "BsmtUnfSF", "TotalBsmtSF", "1stFlrSF", "2ndFlrSF", "LowQualFinSF", "GrLivArea", "BsmtFullBath", "BsmtHalfBath", "FullBath", "HalfBath", "BedroomAbvGr", "KitchenAbvGr", "TotRmsAbvGrd", "Fireplaces", "GarageCars", "GarageArea", "WoodDeckSF", "OpenPorchSF", "EnclosedPorch", "3SsnPorch", "ScreenPorch", "PoolArea", "MiscVal", "MoSold", "YrSold"]
 
 		    ,"coltext"  : []
-		    ,"coldate" : []   # ["YearBuilt", "YearRemodAdd", "GarageYrBlt"]
+		    ,"coldate" :  []   # ["YearBuilt", "YearRemodAdd", "GarageYrBlt"]
 		    ,"colcross" : []
 
 		},
@@ -234,6 +245,16 @@ globals()[config_name]()
 
 
 ###################################################################################
+########## Profile data #############################################################
+def data_profile():
+   from source.run_feature_profile import run_profile
+   run_profile(path_data   = path_data_train,
+               path_output = path_model + "/profile/",  
+               n_sample    = 5000,
+              ) 
+
+
+###################################################################################
 ########## Preprocess #############################################################
 def preprocess():
 	from source import run_preprocess
@@ -272,6 +293,7 @@ def predict():
 
 
 def run_all():
+	data_profile()
 	preprocess()
 	train()
 	check()
