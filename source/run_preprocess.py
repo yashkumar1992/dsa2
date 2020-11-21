@@ -89,7 +89,6 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
     
     colcross_single = cols_group.get('colcross', [])   ### List of single columns
-    #coltext        = cols_group.get('coltext', [])
     coltext         = cols_group.get('coltext', [])
     coldate         = cols_group.get('coldate', [])
     colall          = colnum + colcat + coltext + coldate
@@ -130,18 +129,17 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     if "dfnum_norm" in pipe_list :
-        pass
-        """
         log("### Normalize  ###########################################")
-        dfnum_norm, colnum_norm = pd_colnum_norm(df, colname=colnum, colexclude=None, colbinmap=None,
-                                                  suffix="_norm", method="uniform",
-                                                   return_val="dataframe,param")
+        from util_feature import pd_colnum_normalize
+        pars = { 'pipe_list': [ {'name': 'fillna', 'naval' : 0.0 }, {'name': 'minmax'} ]}
+        dfnum_norm, colnum_norm = pd_colnum_normalize(df, colname=colnum,  pars=pars, suffix = "_norm",
+                                                      return_val="dataframe,param")
         ### Renaming colunm_bin with suffix
-        colnum_norm = [x + "_norm" for x in list(colnum_binmap.keys())]
+        # colnum_norm = [x + "_norm" for x in list(colnum_binmap.keys())]
         log(colnum_norm)
-        save_features(dfnum_norm, 'dfnum_binmap', path_features_store)
-        """
-   
+        save_features(dfnum_norm, 'dfnum_norm', path_features_store)
+
+    
 
     if "dfnum_bin" in pipe_list :
         log("### Map numerics to Category bin  ###########################################")
