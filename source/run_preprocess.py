@@ -120,6 +120,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         if y_norm_fun is not None:
             df[coly] = df[coly].apply(lambda x: y_norm_fun(x))
             save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
+            save_features(df[coly], 'dfy', path_features_store)
 
 
     ########### colnum procesing   #############################################################
@@ -301,6 +302,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colXy.remove(coly)    ##### Only X columns
     cols_family['colX'] = colXy
     save(colXy, f'{path_pipeline_export}/colsX.pkl' )
+    save(cols_family, f'{path_pipeline_export}/cols_family.pkl' )
 
 
     ###### Return values  #########################################################################
@@ -309,7 +311,20 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={}, filter_pars={}, path_features_store=None):
-  return  None, None
+    
+    from source.util_feature import load
+
+    dfXy        = pd.read_parquet(path_features_store + "/dfX/features.parquet")
+
+    try :
+       dfy  = pd.read_parquet(path_features_store + "/dfy/features.parquet")  
+       dfXy = dfXy.join(dfy, on= cols_group['colid']  , how="left") 
+    except :
+       log('Error no label', path_features_store + "/dfy/features.parquet")
+     
+    cols_family = load(f'{path_pipeline_export}/cols_family.pkl')
+
+    return  dfXy, cols_family
 
 
 ####################################################################################################
@@ -320,13 +335,14 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
       Configuration of the model is in config_model.py file
 
     """
-    path_output       = root + path_output
-    path_data         = root + path_data
-    path_pipeline_out = path_output + "/pipeline/"
-    path_model_out    = path_output + "/model/"
-    path_check_out    = path_output + "/check/"
-    path_train_X      = path_data   + "/features*"    ### Can be a list of zip or parquet files
-    path_train_y      = path_data   + "/target*"      ### Can be a list of zip or parquet files
+    path_output         = root + path_output
+    path_data           = root + path_data
+    path_features_store = path_output + "/features_store/"
+    path_pipeline_out   = path_output + "/pipeline/"
+    path_model_out      = path_output + "/model/"
+    path_check_out      = path_output + "/check/"
+    path_train_X        = path_data   + "/features*"    ### Can be a list of zip or parquet files
+    path_train_y        = path_data   + "/target*"      ### Can be a list of zip or parquet files
     log(path_output)
 
 
@@ -346,11 +362,11 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
 
     if mode == "run_preprocess" :
         dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
-                                 preprocess_pars, filter_pars)
+                                 preprocess_pars, filter_pars, path_features_store)
 
     elif mode == "load_preprocess" :
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
-                                 preprocess_pars, filter_pars)
+                                 preprocess_pars, filter_pars, path_features_store)
 
 
     model_dict['data_pars']['coly'] = cols['coly']
