@@ -250,8 +250,8 @@ def run_check(path_data, path_data_ref, path_model, path_output, sample_ratio=0.
     dfX2        = dfX2[colsX]
 
     nsample     = int(min(len(dfX1), len(dfX2)) * sample_ratio)
-    metrics_psi = util_feature.dataset_psi_get(dfX2, dfX1,
-                                               colsX, nsample=nsample, buckets=7, axis=0)
+    metrics_psi = util_feature.pd_stat_dataset_shift(dfX2, dfX1,
+                                                     colsX, nsample=nsample, buckets=7, axis=0)
     metrics_psi.to_csv(f"{path_output}/prediction_features_metrics.csv")
     log(metrics_psi)
 

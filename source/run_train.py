@@ -120,7 +120,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     modelx.fit(data_pars, compute_pars)
 
     log("#### Metrics #################################################################")
-    from util_feature import  sk_metrics_eval
+    from util_feature import  metrics_eval
 
     stats = {}
     ypred               = modelx.predict(dfX[colsX], compute_pars=compute_pars)
@@ -128,9 +128,9 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     dfX[coly]           = post_process_fun(dfX[coly].values)
     # dfX[coly] = dfX[coly].values.astype('int64')
 
-    metrics_test = sk_metrics_eval(metric_list,
-                                   ytrue= dfX[coly].iloc[ival:],
-                                   ypred= dfX[coly + '_pred'].iloc[ival:], )
+    metrics_test = metrics_eval(metric_list,
+                                ytrue= dfX[coly].iloc[ival:],
+                                ypred= dfX[coly + '_pred'].iloc[ival:], )
     stats['metrics_test'] = metrics_test
     log(stats)
 
