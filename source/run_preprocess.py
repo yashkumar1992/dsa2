@@ -129,20 +129,17 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     if "dfnum_norm" in pipe_list :
-        log("### Normalize  ###########################################")
+        log("### colnum normalize  ###########################################")
         from util_feature import pd_colnum_normalize
         pars = { 'pipe_list': [ {'name': 'fillna', 'naval' : 0.0 }, {'name': 'minmax'} ]}
         dfnum_norm, colnum_norm = pd_colnum_normalize(df, colname=colnum,  pars=pars, suffix = "_norm",
                                                       return_val="dataframe,param")
-        ### Renaming colunm_bin with suffix
-        # colnum_norm = [x + "_norm" for x in list(colnum_binmap.keys())]
         log(colnum_norm)
         save_features(dfnum_norm, 'dfnum_norm', path_features_store)
 
-    
 
     if "dfnum_bin" in pipe_list :
-        log("### Map numerics to Category bin  ###########################################")
+        log("### colnum Map numerics to Category bin  ###########################################")
         dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=colnum, colexclude=None, colbinmap=None,
                                                    bins=10, suffix="_bin", method="uniform",
                                                    return_val="dataframe,param")
@@ -174,15 +171,15 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     if "dfcat_bin" in pipe_list :
-        #### Colcat to integer encoding
+        log("#### Colcat to integer encoding ")
         dfcat_bin, colcat_bin_map = pd_colcat_toint(df[colcat], colname=colcat,
                                                     colcat_map=None, suffix="_int")
         colcat_bin = list(dfcat_bin.columns)
         save_features(dfcat_bin, 'dfcat_bin', path_features_store)
 
 
-    ####### colcross cross features from Onehot features  #####################################
     if "dfcross_hot" in pipe_list :
+        log("#####  Cross Features From OneHot Features   ####################################")
         try :
            df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
         except :
@@ -203,8 +200,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         del df_onehot ; gc.collect()
 
 
-    ##### Coltext processing   ################################################################
     if "dftext" in pipe_list :
+        log("##### Coltext processing   ###############################################################")
         from utils import util_text, util_text_embedding, util_model
 
         ### Remoe common words  #############################################
@@ -249,9 +246,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
 
-
-    ##### Coldate processing   ################################################################
     if "dfdate" in pipe_list :
+        log("##### Coldate processing   #############################################################")
         from utils import util_date
         dfdate = None
         for coldate_i in coldate :
@@ -259,9 +255,6 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
             save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
             dfdate  = pd.concat((dfdate, dfdate_i))  if dfdate is not None else dftext_i
-
-
-
 
 
     ##################################################################################################
@@ -369,7 +362,7 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
 
     model_dict['data_pars']['coly'] = cols['coly']
     
-    ### Get actual column names from colum groups : colnum , colcat
+    ### Generate actual column names from colum groups : colnum , colcat
     model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])                
     log(  model_dict['data_pars']['cols_model'] , model_dict['data_pars']['coly'])
     
