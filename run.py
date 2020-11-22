@@ -65,8 +65,8 @@ def data_profile(config_uri='titanic_classifier.py::titanic_lightgbm'):
     log(mdict)
 
     run_profile(path_data   = m['path_data_train'],
-               path_output = m['path_model'] + "/profile/",  
-               n_sample    = 5000,
+               path_output  = m['path_model'] + "/profile/",  
+               n_sample     = 5000,
               ) 
 
 

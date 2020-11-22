@@ -123,10 +123,10 @@ def titanic_lightgbm(path_model_out="") :
      ,'global_pars' : {}
       }
 
-    lvars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train', 
+    global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train', 
               'path_data_test', 'path_output_pred', 'n_sample'
             ]
-    for t in lvars:
+    for t in global_pars:
       model_dict['global_pars'][t] = globals()[t] 
 
 
@@ -234,9 +234,15 @@ globals()[config_name]()
 
 
 
+
+
+import run
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess():
+    run.preprocess(config_uri = config_file + '::' + config_name)
+
+    """
     from source import run_preprocess
 
     run_preprocess.run_preprocess(model_name        =  config_name, 
@@ -245,41 +251,41 @@ def preprocess():
                                   path_config_model =  path_config_model, 
                                   n_sample          =  n_sample,
                                   mode              =  'run_preprocess')
+    """
 
-############################################################################
 ########## Train ###########################################################
 def train():
-    from source import run_train
+    run.train(config_uri = config_file + '::' + config_name)
 
+    """
+    from source import run_train
     run_train.run_train(config_model_name =  config_name,
                         path_data         =  path_data_train,
                         path_output       =  path_model,
                         path_config_model =  path_config_model , n_sample = n_sample)
+    """
 
-
-###################################################################################
 ######### Check model #############################################################
 def check():
     from source import run_train
     run_train.run_check(path_output =  path_model,
                         scoring     =  'accuracy' )
 
-
-
     #! python source/run_inference.py  run_predict  --config_model_name  LGBMRegressor  --n_sample 1000   --path_model /data/output/a01_lightgbm_huber/    --path_output /data/output/pred_a01_lightgbm_huber/    --path_data /data/input/train/
 
 
 
-########################################################################################
 ####### Inference ######################################################################
 def predict():
+    run.predict(config_uri = config_file + '::' + config_name)
+    """
     from source import run_inference
     run_inference.run_predict(model_name,
                               path_model  = path_model,
                               path_data   = path_data_test,
                               path_output = path_output_pred,
                               n_sample    = n_sample)
-
+    """
 
 def run_all():
     preprocess()
@@ -303,24 +309,3 @@ if __name__ == "__main__":
     import fire
     fire.Fire()
     
-"""
-
-
-import template_run
-template_run.config_name       = config_name
-template_run.path_config_model = path_config_model
-template_run.path_model        = path_model
-template_run.path_data_train   = path_data_train
-template_run.path_data_test    = path_data_test
-template_run.path_output_pred  = path_output_pred
-template_run.n_sample          = n_sample
-template_run.model_name        = model_name
-
-print( template_run.config_name )
-train                          = template_run.train
-predict                        = template_run.predict
-run_all                        = template_run.run_all
-
-
-
-"""
