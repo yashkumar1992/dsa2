@@ -60,7 +60,12 @@ def save_features(df, name, path):
     """
     if path is not None :
        os.makedirs( f"{path}/{name}" , exist_ok=True)
-       df.to_parquet( f"{path}/{name}/features.parquet")
+       if isinstance(df, pd.Series):
+           df0=df.to_frame()
+       else:
+           df0=df
+       df0.to_parquet( f"{path}/{name}/features.parquet")
+ #      df.to_parquet( f"{path}/{name}/features.parquet")
 
 
 # @cache.memoize(typed=True,  tag='fib')  ### allow caching results
@@ -92,6 +97,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     coltext         = cols_group.get('coltext', [])
     coldate         = cols_group.get('coldate', [])
     colall          = colnum + colcat + coltext + coldate
+    usdpricescol    = cols_group.get('usdpricescol', [])
     log(colall)
 
     #### Pipeline Execution
@@ -101,7 +107,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ##### Load data ########################################################################
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
-
+    ##### Delete the sign "$" and delete thousands separator from prices ###################
+    df[usdpricescol] = df[usdpricescol].apply(lambda x:x.str[1:].str.replace(",",""))
+    df[usdpricescol] = df[usdpricescol].astype(float)
 
     ##### Filtering / cleaning rows :   ####################################################
     if "filter" in pipe_list :
