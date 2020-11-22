@@ -124,7 +124,7 @@ def load_function_uri(uri_name="path_norm"):
 
 
 #############################################################################################
-def sk_metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypred_proba=None, return_dict=0):
+def metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypred_proba=None, return_dict=0):
     """
       metrics
     """
@@ -160,14 +160,14 @@ def sk_metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, 
     return mdict
 
 
-def dataset_psi_get(dftrain, dftest, colused, nsample=10000, buckets=5, axis=0):
+def pd_stat_dataset_shift(dftrain, dftest, colused, nsample=10000, buckets=5, axis=0):
     ### Population Stability Index
     ll = {'colname': [], 'psi': []}
     for coli in colused:
         print(coli)
-        psi = datashift_psi(expected=dftrain[coli].sample(nsample),
-                            actual=dftest[coli].sample(nsample),
-                            buckettype='bins', buckets=buckets, axis=axis)
+        psi = pd_stat_datashift_psi(expected=dftrain[coli].sample(nsample),
+                                    actual=dftest[coli].sample(nsample),
+                                    buckettype='bins', buckets=buckets, axis=axis)
 
         ll['colname'].append(coli)
         ll['psi'].append(psi)
@@ -176,7 +176,7 @@ def dataset_psi_get(dftrain, dftest, colused, nsample=10000, buckets=5, axis=0):
     return metrics_psi
 
 
-def datashift_psi(expected, actual, buckettype='bins', buckets=10, axis=0):
+def pd_stat_datashift_psi(expected, actual, buckettype='bins', buckets=10, axis=0):
     '''Calculate the PSI (population stability index) across all variables
     Args:
        expected: numpy matrix of original values
