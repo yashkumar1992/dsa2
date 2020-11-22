@@ -64,7 +64,17 @@
     'dfnum_bin', 'colnum_bin'  : Float columns into categorical bins
     'dfnum_hot', 'colnum_hot'  : catagorical numeric value into One Hot Encoding.
 
-    
+###  Preprocess - pipeline execution   :
+     Default pipeline options are considered in pipe_default = [ 'filter','label','dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'] :
+
+    'filter': Takes in ymin and ymax values from model dictionary (['data_pars']['filter_pars']) and does filtering of dataset (coly) between those values
+    'label' : Takes in y_norm_fun value from model dictionary (['model_pars']['pre_process_pars']), if that value is not None, applies normalization function on coly
+    'dfnum_bin' : Takes in a dataframe with selected numerical columns, creates categorical bins, returns dataframe with new columns (dfnum_bin)
+    'dfnum_hot' : Takes in a dataframe dfnum_bin, returns one hot matrix as dataframe dfnum_hot
+    'dfcat_bin' : Takes in a dataframe with categorical columns, returns dataframe dfcat_bin with numerical values
+    'dfcat_hot' : Takes in a dataframe with categorical columns, returns one hot matrix as dataframe dfcat_hot
+    'dfcross_hot' : Takes in a data frame of numerical and categorical one hot encoded columns with defined cross columns, returns dataframe df_cross_hot
+
     
 
 ### Command line usage advanced
