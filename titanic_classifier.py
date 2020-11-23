@@ -27,12 +27,12 @@ print(dir_data)
 
 
 ####################################################################################
-config_file  = "titanic_classifier.py"
+config_file  = "titanic_classifier.py"   ### name of file which contains data configuration
 data_name    = "titanic"     ### in data/input/
 
 
 
-config_name  = 'titanic_lightgbm'
+config_name  = 'titanic_lightgbm'   ### name of function which contains data configuration 
 n_sample     = -1
 
 
@@ -42,7 +42,7 @@ n_sample     = -1
 ##### Params########################################################################
 def titanic_lightgbm(path_model_out="") :
     """
-       titanic
+       Contains all needed informations for Light GBM Classifier model, used for titanic classification task
     """
     global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
 
@@ -72,7 +72,7 @@ def titanic_lightgbm(path_model_out="") :
         ### LightGBM API model       ###################################
         ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'binary',
-                                'learning_rate':0.03,'boosting_type':'gbdt'
+                                'learning_rate':0.03,'boosting_type':'gbdt'    ### Model hyperparameters
 
 
                                }
@@ -84,11 +84,11 @@ def titanic_lightgbm(path_model_out="") :
                                 ### Pipeline for data processing.
                                'pipe_list'  : [ 'filter',     ### Fitler the data
                                                 'label',      ### Normalize the label
-                                                'dfnum_bin',
-                                                'dfnum_hot',
-                                                'dfcat_bin',
-                                                'dfcat_hot',
-                                                'dfcross_hot', ]
+                                                'dfnum_bin',  ### Create bins for numerical columns
+                                                'dfnum_hot',  ### One hot encoding for numerical columns
+                                                'dfcat_bin',  ### Create bins for categorical columns
+                                                'dfcat_hot',  ### One hot encoding for categorical columns
+                                                'dfcross_hot', ]   ### Crossing of features which are one hot encoded
                                }
         },
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
@@ -111,7 +111,7 @@ def titanic_lightgbm(path_model_out="") :
 
 
           ### Actual column namaes to be filled automatically
-         ,'cols_model':       []      # cols['colcat_model'],
+         ,'cols_model':       []      # cols['colcat_model'],    ### Defines features columns of the dataset, and it is highly dependant with pipe_list
          ,'coly':             []      # cols['coly']
 
 
@@ -137,7 +137,7 @@ def titanic_lightgbm(path_model_out="") :
 
 def titanic_randomforest(path_model_out="") :
     """
-       titanic
+       Contains all needed informations for Random Forest model, used for titanic classification task
     """
     global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
 
@@ -174,13 +174,13 @@ def titanic_randomforest(path_model_out="") :
         , 'pre_process_pars' : {'y_norm_fun' :  None ,
 
                                 ### Pipeline for data processing.
-                               'pipe_list'  : [ 'filter',     ### Fitler the data
+                               'pipe_list'  : [ 'filter',     ### Filter the data
                                                 'label',      ### Normalize the label
-                                                'dfnum_bin',
-                                                'dfnum_hot',
-                                                'dfcat_bin',
-                                                'dfcat_hot',
-                                                'dfcross_hot', ]
+                                                'dfnum_bin',  ### Create bins for numerical columns
+                                                'dfnum_hot',  ### One hot encoding for numerical columns
+                                                'dfcat_bin',  ### Create bins for categorical columns
+                                                'dfcat_hot',  ### One hot encoding for categorical columns
+                                                'dfcross_hot', ]   ### Crossing of features which are one hot encoded
                                }
         },
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
@@ -199,11 +199,11 @@ def titanic_randomforest(path_model_out="") :
 
           ### used for the model input
           # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
-          'cols_model_group': [ 'colnum', 'colcat_bin']
+          'cols_model_group': [ 'colnum', 'colcat_bin']   
 
 
           ### Actual column namaes to be filled automatically
-         ,'cols_model':       []      # cols['colcat_model'],
+         ,'cols_model':       []      # cols['colcat_model'],   ### Defines features columns of the dataset, and it is highly dependant with pipe_list
          ,'coly':             []      # cols['coly']
 
 
@@ -229,7 +229,7 @@ def titanic_randomforest(path_model_out="") :
 
 ####################################################################################################
 ########## Init variable ###########################################################################
-globals()[config_name]()
+globals()[config_name]()   
 
 
 
@@ -240,6 +240,11 @@ import run
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess():
+    """
+    Preprocessing of input data, in order to prepare them for training
+
+    """
+
     run.preprocess(config_uri = config_file + '::' + config_name)
 
     """
@@ -255,6 +260,11 @@ def preprocess():
 
 ########## Train ###########################################################
 def train():
+
+    """
+    Splits preprocessed data into train and test, and fits them in the model
+
+    """
     run.train(config_uri = config_file + '::' + config_name)
 
     """
@@ -267,6 +277,11 @@ def train():
 
 ######### Check model #############################################################
 def check():
+    """
+    It runs trained model and gives feature imporance graph as ouput
+
+    """
+
     from source import run_train
     run_train.run_check(path_output =  path_model,
                         scoring     =  'accuracy' )
@@ -277,6 +292,10 @@ def check():
 
 ####### Inference ######################################################################
 def predict():
+    """
+    Creates csv file with predictions
+
+    """
     run.predict(config_uri = config_file + '::' + config_name)
     """
     from source import run_inference
@@ -288,6 +307,11 @@ def predict():
     """
 
 def run_all():
+    """
+
+    Function which runs all previous functions, in order to perform all tasks, from preprocessing of data to final prediction
+
+    """
     preprocess()
     train()
     check()
