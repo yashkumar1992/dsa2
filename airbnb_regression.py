@@ -78,7 +78,17 @@ coldate = [  "calendar_last_scraped", "first_review", "host_since" ]
 
 
 """
-
+cols_input_type = {
+     "coly"   : "price"
+    ,"colid"  : "id"
+    ,"colcat" : [  "host_id", "host_location", "host_response_time","host_response_rate","host_is_superhost","host_neighbourhood","host_verifications","host_has_profile_pic","host_identity_verified","street","neighbourhood","neighbourhood_cleansed", "neighbourhood_group_cleansed","city","zipcode", "smart_location","is_location_exact","property_type","room_type", "accommodates","bathrooms","bedrooms", "beds","bed_type","guests_included","calendar_updated", "license","instant_bookable","cancellation_policy","require_guest_profile_picture","require_guest_phone_verification","scrape_id"]
+    ,"colnum" : [ "host_listings_count","latitude", "longitude","square_feet","weekly_price","monthly_price", "security_deposit","cleaning_fee","extra_people", "minimum_nights","maximum_nights","availability_30","availability_60","availability_90","availability_365","number_of_reviews","review_scores_rating","review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication", "review_scores_location","review_scores_value","calculated_host_listings_count","reviews_per_month"]    
+    ,"coltext" : ["name","summary", "space","description", "neighborhood_overview","notes","transit", "access","interaction", "house_rules","host_name","host_about","amenities"]
+    , "coldate" : ["last_scraped","host_since","first_review","last_review"]
+    ,"colcross" : ["name","host_is_superhost","is_location_exact","monthly_price","review_scores_value","review_scores_rating","reviews_per_month"]
+	,"usdpricescol":["price","weekly_price","monthly_price","security_deposit","cleaning_fee","extra_people"]
+    
+}
 
 
 #global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
@@ -117,7 +127,7 @@ def airbnb_elasticnetcv(path_model_out=""):
 								,"colcat" :   [ "cancellation_policy", "host_response_rate", "host_response_time" ]
 								,"colnum" :   [ "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
 								,"coltext" :  [ "house_rules", "neighborhood_overview", "notes", "street"  ]
-								,"coldate" :  [ "calendar_last_scraped", "first_review", "host_since" ]
+								,"coldate" :  [ "last_scraped", "first_review", "host_since" ]
 								,"colcross" : [  ]
 							 },
 
