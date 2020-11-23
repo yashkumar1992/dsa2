@@ -100,7 +100,7 @@ def titanic_lightgbm(path_model_out="") :
                     ,"colid"  :   "PassengerId"
                     ,"colcat" :   [  "Sex", "Embarked" ]
                     ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-                    ,"coltext" :  ["Name","Ticket"]
+                    ,"coltext" :  ["Name", "Ticket"]
                     ,"coldate" :  []
                     ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
                    },
