@@ -106,11 +106,6 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ##### Load data ########################################################################
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
-    ##### for airbnb only: Delete the sign "$" and delete thousands separator from prices ##
-    if "airbnb" in path_train_X:
-        usdpricescol    = cols_group.get('usdpricescol', [])
-        df[usdpricescol] = df[usdpricescol].apply(lambda x:x.str[1:].str.replace(",",""))
-        df[usdpricescol] = df[usdpricescol].astype(float)
 
     ##### Filtering / cleaning rows :   ####################################################
     if "filter" in pipe_list :
