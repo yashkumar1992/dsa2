@@ -6,6 +6,5 @@
     ,"coltext" : ["name","summary", "space","description", "neighborhood_overview","notes","transit", "access","interaction", "house_rules","host_name","host_about","amenities"]
     , "coldate" : ["last_scraped","host_since","first_review","last_review"]
     ,"colcross" : ["name","host_is_superhost","is_location_exact","monthly_price","review_scores_value","review_scores_rating","reviews_per_month"]
-	,"usdpricescol":["price","weekly_price","monthly_price","security_deposit","cleaning_fee","extra_people"]
     
 }

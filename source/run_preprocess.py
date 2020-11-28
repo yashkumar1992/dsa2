@@ -100,12 +100,17 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     log(colall)
 
     #### Pipeline Execution
-    pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+    pipe_default    = [ "clean_prices", 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
     pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
 
 
     ##### Load data ########################################################################
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
+    
+    ### cleaning colnum that have a price format example $1010,000.01
+    if "clean_prices" in pipe_list :
+        from util_feature import clean_prices
+        df = clean_prices(df,colnum+[coly])
 
     ##### Filtering / cleaning rows :   ####################################################
     if "filter" in pipe_list :

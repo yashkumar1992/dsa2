@@ -54,9 +54,9 @@ def load(file_name):
 def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
     log('loading', colid, path_data_x)
     import glob 
-
-    flist = glob.glob( path_data_x )
-    flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] ]
+    import ntpath
+    flist = glob.glob( ntpath.dirname(path_data_x)+"/*" )#ntpath.dirname(path_data_x)+"/*"
+    flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] and ntpath.basename(f)[:8] in ['features'] ]
     print(flist)
     df    = None
     for fi in flist :
@@ -69,8 +69,8 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
     if n_sample > 0: 
         df = df.iloc[:n_sample, :]
     try:
-        flist = glob.glob( path_data_y )
-        flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] ]
+        flist = glob.glob( ntpath.dirname(path_data_y)+"/*" )
+        flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] and ntpath.basename(f)[:6] in ['target']]
         dfy   = pd.DataFrame()
         dfi   = None
         for fi in flist :
@@ -617,7 +617,19 @@ def pd_colcat_toint(dfref, colname, colcat_map=None, suffix=None):
 
     return df[colname_new], colcat_map
 
-
+def clean_prices(df, colnum):
+    def clean(x):
+        if isinstance(x, str) and x == x:
+            x=x.replace('$', '').replace(',', '')
+        return (x)	
+    for col in colnum:
+        col_type = df.dtypes[col]
+        if col_type == np.dtype(object):
+            df[col]=df[col].astype(str).apply(clean)
+            df[col]=df[col].replace({'None':None})
+    df.fillna(value=pd.np.nan, inplace=True)
+    df[colnum]=df[colnum].astype("float32")
+    return df
 def pd_colnum_tocat(  df, colname=None, colexclude=None, colbinmap=None, bins=5, suffix="_bin",
         method="uniform", na_value=-1, return_val="dataframe,param",
         params={"KMeans_n_clusters": 8, "KMeans_init": 'k-means++', "KMeans_n_init": 10,
