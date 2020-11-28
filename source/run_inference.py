@@ -48,6 +48,7 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
     """
     from util_feature import (pd_colnum_tocat, pd_col_to_onehot, pd_colcat_toint,
                               pd_feature_generate_cross)
+
     log("########### Load column by column type ##################################")
     colid          = load(f'{path_pipeline}/colid.pkl')
     coly           = load(f'{path_pipeline}/coly.pkl')
@@ -58,13 +59,18 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
     colnum         = load(f'{path_pipeline}/colnum.pkl')
     colnum_binmap  = load(f'{path_pipeline}/colnum_binmap.pkl')
     colnum_onehot  = load(f'{path_pipeline}/colnum_onehot.pkl')
+
     ### OneHot column selected for cross features
     colcross_single_onehot_select = load(f'{path_pipeline}/colcross_single_onehot_select.pkl')
 
-    pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+    pipe_default    = [ "clean_prices", 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
     pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
 
-
+    log("### cleaning colnum that have a price format#############################")
+    if "clean_prices" in pipe_list :
+        from util_feature import clean_prices
+        df = clean_prices(df,colnum)
+    
     if "dfcat_hot" in pipe_list :
        log("###### Colcat to onehot ###############################################")
        dfcat_hot, _ = pd_col_to_onehot(df[colcat],  colname=colcat,
@@ -199,10 +205,10 @@ def predict(model_name, path_model, dfX, cols_family):
 ############CLI Command ############################################################################
 def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
     path_output   = root + path_output
-    path_data     = root + path_data + "/features.zip"
+    path_data     = root + path_data + "/features.zip"#.zip
     path_model    = root + path_model
     path_pipeline = path_model + "/pipeline/"
-    path_test_X = path_data + "/features.zip"   #added path to testing features
+    path_test_X = path_data + "/features.zip"   #.zip #added path to testing features
     log(path_data, path_model, path_output)
 
     colid            = load(f'{path_pipeline}/colid.pkl')

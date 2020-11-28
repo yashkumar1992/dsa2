@@ -167,8 +167,8 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     path_pipeline_out = path_output   + "/pipeline/"
     path_model_out    = path_output   + "/model/"
     path_check_out    = path_output   + "/check/"
-    path_train_X      = path_data     + "/features.zip"
-    path_train_y      = path_data     + "/target.zip"
+    path_train_X      = path_data     + "/features.zip"#.zip
+    path_train_y      = path_data     + "/target.zip"#.zip
     path_features_store = path_output   + '/features_store/'  #path_data replaced with path_output, because preprocessed files are stored there
     log(path_output)
 
