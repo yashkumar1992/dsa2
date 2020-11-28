@@ -81,15 +81,15 @@ def titanic_lightgbm(path_model_out="") :
         , 'post_process_fun' : post_process_fun
         , 'pre_process_pars' : {'y_norm_fun' :  None ,
                                 
-                                ### Pipeline for data processing.
-                               'pipe_list'  : [ 'filter',     ### Fitler the data
-                                                'label',      ### Normalize the label
-                                                'dfnum_bin',  ### Create bins for numerical columns
-                                                'dfnum_hot',  ### One hot encoding for numerical columns
-                                                'dfcat_bin',  ### Create bins for categorical columns
-                                                'dfcat_hot',  ### One hot encoding for categorical columns
-                                                'dfcross_hot', ]   ### Crossing of features which are one hot encoded
-                               }
+                ### Pipeline for data processing.
+               'pipe_list'  : [ 'filter',     ### Fitler the data
+                                'label',      ### Normalize the label
+                                'dfnum_bin',  ### Create bins for numerical columns
+                                'dfnum_hot',  ### One hot encoding for numerical columns
+                                'dfcat_bin',  ### Create bins for categorical columns
+                                'dfcat_hot',  ### One hot encoding for categorical columns
+                                'dfcross_hot', ]   ### Crossing of features which are one hot encoded
+               }
         },
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
                       },
@@ -173,14 +173,14 @@ def titanic_randomforest(path_model_out="") :
         , 'post_process_fun' : post_process_fun
         , 'pre_process_pars' : {'y_norm_fun' :  None ,
 
-                                ### Pipeline for data processing.
-                               'pipe_list'  : [ 'filter',     ### Filter the data
-                                                'label',      ### Normalize the label
-                                                'dfnum_bin',  ### Create bins for numerical columns
-                                                'dfnum_hot',  ### One hot encoding for numerical columns
-                                                'dfcat_bin',  ### Create bins for categorical columns
-                                                'dfcat_hot',  ### One hot encoding for categorical columns
-                                                'dfcross_hot', ]   ### Crossing of features which are one hot encoded
+                ### Pipeline for data processing.
+               'pipe_list'  : [ 'filter',     ### Filter the data
+                                'label',      ### Normalize the label
+                                'dfnum_bin',  ### Create bins for numerical columns
+                                'dfnum_hot',  ### One hot encoding for numerical columns
+                                'dfcat_bin',  ### Create bins for categorical columns
+                                'dfcat_hot',  ### One hot encoding for categorical columns
+                                'dfcross_hot', ]   ### Crossing of features which are one hot encoded
                                }
         },
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
@@ -188,14 +188,14 @@ def titanic_randomforest(path_model_out="") :
 
       'data_pars': {
           'cols_input_type' : {
-                     "coly"   :   "Survived"
-                    ,"colid"  :   "PassengerId"
-                    ,"colcat" :   [  "Sex", "Embarked" ]
-                    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-                    ,"coltext" :  ["Name","Ticket"]
-                    ,"coldate" :  []
-                    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
-                   },
+                 "coly"   :   "Survived"
+                ,"colid"  :   "PassengerId"
+                ,"colcat" :   [  "Sex", "Embarked" ]
+                ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
+                ,"coltext" :  ["Name","Ticket"]
+                ,"coldate" :  []
+                ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+               },
 
           ### used for the model input
           # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
@@ -244,19 +244,9 @@ def preprocess():
     Preprocessing of input data, in order to prepare them for training
 
     """
-
+    import run
     run.preprocess(config_uri = config_file + '::' + config_name)
 
-    """
-    from source import run_preprocess
-
-    run_preprocess.run_preprocess(model_name        =  config_name, 
-                                  path_data         =  path_data_train, 
-                                  path_output       =  path_model, 
-                                  path_config_model =  path_config_model, 
-                                  n_sample          =  n_sample,
-                                  mode              =  'run_preprocess')
-    """
 
 ########## Train ###########################################################
 def train():
@@ -265,15 +255,8 @@ def train():
     Splits preprocessed data into train and test, and fits them in the model
 
     """
+    import run
     run.train(config_uri = config_file + '::' + config_name)
-
-    """
-    from source import run_train
-    run_train.run_train(config_model_name =  config_name,
-                        path_data         =  path_data_train,
-                        path_output       =  path_model,
-                        path_config_model =  path_config_model , n_sample = n_sample)
-    """
 
 ######### Check model #############################################################
 def check():
@@ -281,10 +264,9 @@ def check():
     It runs trained model and gives feature imporance graph as ouput
 
     """
-
+    import run
     from source import run_train
-    run_train.run_check(path_output =  path_model,
-                        scoring     =  'accuracy' )
+    run.train(config_uri = config_file + '::' + config_name)
 
     #! python source/run_inference.py  run_predict  --config_model_name  LGBMRegressor  --n_sample 1000   --path_model /data/output/a01_lightgbm_huber/    --path_output /data/output/pred_a01_lightgbm_huber/    --path_data /data/input/train/
 
@@ -296,15 +278,10 @@ def predict():
     Creates csv file with predictions
 
     """
+    import run
     run.predict(config_uri = config_file + '::' + config_name)
-    """
-    from source import run_inference
-    run_inference.run_predict(model_name,
-                              path_model  = path_model,
-                              path_data   = path_data_test,
-                              path_output = path_output_pred,
-                              n_sample    = n_sample)
-    """
+
+
 
 def run_all():
     """
