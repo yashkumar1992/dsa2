@@ -14,4 +14,8 @@ Logistic Linear Model.
 
 
 
+zFeat generation:
+automatic features with few
+https://lacava.github.io/feat/examples/archive.html
+
 
