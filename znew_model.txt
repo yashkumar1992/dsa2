@@ -1,0 +1,17 @@
+
+
+Gradient Boosting for Longitual data (over time data)
+https://arxiv.org/abs/2004.02653
+https://github.com/fabsig/GPBoost/tree/master/examples/python-guide
+https://scholarship.miami.edu/discovery/fulldisplay/alma991031447664802976/01UOML_INST:ResearchRepository
+
+
+Neural Boosting Tree
+
+
+
+Logistic Linear Model.
+
+
+
+
