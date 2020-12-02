@@ -1,7 +1,12 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to titatinic dataet
+https://www.kaggle.com/tapioca/multiclass-lightgbm
+
+https://medium.com/@nitin9809/lightgbm-binary-classification-multi-class-classification-regression-using-python-4f22032b36a2
+
+
+
 All in one file config
 !  python multiclass_classifier.py  train
 !  python multiclass_classifier.py  check
