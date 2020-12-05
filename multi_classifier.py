@@ -33,13 +33,18 @@ print(dir_data)
 
 ####################################################################################
 config_file  = f"multiclass_classifier.py"
-data_name    = f"multiclass"     ### in data/input/
+data_name    = f"multiclass_wine"     ### in data/input/
 
 
 
 config_name  = 'multiclass_lightgbm'
 n_sample     =  1000
 
+
+colid   = ''
+coly    = ''
+colcat  = []
+colnum  = []
 
 
 
@@ -101,13 +106,13 @@ def multiclass_lightgbm(path_model_out="") :
 
       'data_pars': {
           'cols_input_type' : {
-                     "coly"   :   "Survived"
-                    ,"colid"  :   "PassengerId"
-                    ,"colcat" :   [  "Sex", "Embarked" ]
-                    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-                    ,"coltext" :  ["Name","Ticket"]
+                     "coly"   :   coly
+                    ,"colid"  :   colid
+                    ,"colcat" :   colcat
+                    ,"colnum" :   colnum
+                    ,"coltext" :  []
                     ,"coldate" :  []
-                    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+                    ,"colcross" : colcross
                    },
 
           ### used for the model input
