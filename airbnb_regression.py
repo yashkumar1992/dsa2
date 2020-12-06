@@ -263,12 +263,13 @@ def airbnb_bayesian_pyro(path_model_out="") :
 ########## Init variable ###########################################################################
 globals()[config_name]()
 
-
 path_config_model = root + f"/{config_file}"
 path_model        = f'data/output/{data_name}/a01_{model_name}/'
 path_data_train   = f'data/input/{data_name}/train/'
 path_data_test    = f'data/input/{data_name}/test/'
 path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
+
 
 
 ###################################################################################
