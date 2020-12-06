@@ -15,20 +15,17 @@ import os
 import pandas as pd
 import json, copy
 
-# from tqdm import tqdm_notebook
 
 
+####################################################################################################
 #### Add path for python import
 sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
+
 
 #### Root folder analysis
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
 
-
-# from diskcache import Cache
-# cache = Cache('db.cache')
-# cache.reset('size_limit', int(2e9))
 
 
 ####################################################################################################
@@ -51,7 +48,6 @@ from util_feature import  load_dataset
 
 def save_features(df, name, path):
     """
-
     :param df:
     :param name:
     :param path:
@@ -64,7 +60,6 @@ def save_features(df, name, path):
        else:
            df0=df
        df0.to_parquet( f"{path}/{name}/features.parquet")
- #      df.to_parquet( f"{path}/{name}/features.parquet")
 
 
 
@@ -83,7 +78,6 @@ def pd_coltext_clean( df, col, stopwords= None , pars=None):
     log(col)
     list1 = []
     list1.append(col)
-    
 
     # fromword = [ r"\b({w})\b".format(w=w)  for w in fromword    ]
     # print(fromword)
@@ -94,8 +88,7 @@ def pd_coltext_clean( df, col, stopwords= None , pars=None):
         dftext[col_n] = dftext[col_n].apply(lambda x: x.translate(string.digits))
         dftext[col_n] = dftext[col_n].apply(lambda x: re.sub("[!@,#$+%*:()'-]", " ", x))
         dftext[col_n] = dftext[col_n].apply(lambda x: coltext_stopwords(x, stopwords=stopwords))     
-
-
+    return dftext
 
 
 def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
@@ -118,7 +111,6 @@ def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
 
             
 
-# @cache.memoize(typed=True,  tag='fib')  ### allow caching results
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={}, filter_pars={}, path_features_store=None):
     """
@@ -136,7 +128,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     from util_feature import (pd_colnum_tocat, pd_col_to_onehot, pd_colcat_mapping, pd_colcat_toint,
                               pd_feature_generate_cross)
 
-    ##### column names for feature generation ###############################################
+    ##### column names for feature generation #####################################################
     log(cols_group)
     coly            = cols_group['coly']  # 'salary'
     colid           = cols_group['colid']  # "jobId"
@@ -150,26 +142,22 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     log(colall)
 
     #### Pipeline Execution
-    pipe_default    = [ "clean_prices", 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+    pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
     pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
 
 
-    ##### Load data ########################################################################
+    ##### Load data ##############################################################################
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
-    
-    ### cleaning colnum that have a price format example $1010,000.01
-    if "clean_prices" in pipe_list :
-        from util_feature import clean_prices
-        df = clean_prices(df,colnum+[coly])
 
-    ##### Filtering / cleaning rows :   ####################################################
+
+    ##### Filtering / cleaning rows :   #########################################################
     if "filter" in pipe_list :
         ymin, ymax = filter_pars.get('ymin', -9999999999.0), filter_pars.get('ymax', 999999999.0)
         df = df[df[coly] > ymin]
         df = df[df[coly] < ymax]
 
 
-    ##### Label processing   ##############################################################
+    ##### Label processing   ####################################################################
     y_norm_fun = None
     if "label" in pipe_list :
         # Target coly processing, Normalization process  , customize by model
@@ -335,10 +323,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
             dftext1  = pd.concat((dftext1, dftext_i))  if dftext1 is not None else dftext_i
         print(dftext1.head(6))
-        dftext1.to_csv(r""+path_features_store+"\dftext.csv", index = False)
+        dftext1.to_parquet(r""+path_features_store+"\dftext.parquet", index = False)
 
 
-        ##################################################################################################
+        #################################################################################################
         ##### Save pre-processor meta-parameters
         os.makedirs(path_pipeline_export, exist_ok=True)
         log(path_pipeline_export)
