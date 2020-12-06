@@ -617,19 +617,7 @@ def pd_colcat_toint(dfref, colname, colcat_map=None, suffix=None):
 
     return df[colname_new], colcat_map
 
-def clean_prices(df, colnum):
-    def clean(x):
-        if isinstance(x, str) and x == x:
-            x=x.replace('$', '').replace(',', '')
-        return (x)	
-    for col in colnum:
-        col_type = df.dtypes[col]
-        if col_type == np.dtype(object):
-            df[col]=df[col].astype(str).apply(clean)
-            df[col]=df[col].replace({'None':None})
-    df.fillna(value=pd.np.nan, inplace=True)
-    df[colnum]=df[colnum].astype("float32")
-    return df
+
 def pd_colnum_tocat(  df, colname=None, colexclude=None, colbinmap=None, bins=5, suffix="_bin",
         method="uniform", na_value=-1, return_val="dataframe,param",
         params={"KMeans_n_clusters": 8, "KMeans_init": 'k-means++', "KMeans_n_init": 10,
