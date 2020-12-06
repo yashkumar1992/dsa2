@@ -49,7 +49,6 @@ from util_feature import  save, load_function_uri
 from util_feature import  load_dataset
 
 
-
 def save_features(df, name, path):
     """
 
@@ -75,9 +74,9 @@ def coltext_stopwords(text, stopwords=None, sep=" "):
     return " ".join(tokens)
 
 
-def pd_coltext_clean( df, col, stopwords= stopwords ):
-    impor string
-    ntoken= pars['n_token']
+def pd_coltext_clean( df, col, stopwords= None , pars=None):
+    import string, re
+    ntoken= pars.get('n_token', 1)
     df      = df.fillna("")
     dftext = df
     log(dftext)
@@ -99,14 +98,14 @@ def pd_coltext_clean( df, col, stopwords= stopwords ):
 
 
 
-def pd_coltext_wordfreq(df, col, stopwords, ntoken=100)
-    sep=" "
+def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
     """
     :param df:
     :param coltext:  text where word frequency should be extracted
     :param nb_to_show:
     :return:
     """
+    sep=" "
     coltext_freq = df[col].apply(lambda x: pd.value_counts(x.split(sep))).sum(axis=0).reset_index()
     coltext_freq.columns = ["word", "freq"]
     coltext_freq = coltext_freq.sort_values("freq", ascending=0)
