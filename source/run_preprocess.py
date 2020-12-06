@@ -42,10 +42,7 @@ def log(*s, n=0, m=1):
 
 from util_feature import  save, load_function_uri
 
-def coltext_stopwords(text, stopwords=None, sep=" "):
-    tokens = text.split(sep)
-    tokens = [t.strip() for t in tokens if t.strip() not in stopwords]
-    return " ".join(tokens)
+
 
 ####################################################################################################
 ####################################################################################################
@@ -70,6 +67,57 @@ def save_features(df, name, path):
        df0.to_parquet( f"{path}/{name}/features.parquet")
  #      df.to_parquet( f"{path}/{name}/features.parquet")
 
+
+
+def coltext_stopwords(text, stopwords=None, sep=" "):
+    tokens = text.split(sep)
+    tokens = [t.strip() for t in tokens if t.strip() not in stopwords]
+    return " ".join(tokens)
+
+
+def pd_coltext_clean( df, col, stopwords= stopwords ):
+    impor string
+    ntoken= pars['n_token']
+    df      = df.fillna("")
+    dftext = df
+    log(dftext)
+    log(col)
+    list1 = []
+    list1.append(col)
+    
+
+    # fromword = [ r"\b({w})\b".format(w=w)  for w in fromword    ]
+    # print(fromword)
+    for col_n in list1:
+        dftext[col_n] = dftext[col_n].fillna("")
+        dftext[col_n] = dftext[col_n].str.lower()
+        dftext[col_n] = dftext[col_n].apply(lambda x: x.translate(string.punctuation))
+        dftext[col_n] = dftext[col_n].apply(lambda x: x.translate(string.digits))
+        dftext[col_n] = dftext[col_n].apply(lambda x: re.sub("[!@,#$+%*:()'-]", " ", x))
+        dftext[col_n] = dftext[col_n].apply(lambda x: coltext_stopwords(x, stopwords=stopwords))     
+
+
+
+
+def pd_coltext_wordfreq(df, col, stopwords, ntoken=100)
+    sep=" "
+    """
+    :param df:
+    :param coltext:  text where word frequency should be extracted
+    :param nb_to_show:
+    :return:
+    """
+    coltext_freq = df[col].apply(lambda x: pd.value_counts(x.split(sep))).sum(axis=0).reset_index()
+    coltext_freq.columns = ["word", "freq"]
+    coltext_freq = coltext_freq.sort_values("freq", ascending=0)
+    log(coltext_freq)
+                      
+    word_tokeep  = coltext_freq["word"].values[:ntoken]
+    word_tokeep  = [  t for t in word_tokeep if t not in stopwords   ]
+
+    return coltext_freq, word_tokeep
+
+            
 
 # @cache.memoize(typed=True,  tag='fib')  ### allow caching results
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
