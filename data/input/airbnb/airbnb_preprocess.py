@@ -1,8 +1,7 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-cd analysis
- run preprocess
+Custom preprocessor
 
 
 
@@ -15,7 +14,6 @@ import os
 import re
 import pandas as pd
 import json, copy
-
 
 
 ####################################################################################################
@@ -42,9 +40,6 @@ def log(*s, n=0, m=1):
     print(sjump, sspace, s, sspace, flush=True)
 
 
-
-
-
 def coltext_stopwords(text, stopwords=None, sep=" "):
     tokens = text.split(sep)
     tokens = [t.strip() for t in tokens if t.strip() not in stopwords]
@@ -53,10 +48,6 @@ def coltext_stopwords(text, stopwords=None, sep=" "):
 
 ####################################################################################################
 ####################################################################################################
-from util_feature import  load_dataset
-
-
-
 def save_features(df, name, path):
     """
 
@@ -106,7 +97,9 @@ def text_preprocess(path_train_X="", path_train_y="", path_pipeline_export="", c
     log(colall)
 
     ##### Load data ########################################################################
+    from util_feature import  load_dataset
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
+
 
     log("##### Coltext processing   ###############################################################")
     from utils import util_text, util_model
