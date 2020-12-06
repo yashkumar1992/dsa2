@@ -16,7 +16,7 @@ import warnings, copy
 warnings.filterwarnings('ignore')
 import os, sys
 import pandas as pd
-
+import numpy as np
 ###################################################################################
 from source import util_feature
 
@@ -32,19 +32,22 @@ print(dir_data)
 
 
 ####################################################################################
-config_file  = f"multiclass_classifier.py"
-data_name    = f"multiclass_wine"     ### in data/input/
+config_file  = f"multi_classifier.py"
+data_name    = f"multiclass"     ### in data/input/
 
 
 
 config_name  = 'multiclass_lightgbm'
-n_sample     =  1000
+n_sample     =  6000
 
 
-colid   = ''
-coly    = ''
-colcat  = []
-colnum  = []
+colid   = 'pet_id'
+coly    = 'pet_category'
+coldate = ['issue_date','listing_date']
+colcat  = ['color_type']
+colnum  = ['length(m)','height(cm)','condition','X1','X2','breed_category']
+colcross= ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']
+
 
 
 
@@ -65,23 +68,24 @@ def multiclass_lightgbm(path_model_out="") :
     path_data_test    = f'data/input/{data_name}/test/'
     path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
 
-    n_sample    = 1000
+    n_sample    = 6000
 
 
     def post_process_fun(y):
         ### After prediction is done
         return  y.astype('int')
 
-    def pre_process_fun(y):
+    def pre_process_fun_multi(y):
         ### Before the prediction is done
-        return  y.astype('int')
+        map_dict_={0:0,1:1,2:2,4:3}
+        return  map_dict_[y]
 
     model_dict = {'model_pars': {
         'model_path'       : path_model_out
 
         ### LightGBM API model       ###################################
         ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
-        ,'model_pars'       : {'objective': 'binary',
+        ,'model_pars'       : {'objective': 'multiclass','num_class':4,'metric':'multi_logloss',
                                 'learning_rate':0.03,'boosting_type':'gbdt'
 
 
@@ -89,7 +93,7 @@ def multiclass_lightgbm(path_model_out="") :
 
         ### After prediction  ##########################################
         , 'post_process_fun' : post_process_fun
-        , 'pre_process_pars' : {'y_norm_fun' :  None ,
+        , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun_multi ,
                                 
                                 ### Pipeline for data processing.
                                'pipe_list'  : [ 'filter',     ### Fitler the data
@@ -101,7 +105,8 @@ def multiclass_lightgbm(path_model_out="") :
                                                 'dfcross_hot', ]
                                }
         },
-      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
+
+      'compute_pars': { 'metric_list': ['roc_auc_score','accuracy_score'],'probability':True,
                       },
 
       'data_pars': {
@@ -126,7 +131,7 @@ def multiclass_lightgbm(path_model_out="") :
 
 
           ### Filter data rows
-         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
+         ,'filter_pars': { 'ymax' : 5 ,'ymin' : -1 }
 
          }
 
