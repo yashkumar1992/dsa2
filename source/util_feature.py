@@ -141,9 +141,12 @@ def metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypr
 
         if metric_name in ["roc_auc_score"]:                                            #y_pred_proba is not defined
             metric_scorer = getattr(importlib.import_module(mod), metric_name)
-            mval          = metric_scorer(ytrue, ypred_proba)
+            mval_=[]
+            for i_ in range(ypred_proba.shape[1]):
+                mval_.append(metric_scorer(pd.get_dummies(ytrue).to_numpy()[:,i_], ypred_proba[:,i_]))
+            mval          = np.mean(np.array(mval_))
 
-        if metric_name in ["root_mean_squared_error"]:
+        elif metric_name in ["root_mean_squared_error"]:
             metric_scorer = getattr(importlib.import_module(mod), "mean_squared_error")
             mval          = np.sqrt(metric_scorer(ytrue, ypred))
 
@@ -617,7 +620,19 @@ def pd_colcat_toint(dfref, colname, colcat_map=None, suffix=None):
 
     return df[colname_new], colcat_map
 
-
+def clean_prices(df, colnum):
+    def clean(x):
+        if isinstance(x, str) and x == x:
+            x=x.replace('$', '').replace(',', '')
+        return (x)	
+    for col in colnum:
+        col_type = df.dtypes[col]
+        if col_type == np.dtype(object):
+            df[col]=df[col].astype(str).apply(clean)
+            df[col]=df[col].replace({'None':None})
+    df.fillna(value=pd.np.nan, inplace=True)
+    df[colnum]=df[colnum].astype("float32")
+    return df
 def pd_colnum_tocat(  df, colname=None, colexclude=None, colbinmap=None, bins=5, suffix="_bin",
         method="uniform", na_value=-1, return_val="dataframe,param",
         params={"KMeans_n_clusters": 8, "KMeans_init": 'k-means++', "KMeans_n_init": 10,

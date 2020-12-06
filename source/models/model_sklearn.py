@@ -116,8 +116,12 @@ def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
         Xpred = get_dataset(data_pars, task_type="predict")
 
     ypred = model.model.predict(Xpred)
+    ypred_proba = model.model.predict_proba(Xpred)
     #ypred = post_process_fun(ypred)
-    return ypred
+    if compute_pars.get("probability", False):
+        return ypred, ypred_proba
+    else:
+        return ypred
 
 
 def reset():
