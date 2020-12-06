@@ -133,3 +133,6 @@ dmypy.json
 /*.sublime-workspace
 /.idea
 /data/input/cardif/train/features_store
+/*.docx
+/data/input/jane
+/first_10_DB_exam_questions.txt
