@@ -38,6 +38,12 @@ n_sample     = 1000
 
 
 
+
+###########################################################################
+####### Pre-processor  ####################################################   
+
+
+
 ####### y normalization ###################################################   
 def y_norm(y, inverse=True, mode='boxcox'):
 	## Normalize the input/output
@@ -64,6 +70,12 @@ def y_norm(y, inverse=True, mode='boxcox'):
 				return y2
 	else:
 			return y
+
+
+##### Custom processor ######################################################
+from data.input.airbnb import airbnb_preprocess
+
+
 
 
 

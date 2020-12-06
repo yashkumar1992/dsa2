@@ -17,15 +17,20 @@ import pandas as pd
 import json, copy
 
 
+
 ####################################################################################################
-#### Add path for python import
-repot_root = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(  repo_root + "/")
-
-
-#### Root folder analysis
+#### Repo Root folder    #############################################
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
-print(root)
+print("repo root", root)
+
+
+
+#### Add  source/  as folder to import   ###########################
+sys.path.append(  root + "/source/")
+from util_feature import  save, load_function_uri
+
+
+
 
 
 
@@ -37,7 +42,6 @@ def log(*s, n=0, m=1):
     print(sjump, sspace, s, sspace, flush=True)
 
 
-from util_feature import  save, load_function_uri
 
 
 
