@@ -42,7 +42,10 @@ def log(*s, n=0, m=1):
 
 from util_feature import  save, load_function_uri
 
-
+def coltext_stopwords(text, stopwords=None, sep=" "):
+    tokens = text.split(sep)
+    tokens = [t.strip() for t in tokens if t.strip() not in stopwords]
+    return " ".join(tokens)
 
 ####################################################################################################
 ####################################################################################################
