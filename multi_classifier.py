@@ -1,7 +1,12 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to titatinic dataet
+https://www.kaggle.com/tapioca/multiclass-lightgbm
+
+https://medium.com/@nitin9809/lightgbm-binary-classification-multi-class-classification-regression-using-python-4f22032b36a2
+
+
+
 All in one file config
 !  python multiclass_classifier.py  train
 !  python multiclass_classifier.py  check
@@ -28,13 +33,18 @@ print(dir_data)
 
 ####################################################################################
 config_file  = f"multiclass_classifier.py"
-data_name    = f"multiclass"     ### in data/input/
+data_name    = f"multiclass_wine"     ### in data/input/
 
 
 
 config_name  = 'multiclass_lightgbm'
 n_sample     =  1000
 
+
+colid   = ''
+coly    = ''
+colcat  = []
+colnum  = []
 
 
 
@@ -96,13 +106,13 @@ def multiclass_lightgbm(path_model_out="") :
 
       'data_pars': {
           'cols_input_type' : {
-                     "coly"   :   "Survived"
-                    ,"colid"  :   "PassengerId"
-                    ,"colcat" :   [  "Sex", "Embarked" ]
-                    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-                    ,"coltext" :  ["Name","Ticket"]
+                     "coly"   :   coly
+                    ,"colid"  :   colid
+                    ,"colcat" :   colcat
+                    ,"colnum" :   colnum
+                    ,"coltext" :  []
                     ,"coldate" :  []
-                    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+                    ,"colcross" : colcross
                    },
 
           ### used for the model input
