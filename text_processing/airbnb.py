@@ -19,7 +19,7 @@ import json, copy
 
 ####################################################################################################
 #### Add path for python import
-repot_root = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(  repo_root + "/")
 
 
