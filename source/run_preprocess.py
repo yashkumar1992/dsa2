@@ -68,6 +68,57 @@ def save_features(df, name, path):
  #      df.to_parquet( f"{path}/{name}/features.parquet")
 
 
+
+def coltext_stopwords(text, stopwords=None, sep=" "):
+    tokens = text.split(sep)
+    tokens = [t.strip() for t in tokens if t.strip() not in stopwords]
+    return " ".join(tokens)
+
+
+def pd_coltext_clean( df, col, stopwords= stopwords ):
+    impor string
+    ntoken= pars['n_token']
+    df      = df.fillna("")
+    dftext = df
+    log(dftext)
+    log(col)
+    list1 = []
+    list1.append(col)
+    
+
+    # fromword = [ r"\b({w})\b".format(w=w)  for w in fromword    ]
+    # print(fromword)
+    for col_n in list1:
+        dftext[col_n] = dftext[col_n].fillna("")
+        dftext[col_n] = dftext[col_n].str.lower()
+        dftext[col_n] = dftext[col_n].apply(lambda x: x.translate(string.punctuation))
+        dftext[col_n] = dftext[col_n].apply(lambda x: x.translate(string.digits))
+        dftext[col_n] = dftext[col_n].apply(lambda x: re.sub("[!@,#$+%*:()'-]", " ", x))
+        dftext[col_n] = dftext[col_n].apply(lambda x: coltext_stopwords(x, stopwords=stopwords))     
+
+
+
+
+def pd_coltext_wordfreq(df, col, stopwords, ntoken=100)
+    sep=" "
+    """
+    :param df:
+    :param coltext:  text where word frequency should be extracted
+    :param nb_to_show:
+    :return:
+    """
+    coltext_freq = df[col].apply(lambda x: pd.value_counts(x.split(sep))).sum(axis=0).reset_index()
+    coltext_freq.columns = ["word", "freq"]
+    coltext_freq = coltext_freq.sort_values("freq", ascending=0)
+    log(coltext_freq)
+                      
+    word_tokeep  = coltext_freq["word"].values[:ntoken]
+    word_tokeep  = [  t for t in word_tokeep if t not in stopwords   ]
+
+    return coltext_freq, word_tokeep
+
+            
+
 # @cache.memoize(typed=True,  tag='fib')  ### allow caching results
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={}, filter_pars={}, path_features_store=None):
@@ -211,6 +262,99 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     if "dftext" in pipe_list :
         log("##### Coltext processing   ###############################################################")
+        from utils import util_text, util_model
+
+        ### Remoe common words  #############################################
+        import json
+        import string
+        punctuations = string.punctuation
+        stopwords = json.load(open("stopwords_en.json") )["word"]
+        stopwords = [ t for t in string.punctuation ] + stopwords
+        stopwords = [ "", " ", ",", ".", "-", "*", '€', "+", "/" ] + stopwords
+        stopwords =list(set( stopwords ))
+        stopwords.sort()
+        print( stopwords )
+        stopwords = set(stopwords)
+
+        def pipe_text(df, col, pars={}):
+            ntoken= pars['n_token']
+            df      = df.fillna("")
+            dftext = df
+            log(dftext)
+            log(col)
+            list1 = []
+            list1.append(col)
+            
+
+            # fromword = [ r"\b({w})\b".format(w=w)  for w in fromword    ]
+            # print(fromword)
+            for col_n in list1:
+                dftext[col_n] = dftext[col_n].fillna("")
+                dftext[col_n] = dftext[col_n].str.lower()
+                dftext[col_n] = dftext[col_n].apply(lambda x: x.translate(string.punctuation))
+                dftext[col_n] = dftext[col_n].apply(lambda x: x.translate(string.digits))
+                dftext[col_n] = dftext[col_n].apply(lambda x: re.sub("[!@,#$+%*:()'-]", " ", x))
+
+                dftext[col_n] = dftext[col_n].apply(lambda x: coltext_stopwords(x, stopwords=stopwords))              
+            
+            print(dftext.head(6))
+            
+
+            sep=" "
+            """
+            :param df:
+            :param coltext:  text where word frequency should be extracted
+            :param nb_to_show:
+            :return:
+            """
+            coltext_freq = df[col].apply(lambda x: pd.value_counts(x.split(sep))).sum(axis=0).reset_index()
+            coltext_freq.columns = ["word", "freq"]
+            coltext_freq = coltext_freq.sort_values("freq", ascending=0)
+            log(coltext_freq)
+                              
+            word_tokeep  = coltext_freq["word"].values[:ntoken]
+            word_tokeep  = [  t for t in word_tokeep if t not in stopwords   ]
+
+            
+            dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
+                                                                    word_tokeep = word_tokeep ,
+                                                                    return_val  = "dataframe,param"  )
+            
+            log(word_tokeep_dict)
+            ###  Dimesnion reduction for Sparse Matrix
+            dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict, 
+                                                           colname=None,
+                                                           model_pretrain=None,                       
+                                                           colprefix= col + "_svd",
+                                                           method="svd",  dimpca=2,  return_val="dataframe,param")            
+            return dftext_svd_list
+
+        pars = {'n_token' : 100 }
+        dftext1 = None
+        for coltext_i in coltext :
+            dftext_i =   pipe_text( df[[coltext_i ]], coltext_i, pars ) 
+            save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
+            dftext1  = pd.concat((dftext1, dftext_i))  if dftext1 is not None else dftext_i
+        print(dftext1.head(6))
+        dftext1.to_csv(r""+path_features_store+"\dftext.csv", index = False)
+
+
+        ##################################################################################################
+        ##### Save pre-processor meta-parameters
+        os.makedirs(path_pipeline_export, exist_ok=True)
+        log(path_pipeline_export)
+        cols_family = {}
+
+        for t in ['coltext']:
+            tfile = f'{path_pipeline_export}/{t}.pkl'
+            log(tfile)
+            t_val = locals().get(t, None)
+            if t_val is not None :
+               save(t_val, tfile)
+               cols_family[t] = t_val     
+     
+        """
+        log("##### Coltext processing   ###############################################################")
         from utils import util_text, util_text_embedding, util_model
 
         ### Remoe common words  #############################################
@@ -254,7 +398,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             dftext  = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
 
 
-
+    """
     if "dfdate" in pipe_list :
         log("##### Coldate processing   #############################################################")
         from utils import util_date
