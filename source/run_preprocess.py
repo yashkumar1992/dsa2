@@ -115,7 +115,7 @@ def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
 def nlp_get_stopwords():
     import json
     import string
-    stopwords = json.load(open("stopwords_en.json") )["word"]
+    stopwords = json.load(open("source/utils/stopwords_en.json") )["word"]
     stopwords = [ t for t in string.punctuation ] + stopwords
     stopwords = [ "", " ", ",", ".", "-", "*", '€', "+", "/" ] + stopwords
     stopwords =list(set( stopwords ))
@@ -222,6 +222,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     log(df[colall].dtypes)
 
 
+    if "dfnum" in pipe_list :
+        pass
+
+
     if "dfnum_norm" in pipe_list :
         log("### colnum normalize  ###############################################################")
         from util_feature import pd_colnum_normalize
@@ -297,6 +301,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     if "dftext" in pipe_list :
         log("##### Coltext processing   ###############################################################")
+        stopwords = nlp_get_stopwords()
+        pars      = {'n_token' : 100 , 'stopwords': stopwords}
         dftext    = None
         for coltext_i in coltext :
             ##### Run the text processor on each column text  #############################
