@@ -32,7 +32,7 @@ data_name    = "airbnb"
 
 
 config_name  = 'airbnb_lightgbm'
-n_sample     = -1
+n_sample     = 1000
 
 
 
@@ -112,7 +112,7 @@ def airbnb_lightgbm(path_model_out="") :
 		,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
 
 						### Pipeline for data processing.
-					   'pipe_list'  : ['filter', 'label',   'dfcat_bin', 'dfcat_hot',  ]
+					   'pipe_list'  : ['filter', 'label',   'dfcat_bin', 'dftext'   ]
 													 }
 														 },
 	'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
