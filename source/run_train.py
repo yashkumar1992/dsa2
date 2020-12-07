@@ -101,6 +101,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     colid  = cols_family['colid']
     colsX  = data_pars['cols_model']
     coly   = data_pars['coly']
+
     data_pars['data_type'] = 'ram'
     data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
                           'ytrain' : dfX[coly].iloc[:itrain],
@@ -123,14 +124,14 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     from util_feature import  metrics_eval
 
     stats = {}
-    ypred               = modelx.predict(dfX[colsX], compute_pars=compute_pars)
+    ypred, ypred_proba    = modelx.predict(dfX[colsX], compute_pars=compute_pars)
     dfX[coly + '_pred'] = ypred  # y_norm(ypred, inverse=True)
     dfX[coly]           = post_process_fun(dfX[coly].values)
     # dfX[coly] = dfX[coly].values.astype('int64')
 
     metrics_test = metrics_eval(metric_list,
                                 ytrue= dfX[coly].iloc[ival:],
-                                ypred= dfX[coly + '_pred'].iloc[ival:], )
+                                ypred= dfX[coly + '_pred'].iloc[ival:], ypred_proba=ypred_proba[ival:,:])
     stats['metrics_test'] = metrics_test
     log(stats)
 
