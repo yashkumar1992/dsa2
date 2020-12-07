@@ -81,17 +81,10 @@ def titanic_lightgbm(path_model_out="") :
         ### After prediction is done
         return  y.astype('int')
 
+
     def pre_process_fun(y):
         ### Before the prediction is done
         return  y.astype('int')
-
-
-    ####### DOnt change  #################################################
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
 
 
     model_dict = {'model_pars': {
@@ -143,12 +136,19 @@ def titanic_lightgbm(path_model_out="") :
 
     ################################################################################################
     ##### Filling Global parameters    #############################################################
+    ####### DOnt change  #################################################
+    path_config_model = root + f"/{config_file}"
+    path_model        = f'data/output/{data_name}/a01_{model_name}/'
+    path_data_train   = f'data/input/{data_name}/train/'
+    path_data_test    = f'data/input/{data_name}/test/'
+    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
     model_dict[ 'global_pars'] = {}
-    global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train', 
+    global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train',
                    'path_data_test', 'path_output_pred', 'n_sample'
             ]
     for t in global_pars:
-      model_dict['global_pars'][t] = globals()[t] 
+      model_dict['global_pars'][t] = globals()[t]
 
 
     return model_dict
