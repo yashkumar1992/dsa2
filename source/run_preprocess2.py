@@ -90,7 +90,7 @@ def pd_coltext_clean( df, col, stopwords= None , pars=None):
         dftext[col_n] = dftext[col_n].apply(lambda x: x.translate(string.punctuation))
         dftext[col_n] = dftext[col_n].apply(lambda x: x.translate(string.digits))
         dftext[col_n] = dftext[col_n].apply(lambda x: re.sub("[!@,#$+%*:()'-]", " ", x))
-        dftext[col_n] = dftext[col_n].apply(lambda x: coltext_stopwords(x, stopwords=stopwords))     
+        dftext[col_n] = dftext[col_n].apply(lambda x: coltext_stopwords(x, stopwords=stopwords))
     return dftext
 
 def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
@@ -105,7 +105,7 @@ def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
     coltext_freq.columns = ["word", "freq"]
     coltext_freq = coltext_freq.sort_values("freq", ascending=0)
     log(coltext_freq)
-                      
+
     word_tokeep  = coltext_freq["word"].values[:ntoken]
     word_tokeep  = [  t for t in word_tokeep if t not in stopwords   ]
 
@@ -145,48 +145,9 @@ def pipe_text(df, col, pars={}):
 
 
 
-####################################################################################################
-####################################################################################################
-def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
-               preprocess_pars={}, filter_pars={}, path_features_store=None):
-    """
-    :param path_train_X:
-    :param path_train_y:
-    :param path_pipeline_export:
-    :param cols_group:
-    :param n_sample:
-    :param preprocess_pars:
-    :param filter_pars:
-    :param path_features_store:
-    :return:
-    """
-    from util_feature import (pd_colnum_tocat, pd_col_to_onehot, pd_colcat_mapping, pd_colcat_toint,
-                              pd_feature_generate_cross)
-
-    ##### column names for feature generation #####################################################
-    log(cols_group)
-    coly            = cols_group['coly']  # 'salary'
-    colid           = cols_group['colid']  # "jobId"
-    colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
-    colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
-    
-    colcross_single = cols_group.get('colcross', [])   ### List of single columns
-    coltext         = cols_group.get('coltext', [])
-    coldate         = cols_group.get('coldate', [])
-    colall          = colnum + colcat + coltext + coldate
-    log(colall)
-
-    #### Pipeline Execution
-    pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
-    pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
-    pipe_list_pars  = preprocess_pars.get('pipe_pars', [])
 
 
-
-    ##### Load data ##############################################################################
-    df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
-
-
+def temp():
     ##### Filtering / cleaning rows :   #########################################################
     if "filter" in pipe_list :
         def isfloat(x):
@@ -260,6 +221,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colcat_map = pd_colcat_mapping(df, colcat)
     log(df[colcat].dtypes, colcat_map)
 
+
+def pipe_dfcat_hot():
     if "dfcat_hot" in pipe_list :
         log("#### colcat to onehot")
         dfcat_hot, colcat_onehot = pd_col_to_onehot(df[colcat], colname=colcat,
@@ -326,9 +289,68 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         save_features(dfdate, 'dfdate', path_features_store)
 
 
+
+####################################################################################################
+####################################################################################################
+def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
+               preprocess_pars={}, filter_pars={}, path_features_store=None):
+    """
+    :param path_train_X:
+    :param path_train_y:
+    :param path_pipeline_export:
+    :param cols_group:
+    :param n_sample:
+    :param preprocess_pars:
+    :param filter_pars:
+    :param path_features_store:
+    :return:
+    """
+    from util_feature import (pd_colnum_tocat, pd_col_to_onehot, pd_colcat_mapping, pd_colcat_toint,
+                              pd_feature_generate_cross)
+
+    ##### column names for feature generation #####################################################
+    log(cols_group)
+    coly            = cols_group['coly']  # 'salary'
+    colid           = cols_group['colid']  # "jobId"
+    colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
+    colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
+
+    colcross_single = cols_group.get('colcross', [])   ### List of single columns
+    coltext         = cols_group.get('coltext', [])
+    coldate         = cols_group.get('coldate', [])
+    colall          = colnum + colcat + coltext + coldate
+    log(colall)
+
+    #### Pipeline Execution
+    pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+    pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
+    pipe_list_pars  = preprocess_pars.get('pipe_pars', [])
+
+
+    ##### Load data ###########################################################################
+    df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
+
+
+    ##### Generate features ###################################################################
+    for pipe_i in pipe_list :
+       log("###################", pipe_i, "##################################################")
+       pipe_fun  =  load_function_uri(pipe_i['uri'])
+       cols_name =  pipe_i['cols_family']
+       cols_list =  cols_group[ cols_name  ]
+       dfi_all   =  {}
+       for cols_i in cols_list :
+            ##### Run the text processor on each column \  #############################
+            dfi     = pipe_fun( df[[cols_i ]], cols_i, pars =  pipe_i.get('pars', {}) )
+            dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi))  if dfi_all.get(cols_name) is not None else dfi
+            save_features(dfi, cols_name + cols_i, path_features_store)
+
+       log(dfi_all.head(6))
+       save_features(dfi_all, cols_name, path_features_store)
+
+
+
     ###################################################################################
-# ###############
-    ##### Save pre-processor meta-parameters
+    ##### Save pre-processor meta-paramete
     os.makedirs(path_pipeline_export, exist_ok=True)
     log(path_pipeline_export)
     cols_family = {}
@@ -351,12 +373,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            cols_family[t] = t_val
 
 
-    ######  Merge AlL  #############################################################################
+    ######  Merge AlL  #################################################################
     dfXy = df[colnum + colcat + [coly] ]
     for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',
                'dfdate',  'dftext'  ] :
         if t in locals() :
-           dfXy = pd.concat((dfXy, locals()[t] ), axis=1)
+           dfXy = pd.concat((dfXy, dfi_all[t] ), axis=1)
     save_features(dfXy, 'dfX', path_features_store)
 
     colXy = list(dfXy.columns)
@@ -372,17 +394,17 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={}, filter_pars={}, path_features_store=None):
-    
+
     from source.util_feature import load
 
     dfXy        = pd.read_parquet(path_features_store + "/dfX/features.parquet")
 
     try :
-       dfy  = pd.read_parquet(path_features_store + "/dfy/features.parquet")  
-       dfXy = dfXy.join(dfy, on= cols_group['colid']  , how="left") 
+       dfy  = pd.read_parquet(path_features_store + "/dfy/features.parquet")
+       dfXy = dfXy.join(dfy, on= cols_group['colid']  , how="left")
     except :
        log('Error no label', path_features_store + "/dfy/features.parquet")
-     
+
     cols_family = load(f'{path_pipeline_export}/cols_family.pkl')
 
     return  dfXy, cols_family
@@ -430,12 +452,12 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
 
 
     model_dict['data_pars']['coly'] = cols['coly']
-    
+
     ### Generate actual column names from colum groups : colnum , colcat
-    model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])                
+    model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])
     log(  model_dict['data_pars']['cols_model'] , model_dict['data_pars']['coly'])
-    
-   
+
+
     log("######### finish #################################", )
 
 
@@ -447,80 +469,3 @@ if __name__ == "__main__":
 
 
 
-
-
-
-
-"""
-        pipe_text = load_function_uri( pipe_list_pars['dftext'] )
-        pipe_text = None
-
-        if pipe_text is None  :
-           stopwords = nlp_get_stopwords()
-           pars      = {'n_token' : 100 , 'stopwords': stopwords}
-        else :
-           stopwords = nlp_get_stopwords()
-           pars      = {'n_token' : 100 , 'stopwords': stopwords}
-           
-           
-"""
-
-
-
-
-#################################################################################################
-##### Save pre-processor meta-parameters
-"""
-        os.makedirs(path_pipeline_export, exist_ok=True)
-        log(path_pipeline_export)
-        cols_family = {}
-
-        for t in ['coltext']:
-            tfile = f'{path_pipeline_export}/{t}.pkl'
-            log(tfile)
-            t_val = locals().get(t, None)
-            if t_val is not None :
-               save(t_val, tfile)
-               cols_family[t] = t_val     
-        """
-
-"""
-        log("##### Coltext processing   ###############################################################")
-        from utils import util_text, util_text_embedding, util_model
-        ### Remoe common words  #############################################
-        import json
-        import string
-        punctuations = string.punctuation
-        stopwords = json.load(open("stopwords_en.json") )["word"]
-        stopwords = [ t for t in string.punctuation ] + stopwords
-        stopwords = [ "", " ", ",", ".", "-", "*", '€', "+", "/" ] + stopwords
-        stopwords =list(set( stopwords ))
-        stopwords.sort()
-        print( stopwords )
-        stopwords = set(stopwords)
-        def pipe_text(df, col, pars={}):
-            ntoken= pars['n_token']
-            df      = df[col].fillna("")
-            dftext  = util_text.pd_coltext_clean( df[col], col, stopwords= stopwords )                 
-            print(dftext.head(6))
-            coltext_freq = util_text.pd_coltext_wordfreq(dftext, col)                                 
-            word_tokeep  = coltext_freq[col]["word"].values[:ntoken]
-            word_tokeep  = [  t for t in word_tokeep if t not in stopwords   ]
-             
-            dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
-                                                                    word_tokeep = word_tokeep ,
-                                                                    return_val  = "dataframe,param"  )
-            ###  Dimesnion reduction for Sparse Matrix
-            dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict, 
-                                                           colname=None,
-                                                           model_pretrain=None,                       
-                                                           colprefix= col + "_svd",
-                                                           method="svd",  dimpca=2,  return_val="dataframe,param")            
-            return dftext_svd_list
-        pars = {'n_token' : 100 }
-        dftext = None
-        for coltext_i in coltext :
-            dftext_i =   pipe_text( df[[coltext_i ]], coltext_i, pars ) 
-            save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
-            dftext  = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
-"""

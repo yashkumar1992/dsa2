@@ -1,0 +1,349 @@
+os.getcwd D:\_devs\Python01\gitdev\dsa2
+D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:/_devs/Python01/gitdev/dsa2/data/
+D:/_devs/Python01/gitdev/dsa2/
+os.getcwd D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier/',) 
+  ('#### Model Params Dynamic loading  ###############################################',) 
+
+  ('D:\\_devs\\Python01\\gitdev',) 
+D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:/_devs/Python01/gitdev/dsa2/data/
+  ({'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x0000019AC79FFAE8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x0000019AC79FFEA0>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type'], 'colnum': ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category'], 'coltext': [], 'coldate': [], 'colcross': ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']}, 'cols_model_group': ['colnum', 'colcat_bin'], 'cols_model': [], 'coly': [], 'filter_pars': {'ymax': 5, 'ymin': -1}}, 'global_pars': {'config_name': 'multiclass_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multiclass_lightgbm/', 'n_sample': 6000}},) 
+  ('#### load input column family  ###################################################',) 
+  ({'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type'], 'colnum': ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category'], 'coltext': [], 'coldate': [], 'colcross': ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']},) 
+  ('#### Preprocess  #################################################################',) 
+
+  ({'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type'], 'colnum': ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category'], 'coltext': [], 'coldate': [], 'colcross': ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']},) 
+
+  (['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category', 'color_type'],) 
+
+  ('loading', 'pet_id', 'D:/_devs/Python01/gitdev/dsa2/data/input/multiclass/train//features.zip') 
+['D:/_devs/Python01/gitdev/dsa2/data/input/multiclass/train\\features.zip']
+
+  ('y_norm_fun preprocess_pars',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//y_norm.pkl',) 
+
+  (length(m)         float32
+height(cm)        float32
+condition         float32
+X1                float32
+X2                float32
+breed_category    float32
+color_type         object
+dtype: object,) 
+
+  ('### colnum Map numerics to Category bin  ###########################################',) 
+length(m)
+              length(m)                      
+                   size      mean   max   min
+length(m)_bin                                
+0                   579  0.049067  0.09  0.00
+1                   590  0.143678  0.19  0.10
+2                   639  0.243772  0.29  0.20
+3                   591  0.344924  0.39  0.30
+4                   618  0.450227  0.50  0.40
+5                   547  0.550512  0.59  0.51
+6                   640  0.651234  0.70  0.60
+7                   528  0.749318  0.79  0.71
+8                   703  0.848691  0.90  0.80
+9                   565  0.953558  1.00  0.91
+height(cm)
+               height(cm)                                 
+                     size       mean        max        min
+height(cm)_bin                                            
+0                     614   7.198111   9.520000   5.030000
+1                     588  11.788912  14.020000   9.540000
+2                     612  16.300425  18.510000  14.030000
+3                     623  20.753338  23.010000  18.530001
+4                     576  25.169584  27.510000  23.020000
+5                     607  29.688238  32.000000  27.520000
+6                     580  34.298466  36.500000  32.020000
+7                     546  38.782181  40.990002  36.509998
+8                     616  43.254009  45.490002  41.000000
+9                     638  47.754230  49.990002  45.500000
+condition
+              condition               
+                   size mean  max  min
+condition_bin                         
+-1                  452  NaN  NaN  NaN
+ 0                 1993  0.0  0.0  0.0
+ 4                 2193  1.0  1.0  1.0
+ 9                 1362  2.0  2.0  2.0
+X1
+          X1                       
+        size       mean   max   min
+X1_bin                             
+0       3412   0.004689   1.0   0.0
+1         14   2.071429   3.0   2.0
+2          3   4.333333   5.0   4.0
+3        487   6.991786   7.0   6.0
+4         55   8.745455   9.0   8.0
+5         15  10.866667  11.0  10.0
+6       1387  12.985580  13.0  12.0
+7        173  14.994220  15.0  14.0
+8        270  16.299999  17.0  16.0
+9        184  18.005434  19.0  18.0
+X2
+          X2               
+        size mean  max  min
+X2_bin                     
+0       2731  1.0  1.0  1.0
+1         65  2.0  2.0  2.0
+2         18  3.0  3.0  3.0
+3        407  4.0  4.0  4.0
+4          5  5.0  5.0  5.0
+6          3  6.0  6.0  6.0
+7       1117  7.0  7.0  7.0
+8         16  8.0  8.0  8.0
+9       1638  9.0  9.0  9.0
+breed_category
+                   breed_category               
+                             size mean  max  min
+breed_category_bin                              
+0                            2881  0.0  0.0  0.0
+4                            2667  1.0  1.0  1.0
+9                             452  2.0  2.0  2.0
+
+  (OrderedDict([('length(m)', [-0.0001, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0]), ('height(cm)', [5.02990020980835, 9.526000499725342, 14.022000789642334, 18.518001079559326, 23.01400136947632, 27.51000165939331, 32.0060019493103, 36.502002239227295, 40.99800252914429, 45.49400281906128, 49.99000310897827]), ('condition', [-0.0001, 0.2, 0.4, 0.6000000000000001, 0.8, 1.0, 1.2000000000000002, 1.4000000000000001, 1.6, 1.8, 2.0]), ('X1', [-0.0001, 1.9, 3.8, 5.699999999999999, 7.6, 9.5, 11.399999999999999, 13.299999999999999, 15.2, 17.099999999999998, 19.0]), ('X2', [0.9999, 1.8, 2.6, 3.4000000000000004, 4.2, 5.0, 5.800000000000001, 6.6000000000000005, 7.4, 8.2, 9.0]), ('breed_category', [-0.0001, 0.2, 0.4, 0.6000000000000001, 0.8, 1.0, 1.2000000000000002, 1.4000000000000001, 1.6, 1.8, 2.0])]),) 
+
+  (['length(m)_bin', 'height(cm)_bin', 'condition_bin', 'X1_bin', 'X2_bin', 'breed_category_bin'],) 
+
+  ('### colnum bin to One Hot',) 
+length(m)_bin 10 (6000, 6)
+height(cm)_bin 10 (6000, 15)
+condition_bin 4 (6000, 24)
+X1_bin 10 (6000, 27)
+X2_bin 9 (6000, 36)
+breed_category_bin 3 (6000, 44)
+
+  (['length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'condition_bin_-1', 'condition_bin_0', 'condition_bin_4', 'condition_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9', 'breed_category_bin_0', 'breed_category_bin_4', 'breed_category_bin_9'],) 
+
+  (color_type    object
+dtype: object, {'cat_map': {'color_type': {'Agouti': 0, 'Apricot': 1, 'Black': 2, 'Black Brindle': 3, 'Black Smoke': 4, 'Black Tabby': 5, 'Blue': 6, 'Blue Cream': 7, 'Blue Merle': 8, 'Blue Point': 9, 'Blue Smoke': 10, 'Blue Tabby': 11, 'Blue Tick': 12, 'Blue Tiger': 13, 'Brown': 14, 'Brown Brindle': 15, 'Brown Merle': 16, 'Brown Tabby': 17, 'Brown Tiger': 18, 'Buff': 19, 'Calico': 20, 'Calico Point': 21, 'Chocolate': 22, 'Chocolate Point': 23, 'Cream': 24, 'Cream Tabby': 25, 'Fawn': 26, 'Flame Point': 27, 'Gold': 28, 'Gray': 29, 'Gray Tabby': 30, 'Green': 31, 'Lilac Point': 32, 'Liver': 33, 'Liver Tick': 34, 'Lynx Point': 35, 'Orange': 36, 'Orange Tabby': 37, 'Red': 38, 'Red Merle': 39, 'Red Tick': 40, 'Sable': 41, 'Seal Point': 42, 'Silver': 43, 'Silver Tabby': 44, 'Tan': 45, 'Torbie': 46, 'Tortie': 47, 'Tortie Point': 48, 'Tricolor': 49, 'White': 50, 'Yellow': 51, 'Yellow Brindle': 52}}, 'cat_map_inverse': {'color_type': {0: 'Agouti', 1: 'Apricot', 2: 'Black', 3: 'Black Brindle', 4: 'Black Smoke', 5: 'Black Tabby', 6: 'Blue', 7: 'Blue Cream', 8: 'Blue Merle', 9: 'Blue Point', 10: 'Blue Smoke', 11: 'Blue Tabby', 12: 'Blue Tick', 13: 'Blue Tiger', 14: 'Brown', 15: 'Brown Brindle', 16: 'Brown Merle', 17: 'Brown Tabby', 18: 'Brown Tiger', 19: 'Buff', 20: 'Calico', 21: 'Calico Point', 22: 'Chocolate', 23: 'Chocolate Point', 24: 'Cream', 25: 'Cream Tabby', 26: 'Fawn', 27: 'Flame Point', 28: 'Gold', 29: 'Gray', 30: 'Gray Tabby', 31: 'Green', 32: 'Lilac Point', 33: 'Liver', 34: 'Liver Tick', 35: 'Lynx Point', 36: 'Orange', 37: 'Orange Tabby', 38: 'Red', 39: 'Red Merle', 40: 'Red Tick', 41: 'Sable', 42: 'Seal Point', 43: 'Silver', 44: 'Silver Tabby', 45: 'Tan', 46: 'Torbie', 47: 'Tortie', 48: 'Tortie Point', 49: 'Tricolor', 50: 'White', 51: 'Yellow', 52: 'Yellow Brindle'}}}) 
+
+  ('#### colcat to onehot',) 
+color_type 53 (6000, 1)
+
+  (            color_type_Agouti  ...  color_type_Yellow Brindle
+pet_id                         ...                           
+ANSL_69903                  0  ...                          0
+ANSL_66892                  0  ...                          0
+ANSL_69750                  0  ...                          0
+ANSL_71623                  0  ...                          0
+ANSL_57969                  0  ...                          0
+
+[5 rows x 53 columns],) 
+
+  ('#### Colcat to integer encoding ',) 
+
+  ('#####  Cross Features From OneHot Features   ######################################',) 
+
+  (pet_id                            ANSL_69903  ANSL_66892
+color_type_Black-length(m)_bin_0           0           0
+color_type_Black-length(m)_bin_1           0           0
+color_type_Black-length(m)_bin_2           0           0
+color_type_Black-length(m)_bin_3           0           0
+color_type_Black-length(m)_bin_4           0           0
+...                                      ...         ...
+X2_bin_7-breed_category_bin_0              0           0
+X2_bin_7-breed_category_bin_4              0           0
+X2_bin_9-breed_category_bin_0              1           1
+X2_bin_9-breed_category_bin_4              0           0
+X2_bin_9-breed_category_bin_9              0           0
+
+[301 rows x 2 columns],) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline/',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colid.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colid.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_bin.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_bin.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_onehot.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_onehot.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_binmap.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_binmap.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_bin.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_bin.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_onehot.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_onehot.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_bin_map.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_bin_map.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcross_single_onehot_select.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcross_single_onehot_select.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcross_pair_onehot.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcross_pair_onehot.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcross_pair.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcross_pair.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//coldate.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//coldate.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//coltext.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//coltext.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//coly.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//coly.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//y_norm_fun.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//y_norm_fun.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colsX.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//cols_family.pkl',) 
+  ('used columns', ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category', 'color_type_int'], 'pet_category') 
+  ('######### Train model: ###########################################################',) 
+  ("{'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x0000019AC79FFAE8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x0000019AC79FFEA0>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type'], 'colnum': ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category'], 'coltext': [], 'coldate': [], 'colcross': ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type', 'leng",) 
+  ('#### Data preparation #############################################################',) 
+  ((6000, 415),) 
+  ('#### Model Instance ##########################################################',) 
+  (<module 'models.model_sklearn' from 'D:\\_devs\\Python01\\gitdev\\dsa2\\source\\models\\model_sklearn.py'>,) 
+[1]	valid_0's multi_logloss: 0.852653
+[2]	valid_0's multi_logloss: 0.826056
+[3]	valid_0's multi_logloss: 0.802785
+[4]	valid_0's multi_logloss: 0.781647
+[5]	valid_0's multi_logloss: 0.761933
+[6]	valid_0's multi_logloss: 0.743991
+[7]	valid_0's multi_logloss: 0.726955
+[8]	valid_0's multi_logloss: 0.711078
+[9]	valid_0's multi_logloss: 0.696199
+[10]	valid_0's multi_logloss: 0.68203
+[11]	valid_0's multi_logloss: 0.668656
+[12]	valid_0's multi_logloss: 0.655933
+[13]	valid_0's multi_logloss: 0.643802
+[14]	valid_0's multi_logloss: 0.632364
+[15]	valid_0's multi_logloss: 0.621429
+[16]	valid_0's multi_logloss: 0.61105
+[17]	valid_0's multi_logloss: 0.601214
+[18]	valid_0's multi_logloss: 0.59173
+[19]	valid_0's multi_logloss: 0.582793
+[20]	valid_0's multi_logloss: 0.574012
+[21]	valid_0's multi_logloss: 0.565793
+[22]	valid_0's multi_logloss: 0.557849
+[23]	valid_0's multi_logloss: 0.550237
+[24]	valid_0's multi_logloss: 0.542976
+[25]	valid_0's multi_logloss: 0.536012
+[26]	valid_0's multi_logloss: 0.529317
+[27]	valid_0's multi_logloss: 0.522782
+[28]	valid_0's multi_logloss: 0.516544
+[29]	valid_0's multi_logloss: 0.510924
+[30]	valid_0's multi_logloss: 0.505042
+[31]	valid_0's multi_logloss: 0.500001
+[32]	valid_0's multi_logloss: 0.494574
+[33]	valid_0's multi_logloss: 0.489924
+[34]	valid_0's multi_logloss: 0.484864
+[35]	valid_0's multi_logloss: 0.48009
+[36]	valid_0's multi_logloss: 0.475912
+[37]	valid_0's multi_logloss: 0.47155
+[38]	valid_0's multi_logloss: 0.467398
+[39]	valid_0's multi_logloss: 0.463944
+[40]	valid_0's multi_logloss: 0.460065
+[41]	valid_0's multi_logloss: 0.456379
+[42]	valid_0's multi_logloss: 0.452828
+[43]	valid_0's multi_logloss: 0.449334
+[44]	valid_0's multi_logloss: 0.446058
+[45]	valid_0's multi_logloss: 0.44288
+[46]	valid_0's multi_logloss: 0.439811
+[47]	valid_0's multi_logloss: 0.436835
+[48]	valid_0's multi_logloss: 0.434125
+[49]	valid_0's multi_logloss: 0.431482
+[50]	valid_0's multi_logloss: 0.428811
+[51]	valid_0's multi_logloss: 0.426194
+[52]	valid_0's multi_logloss: 0.423798
+[53]	valid_0's multi_logloss: 0.421447
+[54]	valid_0's multi_logloss: 0.419195
+[55]	valid_0's multi_logloss: 0.416885
+[56]	valid_0's multi_logloss: 0.414707
+[57]	valid_0's multi_logloss: 0.412631
+[58]	valid_0's multi_logloss: 0.410588
+[59]	valid_0's multi_logloss: 0.408705
+[60]	valid_0's multi_logloss: 0.406787
+[61]	valid_0's multi_logloss: 0.405075
+[62]	valid_0's multi_logloss: 0.403315
+[63]	valid_0's multi_logloss: 0.401623
+[64]	valid_0's multi_logloss: 0.39994
+[65]	valid_0's multi_logloss: 0.398309
+[66]	valid_0's multi_logloss: 0.396656
+[67]	valid_0's multi_logloss: 0.395185
+[68]	valid_0's multi_logloss: 0.393601
+[69]	valid_0's multi_logloss: 0.392207
+[70]	valid_0's multi_logloss: 0.390871
+[71]	valid_0's multi_logloss: 0.389481
+[72]	valid_0's multi_logloss: 0.38815
+[73]	valid_0's multi_logloss: 0.386865
+[74]	valid_0's multi_logloss: 0.385717
+[75]	valid_0's multi_logloss: 0.384565
+[76]	valid_0's multi_logloss: 0.383345
+[77]	valid_0's multi_logloss: 0.382224
+[78]	valid_0's multi_logloss: 0.3812
+[79]	valid_0's multi_logloss: 0.38013
+[80]	valid_0's multi_logloss: 0.37905
+[81]	valid_0's multi_logloss: 0.378197
+[82]	valid_0's multi_logloss: 0.37725
+[83]	valid_0's multi_logloss: 0.376231
+[84]	valid_0's multi_logloss: 0.375321
+[85]	valid_0's multi_logloss: 0.37481
+[86]	valid_0's multi_logloss: 0.373848
+[87]	valid_0's multi_logloss: 0.373367
+[88]	valid_0's multi_logloss: 0.372195
+[89]	valid_0's multi_logloss: 0.371304
+[90]	valid_0's multi_logloss: 0.370352
+[91]	valid_0's multi_logloss: 0.369448
+[92]	valid_0's multi_logloss: 0.368807
+[93]	valid_0's multi_logloss: 0.367856
+[94]	valid_0's multi_logloss: 0.367275
+[95]	valid_0's multi_logloss: 0.366644
+[96]	valid_0's multi_logloss: 0.365986
+[97]	valid_0's multi_logloss: 0.365172
+[98]	valid_0's multi_logloss: 0.36461
+[99]	valid_0's multi_logloss: 0.364138
+[100]	valid_0's multi_logloss: 0.363421
+  ('#### Metrics #################################################################',) 
+  ({'metrics_test':       metric_name  metric_val  n_sample
+0   roc_auc_score    0.943079      1200
+1  accuracy_score    0.880833      1200},) 
+  ('saving model, dfX, columns', 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/') 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model//colsX.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model//coly.pkl',) 
+  ({'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x0000019AC79FFAE8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x0000019AC79FFEA0>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}) 
+  ('check re-loaded', {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x0000019AC9C4F6A8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x0000019AC9C4F840>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}) 
+  ('######### export #################################',) 
+  ('######### finish #################################',) 
