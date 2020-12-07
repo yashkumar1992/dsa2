@@ -424,7 +424,7 @@ if __name__ == "__main__":
 
 #################################################################################################
 ##### Save pre-processor meta-parameters
- """
+"""
         os.makedirs(path_pipeline_export, exist_ok=True)
         log(path_pipeline_export)
         cols_family = {}
@@ -438,7 +438,7 @@ if __name__ == "__main__":
                cols_family[t] = t_val     
         """
 
-        """
+"""
         log("##### Coltext processing   ###############################################################")
         from utils import util_text, util_text_embedding, util_model
         ### Remoe common words  #############################################
@@ -477,4 +477,4 @@ if __name__ == "__main__":
             dftext_i =   pipe_text( df[[coltext_i ]], coltext_i, pars ) 
             save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
             dftext  = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
-    """
+"""
