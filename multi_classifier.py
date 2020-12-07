@@ -82,7 +82,7 @@ def multiclass_lightgbm(path_model_out="") :
         map_dict_={0:0,1:1,2:2,4:3}
         return  map_dict_[y]
 
-    
+
     model_dict = {'model_pars': {
         'model_path'       : path_model_out
 
@@ -187,10 +187,6 @@ def check():
     from source import run_train
     run_train.run_check(path_output =  path_model,
                         scoring     =  'accuracy' )
-
-
-
-    #! python source/run_inference.py  run_predict  --config_model_name  LGBMRegressor  --n_sample 1000   --path_model /data/output/a01_lightgbm_huber/    --path_output /data/output/pred_a01_lightgbm_huber/    --path_data /data/input/train/
 
 
 
