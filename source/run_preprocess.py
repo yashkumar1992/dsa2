@@ -34,6 +34,12 @@ def log(*s, n=0, m=1):
     print(sjump, sspace, s, sspace, flush=True)
 
 
+def log_pd(df, *s, n=0, m=1):
+    sjump = "\n" * m
+    ### Implement pseudo Logging
+    print(sjump,  df.head(n), flush=True)
+
+
 from util_feature import  save, load_function_uri
 
 
@@ -59,7 +65,7 @@ def save_features(df, name, path):
        df0.to_parquet( f"{path}/{name}/features.parquet")
 
 
-
+####################################################################################################
 def coltext_stopwords(text, stopwords=None, sep=" "):
     tokens = text.split(sep)
     tokens = [t.strip() for t in tokens if t.strip() not in stopwords]
@@ -87,7 +93,6 @@ def pd_coltext_clean( df, col, stopwords= None , pars=None):
         dftext[col_n] = dftext[col_n].apply(lambda x: coltext_stopwords(x, stopwords=stopwords))     
     return dftext
 
-
 def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
     """
     :param df:
@@ -110,7 +115,7 @@ def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
 def nlp_get_stopwords():
     import json
     import string
-    stopwords = json.load(open("stopwords_en.json") )["word"]
+    stopwords = json.load(open("source/utils/stopwords_en.json") )["word"]
     stopwords = [ t for t in string.punctuation ] + stopwords
     stopwords = [ "", " ", ",", ".", "-", "*", '€', "+", "/" ] + stopwords
     stopwords =list(set( stopwords ))
@@ -120,8 +125,28 @@ def nlp_get_stopwords():
     return stopwords
 
 
+def pipe_text(df, col, pars={}):
+    from utils import util_text, util_model
+    stopwords = pars['stopwords']
+    dftext                              = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
+    coltext_freq, word_tokeep           = pd_coltext_wordfreq(df, col, stopwords, ntoken=100)  ## nb of words to keep
+
+    dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
+                                                            word_tokeep = word_tokeep ,
+                                                            return_val  = "dataframe,param"  )
+    log(word_tokeep_dict)
+    ###  Dimesnion reduction for Sparse Matrix
+    dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict,
+                                                   colname        = None,
+                                                   model_pretrain = None,
+                                                   colprefix      = col + "_svd",
+                                                   method         = "svd",  dimpca=2,  return_val="dataframe,param")
+    return dftext_svd_list
 
 
+
+####################################################################################################
+####################################################################################################
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={}, filter_pars={}, path_features_store=None):
     """
@@ -154,6 +179,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     #### Pipeline Execution
     pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
     pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
+    pipe_list_pars  = preprocess_pars.get('pipe_pars', [])
+
 
 
     ##### Load data ##############################################################################
@@ -162,7 +189,17 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ##### Filtering / cleaning rows :   #########################################################
     if "filter" in pipe_list :
+        def isfloat(x):
+            try :
+                a= float(x)
+                return 1
+            except:
+                return 0
+
         ymin, ymax = filter_pars.get('ymin', -9999999999.0), filter_pars.get('ymax', 999999999.0)
+
+        df['_isfloat'] = df[ coly ].apply(lambda x : isfloat(x) )
+        df = df[ df['_isfloat'] > 0 ]
         df = df[df[coly] > ymin]
         df = df[df[coly] < ymax]
 
@@ -185,8 +222,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     log(df[colall].dtypes)
 
 
+    if "dfnum" in pipe_list :
+        pass
+
+
     if "dfnum_norm" in pipe_list :
-        log("### colnum normalize  ###########################################")
+        log("### colnum normalize  ###############################################################")
         from util_feature import pd_colnum_normalize
         pars = { 'pipe_list': [ {'name': 'fillna', 'naval' : 0.0 }, {'name': 'minmax'} ]}
         dfnum_norm, colnum_norm = pd_colnum_normalize(df, colname=colnum,  pars=pars, suffix = "_norm",
@@ -236,7 +277,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     if "dfcross_hot" in pipe_list :
-        log("#####  Cross Features From OneHot Features   ##############################################")
+        log("#####  Cross Features From OneHot Features   ######################################")
         try :
            df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
         except :
@@ -257,35 +298,19 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         del df_onehot ; gc.collect()
 
 
+
     if "dftext" in pipe_list :
         log("##### Coltext processing   ###############################################################")
-        from utils import util_text, util_model
-
-        def pipe_text(df, col, pars={}, stopwords=None):
-            dftext                              = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
-            coltext_freq, word_tokeep           = pd_coltext_wordfreq(df, col, stopwords, ntoken=100)  ## nb of words to keep
-
-            dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
-                                                                    word_tokeep = word_tokeep ,
-                                                                    return_val  = "dataframe,param"  )
-            log(word_tokeep_dict)
-            ###  Dimesnion reduction for Sparse Matrix
-            dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict, 
-                                                           colname        = None,
-                                                           model_pretrain = None,
-                                                           colprefix      = col + "_svd",
-                                                           method         = "svd",  dimpca=2,  return_val="dataframe,param")
-            return dftext_svd_list
-
-        ##### Run the text processor on each column text  #############################
-        stopwords = nlp_get_stopwords()        
-        pars      = {'n_token' : 100 }
+        stopwords = nlp_get_stopwords()
+        pars      = {'n_token' : 100 , 'stopwords': stopwords}
         dftext    = None
         for coltext_i in coltext :
-            dftext_i = pipe_text( df[[coltext_i ]], coltext_i, pars,  stopwords ) 
+            ##### Run the text processor on each column text  #############################
+            dftext_i = pipe_text( df[[coltext_i ]], coltext_i, pars )
             dftext   = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
             save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
-        print(dftext.head(6))
+
+        log(dftext.head(6))
         save_features(dftext, 'dftext', path_features_store)
 
 
@@ -296,12 +321,13 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         dfdate = None
         for coldate_i in coldate :
             dfdate_i =  util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
-
+            dfdate  = pd.concat((dfdate, dfdate_i))  if dfdate is not None else dfdatei
             save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
-            dfdate  = pd.concat((dfdate, dfdate_i))  if dfdate is not None else dftext_i
+        save_features(dfdate, 'dfdate', path_features_store)
 
 
-    ##################################################################################################
+    ###################################################################################
+# ###############
     ##### Save pre-processor meta-parameters
     os.makedirs(path_pipeline_export, exist_ok=True)
     log(path_pipeline_export)
@@ -418,6 +444,26 @@ if __name__ == "__main__":
     fire.Fire()
 
 
+
+
+
+
+
+
+
+"""
+        pipe_text = load_function_uri( pipe_list_pars['dftext'] )
+        pipe_text = None
+
+        if pipe_text is None  :
+           stopwords = nlp_get_stopwords()
+           pars      = {'n_token' : 100 , 'stopwords': stopwords}
+        else :
+           stopwords = nlp_get_stopwords()
+           pars      = {'n_token' : 100 , 'stopwords': stopwords}
+           
+           
+"""
 
 
 

@@ -32,7 +32,7 @@ data_name    = "airbnb"
 
 
 config_name  = 'airbnb_lightgbm'
-n_sample     = -1
+n_sample     = 1000
 
 
 
@@ -91,8 +91,63 @@ cols_input_type = {
 }
 
 
+def airbnb_lightgbm(path_model_out="") :
+	"""
+		Huber Loss includes L1  regurarlization
+		We test different features combinaison, default params is optimal
+	"""
+	global model_name
+	model_name        = 'LGBMRegressor'
 
-#global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
+	def post_process_fun(y):
+		return y_norm(y, inverse=True, mode='boxcox')
+
+	def pre_process_fun(y):
+		return y_norm(y, inverse=False, mode='boxcox')
+
+	model_dict = {'model_pars': {'config_model_name': 'LGBMRegressor'
+		,'model_path': path_model_out
+		,'model_pars': {'objective': 'huber', }  # default
+		,'post_process_fun': post_process_fun
+		,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
+
+						### Pipeline for data processing.
+					   'pipe_list'  : ['filter', 'label',   'dfcat_bin', 'dftext'   ]
+													 }
+														 },
+	'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
+									  'explained_variance_score', 'r2_score', 'median_absolute_error']
+									},
+
+	'data_pars': {
+			'cols_input_type' : {
+								 "coly"   :   "price"
+								,"colid"  :   "id"
+								,"colcat" : [  "host_id", "host_location", "host_response_time","host_response_rate","host_is_superhost","host_neighbourhood","host_verifications","host_has_profile_pic","host_identity_verified","street","neighbourhood","neighbourhood_cleansed", "neighbourhood_group_cleansed","city","zipcode", "smart_location","is_location_exact","property_type","room_type", "accommodates","bathrooms","bedrooms", "beds","bed_type","guests_included","calendar_updated", "license","instant_bookable","cancellation_policy","require_guest_profile_picture","require_guest_phone_verification","scrape_id"]
+                                ,"colnum" : [ "host_listings_count","latitude", "longitude","square_feet","weekly_price","monthly_price", "security_deposit","cleaning_fee","extra_people", "minimum_nights","maximum_nights","availability_30","availability_60","availability_90","availability_365","number_of_reviews","review_scores_rating","review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication", "review_scores_location","review_scores_value","calculated_host_listings_count","reviews_per_month"]    
+                                ,"coltext" : ["name","summary", "space","description", "neighborhood_overview","notes","transit", "access","interaction", "house_rules","host_name","host_about","amenities"]
+                                , "coldate" : ["last_scraped","host_since","first_review","last_review"]
+                                ,"colcross" : ["name","host_is_superhost","is_location_exact","monthly_price","review_scores_value","review_scores_rating","reviews_per_month"]
+	                            ,"usdpricescol":["price","weekly_price","monthly_price","security_deposit","cleaning_fee","extra_people"]
+    
+								#,"colcat" :   [ "cancellation_policy", "host_response_rate", "host_response_time" ]
+								#,"colnum" :   [ "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
+								#,"coltext" :  [ "house_rules", "neighborhood_overview", "notes", "street"  ]
+								#,"coldate" :  [ "calendar_last_scraped", "first_review", "host_since" ]
+								#,"colcross" : [  ]
+							 }
+			# cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+			,'cols_model_group': [ 'colnum', 'colcat_bin']
+		 ,'cols_model': []  # cols['colcat_model'],
+		 ,'coly': []        # cols['coly']
+		 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
+
+		 }}
+	return model_dict
+ 
+
+
+
 
 def airbnb_elasticnetcv(path_model_out=""):
 
@@ -140,60 +195,8 @@ def airbnb_elasticnetcv(path_model_out=""):
 	return model_dict
 
 
-def airbnb_lightgbm(path_model_out="") :
-	"""
-		Huber Loss includes L1  regurarlization
-		We test different features combinaison, default params is optimal
-	"""
-	global model_name
-	model_name        = 'LGBMRegressor'
 
-	def post_process_fun(y):
-		return y_norm(y, inverse=True, mode='boxcox')
 
-	def pre_process_fun(y):
-		return y_norm(y, inverse=False, mode='boxcox')
-
-	model_dict = {'model_pars': {'config_model_name': 'LGBMRegressor'
-		,'model_path': path_model_out
-		,'model_pars': {'objective': 'huber', }  # default
-		,'post_process_fun': post_process_fun
-		,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
-
-						### Pipeline for data processing.
-					   'pipe_list'  : [ "clean_prices" ,'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
-													 }
-														 },
-	'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
-									  'explained_variance_score', 'r2_score', 'median_absolute_error']
-									},
-
-	'data_pars': {
-			'cols_input_type' : {
-								 "coly"   :   "price"
-								,"colid"  :   "id"
-								,"colcat" : [  "host_id", "host_location", "host_response_time","host_response_rate","host_is_superhost","host_neighbourhood","host_verifications","host_has_profile_pic","host_identity_verified","street","neighbourhood","neighbourhood_cleansed", "neighbourhood_group_cleansed","city","zipcode", "smart_location","is_location_exact","property_type","room_type", "accommodates","bathrooms","bedrooms", "beds","bed_type","guests_included","calendar_updated", "license","instant_bookable","cancellation_policy","require_guest_profile_picture","require_guest_phone_verification","scrape_id"]
-                                ,"colnum" : [ "host_listings_count","latitude", "longitude","square_feet","weekly_price","monthly_price", "security_deposit","cleaning_fee","extra_people", "minimum_nights","maximum_nights","availability_30","availability_60","availability_90","availability_365","number_of_reviews","review_scores_rating","review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication", "review_scores_location","review_scores_value","calculated_host_listings_count","reviews_per_month"]    
-                                ,"coltext" : ["name","summary", "space","description", "neighborhood_overview","notes","transit", "access","interaction", "house_rules","host_name","host_about","amenities"]
-                                , "coldate" : ["last_scraped","host_since","first_review","last_review"]
-                                ,"colcross" : ["name","host_is_superhost","is_location_exact","monthly_price","review_scores_value","review_scores_rating","reviews_per_month"]
-	                            ,"usdpricescol":["price","weekly_price","monthly_price","security_deposit","cleaning_fee","extra_people"]
-    
-								#,"colcat" :   [ "cancellation_policy", "host_response_rate", "host_response_time" ]
-								#,"colnum" :   [ "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
-								#,"coltext" :  [ "house_rules", "neighborhood_overview", "notes", "street"  ]
-								#,"coldate" :  [ "calendar_last_scraped", "first_review", "host_since" ]
-								#,"colcross" : [  ]
-							 }
-			# cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
-			,'cols_model_group': [ 'colnum', 'colcat_bin']
-		 ,'cols_model': []  # cols['colcat_model'],
-		 ,'coly': []        # cols['coly']
-		 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
-
-		 }}
-	return model_dict
- 
 
 def airbnb_bayesian_pyro(path_model_out="") :
 	global model_name
