@@ -127,11 +127,15 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     ypred, ypred_proba    = modelx.predict(dfX[colsX], compute_pars=compute_pars)
     dfX[coly + '_pred'] = ypred  # y_norm(ypred, inverse=True)
     dfX[coly]           = post_process_fun(dfX[coly].values)
-    # dfX[coly] = dfX[coly].values.astype('int64')
+
+    ####  Buggy code  !!!!!!!!! multi column
+    #if ypred_proba is not None :
+    #    dfX[coly + '_proba'] = ypred_proba
 
     metrics_test = metrics_eval(metric_list,
-                                ytrue= dfX[coly].iloc[ival:],
-                                ypred= dfX[coly + '_pred'].iloc[ival:], ypred_proba=ypred_proba[ival:,:])
+                                ytrue       = dfX[coly].iloc[ival:],
+                                ypred       = dfX[coly + '_pred'].iloc[ival:],
+                                ypred_proba = ypred_proba[ival:,:]     if ypred_proba is not None else None )
     stats['metrics_test'] = metrics_test
     log(stats)
 
