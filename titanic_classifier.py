@@ -74,39 +74,38 @@ def titanic_lightgbm(path_model_out="") :
 
     config_name       = 'titanic_lightgbm'
     model_name        = 'LGBMClassifier'
-
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-
-    n_sample    = 1000
+    n_sample          = 1000
 
 
     def post_process_fun(y):
         ### After prediction is done
         return  y.astype('int')
 
+
     def pre_process_fun(y):
         ### Before the prediction is done
         return  y.astype('int')
 
+
     model_dict = {'model_pars': {
         'model_path'       : path_model_out
 
-        ### LightGBM API model       ###################################
+        ### LightGBM API model   #######################################
         ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'binary',
-                                'learning_rate':0.03,'boosting_type':'gbdt'    ### Model hyperparameters
+                               'learning_rate':0.03,'boosting_type':'gbdt'    ### Model hyperparameters
 
                               }
 
         ### After prediction  ##########################################
         , 'post_process_fun' : post_process_fun
-        , 'pre_process_pars' : {'y_norm_fun' :  None ,
-                                
-                ### Pipeline for data processing.
+
+
+        ### Before prediction  ##########################################
+        , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
+
+
+                ### Pipeline for data processing ########################
                'pipe_list'  : [ 'filter',     ### Fitler the data
                                 'label',      ### Normalize the label
                                 'dfnum_bin',  ### Create bins for numerical columns
@@ -116,6 +115,8 @@ def titanic_lightgbm(path_model_out="") :
                                 'dfcross_hot', ]   ### Crossing of features which are one hot encoded
                }
         },
+
+
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
                       },
 
@@ -131,17 +132,23 @@ def titanic_lightgbm(path_model_out="") :
          ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
 
          }
-
-     ,'global_pars' : {}
       }
 
     ################################################################################################
     ##### Filling Global parameters    #############################################################
-    global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train', 
-              'path_data_test', 'path_output_pred', 'n_sample'
+    ####### DOnt change  #################################################
+    path_config_model = root + f"/{config_file}"
+    path_model        = f'data/output/{data_name}/a01_{model_name}/'
+    path_data_train   = f'data/input/{data_name}/train/'
+    path_data_test    = f'data/input/{data_name}/test/'
+    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
+    model_dict[ 'global_pars'] = {}
+    global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train',
+                   'path_data_test', 'path_output_pred', 'n_sample'
             ]
     for t in global_pars:
-      model_dict['global_pars'][t] = globals()[t] 
+      model_dict['global_pars'][t] = globals()[t]
 
 
     return model_dict

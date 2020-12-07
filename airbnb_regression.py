@@ -95,9 +95,8 @@ cols_input_type_2 = {
 }
 
 
-"""
 ###### Columns which can be used for the models 'cols_model_group'   ##############################
-
+"""
 'colid',
 "coly"
 
@@ -112,10 +111,11 @@ cols_input_type_2 = {
 """
 
 
+
+####################################################################################
 def airbnb_lightgbm(path_model_out="") :
     """
-        Huber Loss includes L1  regurarlization
-        We test different features combinaison, default params is optimal
+
     """
     global model_name
     model_name        = 'LGBMRegressor'
@@ -131,6 +131,8 @@ def airbnb_lightgbm(path_model_out="") :
         ,'model_pars': {'objective': 'huber', }  # default
         ,'post_process_fun': post_process_fun
         ,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
+
+
 
                     ### Pipeline for data processing.
                     'pipe_list'  : ['filter', 'label',   'dfcat_bin', 'dftext'   ]
