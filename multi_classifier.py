@@ -49,6 +49,16 @@ colnum  = ['length(m)','height(cm)','condition','X1','X2','breed_category']
 colcross= ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']
 
 
+cols_input_type_1 = {
+                     "coly"   :   coly
+                    ,"colid"  :   colid
+                    ,"colcat" :   colcat
+                    ,"colnum" :   colnum
+                    ,"coltext" :  []
+                    ,"coldate" :  []
+                    ,"colcross" : colcross
+                   }
+
 
 
 ####################################################################################
@@ -61,15 +71,7 @@ def multiclass_lightgbm(path_model_out="") :
 
     config_name       = 'multiclass_lightgbm'
     model_name        = 'LGBMClassifier'
-
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-
-    n_sample    = 6000
-
+    n_sample          = 6000
 
     def post_process_fun(y):
         ### After prediction is done
@@ -79,6 +81,7 @@ def multiclass_lightgbm(path_model_out="") :
         ### Before the prediction is done
         map_dict_={0:0,1:1,2:2,4:3}
         return  map_dict_[y]
+
 
     model_dict = {'model_pars': {
         'model_path'       : path_model_out
@@ -106,42 +109,37 @@ def multiclass_lightgbm(path_model_out="") :
                                }
         },
 
-      'compute_pars': { 'metric_list': ['roc_auc_score','accuracy_score'],'probability':True,
+      'compute_pars': { 'metric_list': ['roc_auc_score','accuracy_score'],
+                        'probability': True,
                       },
 
       'data_pars': {
-          'cols_input_type' : {
-                     "coly"   :   coly
-                    ,"colid"  :   colid
-                    ,"colcat" :   colcat
-                    ,"colnum" :   colnum
-                    ,"coltext" :  []
-                    ,"coldate" :  []
-                    ,"colcross" : colcross
-                   },
+          'cols_input_type' : cols_input_type_1,
 
-          ### used for the model input
-          # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+          ### used for the model input  ###############################
+          # "colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
           'cols_model_group': [ 'colnum', 'colcat_bin']
 
 
-          ### Actual column namaes to be filled automatically
-         ,'cols_model':       []      # cols['colcat_model'],
-         ,'coly':             []      # cols['coly']
-
-
-          ### Filter data rows
+          ### Filter data rows   #####################################
          ,'filter_pars': { 'ymax' : 5 ,'ymin' : -1 }
 
          }
-
-     ,'global_pars' : {}
       }
 
-    lvars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train', 
-              'path_data_test', 'path_output_pred', 'n_sample'
+    ################################################################################################
+    ##### Filling Global parameters    #############################################################
+    path_config_model = root + f"/{config_file}"
+    path_model        = f'data/output/{data_name}/a01_{model_name}/'
+    path_data_train   = f'data/input/{data_name}/train/'
+    path_data_test    = f'data/input/{data_name}/test/'
+    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
+    model_dict[ 'global_pars'] = {}
+    global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train',
+                   'path_data_test', 'path_output_pred', 'n_sample'
             ]
-    for t in lvars:
+    for t in global_pars:
       model_dict['global_pars'][t] = globals()[t] 
 
 
@@ -189,10 +187,6 @@ def check():
     from source import run_train
     run_train.run_check(path_output =  path_model,
                         scoring     =  'accuracy' )
-
-
-
-    #! python source/run_inference.py  run_predict  --config_model_name  LGBMRegressor  --n_sample 1000   --path_model /data/output/a01_lightgbm_huber/    --path_output /data/output/pred_a01_lightgbm_huber/    --path_data /data/input/train/
 
 
 
