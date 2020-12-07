@@ -236,7 +236,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     if "dfcross_hot" in pipe_list :
-        log("#####  Cross Features From OneHot Features   ####################################")
+        log("#####  Cross Features From OneHot Features   ##############################################")
         try :
            df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
         except :
@@ -261,12 +261,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         log("##### Coltext processing   ###############################################################")
         from utils import util_text, util_model
 
-        stopwords = nlp_get_stopwords()
-
-        def pipe_text(df, col, pars={}):
-            dftext                              = pd_coltext_clean( df, col, stopwords= stopwords , pars=pars)
-
-            coltext_freq, word_tokeep           = pd_coltext_wordfreq(df, col, stopwords, ntoken=100)
+        def pipe_text(df, col, pars={}, stopwords=None):
+            dftext                              = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
+            coltext_freq, word_tokeep           = pd_coltext_wordfreq(df, col, stopwords, ntoken=100)  ## nb of words to keep
 
             dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
                                                                     word_tokeep = word_tokeep ,
@@ -274,76 +271,25 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             log(word_tokeep_dict)
             ###  Dimesnion reduction for Sparse Matrix
             dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict, 
-                                                           colname=None,
-                                                           model_pretrain=None,                       
-                                                           colprefix= col + "_svd",
-                                                           method="svd",  dimpca=2,  return_val="dataframe,param")            
+                                                           colname        = None,
+                                                           model_pretrain = None,
+                                                           colprefix      = col + "_svd",
+                                                           method         = "svd",  dimpca=2,  return_val="dataframe,param")
             return dftext_svd_list
 
-        pars = {'n_token' : 100 }
-        dftext1 = None
+        ##### Run the text processor on each column text  #############################
+        stopwords = nlp_get_stopwords()        
+        pars      = {'n_token' : 100 }
+        dftext    = None
         for coltext_i in coltext :
-            dftext_i =   pipe_text( df[[coltext_i ]], coltext_i, pars ) 
+            dftext_i = pipe_text( df[[coltext_i ]], coltext_i, pars,  stopwords ) 
+            dftext   = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
             save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
-            dftext1  = pd.concat((dftext1, dftext_i))  if dftext1 is not None else dftext_i
-        print(dftext1.head(6))
-        dftext1.to_parquet(r""+path_features_store+"\dftext.parquet", index = False)
+        print(dftext.head(6))
+        save_features(dftext, 'dftext', path_features_store)
 
 
-        #################################################################################################
-        ##### Save pre-processor meta-parameters
-        os.makedirs(path_pipeline_export, exist_ok=True)
-        log(path_pipeline_export)
-        cols_family = {}
 
-        for t in ['coltext']:
-            tfile = f'{path_pipeline_export}/{t}.pkl'
-            log(tfile)
-            t_val = locals().get(t, None)
-            if t_val is not None :
-               save(t_val, tfile)
-               cols_family[t] = t_val     
-     
-        """
-        log("##### Coltext processing   ###############################################################")
-        from utils import util_text, util_text_embedding, util_model
-        ### Remoe common words  #############################################
-        import json
-        import string
-        punctuations = string.punctuation
-        stopwords = json.load(open("stopwords_en.json") )["word"]
-        stopwords = [ t for t in string.punctuation ] + stopwords
-        stopwords = [ "", " ", ",", ".", "-", "*", '€', "+", "/" ] + stopwords
-        stopwords =list(set( stopwords ))
-        stopwords.sort()
-        print( stopwords )
-        stopwords = set(stopwords)
-        def pipe_text(df, col, pars={}):
-            ntoken= pars['n_token']
-            df      = df[col].fillna("")
-            dftext  = util_text.pd_coltext_clean( df[col], col, stopwords= stopwords )                 
-            print(dftext.head(6))
-            coltext_freq = util_text.pd_coltext_wordfreq(dftext, col)                                 
-            word_tokeep  = coltext_freq[col]["word"].values[:ntoken]
-            word_tokeep  = [  t for t in word_tokeep if t not in stopwords   ]
-             
-            dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
-                                                                    word_tokeep = word_tokeep ,
-                                                                    return_val  = "dataframe,param"  )
-            ###  Dimesnion reduction for Sparse Matrix
-            dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict, 
-                                                           colname=None,
-                                                           model_pretrain=None,                       
-                                                           colprefix= col + "_svd",
-                                                           method="svd",  dimpca=2,  return_val="dataframe,param")            
-            return dftext_svd_list
-        pars = {'n_token' : 100 }
-        dftext = None
-        for coltext_i in coltext :
-            dftext_i =   pipe_text( df[[coltext_i ]], coltext_i, pars ) 
-            save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
-            dftext  = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
-    """
     if "dfdate" in pipe_list :
         log("##### Coldate processing   #############################################################")
         from utils import util_date
@@ -470,3 +416,65 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
 if __name__ == "__main__":
     import fire
     fire.Fire()
+
+
+
+
+
+
+#################################################################################################
+##### Save pre-processor meta-parameters
+ """
+        os.makedirs(path_pipeline_export, exist_ok=True)
+        log(path_pipeline_export)
+        cols_family = {}
+
+        for t in ['coltext']:
+            tfile = f'{path_pipeline_export}/{t}.pkl'
+            log(tfile)
+            t_val = locals().get(t, None)
+            if t_val is not None :
+               save(t_val, tfile)
+               cols_family[t] = t_val     
+        """
+
+        """
+        log("##### Coltext processing   ###############################################################")
+        from utils import util_text, util_text_embedding, util_model
+        ### Remoe common words  #############################################
+        import json
+        import string
+        punctuations = string.punctuation
+        stopwords = json.load(open("stopwords_en.json") )["word"]
+        stopwords = [ t for t in string.punctuation ] + stopwords
+        stopwords = [ "", " ", ",", ".", "-", "*", '€', "+", "/" ] + stopwords
+        stopwords =list(set( stopwords ))
+        stopwords.sort()
+        print( stopwords )
+        stopwords = set(stopwords)
+        def pipe_text(df, col, pars={}):
+            ntoken= pars['n_token']
+            df      = df[col].fillna("")
+            dftext  = util_text.pd_coltext_clean( df[col], col, stopwords= stopwords )                 
+            print(dftext.head(6))
+            coltext_freq = util_text.pd_coltext_wordfreq(dftext, col)                                 
+            word_tokeep  = coltext_freq[col]["word"].values[:ntoken]
+            word_tokeep  = [  t for t in word_tokeep if t not in stopwords   ]
+             
+            dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
+                                                                    word_tokeep = word_tokeep ,
+                                                                    return_val  = "dataframe,param"  )
+            ###  Dimesnion reduction for Sparse Matrix
+            dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict, 
+                                                           colname=None,
+                                                           model_pretrain=None,                       
+                                                           colprefix= col + "_svd",
+                                                           method="svd",  dimpca=2,  return_val="dataframe,param")            
+            return dftext_svd_list
+        pars = {'n_token' : 100 }
+        dftext = None
+        for coltext_i in coltext :
+            dftext_i =   pipe_text( df[[coltext_i ]], coltext_i, pars ) 
+            save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
+            dftext  = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
+    """
