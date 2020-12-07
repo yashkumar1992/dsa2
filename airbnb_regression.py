@@ -3,9 +3,9 @@
 """
 You can put hardcode here, specific to titatinic dataet
 All in one file config
-!  python airbnb_regression.py  train
-!  python airbnb_regression.py  check
-!  python airbnb_regression.py  predict
+!  python airbnb_regression.py  train    > zlog/log-multi_classifier.txt 2>&1
+!  python airbnb_regression.py  check    > zlog/log-multi_classifier.txt 2>&1
+!  python airbnb_regression.py  predict  > zlog/log-multi_classifier.txt 2>&1
 """
 import warnings, copy
 warnings.filterwarnings('ignore')
