@@ -22,9 +22,8 @@ import os
 import json
 import importlib
 
-# from tqdm import tqdm_notebook
 
-
+####################################################################################################
 #### Add path for python import
 sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
 
@@ -50,7 +49,6 @@ from util_feature import   load, save_list, load_function_uri, save
 def save_features(df, name, path):
     if path is not None :
        os.makedirs( f"{path}/{name}", exist_ok=True)
-
        df.to_parquet( f"{path}/{name}/features.parquet")
 
 
@@ -123,19 +121,27 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     log("#### Metrics #################################################################")
     from util_feature import  metrics_eval
 
-    stats = {}
-    ypred, ypred_proba    = modelx.predict(dfX[colsX], compute_pars=compute_pars)
+    stats               = {}
+    ypred, ypred_proba  = modelx.predict(dfX[colsX], compute_pars=compute_pars)
     dfX[coly + '_pred'] = ypred  # y_norm(ypred, inverse=True)
     dfX[coly]           = post_process_fun(dfX[coly].values)
 
-    ####  Buggy code  !!!!!!!!! multi column
-    #if ypred_proba is not None :
-    #    dfX[coly + '_proba'] = ypred_proba
+    if ypred_proba is None :
+       ypred_proba_val = None
+
+    elif len(ypred_proba.shape) <= 1:
+       ypred_proba_val      = ypred_proba[ival:]
+       dfX[coly + '_proba'] = ypred_proba
+
+    elif len(ypred_proba.shape) > 1:
+       ypred_proba_val = ypred_proba[ival:,:]
+       #### Todo mwergw mutiple probability in one colum string
+       #    dfX[coly + '_proba'] = ypred_proba
 
     metrics_test = metrics_eval(metric_list,
                                 ytrue       = dfX[coly].iloc[ival:],
                                 ypred       = dfX[coly + '_pred'].iloc[ival:],
-                                ypred_proba = ypred_proba[ival:,:]     if ypred_proba is not None else None )
+                                ypred_proba = ypred_proba_val )
     stats['metrics_test'] = metrics_test
     log(stats)
 
@@ -174,7 +180,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     path_check_out    = path_output   + "/check/"
     path_train_X      = path_data     + "/features.zip"#.zip
     path_train_y      = path_data     + "/target.zip"#.zip
-    path_features_store = path_output   + '/features_store/'  #path_data replaced with path_output, because preprocessed files are stored there
+    path_features_store = path_output + '/features_store/'  #path_data replaced with path_output, because preprocessed files are stored there
     log(path_output)
 
     log("#### Model Params Dynamic loading  ###############################################")
@@ -227,7 +233,9 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     log("######### finish #################################", )
 
 
+
 def run_check(path_output, scoring):
+    import pandas as pd
     try :
         #### Load model
         from source.util_feature import load
@@ -245,7 +253,7 @@ def run_check(path_output, scoring):
         print(modelx.model.model)
 
         ### Metrics on test data
-        stats['metrics_test']
+        log(stats['metrics_test'])
 
         #### Loading training data  #######################################################
         dfX     = pd.read_csv(dir_model + "/check/dfX.csv")  #to load csv
@@ -261,7 +269,9 @@ def run_check(path_output, scoring):
 
         #### Feature importance on training data
         from util_feature import  feature_importance_perm
-        lgb_featimpt_train,_ = feature_importance_perm(modelx, dfX[colused], dfy, colused, n_repeats=1,
+        lgb_featimpt_train,_ = feature_importance_perm(modelx, dfX[colused], dfy,
+                                                       colused,
+                                                       n_repeats=1,
                                                        scoring=scoring)
 
         print(lgb_featimpt_train)
