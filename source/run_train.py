@@ -186,7 +186,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     log("#### Model Params Dynamic loading  ###############################################")
     model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_model_name)
     model_dict     = model_dict_fun(path_model_out)   ### params
-
+    log( model_dict )
 
     log("#### load input column family  ###################################################")
     try :
@@ -204,16 +204,17 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
         dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
                                  preprocess_pars, filter_pars, path_features_store=path_features_store)
 
-    elif mode == "load_preprocess" :
+    elif mode == "load_preprocess" :  #### Load existing data
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
                                  preprocess_pars, filter_pars, path_features_store=path_features_store)
-                                    
+
+    ### Actual column for label
     model_dict['data_pars']['coly'] = cols['coly']
 
     
     ### Get actual column names from colum groups : colnum , colcat
     model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])                
-    log(  model_dict['data_pars']['cols_model'] , model_dict['data_pars']['coly'])
+    log("used columns",  model_dict['data_pars']['cols_model'] , model_dict['data_pars']['coly'])
     
    
     log("######### Train model: ###########################################################")

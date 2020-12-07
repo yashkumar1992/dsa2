@@ -15,7 +15,7 @@ import pandas as pd
 ###################################################################################
 from source import util_feature
 
-
+####################################################################################
 ###### Path ########################################################################
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
@@ -26,6 +26,7 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
+
 ####################################################################################
 config_file  = "titanic_classifier.py"   ### name of file which contains data configuration
 data_name    = "titanic"     ### in data/input/
@@ -33,13 +34,38 @@ data_name    = "titanic"     ### in data/input/
 
 
 config_name  = 'titanic_lightgbm'   ### name of function which contains data configuration 
-n_sample     = -1
+n_sample     = 2000
 
 
 
 
 ####################################################################################
 ##### Params########################################################################
+cols_input_type_1 = {
+     "coly"   :   "Survived"
+    ,"colid"  :   "PassengerId"
+    ,"colcat" :   [  "Sex", "Embarked" ]
+    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
+    ,"coltext" :  ["Name", "Ticket"]
+    ,"coldate" :  []
+    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+}
+
+
+### family of columns for MODEL  ########################################################
+""" 
+    'colid',
+    "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns                        
+    "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns                        
+    'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns            
+    'coldate',
+    'coltext',            
+    "coly"
+"""
+
+
+
+####################################################################################
 def titanic_lightgbm(path_model_out="") :
     """
        Contains all needed informations for Light GBM Classifier model, used for titanic classification task
@@ -74,8 +100,7 @@ def titanic_lightgbm(path_model_out="") :
         ,'model_pars'       : {'objective': 'binary',
                                 'learning_rate':0.03,'boosting_type':'gbdt'    ### Model hyperparameters
 
-
-                               }
+                              }
 
         ### After prediction  ##########################################
         , 'post_process_fun' : post_process_fun
@@ -95,27 +120,14 @@ def titanic_lightgbm(path_model_out="") :
                       },
 
       'data_pars': {
-          'cols_input_type' : {
-                     "coly"   :   "Survived"
-                    ,"colid"  :   "PassengerId"
-                    ,"colcat" :   [  "Sex", "Embarked" ]
-                    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-                    ,"coltext" :  ["Name", "Ticket"]
-                    ,"coldate" :  []
-                    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
-                   },
+          'cols_input_type' : cols_input_type_1,
 
-          ### used for the model input
-          # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+
+          ### family of columns for MODEL  ########################################################
           'cols_model_group': [ 'colnum', 'colcat_bin']
 
 
-          ### Actual column namaes to be filled automatically
-         ,'cols_model':       []      # cols['colcat_model'],    ### Defines features columns of the dataset, and it is highly dependant with pipe_list
-         ,'coly':             []      # cols['coly']
-
-
-          ### Filter data rows
+          ### Filter data rows   ##################################################################
          ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
 
          }
@@ -123,6 +135,8 @@ def titanic_lightgbm(path_model_out="") :
      ,'global_pars' : {}
       }
 
+    ################################################################################################
+    ##### Filling Global parameters    #############################################################
     global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train', 
               'path_data_test', 'path_output_pred', 'n_sample'
             ]
@@ -134,93 +148,6 @@ def titanic_lightgbm(path_model_out="") :
 
 
 
-
-def titanic_randomforest(path_model_out="") :
-    """
-       Contains all needed informations for Random Forest model, used for titanic classification task
-    """
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-
-    #config_name       = 'titanic_lightgbm'
-    model_name        = 'RandomForest'
-
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-
-
-    def post_process_fun(y):
-        ### After prediction is done
-        return  y.astype('int')
-
-    def pre_process_fun(y):
-        ### Before the prediction is done
-        return  y.astype('int')
-
-    model_dict = {'model_pars': {
-        'model_path'       : path_model_out
-
-        ### LightGBM API model       ###################################
-        ,'config_model_name': model_name   ## ACTUAL Class name for model_sklearn.py
-        ,'model_pars'       : {
-
-
-                               }
-
-        ### After prediction  ##########################################
-        , 'post_process_fun' : post_process_fun
-        , 'pre_process_pars' : {'y_norm_fun' :  None ,
-
-                ### Pipeline for data processing.
-               'pipe_list'  : [ 'filter',     ### Filter the data
-                                'label',      ### Normalize the label
-                                'dfnum_bin',  ### Create bins for numerical columns
-                                'dfnum_hot',  ### One hot encoding for numerical columns
-                                'dfcat_bin',  ### Create bins for categorical columns
-                                'dfcat_hot',  ### One hot encoding for categorical columns
-                                'dfcross_hot', ]   ### Crossing of features which are one hot encoded
-                               }
-        },
-      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
-                      },
-
-      'data_pars': {
-          'cols_input_type' : {
-                 "coly"   :   "Survived"
-                ,"colid"  :   "PassengerId"
-                ,"colcat" :   [  "Sex", "Embarked" ]
-                ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-                ,"coltext" :  ["Name","Ticket"]
-                ,"coldate" :  []
-                ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
-               },
-
-          ### used for the model input
-          # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
-          'cols_model_group': [ 'colnum', 'colcat_bin']   
-
-
-          ### Actual column namaes to be filled automatically
-         ,'cols_model':       []      # cols['colcat_model'],   ### Defines features columns of the dataset, and it is highly dependant with pipe_list
-         ,'coly':             []      # cols['coly']
-
-
-          ### Filter data rows
-         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
-
-      }
-     ,'global_pars' : {}
-      }
-
-    lvars = [ 'model_name', 'path_config_model', 'path_model', 'path_data_train', 'path_data_test', 'path_output_pred'
-    ]
-    for t in lvars:
-      model_dict['global_pars'][t] = globals()[t]  
-      
-
-    return model_dict
 
 
 
@@ -234,9 +161,6 @@ globals()[config_name]()
 
 
 
-
-
-import run
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess():
