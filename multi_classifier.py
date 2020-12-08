@@ -60,6 +60,24 @@ cols_input_type_1 = {
                    }
 
 
+####  colum familiy for  'cols_model_group'
+"""
+    ['colid',
+    "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+    
+    
+    "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+    
+    
+    'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+
+    'coldate',
+    'coltext',
+
+    "coly"
+    ]
+    
+"""
 
 ####################################################################################
 ##### Params########################################################################
@@ -113,10 +131,12 @@ def multiclass_lightgbm(path_model_out="") :
                       },
 
       'data_pars': {
+
+          ### columns from raw file, based on data type, #############
           'cols_input_type' : cols_input_type_1,
 
-          ### used for the model input  ###############################
-          # "colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+          ### Column family used as model input  #####################
+          # "colnum"      "colcat_bin"   "colcross_onehot"
           'cols_model_group': [ 'colnum', 'colcat_bin']
 
 
