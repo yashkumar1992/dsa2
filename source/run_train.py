@@ -135,7 +135,6 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 
     elif len(ypred_proba.shape) > 1:
         from util_feature import np_conv_to_one_col
-        # np_conv_to_one_col(ypred_proba[ival:, :])
         ypred_proba_val      = ypred_proba[ival:,:]
         dfX[coly + '_proba'] = np_conv_to_one_col(ypred_proba, ";")  ### merge into string "p1,p2,p3,p4"
         log(dfX.head(3).T)

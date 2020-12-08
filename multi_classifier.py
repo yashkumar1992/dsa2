@@ -86,13 +86,12 @@ def multiclass_lightgbm(path_model_out="") :
     model_dict = {'model_pars': {
         'model_path'       : path_model_out
 
-        ### LightGBM API model       ###################################
+        ### LightGBM API model  ########################################
         ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'multiclass','num_class':4,'metric':'multi_logloss',
                                 'learning_rate':0.03,'boosting_type':'gbdt'
 
-
-                               }
+                              }
 
         ### After prediction  ##########################################
         , 'post_process_fun' : post_process_fun
@@ -110,7 +109,7 @@ def multiclass_lightgbm(path_model_out="") :
         },
 
       'compute_pars': { 'metric_list': ['roc_auc_score','accuracy_score'],
-                        'probability': True,
+                        'probability': True,  ### output probability for classifier
                       },
 
       'data_pars': {
