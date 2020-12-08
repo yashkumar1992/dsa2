@@ -126,7 +126,7 @@ def nlp_get_stopwords():
     return stopwords
 
 
-def pipe_text(df, col, pars={}):
+def pd_coltext(df, col, pars={}):
     from utils import util_text, util_model
     stopwords = pars['stopwords']
     dftext                              = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
@@ -172,6 +172,7 @@ def pd_filter_rows(df, col, pars):
 ##### Label processing   ##################################################################
 def pd_label_clean(df, col, pars):
     path_features_store = pars['path_features_store']
+    path_pipeline_export = pars['path_pipeline_export']
     coly = col=[0]
     y_norm_fun = None
     # Target coly processing, Normalization process  , customize by model
@@ -192,7 +193,6 @@ def pd_colnum_normalize(df, col, pars):
     log(df.dtypes)
 
 
-
 def pd_colnum_normalize(df, col, pars):
     log("### colnum normalize  ###############################################################")
     from util_feature import pd_colnum_normalize
@@ -206,7 +206,7 @@ def pd_colnum_normalize(df, col, pars):
     return dfnum_norm, colnum_norm
 
 
- def pd_colnum_numtobin(df, col, pars):
+def pd_colnum_numtobin(df, col, pars):
     from util_feature import  pd_colnum_tocat
     path_features_store = pars['path_features_store']
     colnum = col
@@ -223,7 +223,7 @@ def pd_colnum_normalize(df, col, pars):
 
 
 
- def pd_colnum_binto_onehot(df, col, pars):
+def pd_colnum_binto_onehot(df, col, pars):
     assert isinstance(col, list) and isinstance(df, pd.DataFrame)
 
     from util_feature import  pd_col_to_onehot
@@ -239,7 +239,7 @@ def pd_colnum_normalize(df, col, pars):
 
 
 
- def pd_colcat_to_onehot(df, col, pars):
+def pd_colcat_to_onehot(df, col, pars):
     # dfbum_bin = df[col]
     path_features_store = pars['path_features_store']
     colcat = col
@@ -252,7 +252,8 @@ def pd_colnum_normalize(df, col, pars):
     return dfcat_hot, colcat_onehot
 
 
- def pd_colcat_toint(df, col, pars):
+
+def pd_colcat_toint(df, col, pars):
     # dfbum_bin = df[col]
     path_features_store = pars['path_features_store']
     colcat = col
@@ -302,24 +303,6 @@ def pd_colcross(df, col, pars):
     return dfcross_hot, colcross_pair
 
 
-def pd_coltext(df, col, pars):
-    log("##### Coltext processing   ###############################################################")
-    path_features_store = pars['path_features_store']
-    coltext = col
-
-    stopwords = nlp_get_stopwords()
-    pars      = {'n_token' : 100 , 'stopwords': stopwords}
-    dftext    = None
-    for coltext_i in coltext :
-        ##### Run the text processor on each column text  #############################
-        dftext_i = pipe_text( df[[coltext_i ]], coltext_i, pars )
-        dftext   = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
-        save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
-
-    log(dftext.head(6))
-    save_features(dftext, 'dftext', path_features_store)
-
-
 def pd_coldate(df, col, pars):
     log("##### Coldate processing   #############################################################")
     from utils import util_date
@@ -343,6 +326,30 @@ if __name__ == "__main__":
     fire.Fire()
 
 
+
+
+
+
+
+
+"""
+def pd_coltext(df, col, pars):
+    log("##### Coltext processing   ###############################################################")
+    path_features_store = pars['path_features_store']
+    coltext = col
+
+    stopwords = nlp_get_stopwords()
+    pars      = {'n_token' : 100 , 'stopwords': stopwords}
+    dftext    = None
+    for coltext_i in coltext :
+        ##### Run the text processor on each column text  #############################
+        dftext_i = pipe_text( df[[coltext_i ]], coltext_i, pars )
+        dftext   = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
+        save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
+
+    log(dftext.head(6))
+    save_features(dftext, 'dftext', path_features_store)
+"""
 
 
 
