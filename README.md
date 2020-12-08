@@ -40,6 +40,12 @@
     File names Are FIXED, please create sub-folder  
 
 
+###  Model, train, inference :
+   All are defined in a single model_dictionnary containing all
+
+
+
+
 ###  Column Group for model  :
 
     *Titanic dataframe structure (example:
@@ -51,19 +57,29 @@
     4                   1       1       Futrelle, Mrs. Jacques Heath (Lily May Peel)  female  35.0      1      0            113803  53.1000  C123        S
     5                   0       3                           Allen, Mr. William Henry    male  35.0      0      0            373450   8.0500   NaN        S
 
-    *Initial Manual Mapping
-    colall -->"colid","colnum","colcat","coldate","coltext","coly","colcross"
-       |
+
+    *Initial Manual Column Mapping
+     From Raw data --> "colid","colnum","colcat","coldate","coltext","coly","colcross"
+       
        |-"colid"    --> index or id of each row (e.g. ["PassengerId"])
+
+       |-"coly"     --> target column or y column (e.g. ["Survived"])
+
+
        |-"colnum"   --> columns with float or interger numbers (e.g. ["Pclass", "Age", "SibSp", "Parch", "Fare"])
        |-"colcat"   --> columns with string labels (e.g. ["Sex", "Embarked"])
+
        |-"coldate"  --> columns with date format data
        |-"coltext"  --> columns with text data (e.g. ["Ticket", "Name"])
-       |-"coly"     --> target column or y column (e.g. ["Survived"])
-       |-"colcross" --> columns to be checked for feature crosses (e.g. ["Name", "Sex", "Ticket", "Embarked", "Pclass", "Age", "SibSp", "Parch", "Fare"])
+
+
+       |-"colcross" --> columns to be checked for feature crosses
+                        (e.g. ["Name", "Sex", "Ticket", "Embarked", "Pclass", "Age", "SibSp", "Parch", "Fare"])
     
 
-    *Transformations  in  source/run_preprocess.py
+    *Transformations    in  source/run_preprocess.py
+        Raw Columns   --->  Feature columns
+
         "colnum"    --> "colnum_bin" --> "colnum_onehot"
             |--------------------------> "colnum_onehot"
             
@@ -71,31 +87,37 @@
             |--------------------------> "colcat_onehot"
 
      
-    *Merge columns for model training
-        "cols_model_group" --> selecting the processed columns to be merged/used for Model Training (e.g. ["colnum", "colcat_bin"])
+    *Columns feature family for model training
+        "cols_model_group" --> column family used for Model Training 
+
+      "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns                        
+      "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns                        
+      'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns            
+      'coldate',
+      'coltext',            
 
 
 
-###  Column Preprocessing pipeline dataframe   :
-     pipe_list = [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',
-                   'dfdate',  'odftext'  ] :
-
-    'dfnum_bin', 'colnum_bin'  : Float columns into categorical bins
-    'dfnum_hot', 'colnum_hot'  : catagorical numeric value into One Hot Encoding.
-
-
-
-###  Preprocess - pipeline execution  ( in source/run_preprocess.py)  :
+###  Column Preprocessing pipeline dataframe ( in source/run_preprocess.py)   :
      Default pipeline options are considered in 
 
      pipe_default = [ 'filter','label','dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'] :
 
-    'filter':     Input:  ymin and ymax values from model dictionary (['data_pars']['filter_pars']) and does filtering of dataset (coly) between those values
-    'label' :     Input:  y_norm_fun value from model dictionary (['model_pars']['pre_process_pars']), if that value is not None, applies normalization function on coly
+
+
+    'filter':     Input:  ymin and ymax values  and does filtering of dataset (coly).
+    'label' :     Input:  y_norm_fun value from model dictionary
+                   applies normalization function on coly
+
+
     'dfnum_bin' : Input:  a dataframe with selected numerical columns, creates categorical bins, returns dataframe with new columns (dfnum_bin)
     'dfnum_hot' : Input:  a dataframe dfnum_bin, returns one hot matrix as dataframe dfnum_hot
+
+
     'dfcat_bin' : Input:  a dataframe with categorical columns, returns dataframe dfcat_bin with numerical values
     'dfcat_hot' : Input:  a dataframe with categorical columns, returns one hot matrix as dataframe dfcat_hot
+
+
     'dfcross_hot' : Input:  a data frame of numerical and categorical one hot encoded columns with defined cross columns, returns dataframe df_cross_hot
 
     
