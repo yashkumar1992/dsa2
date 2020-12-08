@@ -340,7 +340,14 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        dfi_all   =  {}
        for cols_i in cols_list :
             ##### Run the text processor on each column \  #############################
-            dfi     = pipe_fun( df[[cols_i ]], cols_i, pars =  pipe_i.get('pars', {}) )
+            pars                        = pipe_i.get('pars', {})
+            pars['path_features_store'] = path_features_store
+            if pipe_i.get("type", "") == 'cross' :
+                pars['dfnum_hot'] = dfi_all['dfnum_hot']
+                pars['dfcat_hot'] = dfi_all['dfcat_hot']
+
+
+            dfi                = pipe_fun( df[[cols_i ]], cols_i, pars =  pipe_i.get('pars', {}) )
             dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi))  if dfi_all.get(cols_name) is not None else dfi
             save_features(dfi, cols_name + cols_i, path_features_store)
 
