@@ -111,6 +111,27 @@ cols_input_type_2 = {
 'coldate',
 'coltext',
 
+
+
+### Initial mapping
+colall  ---> colid, coly, colnum, colcat
+
+
+### Transformation
+dfcat_bin    : colcat --> colcat_bin
+dfnum_bin    : colnum --> colnum_bin
+dfnum_onehot : colnum --> colnum_onehot
+...
+
+
+
+### Merge to feed col_model_group
+col_model_group : colcatbin, colnum_bin, ...  
+
+
+
+
+
 """
 
 
