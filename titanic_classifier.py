@@ -136,7 +136,6 @@ def titanic_lightgbm(path_model_out="") :
 
     ################################################################################################
     ##### Filling Global parameters    #############################################################
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
     path_config_model = root + f"/{config_file}"
     path_model        = f'data/output/{data_name}/a01_{model_name}/'
     path_data_train   = f'data/input/{data_name}/train/'
