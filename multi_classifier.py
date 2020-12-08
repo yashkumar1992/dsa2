@@ -185,8 +185,8 @@ def train():
 ######### Check model #############################################################
 def check():
     from source import run_train
-    run_train.run_check(path_output =  path_model,
-                        scoring     =  'accuracy' )
+    run_train.run_data_check(path_output =  path_model,
+                             scoring     =  'accuracy')
 
 
 
