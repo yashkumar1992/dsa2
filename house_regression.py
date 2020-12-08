@@ -32,6 +32,18 @@ from source import util_feature
 
 
 
+####################################################################################################
+###### Path ########################################################################################
+print( os.getcwd())
+root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
+print(root)
+
+dir_data  = os.path.abspath( root + "/data/" ) + "/"
+dir_data  = dir_data.replace("\\", "/")
+print(dir_data)
+
+
+
 
 ####################################################################################
 config_file  = "house_regression.py"
@@ -45,16 +57,21 @@ tag_job      = 'aa1'  ## to have a unique tag for the run
 
 
 
+cols_input_type_1 = {
+     "coly"   : "SalePrice"
+    ,"colid"  : "Id"
 
-####################################################################################################
-###### Path ########################################################################################
-print( os.getcwd())
-root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
-print(root)
+    ,"colcat" : [  "MSSubClass", "MSZoning", "Street", "Alley", "LotShape", "LandContour",
+	      "Utilities", "LotConfig", "LandSlope", "Neighborhood", "Condition1", "Condition2", "BldgType", "HouseStyle", "RoofStyle", "RoofMatl", "Exterior1st", "Exterior2nd", "MasVnrType", "ExterQual", "ExterCond", "Foundation", "BsmtQual", "BsmtCond", "BsmtExposure", "BsmtFinType1", "BsmtFinType2", "Heating", "HeatingQC", "CentralAir", "Electrical", "KitchenQual", "Functional", "FireplaceQu", "GarageType", "GarageFinish", "GarageQual", "GarageCond", "PavedDrive", "PoolQC", "Fence", "MiscFeature", "SaleType", "SaleCondition"]
 
-dir_data  = os.path.abspath( root + "/data/" ) + "/"
-dir_data  = dir_data.replace("\\", "/")
-print(dir_data)
+    ,"colnum" : [ "LotArea", "OverallQual", "OverallCond", "MasVnrArea",
+	      "BsmtFinSF1", "BsmtUnfSF", "TotalBsmtSF", "1stFlrSF", "2ndFlrSF", "LowQualFinSF", "GrLivArea", "BsmtFullBath", "BsmtHalfBath", "FullBath", "HalfBath", "BedroomAbvGr", "KitchenAbvGr", "TotRmsAbvGrd", "Fireplaces", "GarageCars", "GarageArea", "WoodDeckSF", "OpenPorchSF", "EnclosedPorch", "3SsnPorch", "ScreenPorch", "PoolArea", "MiscVal", "MoSold", "YrSold"]
+
+    ,"coltext"  : []
+    ,"coldate" : []   # ["YearBuilt", "YearRemodAdd", "GarageYrBlt"]
+    ,"colcross" : []
+
+},
 
 
 
@@ -124,23 +141,10 @@ def house_price_elasticnetcv(path_model_out=""):
 														 },
 	'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
 									  'explained_variance_score', 'r2_score', 'median_absolute_error']
-									},
+					},
+					
 	'data_pars': {
-		'cols_input_type' : {
-		     "coly"   : "SalePrice"
-		    ,"colid"  : "Id"
-
-		    ,"colcat" : [  "MSSubClass", "MSZoning", "Street", "Alley", "LotShape", "LandContour",
-			      "Utilities", "LotConfig", "LandSlope", "Neighborhood", "Condition1", "Condition2", "BldgType", "HouseStyle", "RoofStyle", "RoofMatl", "Exterior1st", "Exterior2nd", "MasVnrType", "ExterQual", "ExterCond", "Foundation", "BsmtQual", "BsmtCond", "BsmtExposure", "BsmtFinType1", "BsmtFinType2", "Heating", "HeatingQC", "CentralAir", "Electrical", "KitchenQual", "Functional", "FireplaceQu", "GarageType", "GarageFinish", "GarageQual", "GarageCond", "PavedDrive", "PoolQC", "Fence", "MiscFeature", "SaleType", "SaleCondition"]
-
-		    ,"colnum" : [ "LotArea", "OverallQual", "OverallCond", "MasVnrArea",
-			      "BsmtFinSF1", "BsmtUnfSF", "TotalBsmtSF", "1stFlrSF", "2ndFlrSF", "LowQualFinSF", "GrLivArea", "BsmtFullBath", "BsmtHalfBath", "FullBath", "HalfBath", "BedroomAbvGr", "KitchenAbvGr", "TotRmsAbvGrd", "Fireplaces", "GarageCars", "GarageArea", "WoodDeckSF", "OpenPorchSF", "EnclosedPorch", "3SsnPorch", "ScreenPorch", "PoolArea", "MiscVal", "MoSold", "YrSold"]
-
-		    ,"coltext"  : []
-		    ,"coldate" : []   # ["YearBuilt", "YearRemodAdd", "GarageYrBlt"]
-		    ,"colcross" : []
-
-		},
+		'cols_input_type' : cols_input_type_1,
 
 		# 'cols_model_group': [ 'colnum_onehot', 'colcat_onehot', 'colcross_onehot' ]
 		'cols_model_group': [ 'colnum', 'colcat_onehot' ]
@@ -195,21 +199,7 @@ def house_price_lightgbm(path_model_out="") :
 									  'explained_variance_score', 'r2_score', 'median_absolute_error']
 									},
 	'data_pars': {
-		'cols_input_type' : {
-		     "coly"   : "SalePrice"
-		    ,"colid"  : "Id"
-
-		    ,"colcat" : [  "MSSubClass", "MSZoning", "Street", "Alley", "LotShape", "LandContour",
-			      "Utilities", "LotConfig", "LandSlope", "Neighborhood", "Condition1", "Condition2", "BldgType", "HouseStyle", "RoofStyle", "RoofMatl", "Exterior1st", "Exterior2nd", "MasVnrType", "ExterQual", "ExterCond", "Foundation", "BsmtQual", "BsmtCond", "BsmtExposure", "BsmtFinType1", "BsmtFinType2", "Heating", "HeatingQC", "CentralAir", "Electrical", "KitchenQual", "Functional", "FireplaceQu", "GarageType", "GarageFinish", "GarageQual", "GarageCond", "PavedDrive", "PoolQC", "Fence", "MiscFeature", "SaleType", "SaleCondition"]
-
-		    ,"colnum" : ["LotFrontage", "LotArea", "OverallQual", "OverallCond", "MasVnrArea",
-			      "BsmtFinSF1", "BsmtFinSF2", "BsmtUnfSF", "TotalBsmtSF", "1stFlrSF", "2ndFlrSF", "LowQualFinSF", "GrLivArea", "BsmtFullBath", "BsmtHalfBath", "FullBath", "HalfBath", "BedroomAbvGr", "KitchenAbvGr", "TotRmsAbvGrd", "Fireplaces", "GarageCars", "GarageArea", "WoodDeckSF", "OpenPorchSF", "EnclosedPorch", "3SsnPorch", "ScreenPorch", "PoolArea", "MiscVal", "MoSold", "YrSold"]
-
-		    ,"coltext"  : []
-		    ,"coldate" : []   # ["YearBuilt", "YearRemodAdd", "GarageYrBlt"]
-		    ,"colcross" : []
-
-		},
+		'cols_input_type' : cols_input_type_1,
 
 		# 'cols_model_group': [ 'colnum_onehot', 'colcat_onehot', 'colcross_onehot' ]
 		'cols_model_group': [ 'colnum', 'colcat_bin' ]
@@ -304,22 +294,3 @@ python  house_regression.py  run_all
 if __name__ == "__main__":
 		import fire
 		fire.Fire()
-
-"""
-
-
-import template_run
-template_run.config_name       = config_name
-template_run.path_config_model = path_config_model
-template_run.path_model        = path_model
-template_run.path_data_train   = path_data_train
-template_run.path_data_test    = path_data_test
-template_run.path_output_pred  = path_output_pred
-template_run.n_sample          = n_sample
-template_run.model_name        = model_name
-
-print( template_run.config_name )
-train                          = template_run.train
-predict                        = template_run.predict
-run_all                        = template_run.run_all
-"""
