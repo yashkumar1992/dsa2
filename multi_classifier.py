@@ -49,8 +49,7 @@ colnum  = ['length(m)','height(cm)','condition','X1','X2','breed_category']
 colcross= ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']
 
 
-cols_input_type_1 = {
-                     "coly"   :   coly
+cols_input_type_1 = {  "coly"   :   coly
                     ,"colid"  :   colid
                     ,"colcat" :   colcat
                     ,"colnum" :   colnum
@@ -62,22 +61,23 @@ cols_input_type_1 = {
 
 ####  colum familiy for  'cols_model_group'
 """
-    ['colid',
-    "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
-    
-    
-    "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
-    
-    
-    'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+['colid',
+"colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
 
-    'coldate',
-    'coltext',
 
-    "coly"
-    ]
+"colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+
+
+'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+
+'coldate',
+'coltext',
+
+"coly"
+]
     
 """
+
 
 ####################################################################################
 ##### Params########################################################################
@@ -149,7 +149,7 @@ def multiclass_lightgbm(path_model_out="") :
     ################################################################################################
     ##### Filling Global parameters    #############################################################
     path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
+    path_model        = f'data/output/{data_name}/{model_name}/'
     path_data_train   = f'data/input/{data_name}/train/'
     path_data_test    = f'data/input/{data_name}/test/'
     path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
@@ -163,7 +163,6 @@ def multiclass_lightgbm(path_model_out="") :
 
 
     return model_dict
-
 
 
 
