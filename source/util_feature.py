@@ -1173,7 +1173,7 @@ def pd_stat_shift_changes(df, target_col, features_list=0, bins=10, df_test=0):
     print('Returning stats for all numeric features')
     return (stats_all_df)
 
-def conv_to_one_col(np_array,sep_char="_"):
+def np_conv_to_one_col(np_array, sep_char="_"):
     """
     converts string/numeric columns to one string column
     :param np_array: the numpy array with more than one column
