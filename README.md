@@ -46,7 +46,7 @@
 
 
 
-###  Column Group for model  :
+###  Column Group for model preprocessing / training/inference :
 
     *Titanic dataframe structure (example:
                  Survived  Pclass                                               Name     Sex   Age  SibSp  Parch            Ticket     Fare Cabin Embarked
@@ -58,7 +58,7 @@
     5                   0       3                           Allen, Mr. William Henry    male  35.0      0      0            373450   8.0500   NaN        S
 
 
-    *Initial Manual Column Mapping
+    (1) Initial Manual Column Mapping  :   'cols_input_type' 
      From Raw data --> "colid","colnum","colcat","coldate","coltext","coly","colcross"
        
        |-"colid"    --> index or id of each row (e.g. ["PassengerId"])
@@ -77,17 +77,8 @@
                         (e.g. ["Name", "Sex", "Ticket", "Embarked", "Pclass", "Age", "SibSp", "Parch", "Fare"])
     
 
-    *Transformations    in  source/run_preprocess.py
-        Raw Columns   --->  Feature columns
-
-        "colnum"    --> "colnum_bin" --> "colnum_onehot"
-            |--------------------------> "colnum_onehot"
-            
-        "colcat"    --> "colcat_bin" --> "colcat_onehot"
-            |--------------------------> "colcat_onehot"
-
      
-    *Columns feature family for model training
+    (2) Columns feature family for model training  :   "cols_model_group"
         "cols_model_group" --> column family used for Model Training 
 
       "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns                        
@@ -98,7 +89,18 @@
 
 
 
-###  Column Preprocessing pipeline dataframe ( in source/run_preprocess.py)   :
+###  Preprocessing pipeline dataframe ( in source/run_preprocess.py)   :
+
+
+    *Preprocessing as follow    in  source/run_preprocess.py
+         Raw Columns   --->  Feature columns family
+
+        "colnum"    --> "colnum_bin" --> "colnum_onehot"
+            |--------------------------> "colnum_onehot"
+            
+        "colcat"    --> "colcat_bin" --> "colcat_onehot"
+            |--------------------------> "colcat_onehot"
+
      Default pipeline options are considered in 
 
      pipe_default = [ 'filter','label','dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'] :
