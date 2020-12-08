@@ -23,7 +23,7 @@
     python  titanic_classifier.py  run_all
 
 
-### data/input  : Input data format to store
+### data/input  : Input data format
 
     data/input/titanic/raw/  : the raw files
     data/input/titanic/raw2/ : the raw files  split manually
@@ -40,39 +40,40 @@
     File names Are FIXED, please create sub-folder  
 
 
-
-### model_dict
-    ### Initial mapping
-    colall  ---> colid, coly, colnum, colcat
-    
-    
-    ### Transformation
-    dfcat_bin    : colcat --> colcat_bin
-    dfnum_bin    : colnum --> colnum_bin
-    dfnum_onehot : colnum --> colnum_onehot
-    ...
-    
-    
-    
-    ### Merge to feed col_model_group
-    col_model_group : colcatbin, colnum_bin, ...  
-
-
-
-
 ###  Column Group for model  :
-    ['colid',
-    "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+
+    *Titanic dataframe structure (example:
+                 Survived  Pclass                                               Name     Sex   Age  SibSp  Parch            Ticket     Fare Cabin Embarked
+    PassengerId                                                                                                                                           
+    1                   0       3                            Braund, Mr. Owen Harris    male  22.0      1      0         A/5 21171   7.2500   NaN        S
+    2                   1       1  Cumings, Mrs. John Bradley (Florence Briggs Th...  female  38.0      1      0          PC 17599  71.2833   C85        C
+    3                   1       3                             Heikkinen, Miss. Laina  female  26.0      0      0  STON/O2. 3101282   7.9250   NaN        S
+    4                   1       1       Futrelle, Mrs. Jacques Heath (Lily May Peel)  female  35.0      1      0            113803  53.1000  C123        S
+    5                   0       3                           Allen, Mr. William Henry    male  35.0      0      0            373450   8.0500   NaN        S
+
+    *Initial Manual Mapping
+    colall -->"colid","colnum","colcat","coldate","coltext","coly","colcross"
+       |
+       |-"colid"    --> index or id of each row (e.g. ["PassengerId"])
+       |-"colnum"   --> columns with float or interger numbers (e.g. ["Pclass", "Age", "SibSp", "Parch", "Fare"])
+       |-"colcat"   --> columns with string labels (e.g. ["Sex", "Embarked"])
+       |-"coldate"  --> columns with date format data
+       |-"coltext"  --> columns with text data (e.g. ["Ticket", "Name"])
+       |-"coly"     --> target column or y column (e.g. ["Survived"])
+       |-"colcross" --> columns to be checked for feature crosses (e.g. ["Name", "Sex", "Ticket", "Embarked", "Pclass", "Age", "SibSp", "Parch", "Fare"])
     
-    "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
-  
-    'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
 
-    'coldate',
-    'coltext',
+    *Transformations  in  source/run_preprocess.py
+        "colnum"    --> "colnum_bin" --> "colnum_onehot"
+            |--------------------------> "colnum_onehot"
+            
+        "colcat"    --> "colcat_bin" --> "colcat_onehot"
+            |--------------------------> "colcat_onehot"
 
-    "coly"
-    ]
+     
+    *Merge columns for model training
+        "cols_model_group" --> selecting the processed columns to be merged/used for Model Training (e.g. ["colnum", "colcat_bin"])
+
 
 
 ###  Column Preprocessing pipeline dataframe   :
@@ -83,16 +84,19 @@
     'dfnum_hot', 'colnum_hot'  : catagorical numeric value into One Hot Encoding.
 
 
-###  Preprocess - pipeline execution   :
-     Default pipeline options are considered in pipe_default = [ 'filter','label','dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'] :
 
-    'filter'    : Takes in ymin and ymax values from model dictionary (['data_pars']['filter_pars']) and does filtering of dataset (coly) between those values
-    'label'     : Takes in y_norm_fun value from model dictionary (['model_pars']['pre_process_pars']), if that value is not None, applies normalization function on coly
-    'dfnum_bin' : Takes in a dataframe with selected numerical columns, creates categorical bins, returns dataframe with new columns (dfnum_bin)
-    'dfnum_hot' : Takes in a dataframe dfnum_bin, returns one hot matrix as dataframe dfnum_hot
-    'dfcat_bin' : Takes in a dataframe with categorical columns, returns dataframe dfcat_bin with numerical values
-    'dfcat_hot' : Takes in a dataframe with categorical columns, returns one hot matrix as dataframe dfcat_hot
-    'dfcross_hot' : Takes in a data frame of numerical and categorical one hot encoded columns with defined cross columns, returns dataframe df_cross_hot
+###  Preprocess - pipeline execution  ( in source/run_preprocess.py)  :
+     Default pipeline options are considered in 
+
+     pipe_default = [ 'filter','label','dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'] :
+
+    'filter':     Input:  ymin and ymax values from model dictionary (['data_pars']['filter_pars']) and does filtering of dataset (coly) between those values
+    'label' :     Input:  y_norm_fun value from model dictionary (['model_pars']['pre_process_pars']), if that value is not None, applies normalization function on coly
+    'dfnum_bin' : Input:  a dataframe with selected numerical columns, creates categorical bins, returns dataframe with new columns (dfnum_bin)
+    'dfnum_hot' : Input:  a dataframe dfnum_bin, returns one hot matrix as dataframe dfnum_hot
+    'dfcat_bin' : Input:  a dataframe with categorical columns, returns dataframe dfcat_bin with numerical values
+    'dfcat_hot' : Input:  a dataframe with categorical columns, returns one hot matrix as dataframe dfcat_hot
+    'dfcross_hot' : Input:  a data frame of numerical and categorical one hot encoded columns with defined cross columns, returns dataframe df_cross_hot
 
     
 
@@ -115,13 +119,11 @@
 ### source/  : code source CLI to train/predict.
 ```
    run_feature_profile.py : CLI Pandas profiling
+   run_preprocess.py      : CLI for feature preprocessing
    run_train.py :           CLI to train any model, any data (model  data agnostic )
    run_inference.py :       CLI to predict with any model, any data (model  data agnostic )
 
 
-   config_model.py   :  file containing custom parameter for each specific model.
-                        Please insert your model config there :
-                           titanic_lightgbm
 
 
 ```
