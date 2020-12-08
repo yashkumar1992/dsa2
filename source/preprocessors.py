@@ -186,9 +186,10 @@ def pd_label_clean(df, col, pars):
 
 
 def pd_colnum_normalize(df, col, pars):
+    colnum = col
     for x in colnum:
         df[x] = df[x].astype("float32")
-    log(df[colall].dtypes)
+    log(df.dtypes)
 
 
 
@@ -226,7 +227,7 @@ def pd_colnum_normalize(df, col, pars):
     assert isinstance(col, list) and isinstance(df, pd.DataFrame)
 
     from util_feature import  pd_col_to_onehot
-    dfbum_bin = df[col]
+    dfnum_bin = df[col]
     path_features_store = pars['path_features_store']
     colnum_bin = col
     log("### colnum bin to One Hot")
@@ -270,7 +271,14 @@ def pd_colnum_normalize(df, col, pars):
 
 def pd_colcross(df, col, pars):
     log("#####  Cross Features From OneHot Features   ######################################")
+    from util_feature import pd_feature_generate_cross
+
+
     path_features_store = pars['path_features_store']
+    dfcat_hot = pars['dfcat_hot']
+    dfnum_hot = pars['dfnum_hot']
+    colid     = pars['colid']
+    colcross_single   = pars['colcross_single']
 
     try :
        df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
