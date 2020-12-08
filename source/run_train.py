@@ -134,9 +134,10 @@ def train(model_dict, dfX, cols_family, post_process_fun):
        dfX[coly + '_proba'] = ypred_proba
 
     elif len(ypred_proba.shape) > 1:
-       ypred_proba_val = ypred_proba[ival:,:]
-       #### Todo mwergw mutiple probability in one colum string
-       #    dfX[coly + '_proba'] = ypred_proba
+        from util_feature import np_conv_to_one_col
+        ypred_proba_val      = ypred_proba[ival:,:]
+        dfX[coly + '_proba'] = np_conv_to_one_col(ypred_proba, ";")  ### merge into string "p1,p2,p3,p4"
+        log(dfX.head(3).T)
 
     metrics_test = metrics_eval(metric_list,
                                 ytrue       = dfX[coly].iloc[ival:],
@@ -145,15 +146,17 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     stats['metrics_test'] = metrics_test
     log(stats)
 
-    log("saving model, dfX, columns", model_path)
+
+    log("############ saving model, dfX, columns", model_path)
     os.makedirs(model_path, exist_ok=True)
     modelx.save(model_path, stats)
     save(colsX, model_path + "/colsX.pkl")
     save(coly,  model_path + "/coly.pkl")
 
+
     log(modelx.model.model_pars, modelx.model.compute_pars)
     a = load(model_path + "/model.pkl")
-    log("check re-loaded", a.model_pars)
+    log("############ check re-loaded", a.model_pars)
     
     return dfX.iloc[:ival, :].reset_index(), dfX.iloc[ival:, :].reset_index()
 
@@ -235,7 +238,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
 
 
 
-def run_check(path_output, scoring):
+def run_data_check(path_output, scoring):
     import pandas as pd
     try :
         #### Load model

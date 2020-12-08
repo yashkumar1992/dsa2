@@ -12,7 +12,7 @@ D:/_devs/Python01/gitdev/dsa2/
 D:\_devs\Python01\gitdev\dsa2
 D:/_devs/Python01/gitdev/dsa2/
 D:/_devs/Python01/gitdev/dsa2/data/
-  ({'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x0000019AC79FFAE8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x0000019AC79FFEA0>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type'], 'colnum': ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category'], 'coltext': [], 'coldate': [], 'colcross': ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']}, 'cols_model_group': ['colnum', 'colcat_bin'], 'cols_model': [], 'coly': [], 'filter_pars': {'ymax': 5, 'ymin': -1}}, 'global_pars': {'config_name': 'multiclass_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multiclass_lightgbm/', 'n_sample': 6000}},) 
+  ({'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x000002B1DFCBCBF8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x000002B1DFCC5048>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type'], 'colnum': ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category'], 'coltext': [], 'coldate': [], 'colcross': ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']}, 'cols_model_group': ['colnum', 'colcat_bin'], 'filter_pars': {'ymax': 5, 'ymin': -1}}, 'global_pars': {'config_name': 'multiclass_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multiclass_lightgbm/', 'n_sample': 6000}},) 
   ('#### load input column family  ###################################################',) 
   ({'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type'], 'colnum': ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category'], 'coltext': [], 'coldate': [], 'colcross': ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']},) 
   ('#### Preprocess  #################################################################',) 
@@ -39,75 +39,75 @@ dtype: object,)
 
   ('### colnum Map numerics to Category bin  ###########################################',) 
 length(m)
-              length(m)                      
-                   size      mean   max   min
-length(m)_bin                                
-0                   579  0.049067  0.09  0.00
-1                   590  0.143678  0.19  0.10
-2                   639  0.243772  0.29  0.20
-3                   591  0.344924  0.39  0.30
-4                   618  0.450227  0.50  0.40
-5                   547  0.550512  0.59  0.51
-6                   640  0.651234  0.70  0.60
-7                   528  0.749318  0.79  0.71
-8                   703  0.848691  0.90  0.80
-9                   565  0.953558  1.00  0.91
+              length(m)                     
+                    min size   max      mean
+length(m)_bin                               
+0                  0.00  579  0.09  0.049067
+1                  0.10  590  0.19  0.143678
+2                  0.20  639  0.29  0.243772
+3                  0.30  591  0.39  0.344924
+4                  0.40  618  0.50  0.450227
+5                  0.51  547  0.59  0.550512
+6                  0.60  640  0.70  0.651234
+7                  0.71  528  0.79  0.749318
+8                  0.80  703  0.90  0.848691
+9                  0.91  565  1.00  0.953558
 height(cm)
-               height(cm)                                 
-                     size       mean        max        min
-height(cm)_bin                                            
-0                     614   7.198111   9.520000   5.030000
-1                     588  11.788912  14.020000   9.540000
-2                     612  16.300425  18.510000  14.030000
-3                     623  20.753338  23.010000  18.530001
-4                     576  25.169584  27.510000  23.020000
-5                     607  29.688238  32.000000  27.520000
-6                     580  34.298466  36.500000  32.020000
-7                     546  38.782181  40.990002  36.509998
-8                     616  43.254009  45.490002  41.000000
-9                     638  47.754230  49.990002  45.500000
+               height(cm)                           
+                      min size        max       mean
+height(cm)_bin                                      
+0                5.030000  614   9.520000   7.198111
+1                9.540000  588  14.020000  11.788912
+2               14.030000  612  18.510000  16.300425
+3               18.530001  623  23.010000  20.753338
+4               23.020000  576  27.510000  25.169584
+5               27.520000  607  32.000000  29.688238
+6               32.020000  580  36.500000  34.298466
+7               36.509998  546  40.990002  38.782181
+8               41.000000  616  45.490002  43.254009
+9               45.500000  638  49.990002  47.754230
 condition
-              condition               
-                   size mean  max  min
-condition_bin                         
--1                  452  NaN  NaN  NaN
- 0                 1993  0.0  0.0  0.0
- 4                 2193  1.0  1.0  1.0
- 9                 1362  2.0  2.0  2.0
+              condition                
+                    min  size  max mean
+condition_bin                          
+-1                  NaN   452  NaN  NaN
+ 0                  0.0  1993  0.0  0.0
+ 4                  1.0  2193  1.0  1.0
+ 9                  2.0  1362  2.0  2.0
 X1
           X1                       
-        size       mean   max   min
+         min  size   max       mean
 X1_bin                             
-0       3412   0.004689   1.0   0.0
-1         14   2.071429   3.0   2.0
-2          3   4.333333   5.0   4.0
-3        487   6.991786   7.0   6.0
-4         55   8.745455   9.0   8.0
-5         15  10.866667  11.0  10.0
-6       1387  12.985580  13.0  12.0
-7        173  14.994220  15.0  14.0
-8        270  16.299999  17.0  16.0
-9        184  18.005434  19.0  18.0
+0        0.0  3412   1.0   0.004689
+1        2.0    14   3.0   2.071429
+2        4.0     3   5.0   4.333333
+3        6.0   487   7.0   6.991786
+4        8.0    55   9.0   8.745455
+5       10.0    15  11.0  10.866667
+6       12.0  1387  13.0  12.985580
+7       14.0   173  15.0  14.994220
+8       16.0   270  17.0  16.299999
+9       18.0   184  19.0  18.005434
 X2
-          X2               
-        size mean  max  min
+         X2                
+        min  size  max mean
 X2_bin                     
-0       2731  1.0  1.0  1.0
-1         65  2.0  2.0  2.0
-2         18  3.0  3.0  3.0
-3        407  4.0  4.0  4.0
-4          5  5.0  5.0  5.0
-6          3  6.0  6.0  6.0
-7       1117  7.0  7.0  7.0
-8         16  8.0  8.0  8.0
-9       1638  9.0  9.0  9.0
+0       1.0  2731  1.0  1.0
+1       2.0    65  2.0  2.0
+2       3.0    18  3.0  3.0
+3       4.0   407  4.0  4.0
+4       5.0     5  5.0  5.0
+6       6.0     3  6.0  6.0
+7       7.0  1117  7.0  7.0
+8       8.0    16  8.0  8.0
+9       9.0  1638  9.0  9.0
 breed_category
-                   breed_category               
-                             size mean  max  min
-breed_category_bin                              
-0                            2881  0.0  0.0  0.0
-4                            2667  1.0  1.0  1.0
-9                             452  2.0  2.0  2.0
+                   breed_category                
+                              min  size  max mean
+breed_category_bin                               
+0                             0.0  2881  0.0  0.0
+4                             1.0  2667  1.0  1.0
+9                             2.0   452  2.0  2.0
 
   (OrderedDict([('length(m)', [-0.0001, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0]), ('height(cm)', [5.02990020980835, 9.526000499725342, 14.022000789642334, 18.518001079559326, 23.01400136947632, 27.51000165939331, 32.0060019493103, 36.502002239227295, 40.99800252914429, 45.49400281906128, 49.99000310897827]), ('condition', [-0.0001, 0.2, 0.4, 0.6000000000000001, 0.8, 1.0, 1.2000000000000002, 1.4000000000000001, 1.6, 1.8, 2.0]), ('X1', [-0.0001, 1.9, 3.8, 5.699999999999999, 7.6, 9.5, 11.399999999999999, 13.299999999999999, 15.2, 17.099999999999998, 19.0]), ('X2', [0.9999, 1.8, 2.6, 3.4000000000000004, 4.2, 5.0, 5.800000000000001, 6.6000000000000005, 7.4, 8.2, 9.0]), ('breed_category', [-0.0001, 0.2, 0.4, 0.6000000000000001, 0.8, 1.0, 1.2000000000000002, 1.4000000000000001, 1.6, 1.8, 2.0])]),) 
 
@@ -229,121 +229,135 @@ X2_bin_9-breed_category_bin_9              0           0
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//cols_family.pkl',) 
   ('used columns', ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category', 'color_type_int'], 'pet_category') 
   ('######### Train model: ###########################################################',) 
-  ("{'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x0000019AC79FFAE8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x0000019AC79FFEA0>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type'], 'colnum': ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category'], 'coltext': [], 'coldate': [], 'colcross': ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type', 'leng",) 
+  ("{'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x000002B1DFCBCBF8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x000002B1DFCC5048>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type'], 'colnum': ['length(m)', 'height(cm)', 'condition', 'X1', 'X2', 'breed_category'], 'coltext': [], 'coldate': [], 'colcross': ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type', 'leng",) 
   ('#### Data preparation #############################################################',) 
   ((6000, 415),) 
   ('#### Model Instance ##########################################################',) 
   (<module 'models.model_sklearn' from 'D:\\_devs\\Python01\\gitdev\\dsa2\\source\\models\\model_sklearn.py'>,) 
-[1]	valid_0's multi_logloss: 0.852653
-[2]	valid_0's multi_logloss: 0.826056
-[3]	valid_0's multi_logloss: 0.802785
-[4]	valid_0's multi_logloss: 0.781647
-[5]	valid_0's multi_logloss: 0.761933
-[6]	valid_0's multi_logloss: 0.743991
-[7]	valid_0's multi_logloss: 0.726955
-[8]	valid_0's multi_logloss: 0.711078
-[9]	valid_0's multi_logloss: 0.696199
-[10]	valid_0's multi_logloss: 0.68203
-[11]	valid_0's multi_logloss: 0.668656
-[12]	valid_0's multi_logloss: 0.655933
-[13]	valid_0's multi_logloss: 0.643802
-[14]	valid_0's multi_logloss: 0.632364
-[15]	valid_0's multi_logloss: 0.621429
-[16]	valid_0's multi_logloss: 0.61105
-[17]	valid_0's multi_logloss: 0.601214
-[18]	valid_0's multi_logloss: 0.59173
-[19]	valid_0's multi_logloss: 0.582793
-[20]	valid_0's multi_logloss: 0.574012
-[21]	valid_0's multi_logloss: 0.565793
-[22]	valid_0's multi_logloss: 0.557849
-[23]	valid_0's multi_logloss: 0.550237
-[24]	valid_0's multi_logloss: 0.542976
-[25]	valid_0's multi_logloss: 0.536012
-[26]	valid_0's multi_logloss: 0.529317
-[27]	valid_0's multi_logloss: 0.522782
-[28]	valid_0's multi_logloss: 0.516544
-[29]	valid_0's multi_logloss: 0.510924
-[30]	valid_0's multi_logloss: 0.505042
-[31]	valid_0's multi_logloss: 0.500001
-[32]	valid_0's multi_logloss: 0.494574
-[33]	valid_0's multi_logloss: 0.489924
-[34]	valid_0's multi_logloss: 0.484864
-[35]	valid_0's multi_logloss: 0.48009
-[36]	valid_0's multi_logloss: 0.475912
-[37]	valid_0's multi_logloss: 0.47155
-[38]	valid_0's multi_logloss: 0.467398
-[39]	valid_0's multi_logloss: 0.463944
-[40]	valid_0's multi_logloss: 0.460065
-[41]	valid_0's multi_logloss: 0.456379
-[42]	valid_0's multi_logloss: 0.452828
-[43]	valid_0's multi_logloss: 0.449334
-[44]	valid_0's multi_logloss: 0.446058
-[45]	valid_0's multi_logloss: 0.44288
-[46]	valid_0's multi_logloss: 0.439811
-[47]	valid_0's multi_logloss: 0.436835
-[48]	valid_0's multi_logloss: 0.434125
-[49]	valid_0's multi_logloss: 0.431482
-[50]	valid_0's multi_logloss: 0.428811
-[51]	valid_0's multi_logloss: 0.426194
-[52]	valid_0's multi_logloss: 0.423798
-[53]	valid_0's multi_logloss: 0.421447
-[54]	valid_0's multi_logloss: 0.419195
-[55]	valid_0's multi_logloss: 0.416885
-[56]	valid_0's multi_logloss: 0.414707
-[57]	valid_0's multi_logloss: 0.412631
-[58]	valid_0's multi_logloss: 0.410588
-[59]	valid_0's multi_logloss: 0.408705
-[60]	valid_0's multi_logloss: 0.406787
-[61]	valid_0's multi_logloss: 0.405075
-[62]	valid_0's multi_logloss: 0.403315
-[63]	valid_0's multi_logloss: 0.401623
-[64]	valid_0's multi_logloss: 0.39994
-[65]	valid_0's multi_logloss: 0.398309
-[66]	valid_0's multi_logloss: 0.396656
-[67]	valid_0's multi_logloss: 0.395185
-[68]	valid_0's multi_logloss: 0.393601
-[69]	valid_0's multi_logloss: 0.392207
-[70]	valid_0's multi_logloss: 0.390871
-[71]	valid_0's multi_logloss: 0.389481
-[72]	valid_0's multi_logloss: 0.38815
-[73]	valid_0's multi_logloss: 0.386865
-[74]	valid_0's multi_logloss: 0.385717
-[75]	valid_0's multi_logloss: 0.384565
-[76]	valid_0's multi_logloss: 0.383345
-[77]	valid_0's multi_logloss: 0.382224
-[78]	valid_0's multi_logloss: 0.3812
-[79]	valid_0's multi_logloss: 0.38013
-[80]	valid_0's multi_logloss: 0.37905
-[81]	valid_0's multi_logloss: 0.378197
-[82]	valid_0's multi_logloss: 0.37725
-[83]	valid_0's multi_logloss: 0.376231
-[84]	valid_0's multi_logloss: 0.375321
-[85]	valid_0's multi_logloss: 0.37481
-[86]	valid_0's multi_logloss: 0.373848
-[87]	valid_0's multi_logloss: 0.373367
-[88]	valid_0's multi_logloss: 0.372195
-[89]	valid_0's multi_logloss: 0.371304
-[90]	valid_0's multi_logloss: 0.370352
-[91]	valid_0's multi_logloss: 0.369448
-[92]	valid_0's multi_logloss: 0.368807
-[93]	valid_0's multi_logloss: 0.367856
-[94]	valid_0's multi_logloss: 0.367275
-[95]	valid_0's multi_logloss: 0.366644
-[96]	valid_0's multi_logloss: 0.365986
-[97]	valid_0's multi_logloss: 0.365172
-[98]	valid_0's multi_logloss: 0.36461
-[99]	valid_0's multi_logloss: 0.364138
-[100]	valid_0's multi_logloss: 0.363421
+[1]	valid_0's multi_logloss: 0.826077
+[2]	valid_0's multi_logloss: 0.80142
+[3]	valid_0's multi_logloss: 0.779484
+[4]	valid_0's multi_logloss: 0.75953
+[5]	valid_0's multi_logloss: 0.741409
+[6]	valid_0's multi_logloss: 0.722995
+[7]	valid_0's multi_logloss: 0.706032
+[8]	valid_0's multi_logloss: 0.689901
+[9]	valid_0's multi_logloss: 0.674982
+[10]	valid_0's multi_logloss: 0.660653
+[11]	valid_0's multi_logloss: 0.648472
+[12]	valid_0's multi_logloss: 0.637097
+[13]	valid_0's multi_logloss: 0.625766
+[14]	valid_0's multi_logloss: 0.614954
+[15]	valid_0's multi_logloss: 0.604803
+[16]	valid_0's multi_logloss: 0.594996
+[17]	valid_0's multi_logloss: 0.585672
+[18]	valid_0's multi_logloss: 0.576716
+[19]	valid_0's multi_logloss: 0.56814
+[20]	valid_0's multi_logloss: 0.560023
+[21]	valid_0's multi_logloss: 0.552151
+[22]	valid_0's multi_logloss: 0.544606
+[23]	valid_0's multi_logloss: 0.537227
+[24]	valid_0's multi_logloss: 0.530264
+[25]	valid_0's multi_logloss: 0.523523
+[26]	valid_0's multi_logloss: 0.517026
+[27]	valid_0's multi_logloss: 0.510845
+[28]	valid_0's multi_logloss: 0.504835
+[29]	valid_0's multi_logloss: 0.499032
+[30]	valid_0's multi_logloss: 0.493386
+[31]	valid_0's multi_logloss: 0.488207
+[32]	valid_0's multi_logloss: 0.482901
+[33]	valid_0's multi_logloss: 0.477847
+[34]	valid_0's multi_logloss: 0.472985
+[35]	valid_0's multi_logloss: 0.468228
+[36]	valid_0's multi_logloss: 0.464052
+[37]	valid_0's multi_logloss: 0.459802
+[38]	valid_0's multi_logloss: 0.455941
+[39]	valid_0's multi_logloss: 0.452403
+[40]	valid_0's multi_logloss: 0.448621
+[41]	valid_0's multi_logloss: 0.445109
+[42]	valid_0's multi_logloss: 0.440769
+[43]	valid_0's multi_logloss: 0.437663
+[44]	valid_0's multi_logloss: 0.434466
+[45]	valid_0's multi_logloss: 0.430602
+[46]	valid_0's multi_logloss: 0.427877
+[47]	valid_0's multi_logloss: 0.424255
+[48]	valid_0's multi_logloss: 0.420872
+[49]	valid_0's multi_logloss: 0.417691
+[50]	valid_0's multi_logloss: 0.414774
+[51]	valid_0's multi_logloss: 0.411725
+[52]	valid_0's multi_logloss: 0.409019
+[53]	valid_0's multi_logloss: 0.406286
+[54]	valid_0's multi_logloss: 0.403556
+[55]	valid_0's multi_logloss: 0.401005
+[56]	valid_0's multi_logloss: 0.398457
+[57]	valid_0's multi_logloss: 0.39609
+[58]	valid_0's multi_logloss: 0.393807
+[59]	valid_0's multi_logloss: 0.391523
+[60]	valid_0's multi_logloss: 0.389334
+[61]	valid_0's multi_logloss: 0.3872
+[62]	valid_0's multi_logloss: 0.385153
+[63]	valid_0's multi_logloss: 0.38322
+[64]	valid_0's multi_logloss: 0.381332
+[65]	valid_0's multi_logloss: 0.379442
+[66]	valid_0's multi_logloss: 0.377505
+[67]	valid_0's multi_logloss: 0.374885
+[68]	valid_0's multi_logloss: 0.372369
+[69]	valid_0's multi_logloss: 0.370782
+[70]	valid_0's multi_logloss: 0.368383
+[71]	valid_0's multi_logloss: 0.366845
+[72]	valid_0's multi_logloss: 0.364586
+[73]	valid_0's multi_logloss: 0.363175
+[74]	valid_0's multi_logloss: 0.361786
+[75]	valid_0's multi_logloss: 0.359673
+[76]	valid_0's multi_logloss: 0.358149
+[77]	valid_0's multi_logloss: 0.356598
+[78]	valid_0's multi_logloss: 0.354826
+[79]	valid_0's multi_logloss: 0.353252
+[80]	valid_0's multi_logloss: 0.35151
+[81]	valid_0's multi_logloss: 0.35002
+[82]	valid_0's multi_logloss: 0.348414
+[83]	valid_0's multi_logloss: 0.34739
+[84]	valid_0's multi_logloss: 0.346324
+[85]	valid_0's multi_logloss: 0.344919
+[86]	valid_0's multi_logloss: 0.344003
+[87]	valid_0's multi_logloss: 0.34314
+[88]	valid_0's multi_logloss: 0.342448
+[89]	valid_0's multi_logloss: 0.34166
+[90]	valid_0's multi_logloss: 0.340198
+[91]	valid_0's multi_logloss: 0.338993
+[92]	valid_0's multi_logloss: 0.337646
+[93]	valid_0's multi_logloss: 0.337231
+[94]	valid_0's multi_logloss: 0.336872
+[95]	valid_0's multi_logloss: 0.335648
+[96]	valid_0's multi_logloss: 0.335366
+[97]	valid_0's multi_logloss: 0.334517
+[98]	valid_0's multi_logloss: 0.334321
+[99]	valid_0's multi_logloss: 0.333515
+[100]	valid_0's multi_logloss: 0.33329
   ('#### Metrics #################################################################',) 
+  (pet_id                                                                ANSL_68653  ...                                         ANSL_50612
+length(m)                                                                   0.84  ...                                               0.86
+height(cm)                                                                 35.91  ...                                              36.19
+condition                                                                      0  ...                                                NaN
+X1                                                                             0  ...                                                 15
+X2                                                                             1  ...                                                  4
+...                                                                          ...  ...                                                ...
+X2_bin_9-breed_category_bin_0                                                  0  ...                                                  0
+X2_bin_9-breed_category_bin_4                                                  0  ...                                                  0
+X2_bin_9-breed_category_bin_9                                                  0  ...                                                  0
+pet_category_pred                                                              2  ...                                                  3
+pet_category_proba             0.0008436421631452173;0.29462316603986904;0.69...  ...  0.00042079631968558505;0.03381015356350959;0.0...
+
+[417 rows x 3 columns],) 
   ({'metrics_test':       metric_name  metric_val  n_sample
-0   roc_auc_score    0.943079      1200
-1  accuracy_score    0.880833      1200},) 
-  ('saving model, dfX, columns', 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/') 
+0   roc_auc_score    0.921462      1200
+1  accuracy_score    0.850833      1200},) 
+  ('############ saving model, dfX, columns', 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/') 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model//colsX.pkl',) 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model//coly.pkl',) 
-  ({'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x0000019AC79FFAE8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x0000019AC79FFEA0>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}) 
-  ('check re-loaded', {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x0000019AC9C4F6A8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x0000019AC9C4F840>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}) 
+  ({'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x000002B1DFCBCBF8>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x000002B1DFCC5048>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}) 
+  ('############ check re-loaded', {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multiclass_lightgbm.<locals>.post_process_fun at 0x000002B1E1E4C950>, 'pre_process_pars': {'y_norm_fun': <function multiclass_lightgbm.<locals>.pre_process_fun_multi at 0x000002B1E34D0C80>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}) 
   ('######### export #################################',) 
   ('######### finish #################################',) 
