@@ -102,20 +102,13 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     #### Pipeline Execution
     #pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 
-    pipe_default = [    {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum_bin', 'type' : '' },
+    pipe_default = [ {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum_bin', 'type' : '' },
                      {  'uri' : 'source/preprocessors.py::pd_colcat_bin', 'pars' : {   }, 'cols_family': 'colcat_bin', 'type' : '' }
                      {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
 
                    ]
 
 
-    """
-    pipe_list = [    {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum_bin', 'type' : '' },
-                     {  'uri' : 'source/preprocessors.py::pd_colcat_bin', 'pars' : {   }, 'cols_family': 'colcat_bin', 'type' : '' }
-                     {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
-
-                ]
-    """
     pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
 
 
@@ -187,7 +180,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     dfXy = df[colnum + colcat + [coly] ]
     for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',
                'dfdate',  'dftext'  ] :
-        if t in locals() :
+        if t in dfi_all:
            dfXy = pd.concat((dfXy, dfi_all[t] ), axis=1)
     save_features(dfXy, 'dfX', path_features_store)
 
