@@ -105,11 +105,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     pipe_default = [ {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum_bin', 'type' : '' },
                      {  'uri' : 'source/preprocessors.py::pd_colcat_bin', 'pars' : {   }, 'cols_family': 'colcat_bin', 'type' : '' }
                      {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
-
                    ]
 
-
-    pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
+    pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
 
 
     ##### Load data ###########################################################################
@@ -123,11 +121,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     for pipe_i in pipe_list :
        log("###################", pipe_i, "##################################################")
-       pipe_fun  =  load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
-       cols_name =  pipe_i['cols_family']
-       cols_list =  cols_group[ cols_name  ]
-
-
+       pipe_fun    =  load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
+       cols_name   =  pipe_i['cols_family']
+       cols_list   =  cols_group[ cols_name  ]
        cols_family = {}
        for cols_i in cols_list :
             ##### Run the text processor on each column   #############################
@@ -140,15 +136,16 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             dfi, col_pars            = pipe_fun( df[[cols_i ]], cols_i, pars =  pipe_i.get('pars', {}) )
 
             ### Save on Disk column names   + dataframe
-            cols_family[cols_name]   = list(dfi.columns)
-            save(cols_family[cols_name], f'{path_pipeline_export}/{cols_name}.pkl')
-            save_features(dfi, cols_name + cols_i, path_features_store)  ### already saved
+            cols_family[cols_i ]   = list(dfi.columns)
+            save_features(dfi, cols_name + "-" + cols_i, path_features_store)  ### already saved
 
             ### Merge sub-family
             dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi))  if dfi_all.get(cols_name) is not None else dfi
 
+
+       save(cols_family, f'{path_pipeline_export}/{cols_name}.pkl')
        log(dfi_all.head(6))
-       save_features(dfi_all, cols_name, path_features_store)
+       save_features(dfi_all[cols_name], cols_name, path_features_store)
 
 
     ###################################################################################
@@ -182,6 +179,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                'dfdate',  'dftext'  ] :
         if t in dfi_all:
            dfXy = pd.concat((dfXy, dfi_all[t] ), axis=1)
+
     save_features(dfXy, 'dfX', path_features_store)
 
     colXy = list(dfXy.columns)
@@ -191,7 +189,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     save(cols_family, f'{path_pipeline_export}/cols_family.pkl' )
 
 
-    ###### Return values  #########################################################################
+    ###### Return values  ##############################################################
     return dfXy, cols_family
 
 
