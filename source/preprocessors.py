@@ -186,7 +186,7 @@ def pd_label_clean(df, col, pars):
 
 
 
-def pd_colnum_normalize(df, col, pars):
+def pd_colnum(df, col, pars):
     colnum = col
     for x in colnum:
         df[x] = df[x].astype("float32")
@@ -206,7 +206,7 @@ def pd_colnum_normalize(df, col, pars):
     return dfnum_norm, colnum_norm
 
 
-def pd_colnum_numtobin(df, col, pars):
+def pd_colnum_bin(df, col, pars):
     from util_feature import  pd_colnum_tocat
     path_features_store = pars['path_features_store']
     colnum = col
@@ -253,7 +253,7 @@ def pd_colcat_to_onehot(df, col, pars):
 
 
 
-def pd_colcat_toint(df, col, pars):
+def pd_colcat_bin(df, col, pars):
     # dfbum_bin = df[col]
     path_features_store = pars['path_features_store']
     colcat = col

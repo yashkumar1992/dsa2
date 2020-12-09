@@ -130,7 +130,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             pars                        = pipe_i.get('pars', {})
             pars['path_features_store'] = path_features_store
             if pipe_i.get("type", "") == 'cross' :
-                pars['dfnum_hot'] = dfi_all['dfnum_hot']
+                pars['dfnum_hot'] = dfi_all['dfnum_hot']   ### dfnum_hot --> dfcross
                 pars['dfcat_hot'] = dfi_all['dfcat_hot']
 
             dfi, col_pars            = pipe_fun( df[[cols_i ]], cols_i, pars =  pipe_i.get('pars', {}) )
