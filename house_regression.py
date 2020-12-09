@@ -113,11 +113,15 @@ def y_norm(y, inverse=True, mode='boxcox'):
 def house_price_elasticnetcv(path_model_out=""):
 
 	global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-	model_name        = 'ElasticNetCV'
+	model_name   = 'ElasticNetCV'
+    config_name  = 'house_price_elasticnetcv'
+    n_sample     = 1000
+
 
 	path_config_model = root + f"/{config_file}"
 	path_model        = f'data/output/{data_name}/a01_{model_name}/'
 	path_data_train   = f'data/input/{data_name}/train/'
+
 	path_data_test    = f'data/input/{data_name}/test/'
 	path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
 
@@ -142,7 +146,7 @@ def house_price_elasticnetcv(path_model_out=""):
 	'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
 									  'explained_variance_score', 'r2_score', 'median_absolute_error']
 					},
-					
+
 	'data_pars': {
 		'cols_input_type' : cols_input_type_1,
 
@@ -154,6 +158,7 @@ def house_price_elasticnetcv(path_model_out=""):
 		 ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
 							}}
 	return model_dict
+
 
 
 
