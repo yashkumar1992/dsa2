@@ -154,7 +154,6 @@ def titanic_lightgbm(path_model_out="") :
          }
       }
 
-    ################################################################################################
     ##### Filling Global parameters    #############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
