@@ -145,6 +145,11 @@ def titanic_lightgbm(path_model_out="") :
 
 
           ### family of columns for MODEL  ########################################################
+          #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+          ##  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+          #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+          #  'coldate',
+          #  'coltext',
           'cols_model_group': [ 'colnum', 'colcat_bin']
 
 
@@ -184,6 +189,7 @@ def preprocess():
     run.preprocess(config_uri = config_file + '::' + config_name)
 
 
+
 ########## Train ###########################################################
 def train():
 
@@ -193,6 +199,7 @@ def train():
     """
     import run
     run.train(config_uri = config_file + '::' + config_name)
+
 
 ######### Check model #############################################################
 def check():
