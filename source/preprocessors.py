@@ -211,6 +211,7 @@ def pd_colnum_bin(df, col, pars):
     path_features_store = pars['path_features_store']
     colnum = col
     log("### colnum Map numerics to Category bin  ###########################################")
+    print(colnum)
     dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=colnum, colexclude=None, colbinmap=None,
                                                bins=10, suffix="_bin", method="uniform",
                                                return_val="dataframe,param")
