@@ -144,8 +144,11 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             ### Merge sub-family
             dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi))  if dfi_all.get(cols_name) is not None else dfi
 
-       cols_family_full[cols_name] = cols_family
+       ### Flatten the columns
        cols_family_export          = [  coli for coli in col_list for key,col_list in cols_family.items() ]
+       cols_family_full[cols_name] = cols_family_export
+
+       ### save on disk
        save(cols_family_export, f'{path_pipeline_export}/{cols_name}.pkl')
        save_features(dfi_all[cols_name], cols_name, path_features_store)
        log(dfi_all.head(6))
