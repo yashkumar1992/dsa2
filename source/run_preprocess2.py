@@ -214,14 +214,22 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
     log(path_output)
 
 
-    log("#### load input column family  ###################################################")
-    cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
-    log(cols_group)
+    # log("#### load input column family  ###################################################")
+    # cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
+    # log(cols_group)
 
 
     log("#### Model parameters Dynamic loading  ############################################")
     model_dict_fun = load_function_uri(uri_name= path_config_model + "::" + model_name)
     model_dict     = model_dict_fun(path_model_out)   ### params
+
+
+    log("#### load input column family  ###################################################")
+    try :
+        cols_group = model_dict['data_pars']['cols_input_type']  ### the model config file
+    except :
+        cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
+    log(cols_group)
 
 
     log("#### Preprocess  #################################################################")
