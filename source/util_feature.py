@@ -66,6 +66,8 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
         if ".zip" in fi  :     dfi = pd.read_csv(fi) # + "/features.zip")
         df = pd.concat((df, dfi))  if df is not None else dfi
     assert len(df) > 0 , " Dataframe is empty: " + path_data_x
+    log("dfX_raw", df.T.head(4))
+
 
     # df = pd.read_csv(path_data_x) # + "/features.zip")
     df = df.set_index(colid)
@@ -81,6 +83,7 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
             if ".zip" in fi  :     dfi = pd.read_csv(fi) # + "/features.zip")
             dfy = pd.concat((dfy, dfi)) 
 
+        log("dfy", dfy.head(5))
         # dfy = pd.read_csv(path_data_y) # + "/target_values.zip")
         df = df.join(dfy.set_index(colid), on=colid, how='left', )
     except:
