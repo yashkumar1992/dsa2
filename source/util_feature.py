@@ -57,12 +57,15 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
     import ntpath
     flist = glob.glob( ntpath.dirname(path_data_x)+"/*" )#ntpath.dirname(path_data_x)+"/*"
     flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] and ntpath.basename(f)[:8] in ['features'] ]
+    assert len(flist) > 0 , " No file: " +path_data_x
+
     print(flist)
     df    = None
     for fi in flist :
         if ".parquet" in fi :  dfi = pd.read_parquet(fi) # + "/features.zip")
         if ".zip" in fi  :     dfi = pd.read_csv(fi) # + "/features.zip")
         df = pd.concat((df, dfi))  if df is not None else dfi
+    assert len(df) > 0 , " Dataframe is empty: " + path_data_x
 
     # df = pd.read_csv(path_data_x) # + "/features.zip")
     df = df.set_index(colid)
