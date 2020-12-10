@@ -429,7 +429,8 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
                                  preprocess_pars, filter_pars, path_features_store)
 
-
+    print(cols)
+    print('-----')
     model_dict['data_pars']['coly'] = cols['coly']
     
     ### Generate actual column names from colum groups : colnum , colcat
