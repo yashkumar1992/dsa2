@@ -214,7 +214,7 @@ def titanic_lightgbm2(path_model_out="") :
                      # {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
                    ]
 
-                                
+
 
                }
         },
