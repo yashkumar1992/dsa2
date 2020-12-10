@@ -99,6 +99,8 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     colid  = cols_family['colid']
     colsX  = data_pars['cols_model']
     coly   = data_pars['coly']
+    log("dfX", dfX[colsX] )
+    log("dfy", dfX[coly] )
 
     data_pars['data_type'] = 'ram'
     data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
@@ -109,7 +111,9 @@ def train(model_dict, dfX, cols_family, post_process_fun):
                           'Xval'   : dfX[colsX].iloc[ival:, :],
                           'yval'   : dfX[coly].iloc[ival:],
                           }
-    
+
+
+
     log("#### Model Instance ##########################################################")
     # from config_model import map_model    
     modelx = map_model(model_name)    
@@ -124,7 +128,10 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     stats               = {}
     ypred, ypred_proba  = modelx.predict(dfX[colsX], compute_pars=compute_pars)
     dfX[coly + '_pred'] = ypred  # y_norm(ypred, inverse=True)
-    dfX[coly]           = post_process_fun(dfX[coly].values)
+
+    dfX[coly]            = dfX[coly].apply(lambda  x : post_process_fun(x) )
+    dfX[coly + '_pred']  = dfX[coly + '_pred'].apply(lambda  x : post_process_fun(x) )
+
 
     if ypred_proba is None :
        ypred_proba_val = None
@@ -138,6 +145,9 @@ def train(model_dict, dfX, cols_family, post_process_fun):
         ypred_proba_val      = ypred_proba[ival:,:]
         dfX[coly + '_proba'] = np_conv_to_one_col(ypred_proba, ";")  ### merge into string "p1,p2,p3,p4"
         log(dfX.head(3).T)
+
+    log("Actual    : ",  dfX[coly ])
+    log("Prediction: ",  dfX[coly + '_pred'])
 
     metrics_test = metrics_eval(metric_list,
                                 ytrue       = dfX[coly].iloc[ival:],
