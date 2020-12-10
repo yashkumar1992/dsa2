@@ -26,21 +26,45 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
+def global_pars_update(model_dict,  data_name, config_name):
+    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
+    model_name        = model_dict['model_pars']['config_model_name']
+    path_config_model = root + f"/{config_file}"
+    path_model        = f'data/output/{data_name}/a01_{model_name}/'
+    path_data_train   = f'data/input/{data_name}/train/'
+    path_data_test    = f'data/input/{data_name}/test/'
+    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
+    model_dict[ 'global_pars'] = {}
+    global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train',
+                   'path_data_test', 'path_output_pred', 'n_sample'
+            ]
+    for t in global_pars:
+      model_dict['global_pars'][t] = globals()[t]
+    return model_dict
+
+
+def os_get_function_name():
+    import sys
+    return sys._getframe(1).f_code.co_name
+
 
 ####################################################################################
 config_file  = "titanic_classifier.py"   ### name of file which contains data configuration
-data_name    = "titanic"     ### in data/input/
 
 
 
-config_name  = 'titanic_lightgbm'   ### name of function which contains data configuration 
-n_sample     = 2000
+
+config_name  = 'titanic_lightgbm'   ### name of function which contains data configuration
+n_sample    = 2000
 
 
 
 
 ####################################################################################
 ##### Params########################################################################
+# data_name    = "titanic"     ### in data/input/
+
 cols_input_type_1 = {
      "coly"   :   "Survived"
     ,"colid"  :   "PassengerId"
@@ -65,26 +89,25 @@ cols_input_type_1 = {
 
 
 
+
 ####################################################################################
 def titanic_lightgbm(path_model_out="") :
     """
        Contains all needed informations for Light GBM Classifier model, used for titanic classification task
     """
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-
-    config_name       = 'titanic_lightgbm'
-    model_name        = 'LGBMClassifier'
-    n_sample          = 1000
+    data_name    = "titanic"     ### in data/input/
+    model_name   = 'LGBMClassifier'
+    n_sample     = 1000
 
 
     def post_process_fun(y):
         ### After prediction is done
-        return  y.astype('int')
+        return  int(y)
 
 
     def pre_process_fun(y):
         ### Before the prediction is done
-        return  y.astype('int')
+        return  int(y)
 
 
     model_dict = {'model_pars': {
@@ -116,7 +139,6 @@ def titanic_lightgbm(path_model_out="") :
                }
         },
 
-
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
                       },
 
@@ -125,6 +147,11 @@ def titanic_lightgbm(path_model_out="") :
 
 
           ### family of columns for MODEL  ########################################################
+          #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+          ##  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+          #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+          #  'coldate',
+          #  'coltext',
           'cols_model_group': [ 'colnum', 'colcat_bin']
 
 
@@ -134,25 +161,89 @@ def titanic_lightgbm(path_model_out="") :
          }
       }
 
-    ################################################################################################
     ##### Filling Global parameters    #############################################################
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-
-    model_dict[ 'global_pars'] = {}
-    global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train',
-                   'path_data_test', 'path_output_pred', 'n_sample'
-            ]
-    for t in global_pars:
-      model_dict['global_pars'][t] = globals()[t]
-
-
+    model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
 
 
+
+
+
+
+
+def titanic_lightgbm2(path_model_out="") :
+    """
+       Contains all needed informations for Light GBM Classifier model, used for titanic classification task
+    """
+    data_name    = "titanic"     ### in data/input/
+    model_name   = 'LGBMClassifier'
+    n_sample     = 1000
+
+
+    def post_process_fun(y):
+        ### After prediction is done
+        return  int(y)
+
+
+    def pre_process_fun(y):
+        ### Before the prediction is done
+        return  int(y)
+
+
+    model_dict = {'model_pars': {
+        'model_path'       : path_model_out
+
+        ### LightGBM API model   #######################################
+        ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
+        ,'model_pars'       : {'objective': 'binary',
+                               'learning_rate':0.03,'boosting_type':'gbdt'    ### Model hyperparameters
+
+                              }
+
+        ### After prediction  ##########################################
+        , 'post_process_fun' : post_process_fun
+
+
+        ### Before prediction  ##########################################
+        , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
+
+
+                ### Pipeline for data processing ########################
+                'pipe_list' : [ {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
+                  # {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
+                     # {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
+                   ]
+
+
+
+               }
+        },
+
+      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
+                      },
+
+      'data_pars': {
+          'cols_input_type' : cols_input_type_1,
+
+
+          ### family of columns for MODEL  ########################################################
+          #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+          ##  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+          #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+          #  'coldate',
+          #  'coltext',
+          'cols_model_group': [ 'colnum', 'colcat_bin']
+
+
+          ### Filter data rows   ##################################################################
+         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
+
+         }
+      }
+
+    ##### Filling Global parameters    #############################################################
+    model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
+    return model_dict
 
 
 
@@ -162,20 +253,21 @@ def titanic_lightgbm(path_model_out="") :
 
 ####################################################################################################
 ########## Init variable ###########################################################################
-globals()[config_name]()   
+# globals()[config_name]()
 
 
 
 
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess():
+def preprocess(configname=None):
     """
     Preprocessing of input data, in order to prepare them for training
 
     """
     import run
     run.preprocess(config_uri = config_file + '::' + config_name)
+
 
 
 ########## Train ###########################################################
@@ -187,6 +279,7 @@ def train():
     """
     import run
     run.train(config_uri = config_file + '::' + config_name)
+
 
 ######### Check model #############################################################
 def check():

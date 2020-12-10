@@ -21,12 +21,9 @@ All in one file config
 
 
 """
-import warnings, copy
+import warnings
 warnings.filterwarnings('ignore')
-import os, sys
-import pandas as pd
-import copy
-import pdb
+import os, sys, pandas as pd, copy, pdb
 ############################################################################
 from source import util_feature
 
@@ -104,18 +101,12 @@ def y_norm(y, inverse=True, mode='boxcox'):
 
 ####################################################################################
 ##### Params########################################################################
-#global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-
 def boston_causal(path_model_out="") :
     """
-        Huber Loss includes L1  regurarlization
-        We test different features combinaison, default params is optimal
     """
     global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
 
     model_name        = 'DAGRegressor'
-
-
 
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='boxcox')
@@ -124,6 +115,7 @@ def boston_causal(path_model_out="") :
         return y_norm(y, inverse=False, mode='boxcox')
 
 
+    ###############################################################
     model_dict = {'model_pars': {
           'model_path'       : path_model_out
 
