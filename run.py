@@ -83,8 +83,7 @@ def preprocess(config_uri='titanic_classifier.py::titanic_lightgbm'):
                                   path_output       =  m['path_model'], 
                                   path_config_model =  m['path_config_model'], 
                                   n_sample          =  m['n_sample'],
-                                  mode              =  'run_preprocess',
-                                  path_features_store = m['path_features_out'])
+                                  mode              =  'run_preprocess')
 
 ############################################################################
 ########## Train ###########################################################

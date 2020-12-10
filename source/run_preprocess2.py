@@ -108,8 +108,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     #### Pipeline Execution
     #pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 
-    pipe_list = [ {  'uri' : 'source/preprocessors.py::pd_filter_rows', 'pars' : {   }, 'cols_family': 'coly', 'type' : '' },
-                  {  'uri' : 'source/preprocessors.py::pd_label_clean', 'pars' : {   }, 'cols_family': 'coly', 'type' : '' },
+    pipe_list = [ {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
+                  # {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
                      # {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
                    ]
 
@@ -139,7 +139,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        pipe_fun    =  load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
        cols_name   =  pipe_i['cols_family']
        cols_list   =  cols_group[ cols_name  ]
-       cols_family = {}
+       # cols_family = {}
        print(cols_list)
        cols_family = {} # []  #{}
        for cols_i in cols_list :
@@ -152,27 +152,37 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                 pars['dfnum_hot'] = dfi_all['dfnum_hot']   ### dfnum_hot --> dfcross
                 pars['dfcat_hot'] = dfi_all['dfcat_hot']
             print(cols_i )
-            dfi            = pipe_fun( df[[cols_i ]], cols_i, pars =  pipe_i.get('pars', {}) ) #, col_pars
 
+            dfi, col_pars            = pipe_fun( df[[cols_i ]], [cols_i], pars =  pipe_i.get('pars', {}) ) #
 
+            print(dfi)
+            print(col_pars)
             ### Save on Disk column names ( pre-processor meta-params)  + dataframe intermediate
-            cols_family[cols_name ]   = list(dfi.columns)
+            try:
+                cols_family[cols_name ]+=list(dfi.columns)
+                # dfi_all[cols_name]+=list(dfi)
+            except:
+                cols_family[cols_name] = list(dfi.columns)
+                # dfi_all[cols_name] = list(dfi)
             #cols_family.extend( list(dfi.columns) )  ### all columns names are unique !!!!
 
             save_features(dfi, cols_name + "-" + cols_i, path_features_store)  ### already saved
 
             ### Merge sub-family
-            dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi))  if dfi_all.get(cols_name) is not None else dfi
-
+            dfi_all[cols_i] =  pd.concat((dfi_all[cols_name], dfi))  if dfi_all.get(cols_name) is not None else dfi
+       print('------------dfi_all-------------')
+       print(dfi_all)
+       print('------------cols_family-------------')
+       print(cols_family)
        ### Flatten the columns
-       cols_family_export          = [  coli for coli in col_list for key,col_list in cols_family.items() ]
+       cols_family_export          = [  coli for coli in col_list for key,col_list in cols_family.items() ]#
        cols_family_full[cols_name] = cols_family_export
 
 
        ### save on disk
        save(cols_family_export, f'{path_pipeline_export}/{cols_name}.pkl')
        save_features(dfi_all[cols_name], cols_name, path_features_store)
-       log(dfi_all.head(6))
+       # log(dfi_all.head(6))
 
 
     ######  Merge AlL  #################################################################
