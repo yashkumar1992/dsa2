@@ -49,7 +49,7 @@ from util_feature import  save, load_function_uri
 from util_feature import  load_dataset
 
 
-def save_features(df, name, path):
+def save_features(df, name, path) -> object:
     """
     :param df:
     :param name:
@@ -195,13 +195,14 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                 return 1
             except:
                 return 0
+        df['_isfloat'] = df[ coly ].apply(lambda x : isfloat(x) )
+        df             = df[ df['_isfloat'] > 0 ]
+        del df['_isfloat']
 
         ymin, ymax = filter_pars.get('ymin', -9999999999.0), filter_pars.get('ymax', 999999999.0)
-
-        df['_isfloat'] = df[ coly ].apply(lambda x : isfloat(x) )
-        df = df[ df['_isfloat'] > 0 ]
         df = df[df[coly] > ymin]
         df = df[df[coly] < ymax]
+        assert len(df) > 0, " Filter too much, empty dataframe"
 
 
     ##### Label processing   ####################################################################
@@ -428,7 +429,8 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
                                  preprocess_pars, filter_pars, path_features_store)
 
-
+    print(cols)
+    print('-----')
     model_dict['data_pars']['coly'] = cols['coly']
     
     ### Generate actual column names from colum groups : colnum , colcat

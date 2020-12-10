@@ -1,10 +1,10 @@
 {
      "coly"   : "Survived"
-    ,"colid"  : "PassengerId"
+    ,"colid"  : "colid"
     ,"colcat" : [  "Sex", "Embarked" ]
-    ,"colnum" : ["Pclass", "Age","SibSp", "Parch","Fare"]    
-    ,"coltext" : ["Name","Ticket"]
+    ,"colnum" : [ 'CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT']
+    ,"coltext" :  []
     , "coldate" : []
-    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+    ,"colcross" : [  ]
     
 }
