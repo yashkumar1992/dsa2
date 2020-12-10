@@ -51,18 +51,20 @@ def os_get_function_name():
 
 ####################################################################################
 config_file  = "titanic_classifier.py"   ### name of file which contains data configuration
-data_name    = "titanic"     ### in data/input/
 
 
 
-config_name  = 'titanic_lightgbm'   ### name of function which contains data configuration 
-n_sample     = 2000
+
+config_name  = 'titanic_lightgbm'   ### name of function which contains data configuration
+n_sample    = 2000
 
 
 
 
 ####################################################################################
 ##### Params########################################################################
+# data_name    = "titanic"     ### in data/input/
+
 cols_input_type_1 = {
      "coly"   :   "Survived"
     ,"colid"  :   "PassengerId"
@@ -169,18 +171,96 @@ def titanic_lightgbm(path_model_out="") :
 
 
 
+def titanic_lightgbm2(path_model_out="") :
+    """
+       Contains all needed informations for Light GBM Classifier model, used for titanic classification task
+    """
+    data_name    = "titanic"     ### in data/input/
+    model_name   = 'LGBMClassifier'
+    n_sample     = 1000
+
+
+    def post_process_fun(y):
+        ### After prediction is done
+        return  int(y)
+
+
+    def pre_process_fun(y):
+        ### Before the prediction is done
+        return  int(y)
+
+
+    model_dict = {'model_pars': {
+        'model_path'       : path_model_out
+
+        ### LightGBM API model   #######################################
+        ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
+        ,'model_pars'       : {'objective': 'binary',
+                               'learning_rate':0.03,'boosting_type':'gbdt'    ### Model hyperparameters
+
+                              }
+
+        ### After prediction  ##########################################
+        , 'post_process_fun' : post_process_fun
+
+
+        ### Before prediction  ##########################################
+        , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
+
+
+                ### Pipeline for data processing ########################
+                'pipe_list' : [ {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
+                  # {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
+                     # {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
+                   ]
+
+                                
+
+               }
+        },
+
+      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
+                      },
+
+      'data_pars': {
+          'cols_input_type' : cols_input_type_1,
+
+
+          ### family of columns for MODEL  ########################################################
+          #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+          ##  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+          #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+          #  'coldate',
+          #  'coltext',
+          'cols_model_group': [ 'colnum', 'colcat_bin']
+
+
+          ### Filter data rows   ##################################################################
+         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
+
+         }
+      }
+
+    ##### Filling Global parameters    #############################################################
+    model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
+    return model_dict
+
+
+
+
+
 
 
 ####################################################################################################
 ########## Init variable ###########################################################################
-globals()[config_name]()   
+# globals()[config_name]()
 
 
 
 
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess():
+def preprocess(configname=None):
     """
     Preprocessing of input data, in order to prepare them for training
 
