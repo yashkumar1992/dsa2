@@ -49,7 +49,7 @@ from util_feature import  save, load_function_uri
 from util_feature import  load_dataset
 
 
-def save_features(df, name, path):
+def save_features(df, name, path=None):
     """
     :param df:
     :param name:
@@ -62,14 +62,18 @@ def save_features(df, name, path):
            df0=df.to_frame()
        else:
            df0=df
+       log( f"{path}/{name}/features.parquet" )
        df0.to_parquet( f"{path}/{name}/features.parquet")
-
+    else:
+       log("No saved features, path is none")
 
 def load_features(name, path):
     try:
-        return pd.to_parquet(f"{path}/{name}/features.parquet")
+        return pd.read_parquet(f"{path}/{name}/features.parquet")
     except:
-        return 0
+        log("Not available", path, name)
+        return None
+
 
 ####################################################################################################
 
@@ -114,13 +118,11 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                    ]
 
     # pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
-
-
-
     ##### Load data ###########################################################################
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
-
     print(df)
+
+
     ##### Generate features ###################################################################
     os.makedirs(path_pipeline_export, exist_ok=True)
     log(path_pipeline_export)
@@ -143,7 +145,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        print(cols_list)
        cols_family = {} # []  #{}
        for cols_i in cols_list :
-            ##### Run the text processor on each column   #############################
+            ##### Run the text processor on each column   ###################################
             pars                        = pipe_i.get('pars', {})
             pars['path_features_store'] = path_features_store
             # print(cols_i)
@@ -170,7 +172,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
             ### Merge sub-family
             dfi_all[cols_i] =  pd.concat((dfi_all[cols_name], dfi))  if dfi_all.get(cols_name) is not None else dfi
-       print('------------dfi_all-------------')
+       print('------------dfi_all-----------------')
        print(dfi_all)
        print('------------cols_family-------------')
        print(cols_family)
