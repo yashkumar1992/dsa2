@@ -114,7 +114,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     pipe_list = [ {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
                   {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
-                     # {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
+                  {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'type': ''},
+                  {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat','type': ''},
+                  {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
                 ]
 
     # pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
@@ -154,27 +156,22 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             # print(cols_i)
             # print(df[[cols_i ]])
             if pipe_i.get("type", "") == 'cross' :
-                pars['dfnum_hot'] = dfi_all['dfnum_hot']   ### dfnum_hot --> dfcross
-                pars['dfcat_hot'] = dfi_all['dfcat_hot']
+                pars['dfnum_hot'] = dfi_all['colnum']   ### dfnum_hot --> dfcross
+                pars['dfcat_hot'] = dfi_all['colcat']
             print(cols_i )
             if flag_col_in_dfi:
 
-                print(dfi_all[cols_name][[cols_family_full[cols_name][cols_num]]])
-                dfi, col_pars = pipe_fun(dfi_all[cols_name][[cols_family_full[cols_name][cols_num]]],
-                                         [cols_family_full[cols_name][cols_num]], pars=pipe_i.get('pars', {}))  #
-                dfi_all[cols_name].drop(cols_family_full[cols_name][cols_num],axis=1,inplace=True)
+                print(dfi_all[cols_name][cols_family_full[cols_name][cols_i]])
+                dfi, col_pars = pipe_fun(dfi_all[cols_name][cols_family_full[cols_name][cols_i]],
+                                         cols_family_full[cols_name][cols_i], pars=pipe_i.get('pars', {}))  #
+                dfi_all[cols_name].drop(cols_family_full[cols_name][cols_i],axis=1,inplace=True)
             else:
                 dfi, col_pars            = pipe_fun( df[[cols_i ]], [cols_i], pars =  pipe_i.get('pars', {}) ) #
 
             print(dfi)
             print(col_pars)
             ### Save on Disk column names ( pre-processor meta-params)  + dataframe intermediate
-            # try:
             cols_family[cols_i ]=list(dfi.columns)
-                # dfi_all[cols_name]+=list(dfi)
-            # except:
-            #     cols_family[cols_name] = list(dfi.columns)
-                # dfi_all[cols_name] = list(dfi)
             #cols_family.extend( list(dfi.columns) )  ### all columns names are unique !!!!
 
             save_features(dfi, cols_name + "-" + cols_i, path_features_store)  ### already saved
@@ -187,10 +184,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        print(cols_family)
        ### Flatten the columns
        cols_family_export          = []#
-       for _, col_list in cols_family.items():
-           for coli in col_list:
-               cols_family_export.append(coli)
-       cols_family_full[cols_name] = cols_family_export
+       # for _, col_list in cols_family.items():
+       #     for coli in col_list:
+       #         cols_family_export.append(coli)
+       cols_family_full[cols_name] = cols_family
        print(cols_family_full)
 
        ### save on disk
