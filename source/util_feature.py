@@ -30,7 +30,7 @@ class dict2(object):
         self.__dict__ = d
 
 
-
+#############################################################################################
 def save_list(path, name_list, glob):
     import pickle, os
     os.makedirs(path, exist_ok=True)
@@ -73,6 +73,8 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
     df = df.set_index(colid)
     if n_sample > 0: 
         df = df.iloc[:n_sample, :]
+
+    ###### Load dfy target values ###################################
     try:
         flist = glob.glob( ntpath.dirname(path_data_y)+"/*" )
         flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] and ntpath.basename(f)[:6] in ['target']]
@@ -84,19 +86,19 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
             dfy = pd.concat((dfy, dfi)) 
 
         log("dfy", dfy.head(5))
-        # dfy = pd.read_csv(path_data_y) # + "/target_values.zip")
         df = df.join(dfy.set_index(colid), on=colid, how='left', )
-    except:
-        pass
+    except Exception as e :
+        log("dfy not loaded", path_data_y, e
+            )
     return df
 
 
 
-def load_function_uri(uri_name="path_norm"):
+def load_function_uri(uri_name="myfolder/myfile.py::myFunction"):
     """
-    #load dynamically function from URI
-    ###### Pandas CSV case : Custom MLMODELS One
+    #load dynamically function from URI pattern
     #"dataset"        : "mlmodels.preprocess.generic:pandasDataset"
+
     ###### External File processor :
     #"dataset"        : "MyFolder/preprocess/myfile.py:pandasDataset"
     """
@@ -130,9 +132,9 @@ def load_function_uri(uri_name="path_norm"):
 
 
 #############################################################################################
-def metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypred_proba=None, return_dict=0):
+def metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypred_proba=None, return_dict=False):
     """
-      metrics
+      Generic metrics calculation, using sklearn naming pattern
     """
     import pandas as pd, importlib
     mdict = {"metric_name": [],
@@ -145,7 +147,9 @@ def metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypr
     for metric_name in metric_list:
         mod = "sklearn.metrics"
 
-        if metric_name in ["roc_auc_score"]:                                            #y_pred_proba is not defined
+
+        if metric_name in ["roc_auc_score"]:        #y_pred_proba is not defined
+            #### Ok for Multi-Class
             metric_scorer = getattr(importlib.import_module(mod), metric_name)
             mval_=[]
             for i_ in range(ypred_proba.shape[1]):
@@ -626,19 +630,8 @@ def pd_colcat_toint(dfref, colname, colcat_map=None, suffix=None):
 
     return df[colname_new], colcat_map
 
-def clean_prices(df, colnum):
-    def clean(x):
-        if isinstance(x, str) and x == x:
-            x=x.replace('$', '').replace(',', '')
-        return (x)	
-    for col in colnum:
-        col_type = df.dtypes[col]
-        if col_type == np.dtype(object):
-            df[col]=df[col].astype(str).apply(clean)
-            df[col]=df[col].replace({'None':None})
-    df.fillna(value=pd.np.nan, inplace=True)
-    df[colnum]=df[colnum].astype("float32")
-    return df
+
+
 def pd_colnum_tocat(  df, colname=None, colexclude=None, colbinmap=None, bins=5, suffix="_bin",
         method="uniform", na_value=-1, return_val="dataframe,param",
         params={"KMeans_n_clusters": 8, "KMeans_init": 'k-means++', "KMeans_n_init": 10,
@@ -896,7 +889,7 @@ def pd_stat_correl_pair(df, coltarget=None, colname=None):
     return df_correl
 
 
-def pd_stat_jupyter_profile(df, savefile="report.html", title="Pandas Profile"):
+def pd_stat_pandas_profile(df, savefile="report.html", title="Pandas Profile"):
     """ Describe the tables
         #Pandas-Profiling 2.0.0
         df.profile_report()
@@ -965,7 +958,7 @@ def pd_stat_histogram(df, bins=50, coltarget="diff"):
 
 def col_extractname(col_onehot):
     """
-    Column extraction
+    Column extraction from onehot name
     :param col_onehot
     :return:
     """
@@ -1178,6 +1171,7 @@ def pd_stat_shift_changes(df, target_col, features_list=0, bins=10, df_test=0):
 
     print('Returning stats for all numeric features')
     return (stats_all_df)
+
 
 def np_conv_to_one_col(np_array, sep_char="_"):
     """
