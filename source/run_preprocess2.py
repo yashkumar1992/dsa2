@@ -168,7 +168,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             else:
                 dfi, col_pars            = pipe_fun( df[[cols_i ]], [cols_i], pars =  pipe_i.get('pars', {}) ) #
 
-            print(dfi)
+            print('------------dfi.columns----------------')
+            print(dfi.columns)
+            print('------------col_pars----------------')
             print(col_pars)
             ### Save on Disk column names ( pre-processor meta-params)  + dataframe intermediate
             cols_family[cols_i ]=list(dfi.columns)
