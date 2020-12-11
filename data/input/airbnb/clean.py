@@ -36,6 +36,19 @@ df[coly].reset_index().iloc[itrain:, :].to_parquet(  "test/target.parquet",  ind
 
 
 
+def clean_prices(df, colnum):
+    def clean(x):
+        if isinstance(x, str) and x == x:
+            x=x.replace('$', '').replace(',', '')
+        return (x)
+    for col in colnum:
+        col_type = df.dtypes[col]
+        if col_type == np.dtype(object):
+            df[col]=df[col].astype(str).apply(clean)
+            df[col]=df[col].replace({'None':None})
+    df.fillna(value=pd.np.nan, inplace=True)
+    df[colnum]=df[colnum].astype("float32")
+    return df
 
 
 
