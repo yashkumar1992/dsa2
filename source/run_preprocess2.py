@@ -109,7 +109,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     #pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 
     pipe_list = [ {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
-                  # {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
+                  {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
                      # {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
                    ]
 
