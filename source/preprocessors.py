@@ -242,6 +242,8 @@ def pd_colnum_binto_onehot(df, col, pars):
 
 def pd_colcat_to_onehot(df, col, pars):
     # dfbum_bin = df[col]
+    if len(col)==1:
+        return df, col
     path_features_store = pars['path_features_store']
     colcat = col
 
@@ -251,6 +253,7 @@ def pd_colcat_to_onehot(df, col, pars):
     log(dfcat_hot[colcat_onehot].head(5))
     save_features(dfcat_hot, 'dfcat_onehot', path_features_store)
     return dfcat_hot, colcat_onehot
+
 
 
 
