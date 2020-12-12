@@ -65,7 +65,7 @@ n_sample     = 2000
 # data_name    = "titanic"     ### in data/input/
 
 cols_input_type_1 = {
-     "coly"   :   "Survived"
+     "coly"   :   ["Survived"]
     ,"colid"  :   "PassengerId"
     ,"colcat" :   [  "Sex", "Embarked" ]
     ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
