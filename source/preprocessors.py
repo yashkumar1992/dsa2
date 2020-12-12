@@ -148,6 +148,7 @@ def pd_coltext(df, col, pars={}):
 
 ##### Filtering / cleaning rows :   #########################################################
 def pd_filter_rows(df, col, pars):
+
     coly = col
     filter_pars =  pars
     def isfloat(x):
@@ -159,20 +160,20 @@ def pd_filter_rows(df, col, pars):
 
     ymin, ymax = pars.get('ymin', -9999999999.0), filter_pars.get('ymax', 999999999.0)
 
-    df['_isfloat'] = df[ coly ].apply(lambda x : isfloat(x) )
+    df['_isfloat'] = df[ coly ].apply(lambda x : isfloat(x),axis=1 )
     df = df[ df['_isfloat'] > 0 ]
     df = df[df[coly] > ymin]
     df = df[df[coly] < ymax]
 
     del df['_isfloat']
-    return df
+    return df,coly
 
 
 
 ##### Label processing   ##################################################################
 def pd_label_clean(df, col, pars):
     path_features_store = pars['path_features_store']
-    path_pipeline_export = pars['path_pipeline_export']
+    # path_pipeline_export = pars['path_pipeline_export']
     coly = col=[0]
     y_norm_fun = None
     # Target coly processing, Normalization process  , customize by model
@@ -180,9 +181,9 @@ def pd_label_clean(df, col, pars):
     y_norm_fun = pars.get('y_norm_fun', None)
     if y_norm_fun is not None:
         df[coly] = df[coly].apply(lambda x: y_norm_fun(x))
-        save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
+        # save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
         save_features(df[coly], 'dfy', path_features_store)
-    return df
+    return df,coly
 
 
 
@@ -242,6 +243,8 @@ def pd_colnum_binto_onehot(df, col, pars):
 
 def pd_colcat_to_onehot(df, col, pars):
     # dfbum_bin = df[col]
+    if len(col)==1:
+        return df, col
     path_features_store = pars['path_features_store']
     colcat = col
 
@@ -251,6 +254,7 @@ def pd_colcat_to_onehot(df, col, pars):
     log(dfcat_hot[colcat_onehot].head(5))
     save_features(dfcat_hot, 'dfcat_onehot', path_features_store)
     return dfcat_hot, colcat_onehot
+
 
 
 
