@@ -186,6 +186,35 @@ def pd_label_clean(df, col, pars):
     return df,coly
 
 
+def pdf_coly(df, col, pars):
+    ##### Filtering / cleaning rows :   #########################################################
+    coly=col
+    def isfloat(x):
+        try :
+            a= float(x)
+            return 1
+        except:
+            return 0
+    df['_isfloat'] = df[ coly ].apply(lambda x : isfloat(x) )
+    df             = df[ df['_isfloat'] > 0 ]
+    del df['_isfloat']
+
+    ymin, ymax = pars.get('ymin', -9999999999.0), pars.get('ymax', 999999999.0)
+    df = df[df[coly] > ymin]
+    df = df[df[coly] < ymax]
+    ##### Label processing   ####################################################################
+    y_norm_fun = None
+    # Target coly processing, Normalization process  , customize by model
+    log("y_norm_fun preprocess_pars")
+    path_features_store = pars['path_features_store']
+
+    y_norm_fun = pars.get('y_norm_fun', None)
+    if y_norm_fun is not None:
+        df[coly] = df[coly].apply(lambda x: y_norm_fun(x))
+        # save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
+        save_features(df[coly], 'dfy', path_features_store)
+    return df,col
+
 
 def pd_colnum(df, col, pars):
     colnum = col
