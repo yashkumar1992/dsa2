@@ -112,8 +112,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     #### Pipeline Execution
     #pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 
-    pipe_list = [ {  'uri' : 'source/preprocessors.py::pd_filter_rows', 'pars' : {   }, 'cols_family': 'coly', 'type' : '' },
-                  {'uri': 'source/preprocessors.py::pd_label_clean', 'pars': {}, 'cols_family': 'coly', 'type': ''},
+    pipe_list = [ {  'uri' : 'source/preprocessors.py::pdf_coly', 'pars' : {   }, 'cols_family': 'coly', 'type' : '' },
                   {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
                   {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
                   {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'type': ''},
@@ -151,40 +150,59 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        flag_col_in_dfi=False
        if cols_name in dfi_all.keys():
            flag_col_in_dfi = True
-       for cols_num, cols_i in enumerate(cols_list) :
-            ##### Run the text processor on each column   ###################################
-            pars                        = pipe_i.get('pars', {})
-            pars['path_features_store'] = path_features_store
-            # print(cols_i)
-            # print(df[[cols_i ]])
-            if pipe_i.get("type", "") == 'cross' :
-                pars['dfnum_hot'] = dfi_all['colnum']   ### dfnum_hot --> dfcross
-                pars['dfcat_hot'] = dfi_all['colcat']
-                pars['colid'] = colid
-                pars['colcross_single'] = colcross_single
-            print(cols_i )
-            if flag_col_in_dfi:
-                dfi, col_pars = pipe_fun(dfi_all[cols_name][cols_family_full[cols_name][cols_i]],
-                                         cols_family_full[cols_name][cols_i], pars=pipe_i.get('pars', {}))  #
-                dfi_all[cols_name].drop(cols_family_full[cols_name][cols_i],axis=1,inplace=True)
-            else:
-                print(type(df[[cols_i ]]))
-                dfi, col_pars            = pipe_fun( df[[cols_i ]], [cols_i], pars =  pipe_i.get('pars', {}) ) #
+       pars = pipe_i.get('pars', {})
+       pars['path_features_store'] = path_features_store
+       if cols_name == 'colcross':
+           pars['dfnum_hot'] = dfi_all['colnum']  ### dfnum_hot --> dfcross
+           pars['dfcat_hot'] = dfi_all['colcat']
+           pars['colid'] = colid
+           pars['colcross_single'] = colcross_single
+           dfi, col_pars = pipe_fun(df[cols_list], cols_list, pars=pipe_i.get('pars', {}))
+           ### Save on Disk column names ( pre-processor meta-params)  + dataframe intermediate
+           cols_family[cols_name] = list(dfi.columns)
+           # cols_family.extend( list(dfi.columns) )  ### all columns names are unique !!!!
 
-            print('------------dfi.columns----------------')
-            print(dfi.columns)
-            print('------------dfi----------------')
-            print(dfi)
-            print('------------col_pars----------------')
-            print(col_pars)
-            ### Save on Disk column names ( pre-processor meta-params)  + dataframe intermediate
-            cols_family[cols_i ]=list(dfi.columns)
-            #cols_family.extend( list(dfi.columns) )  ### all columns names are unique !!!!
+           save_features(dfi, cols_name , path_features_store)  ### already saved
 
-            save_features(dfi, cols_name + "-" + cols_i, path_features_store)  ### already saved
+           ### Merge sub-family
+           dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi), axis=1) if dfi_all.get(
+               cols_name) is not None else dfi
 
-            ### Merge sub-family
-            dfi_all[cols_name] =  pd.concat((dfi_all[cols_name], dfi), axis=1)  if dfi_all.get(cols_name) is not None else dfi
+       elif cols_name == 'coly':
+           dfi, col_pars = pipe_fun(df[[cols_list]], [cols_list], pars=pipe_i.get('pars', {}))
+           ### Save on Disk column names ( pre-processor meta-params)  + dataframe intermediate
+           cols_family[cols_list] = list(dfi.columns)
+           # cols_family.extend( list(dfi.columns) )  ### all columns names are unique !!!!
+
+           save_features(dfi, cols_name + "-" + cols_list, path_features_store)  ### already saved
+
+           ### Merge sub-family
+           dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi), axis=1) if dfi_all.get(
+               cols_name) is not None else dfi
+       else:
+           for cols_num, cols_i in enumerate(cols_list) :
+                if flag_col_in_dfi:
+                    dfi, col_pars = pipe_fun(dfi_all[cols_name][cols_family_full[cols_name][cols_i]],
+                                             cols_family_full[cols_name][cols_i], pars=pipe_i.get('pars', {}))  #
+                    dfi_all[cols_name].drop(cols_family_full[cols_name][cols_i],axis=1,inplace=True)
+                else:
+                    print(type(df[[cols_i ]]))
+                    dfi, col_pars            = pipe_fun( df[[cols_i ]], [cols_i], pars =  pipe_i.get('pars', {}) ) #
+
+                print('------------dfi.columns----------------')
+                print(dfi.columns)
+                print('------------dfi----------------')
+                print(dfi)
+                print('------------col_pars----------------')
+                print(col_pars)
+                ### Save on Disk column names ( pre-processor meta-params)  + dataframe intermediate
+                cols_family[cols_i ]=list(dfi.columns)
+                #cols_family.extend( list(dfi.columns) )  ### all columns names are unique !!!!
+
+                save_features(dfi, cols_name + "-" + cols_i, path_features_store)  ### already saved
+
+                ### Merge sub-family
+                dfi_all[cols_name] =  pd.concat((dfi_all[cols_name], dfi), axis=1)  if dfi_all.get(cols_name) is not None else dfi
        print('------------dfi_all-----------------')
        print(dfi_all)
        print('------------cols_family-------------')
