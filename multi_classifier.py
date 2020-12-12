@@ -8,19 +8,20 @@ https://medium.com/@nitin9809/lightgbm-binary-classification-multi-class-classif
 
 
 All in one file config
-!  python multiclass_classifier.py  train
-!  python multiclass_classifier.py  check
-!  python multiclass_classifier.py  predict
+!  python multi_classifier.py  train
+!  python multi_classifier.py  check
+!  python multi_classifier.py  predict
+
+
 """
-import warnings, copy
+import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
-import os, sys
-import pandas as pd
-import numpy as np
+
 ###################################################################################
 from source import util_feature
 
 
+####################################################################################
 ###### Path ########################################################################
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
@@ -31,14 +32,39 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
+def global_pars_update(model_dict,  data_name, config_name):
+    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
+    model_name        = model_dict['model_pars']['config_model_name']
+    path_config_model = root + f"/{config_file}"
+    path_model        = f'data/output/{data_name}/a01_{model_name}/'
+    path_data_train   = f'data/input/{data_name}/train/'
+    path_data_test    = f'data/input/{data_name}/test/'
+    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
+    n_sample          = model_dict['data_pars'].get('n_sample', 5000)
+
+    model_dict[ 'global_pars'] = {}
+    model_dict['global_pars']['config_name'] = config_name
+    global_pars = [ 'model_name', 'path_config_model', 'path_model', 'path_data_train',
+                   'path_data_test', 'path_output_pred', 'n_sample'
+                  ]
+    for t in global_pars:
+      model_dict['global_pars'][t] = globals()[t]
+    return model_dict
+
+
+def os_get_function_name():
+    import sys
+    return sys._getframe(1).f_code.co_name
+
+
 ####################################################################################
-config_file  = f"multi_classifier.py"
-data_name    = f"multiclass"     ### in data/input/
+config_file     = f"multi_classifier.py"
+config_default  = 'multi_lightgbm'
 
 
-
-config_name  = 'multiclass_lightgbm'
-n_sample     =  6000
+#config_name  = 'multi_lightgbm'
+#n_sample     =  6000
 
 
 colid   = 'pet_id'
@@ -46,7 +72,7 @@ coly    = 'pet_category'
 coldate = ['issue_date','listing_date']
 colcat  = ['color_type']
 colnum  = ['length(m)','height(cm)','condition','X1','X2','breed_category']
-colcross= ['pet_id', 'issue_date', 'listing_date', 'condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']
+colcross= ['condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']
 
 
 cols_input_type_1 = {  "coly"   :   coly
@@ -81,19 +107,17 @@ cols_input_type_1 = {  "coly"   :   coly
 
 ####################################################################################
 ##### Params########################################################################
-def multiclass_lightgbm(path_model_out="") :
+def multi_lightgbm(path_model_out="") :
     """
        multiclass
     """
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-
-    config_name       = 'multiclass_lightgbm'
+    data_name         = f"multiclass"     ### in data/input/
     model_name        = 'LGBMClassifier'
     n_sample          = 6000
 
     def post_process_fun(y):
         ### After prediction is done
-        return  y.astype('int')
+        return  int(y)
 
     def pre_process_fun_multi(y):
         ### Before the prediction is done
@@ -131,6 +155,7 @@ def multiclass_lightgbm(path_model_out="") :
                       },
 
       'data_pars': {
+          'n_sample' : n_sample,
 
           ### columns from raw file, based on data type, #############
           'cols_input_type' : cols_input_type_1,
@@ -146,80 +171,84 @@ def multiclass_lightgbm(path_model_out="") :
          }
       }
 
-    ################################################################################################
     ##### Filling Global parameters    #############################################################
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-
-    model_dict[ 'global_pars'] = {}
-    global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train',
-                   'path_data_test', 'path_output_pred', 'n_sample'
-            ]
-    for t in global_pars:
-      model_dict['global_pars'][t] = globals()[t] 
-
-
+    model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
 
 
 
 
-
-
-####################################################################################################
-########## Init variable ###########################################################################
-globals()[config_name]()
-
+#####################################################################################
+########## Profile data #############################################################
+def data_profile(path_data_train="", path_model="", n_sample= 5000):
+   from source.run_feature_profile import run_profile
+   run_profile(path_data   = path_data_train,
+               path_output = path_model + "/profile/",
+               n_sample    = n_sample,
+              )
 
 
 
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess():
-    from source import run_preprocess
+def preprocess(config=None, nsample=None):
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(mdict)
 
-    run_preprocess.run_preprocess(model_name        =  config_name, 
-                                  path_data         =  path_data_train, 
-                                  path_output       =  path_model, 
-                                  path_config_model =  path_config_model, 
-                                  n_sample          =  n_sample,
-                                  mode              =  'run_preprocess')
+    from source import run_preprocess2, run_preprocess
+    run_preprocess.run_preprocess(model_name     =  config_name,
+                                path_data         =  m['path_data_train'],
+                                path_output       =  m['path_model'],
+                                path_config_model =  m['path_config_model'],
+                                n_sample          =  nsample if nsample is not None else m['n_sample'],
+                                mode              =  'run_preprocess')
 
-############################################################################
-########## Train ###########################################################
-def train():
+
+##################################################################################
+########## Train #################################################################
+def train(config=None, nsample=None):
+
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(mdict)
+
     from source import run_train
-
     run_train.run_train(config_model_name =  config_name,
-                        path_data         =  path_data_train,
-                        path_output       =  path_model,
-                        path_config_model =  path_config_model , n_sample = n_sample)
+                        path_data         =  m['path_data_train'],
+                        path_output       =  m['path_model'],
+                        path_config_model =  m['path_config_model'] ,
+                        n_sample          =  nsample if nsample is not None else m['n_sample'])
 
 
 ###################################################################################
-######### Check model #############################################################
+######### Check data ##############################################################
 def check():
-    from source import run_train
-    run_train.run_data_check(path_output =  path_model,
-                             scoring     =  'accuracy')
+   pass
 
 
 
-########################################################################################
-####### Inference ######################################################################
-def predict():
+
+####################################################################################
+####### Inference ##################################################################
+def predict(config=None, nsample=None):
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(m)
+
     from source import run_inference
     run_inference.run_predict(model_name,
-                              path_model  = path_model,
-                              path_data   = path_data_test,
-                              path_output = path_output_pred,
-                              n_sample    = n_sample)
+                            path_model  = m['path_model'],
+                            path_data   = m['path_data_test'],
+                            path_output = m['path_output_pred'],
+                            n_sample    = nsample if nsample is not None else m['n_sample'])
 
 
 def run_all():
+    data_profile()
     preprocess()
     train()
     check()
@@ -227,15 +256,16 @@ def run_all():
 
 
 
+
 ###########################################################################################################
 ###########################################################################################################
 """
-python  multiclass_classifier.py  data_profile
-python  multiclass_classifier.py  preprocess
-python  multiclass_classifier.py  train
-python  multiclass_classifier.py  check
-python  multiclass_classifier.py  predict
-python  multiclass_classifier.py  run_all
+python  multi_classifier.py  data_profile
+python  multi_classifier.py  preprocess
+python  multi_classifier.py  train
+python  multi_classifier.py  check
+python  multi_classifier.py  predict
+python  multi_classifier.py  run_all
 """
 if __name__ == "__main__":
     import fire
