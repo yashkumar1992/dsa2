@@ -54,10 +54,8 @@ def os_get_function_name():
 config_file  = "titanic_classifier.py"   ### name of file which contains data configuration
 
 
-
-
 config_name  = 'titanic_lightgbm'   ### name of function which contains data configuration
-n_sample    = 2000
+n_sample     = 2000
 
 
 
@@ -215,8 +213,6 @@ def titanic_lightgbm2(path_model_out="") :
                      # {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
                    ]
 
-
-
                }
         },
 
@@ -250,73 +246,64 @@ def titanic_lightgbm2(path_model_out="") :
 
 
 
-
-
-####################################################################################################
-########## Init variable ###########################################################################
-# globals()[config_name]()
-
+#####################################################################################
+########## Profile data #############################################################
+def data_profile(n_sample= 5000):
+   from source.run_feature_profile import run_profile
+   run_profile(path_data   = path_data_train,
+               path_output = path_model + "/profile/",
+               n_sample    = n_sample,
+              )
 
 
 
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess(configname=None):
-    """
-    Preprocessing of input data, in order to prepare them for training
+def preprocess():
+    from source import run_preprocess2
+    run_preprocess2.run_preprocess(model_name     =  config_name,
+                                path_data         =  path_data_train,
+                                path_output       =  path_model,
+                                path_config_model =  path_config_model,
+                                n_sample          =  n_sample,
+                                mode              =  'run_preprocess')
 
-    """
-    import run
-    run.preprocess(config_uri = config_file + '::' + config_name)
 
-
-
-########## Train ###########################################################
+##################################################################################
+########## Train #################################################################
 def train():
-
-    """
-    Splits preprocessed data into train and test, and fits them in the model
-
-    """
-    import run
-    run.train(config_uri = config_file + '::' + config_name)
-
-
-######### Check model #############################################################
-def check():
-    """
-    It runs trained model and gives feature imporance graph as ouput
-
-    """
-    import run
     from source import run_train
-    run.train(config_uri = config_file + '::' + config_name)
+    run_train.run_train(config_model_name =  config_name,
+                        path_data         =  path_data_train,
+                        path_output       =  path_model,
+                        path_config_model =  path_config_model , n_sample = n_sample)
 
-    #! python source/run_inference.py  run_predict  --config_model_name  LGBMRegressor  --n_sample 1000   --path_model /data/output/a01_lightgbm_huber/    --path_output /data/output/pred_a01_lightgbm_huber/    --path_data /data/input/train/
+
+###################################################################################
+######### Check data ##############################################################
+def check():
+   pass
 
 
-
-####### Inference ######################################################################
-def predict():
-    """
-    Creates csv file with predictions
-
-    """
-    import run
-    run.predict(config_uri = config_file + '::' + config_name)
-
+##################################################################################
+####### Inference ################################################################
+def predict(config=None, nsample=5000):
+    from source import run_inference
+    run_inference.run_predict(model_name,
+                            path_model  = path_model,
+                            path_data   = path_data_test,
+                            path_output = path_output_pred,
+                            n_sample    = n_sample)
 
 
 def run_all():
-    """
-
-    Function which runs all previous functions, in order to perform all tasks, from preprocessing of data to final prediction
-
-    """
+    data_profile()
     preprocess()
     train()
     check()
     predict()
+
+
 
 
 
@@ -329,8 +316,17 @@ python  titanic_classifier.py  train
 python  titanic_classifier.py  check
 python  titanic_classifier.py  predict
 python  titanic_classifier.py  run_all
+
+
 """
 if __name__ == "__main__":
+
+    ### Init Global variable   ##########################
+    globals()[config_name]()
+
+
     import fire
     fire.Fire()
     
+
+
