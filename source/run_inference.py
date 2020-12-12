@@ -63,14 +63,10 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
     ### OneHot column selected for cross features
     colcross_single_onehot_select = load(f'{path_pipeline}/colcross_single_onehot_select.pkl')
 
-    pipe_default    = [ "clean_prices", 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+    pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
     pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
 
-    log("### cleaning colnum that have a price format#############################")
-    if "clean_prices" in pipe_list :
-        from util_feature import clean_prices
-        df = clean_prices(df,colnum)
-    
+
     if "dfcat_hot" in pipe_list :
        log("###### Colcat to onehot ###############################################")
        dfcat_hot, _ = pd_col_to_onehot(df[colcat],  colname=colcat,
@@ -217,12 +213,14 @@ def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
   
     dfX, cols_family = preprocess(df, path_pipeline)
     
-    ypred            = predict(model_name, path_model, dfX, cols_family)
+    ypred, yproba    = predict(model_name, path_model, dfX, cols_family)
 
 
     log("Saving prediction", ypred.shape, path_output)
     os.makedirs(path_output, exist_ok=True)
-    df[cols_family["coly"] + "_pred"] = ypred
+    df[cols_family["coly"] + "_pred"]       = ypred
+    if yproba is not None :
+       df[cols_family["coly"] + "_pred_proba"] = yproba
     df.to_csv(f"{path_output}/prediction.csv")
     log(df.head(8))
 
