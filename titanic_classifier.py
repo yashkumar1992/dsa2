@@ -271,12 +271,18 @@ def preprocess():
 
 ##################################################################################
 ########## Train #################################################################
-def train():
+def train(config=None, nsample=None):
+
+    config_name  = config  if config is not None else "titanic_lightgbm"
+    mdict        = globals()[config_name]()
+    print(mdict)
+
     from source import run_train
     run_train.run_train(config_model_name =  config_name,
                         path_data         =  path_data_train,
                         path_output       =  path_model,
-                        path_config_model =  path_config_model , n_sample = n_sample)
+                        path_config_model =  path_config_model ,
+                        n_sample          =  nsample if nsample is not None else n_sample)
 
 
 ###################################################################################
@@ -285,15 +291,19 @@ def check():
    pass
 
 
-##################################################################################
-####### Inference ################################################################
-def predict(config=None, nsample=5000):
+####################################################################################
+####### Inference ##################################################################
+def predict(config=None, nsample=None):
+    config_name  =  config  if config is not None else "titanic_lightgbm"
+    mdict        = globals()[config_name]()
+    print(mdict)
+
     from source import run_inference
     run_inference.run_predict(model_name,
                             path_model  = path_model,
                             path_data   = path_data_test,
                             path_output = path_output_pred,
-                            n_sample    = n_sample)
+                            n_sample    = nsample if nsample is not None else n_sample)
 
 
 def run_all():
