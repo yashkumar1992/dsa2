@@ -52,9 +52,9 @@ def os_get_function_name():
 
 
 ####################################################################################
-config_file  = "salary_regression.py"
-data_name    = "salary"
-
+config_file     = "salary_regression.py"
+data_name       = "salary"
+config_default  = 'salary_lightgbm'
 
 config_name  = 'salary_lightgbm'
 n_sample     = 1000
@@ -284,70 +284,79 @@ def salary_glm( path_model_out="") :
 
 
 
-###### Path ################################################################
-print( os.getcwd())
-root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
-print(root)
 
-dir_data  = os.path.abspath( root + "/data/" ) + "/"
-dir_data  = dir_data.replace("\\", "/")
-print(dir_data)
-
-
-
-####################################################################################################
-########## Init variable ###########################################################################
-globals()[config_name]()
+#####################################################################################
+########## Profile data #############################################################
+def data_profile(n_sample= 5000):
+   from source.run_feature_profile import run_profile
+   run_profile(path_data   = path_data_train,
+               path_output = path_model + "/profile/",
+               n_sample    = n_sample,
+              )
 
 
 
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess():
+def preprocess(config=None, nsample=None):
+    config_name  = config  if config is not None else  config_default
+    mdict        = globals()[config_name]()
+    print(mdict)
+
     from source import run_preprocess
+    run_preprocess.run_preprocess(model_name      =  config_name,
+                                path_data         =  path_data_train,
+                                path_output       =  path_model,
+                                path_config_model =  path_config_model,
+                                n_sample          =  nsample if nsample is not None else n_sample,
+                                mode              =  'run_preprocess')
 
-    run_preprocess.run_preprocess(model_name        =  config_name,
-									path_data         =  path_data_train,
-									path_output       =  path_model,
-									path_config_model =  path_config_model,
-									n_sample          =  n_sample,
-									mode              =  'run_preprocess')
 
-############################################################################
-########## Train ###########################################################
-def train():
+##################################################################################
+########## Train #################################################################
+def train(config=None, nsample=None):
+
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    print(mdict)
+
     from source import run_train
-
     run_train.run_train(config_model_name =  config_name,
-							path_data         =  path_data_train,
-							path_output       =  path_model,
-							path_config_model =  path_config_model , n_sample = n_sample)
+                        path_data         =  path_data_train,
+                        path_output       =  path_model,
+                        path_config_model =  path_config_model ,
+                        n_sample          =  nsample if nsample is not None else n_sample)
 
 
 ###################################################################################
-######### Check model #############################################################
+######### Check data ##############################################################
 def check():
-    pass
-    #! python source/run_inference.py  run_predict  --config_model_name  LGBMRegressor  --n_sample 1000   --path_model /data/output/a01_lightgbm_huber/    --path_output /data/output/pred_a01_lightgbm_huber/    --path_data /data/input/train/
+   pass
 
 
+####################################################################################
+####### Inference ##################################################################
+def predict(config=None, nsample=None):
+    config_name  =  config  if config is not None else "titanic_lightgbm"
+    mdict        = globals()[config_name]()
+    print(mdict)
 
-########################################################################################
-####### Inference ######################################################################
-def predict():
     from source import run_inference
     run_inference.run_predict(model_name,
                             path_model  = path_model,
                             path_data   = path_data_test,
                             path_output = path_output_pred,
-                            n_sample    = n_sample)
+                            n_sample    = nsample if nsample is not None else n_sample)
 
 
 def run_all():
+    data_profile()
     preprocess()
     train()
     check()
     predict()
+
+
 
 
 

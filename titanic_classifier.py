@@ -7,10 +7,8 @@ All in one file config
 !  python titanic_classifier.py  check
 !  python titanic_classifier.py  predict
 """
-import warnings, copy
+import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
-import os, sys
-import pandas as pd
 
 ###################################################################################
 from source import util_feature
@@ -51,7 +49,8 @@ def os_get_function_name():
 
 
 ####################################################################################
-config_file  = "titanic_classifier.py"   ### name of file which contains data configuration
+config_file     = "titanic_classifier.py"   ### name of file which contains data configuration
+config_default  = 'titanic_lightgbm'   ### name of function which contains data configuration
 
 
 config_name  = 'titanic_lightgbm'   ### name of function which contains data configuration
@@ -92,7 +91,8 @@ cols_input_type_1 = {
 ####################################################################################
 def titanic_lightgbm(path_model_out="") :
     """
-       Contains all needed informations for Light GBM Classifier model, used for titanic classification task
+       Contains all needed informations for Light GBM Classifier model,
+       used for titanic classification task
     """
     data_name    = "titanic"     ### in data/input/
     model_name   = 'LGBMClassifier'
@@ -163,8 +163,6 @@ def titanic_lightgbm(path_model_out="") :
     ##### Filling Global parameters    #############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
-
-
 
 
 
@@ -248,7 +246,7 @@ def titanic_lightgbm2(path_model_out="") :
 
 #####################################################################################
 ########## Profile data #############################################################
-def data_profile(n_sample= 5000):
+def data_profile(path_data_train="", path_model="", n_sample= 5000):
    from source.run_feature_profile import run_profile
    run_profile(path_data   = path_data_train,
                path_output = path_model + "/profile/",
@@ -259,13 +257,18 @@ def data_profile(n_sample= 5000):
 
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess():
-    from source import run_preprocess2
+def preprocess(config=None, nsample=None):
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(mdict)
+
+    from source import run_preprocess2, run_preprocess
     run_preprocess2.run_preprocess(model_name     =  config_name,
-                                path_data         =  path_data_train,
-                                path_output       =  path_model,
-                                path_config_model =  path_config_model,
-                                n_sample          =  n_sample,
+                                path_data         =  m['path_data_train'],
+                                path_output       =  m['path_model'],
+                                path_config_model =  m['path_config_model'],
+                                n_sample          =  nsample if nsample is not None else m['n_sample'],
                                 mode              =  'run_preprocess')
 
 
@@ -273,16 +276,17 @@ def preprocess():
 ########## Train #################################################################
 def train(config=None, nsample=None):
 
-    config_name  = config  if config is not None else "titanic_lightgbm"
+    config_name  = config  if config is not None else config_default
     mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
     print(mdict)
 
     from source import run_train
     run_train.run_train(config_model_name =  config_name,
-                        path_data         =  path_data_train,
-                        path_output       =  path_model,
-                        path_config_model =  path_config_model ,
-                        n_sample          =  nsample if nsample is not None else n_sample)
+                        path_data         =  m['path_data_train'],
+                        path_output       =  m['path_model'],
+                        path_config_model =  m['path_config_model'] ,
+                        n_sample          =  nsample if nsample is not None else m['n_sample'])
 
 
 ###################################################################################
@@ -291,19 +295,22 @@ def check():
    pass
 
 
+
+
 ####################################################################################
 ####### Inference ##################################################################
 def predict(config=None, nsample=None):
-    config_name  =  config  if config is not None else "titanic_lightgbm"
+    config_name  =  config  if config is not None else config_default
     mdict        = globals()[config_name]()
-    print(mdict)
+    m            = mdict['global_pars']
+    print(m)
 
     from source import run_inference
     run_inference.run_predict(model_name,
-                            path_model  = path_model,
-                            path_data   = path_data_test,
-                            path_output = path_output_pred,
-                            n_sample    = nsample if nsample is not None else n_sample)
+                            path_model  = m['path_model'],
+                            path_data   = m['path_data_test'],
+                            path_output = m['path_output_pred'],
+                            n_sample    = nsample if nsample is not None else m['n_sample'])
 
 
 def run_all():
@@ -321,8 +328,8 @@ def run_all():
 ###########################################################################################################
 """
 python  titanic_classifier.py  data_profile
-python  titanic_classifier.py  preprocess
-python  titanic_classifier.py  train
+python  titanic_classifier.py  preprocess  --nsample 100
+python  titanic_classifier.py  train       --nsample 200
 python  titanic_classifier.py  check
 python  titanic_classifier.py  predict
 python  titanic_classifier.py  run_all
@@ -330,10 +337,6 @@ python  titanic_classifier.py  run_all
 
 """
 if __name__ == "__main__":
-
-    ### Init Global variable   ##########################
-    globals()[config_name]()
-
 
     import fire
     fire.Fire()
