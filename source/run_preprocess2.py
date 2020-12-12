@@ -112,7 +112,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     #### Pipeline Execution
     #pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 
-    pipe_list = [ {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
+    pipe_list = [ {  'uri' : 'source/preprocessors.py::pd_filter_rows', 'pars' : {   }, 'cols_family': 'coly', 'type' : '' },
+                  {'uri': 'source/preprocessors.py::pd_label_clean', 'pars': {}, 'cols_family': 'coly', 'type': ''},
+                  {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
                   {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
                   {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'type': ''},
                   {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat','type': ''},
@@ -158,18 +160,21 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             if pipe_i.get("type", "") == 'cross' :
                 pars['dfnum_hot'] = dfi_all['colnum']   ### dfnum_hot --> dfcross
                 pars['dfcat_hot'] = dfi_all['colcat']
+                pars['colid'] = colid
+                pars['colcross_single'] = colcross_single
             print(cols_i )
             if flag_col_in_dfi:
-
-                print(dfi_all[cols_name][cols_family_full[cols_name][cols_i]])
                 dfi, col_pars = pipe_fun(dfi_all[cols_name][cols_family_full[cols_name][cols_i]],
                                          cols_family_full[cols_name][cols_i], pars=pipe_i.get('pars', {}))  #
                 dfi_all[cols_name].drop(cols_family_full[cols_name][cols_i],axis=1,inplace=True)
             else:
+                print(type(df[[cols_i ]]))
                 dfi, col_pars            = pipe_fun( df[[cols_i ]], [cols_i], pars =  pipe_i.get('pars', {}) ) #
 
             print('------------dfi.columns----------------')
             print(dfi.columns)
+            print('------------dfi----------------')
+            print(dfi)
             print('------------col_pars----------------')
             print(col_pars)
             ### Save on Disk column names ( pre-processor meta-params)  + dataframe intermediate
