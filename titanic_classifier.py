@@ -39,7 +39,7 @@ def global_pars_update(model_dict,  data_name, config_name):
     model_dict['global_pars']['config_name'] = config_name
     global_pars = [  'model_name', 'path_config_model', 'path_model', 'path_data_train',
                    'path_data_test', 'path_output_pred', 'n_sample'
-            ]
+                  ]
     for t in global_pars:
       model_dict['global_pars'][t] = globals()[t]
     return model_dict
@@ -55,7 +55,7 @@ config_file     = "titanic_classifier.py"   ### name of file which contains data
 config_default  = 'titanic_lightgbm'   ### name of function which contains data configuration
 
 
-config_name  = 'titanic_lightgbm'   ### name of function which contains data configuration
+config_name  = 'titanic_lightgbm'   ### name  of function which contains data configuration
 n_sample     = 2000
 
 
@@ -68,7 +68,7 @@ n_sample     = 2000
 cols_input_type_1 = {
      "coly"   :   "Survived"
     ,"colid"  :   "PassengerId"
-    ,"colcat" :   [  "Sex", "Embarked" ]
+    ,"colcat" :   ["Sex", "Embarked" ]
     ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
     ,"coltext" :  ["Name", "Ticket"]
     ,"coldate" :  []
