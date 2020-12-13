@@ -49,7 +49,7 @@ from util_feature import  save, load_function_uri
 from util_feature import  load_dataset
 
 
-def save_features(df, name, path) -> object:
+def save_features(df, name, path):
     """
     :param df:
     :param name:
@@ -101,8 +101,12 @@ def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
     :return:
     """
     sep=" "
-    coltext_freq = df[col].apply(lambda x: pd.value_counts(x.split(sep))).sum(axis=0).reset_index()
+    coltext_freq=df[col].str.split(expand=True).stack().value_counts()
+    coltext_freq=coltext_freq.reset_index()
+    print(coltext_freq)
+    #coltext_freq = df.apply(lambda x: pd.value_counts(x.split(sep))).sum(axis=0).reset_index()
     coltext_freq.columns = ["word", "freq"]
+    print('smo',coltext_freq)
     coltext_freq = coltext_freq.sort_values("freq", ascending=0)
     log(coltext_freq)
                       
@@ -129,8 +133,10 @@ def pipe_text(df, col, pars={}):
     from utils import util_text, util_model
     stopwords = pars['stopwords']
     dftext                              = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
+    print("sht")
+    print(dftext)
     coltext_freq, word_tokeep           = pd_coltext_wordfreq(df, col, stopwords, ntoken=100)  ## nb of words to keep
-
+    print(coltext_freq)
     dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
                                                             word_tokeep = word_tokeep ,
                                                             return_val  = "dataframe,param"  )
@@ -179,13 +185,13 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     #### Pipeline Execution
     pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
     pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
+    pipe_list.append('dfdate')
     pipe_list_pars  = preprocess_pars.get('pipe_pars', [])
 
 
 
     ##### Load data ##############################################################################
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
-
 
     ##### Filtering / cleaning rows :   #########################################################
     if "filter" in pipe_list :
@@ -195,14 +201,13 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                 return 1
             except:
                 return 0
-        df['_isfloat'] = df[ coly ].apply(lambda x : isfloat(x) )
-        df             = df[ df['_isfloat'] > 0 ]
-        del df['_isfloat']
-
         ymin, ymax = filter_pars.get('ymin', -9999999999.0), filter_pars.get('ymax', 999999999.0)
+        print(coly)
+        df['_isfloat'] = df[ coly ].apply(lambda x : isfloat(x))
+        print(df['_isfloat'])
+        df = df[ df['_isfloat'] > 0 ]
         df = df[df[coly] > ymin]
         df = df[df[coly] < ymax]
-        assert len(df) > 0, " Filter too much, empty dataframe"
 
 
     ##### Label processing   ####################################################################
@@ -219,7 +224,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ########### colnum procesing   #############################################################
     for x in colnum:
-        df[x] = df[x].astype("float32")
+        print('bam',x)
+        df[x] = df[x].astype("float")
     log(df[colall].dtypes)
 
 
@@ -269,13 +275,13 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         save_features(dfcat_hot, 'dfcat_onehot', path_features_store)
 
 
+
     if "dfcat_bin" in pipe_list :
         log("#### Colcat to integer encoding ")
         dfcat_bin, colcat_bin_map = pd_colcat_toint(df[colcat], colname=colcat,
                                                     colcat_map=None, suffix="_int")
         colcat_bin = list(dfcat_bin.columns)
         save_features(dfcat_bin, 'dfcat_bin', path_features_store)
-
 
     if "dfcross_hot" in pipe_list :
         log("#####  Cross Features From OneHot Features   ######################################")
@@ -298,17 +304,19 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         save_features(dfcross_hot, 'dfcross_onehot', path_features_store)
         del df_onehot ; gc.collect()
 
-
+    
 
     if "dftext" in pipe_list :
         log("##### Coltext processing   ###############################################################")
         stopwords = nlp_get_stopwords()
         pars      = {'n_token' : 100 , 'stopwords': stopwords}
         dftext    = None
+        
         for coltext_i in coltext :
+            
             ##### Run the text processor on each column text  #############################
             dftext_i = pipe_text( df[[coltext_i ]], coltext_i, pars )
-            dftext   = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
+            dftext   = pd.concat((dftext, dftext_i), axis=1)  if dftext is not None else dftext_i
             save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
 
         log(dftext.head(6))
@@ -322,9 +330,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         dfdate = None
         for coldate_i in coldate :
             dfdate_i =  util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
-            dfdate  = pd.concat((dfdate, dfdate_i))  if dfdate is not None else dfdatei
+            dfdate  = pd.concat((dfdate, dfdate_i), axis=1)  if dfdate is not None else dfdate_i
             save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
         save_features(dfdate, 'dfdate', path_features_store)
+        print('spoo',dfdate)
 
 
     ###################################################################################
@@ -354,10 +363,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ######  Merge AlL  #############################################################################
     dfXy = df[colnum + colcat + [coly] ]
+    print('localTT',dfXy)
     for t in [ 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot',
                'dfdate',  'dftext'  ] :
         if t in locals() :
-           dfXy = pd.concat((dfXy, locals()[t] ), axis=1)
+            print('localT', t, locals()[t])
+            dfXy = pd.concat((dfXy, locals()[t] ), axis=1)
     save_features(dfXy, 'dfX', path_features_store)
 
     colXy = list(dfXy.columns)
@@ -429,8 +440,7 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
                                  preprocess_pars, filter_pars, path_features_store)
 
-    print(cols)
-    print('-----')
+
     model_dict['data_pars']['coly'] = cols['coly']
     
     ### Generate actual column names from colum groups : colnum , colcat
