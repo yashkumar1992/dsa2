@@ -358,6 +358,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                'dfdate',  'dftext'  ] :
         if t in locals() :
            dfXy = pd.concat((dfXy, locals()[t] ), axis=1)
+    print('----------dfXy----------')
+    print(dfXy)
+    print('----------dfXy.columns----------')
+    print(dfXy.columns[:20])
     save_features(dfXy, 'dfX', path_features_store)
 
     colXy = list(dfXy.columns)
