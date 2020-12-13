@@ -138,6 +138,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     dfi_all          =  OrderedDict() ### Dict of all features
     cols_family_full =  OrderedDict()
 
+    #####  Filter  ###########################################################################
+
+    #### Coly   ##############################################################################
+    if 'pd_filter' in pipe_list :
+        df = pd
+
     for pipe_i in pipe_list :
        log("###################", pipe_i, "##################################################")
        pipe_fun    =  load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
