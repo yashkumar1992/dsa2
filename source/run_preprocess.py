@@ -296,7 +296,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         log(dfcross_hot.head(2).T)
         colcross_pair_onehot = list(dfcross_hot.columns)
         save_features(dfcross_hot, 'dfcross_onehot', path_features_store)
-        del df_onehot ; gc.collect()
+        del df_onehot ,colcross_pair_onehot
 
 
 
