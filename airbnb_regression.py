@@ -15,7 +15,7 @@ All in one file config
 
 
 """
-import warnings
+import warnings, copy
 warnings.filterwarnings('ignore')
 import os, sys, copy, pandas as pd
 
@@ -39,14 +39,14 @@ print(dir_data)
 
 ####################################################################################
 config_file  = "airbnb_regression.py"
-data_name    = "airbnb"   ###in data/
+data_name    = "airbnb"
 
 
 config_name  = 'airbnb_lightgbm'
 n_sample     = 1000
 
 
-#####################################################################################
+####################################################################################
 ####### y normalization #############################################################   
 def y_norm(y, inverse=True, mode='boxcox'):
     ## Normalize the input/output
@@ -93,7 +93,7 @@ cols_input_type_2 = {
 	,"colcat"   : ["host_id", "host_location", "host_response_time","host_response_rate","host_is_superhost","host_neighbourhood","host_verifications","host_has_profile_pic","host_identity_verified","street","neighbourhood","neighbourhood_cleansed", "neighbourhood_group_cleansed","city","zipcode", "smart_location","is_location_exact","property_type","room_type", "accommodates","bathrooms","bedrooms", "beds","bed_type","guests_included","calendar_updated", "license","instant_bookable","cancellation_policy","require_guest_profile_picture","require_guest_phone_verification","scrape_id"]
 	,"colnum"   : ["host_listings_count","latitude", "longitude","square_feet","weekly_price","monthly_price", "security_deposit","cleaning_fee","extra_people", "minimum_nights","maximum_nights","availability_30","availability_60","availability_90","availability_365","number_of_reviews","review_scores_rating","review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication", "review_scores_location","review_scores_value","calculated_host_listings_count","reviews_per_month"]
 	,"coltext"  : ["name","summary", "space","description", "neighborhood_overview","notes","transit", "access","interaction", "house_rules","host_name","host_about","amenities"]
-	,"coldate"  : ["last_scraped","host_since","first_review","last_review"]
+	, "coldate" : ["last_scraped","host_since","first_review","last_review"]
 	,"colcross" : ["name","host_is_superhost","is_location_exact","monthly_price","review_scores_value","review_scores_rating","reviews_per_month"]
 }
 
@@ -121,6 +121,8 @@ colall  ---> colid, coly, colnum, colcat
 dfcat_bin    : colcat --> colcat_bin
 dfnum_bin    : colnum --> colnum_bin
 dfnum_onehot : colnum --> colnum_onehot
+...
+
 
 
 ### Merge to feed col_model_group
@@ -153,8 +155,7 @@ def airbnb_lightgbm(path_model_out="") :
         return y_norm(y, inverse=False, mode='boxcox')
 
 
-    #############################################################################
-    model_dict = {'model_pars': {'config_model_name': model_name
+    model_dict = {'model_pars': {'config_model_name': 'LGBMRegressor'
         ,'model_path': path_model_out
         ,'model_pars': {'objective': 'huber',
 
@@ -163,7 +164,7 @@ def airbnb_lightgbm(path_model_out="") :
         ,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
 
                     ### Pipeline for data processing.
-                    'pipe_list'  : ['filter', 'label',  'dfcat_bin', 'dftext'   ]
+                    'pipe_list'  : ['filter', 'label',   'dfcat_bin', 'dftext'   ]
 
         }
     },
@@ -178,6 +179,7 @@ def airbnb_lightgbm(path_model_out="") :
 
          ,'cols_model_group': [  'colnum'
                                 ,'colcat_bin'
+                                ,'coldate'
                                 ,'coltext'
                               ]
 
@@ -198,13 +200,16 @@ def airbnb_lightgbm(path_model_out="") :
     model_dict[ 'global_pars'] = {}
     global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train',
                     'path_data_test', 'path_output_pred', 'n_sample'
-                  ]
+            ]
     for t in global_pars:
       model_dict['global_pars'][t] = globals()[t]
 
 
     return model_dict
  
+
+
+
 
 
 ####################################################################################################
