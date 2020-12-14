@@ -99,35 +99,33 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ##### column names for feature generation #####################################################
     log(cols_group)
-    coly            = cols_group['coly']    # 'salary'
-    colid           = cols_group['colid']   # "jobId"
+    coly            = cols_group['coly']  # 'salary'
+    colid           = cols_group['colid']  # "jobId"
     colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
     colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
 
-    # colcross_single = cols_group.get('colcross', [])   ### List of single columns
-    # coltext         = cols_group.get('coltext', [])
-    # coldate         = cols_group.get('coldate', [])
-    colall          = [ t for t in  clist   for k,colist  in cols_group.items() ]
+    colcross_single = cols_group.get('colcross', [])   ### List of single columns
+    coltext         = cols_group.get('coltext', [])
+    coldate         = cols_group.get('coldate', [])
+    colall          = colnum + colcat + coltext + coldate
     log(colall)
 
-    #### Default Pipeline Execution
-    pipe_list_default = [
-      {'uri' : 'source/preprocessors.py::pd_filter_rows',         'pars': {}, 'cols_family': 'colall',     'cols_out':'colall',        'type': 'filter' },
-      {'uri' : 'source/preprocessors.py::pd_coly',                'pars': {}, 'cols_family': 'coly',       'cols_out':'coly',          'type': 'coly' },
+    #### Pipeline Execution
+    pipe_default = [
+      {'uri' : 'source/preprocessors.py::pd_coly',                'pars': preprocess_pars, 'cols_family': 'coly',       'cols_out':'coly',         'type': 'coly' },
 
-      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',     'cols_out':'colnum_bin',    'type': '' },
-      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out':'colnum_onehot', 'type': '' },
-      {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',     'cols_out':'colcat_bin',    'type': ''},
-      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'cols_out':'colcat_onehot', 'type': ''},
-      {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'cols_out':'colcross_hot',  'type': 'cross' }
+      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',     'cols_out':'dfnum_bin',    'type': '' },
+      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out':'dfnum_onehot', 'type': '' },
+      {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',     'cols_out':'dfcat_bin',    'type': ''},
+      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'cols_out':'dfcat_onehot', 'type': ''},
+      {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'cols_out':'dfcross_hot',  'type': 'cross' }
     ]
 
-    pipe_list    = pipe_list_default
+    pipe_list = pipe_default
     # pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
     pipe_list_X    = [ task for task in pipe_list  if task.get('type', '')  not in ['coly', 'filter']  ]
     pipe_list_y    = [ task for task in pipe_list  if task.get('type', '')   in ['coly']  ]
     pipe_filter    = [ task for task in pipe_list  if task.get('type', '')   in ['filter']  ]
-
     ##### Load data ###########################################################################
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
     print(df)
@@ -135,11 +133,16 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ##### Generate features ###################################################################
     os.makedirs(path_pipeline_export, exist_ok=True)
-    log(path_pipeline_export, cols_group, pipe_list)
+    log(path_pipeline_export)
+    print('--------------cols_group-----------------')
+    print(cols_group)
+    print('--------------pipe_ist-----------------')
+    print(pipe_list)
+
 
     from _collections import OrderedDict
     dfi_all          = {} ### Dict of all features
-    cols_family_full = {} # { colgroup_i : df[colgroup_i] for colgroup_i in cols_group  }
+    cols_family_full = {}
 
 
     if len(pipe_filter) > 0 :
@@ -162,9 +165,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         cols_family_full['coly']    = cols_group['coly']
 
 
-    #####  Xinput Processors  #######################################################################
+    #####  Processors  ######################################################################
     for pipe_i in pipe_list_X :
-       log("###################", pipe_i, "##########################################################")
+       log("###################", pipe_i, "#######################################################")
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
        cols_name   = pipe_i['cols_family']
        # df_group    = pipe_i['df_group']
@@ -202,17 +205,19 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            for cols_i in cols_list :
                 log('------------cols_i----------------', cols_i)
                 dfi, col_pars = pipe_fun(df_[[cols_i]], [cols_i], pars= pars)
-                print(dfi, col_pars)
+                print(dfi)
+                print(col_pars)
 
-                ### colnum, colnum_bin, .... into cols_family_full
+                ### colnum, colnum_bin into cols_family_full
                 for colj, colist in  col_pars['cols_new'].items() :
                   cols_family_full[colj] =  cols_family_full.get(colj, []) + colist
                   save(cols_family_full[colj], f'{path_pipeline_export}/{colj}.pkl')   ### Not Efficient
 
                   dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if dfi_all.get(colj) is not None else dfi
-                  save_features(dfi_all[colj], colj, path_features_store)  ### Not Efficient
+                  save_features(dfi_all[colj], colj, path_features_store)
 
        print('------------dfi_all---------------------', dfi_all)
+       print('------------cols_family-----------------', cols_family)
 
 
     ######  Merge AlL int dfXy  ##################################################################
@@ -221,14 +226,15 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         if t not in [ 'coly', 'colnum', 'colcat'] :
            dfXy = pd.concat((dfXy, dfi_all[t] ), axis=1)
 
-    log('----------dfXy------------------', dfXy, dfXy.columns)
+    log('----------dfXy------------------', dfXy)
+    log('----------dfXy.columns----------', dfXy.columns)
     save_features(dfXy, 'dfX', path_features_store)
 
 
     colXy = list(dfXy.columns)
     colXy.remove(coly)    ##### Only X columns
     if len(colid)>0:
-        cols_family_full['colid'] = colid
+        cols_family_full['colid']=colid
     cols_family_full['colX'] = colXy
     save(colXy,            f'{path_pipeline_export}/colsX.pkl' )
     save(cols_family_full, f'{path_pipeline_export}/cols_family.pkl' )

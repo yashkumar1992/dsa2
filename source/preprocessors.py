@@ -166,7 +166,7 @@ def pd_filter_rows(df, col, pars):
     df = df[df[coly] < ymax]
     del df['_isfloat']
 
-    return df, None
+    return df, col
 
 
 
