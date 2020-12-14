@@ -52,8 +52,8 @@ def save_features(df, name, path):
        df.to_parquet( f"{path}/{name}/features.parquet")
 
 
-from run_preprocess import  preprocess, preprocess_load
-
+# from run_preprocess import  preprocess, preprocess_load
+from run_preprocess2 import  preprocess, preprocess_load
 
 ####################################################################################################
 ##### train    #####################################################################################
@@ -96,6 +96,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     dfX    = dfX.sample(frac=1.0)
     itrain = int(0.6 * len(dfX))
     ival   = int(0.8 * len(dfX))
+    print('------------cols_family---------------------', cols_family)
     colid  = cols_family['colid']
     colsX  = data_pars['cols_model']
     coly   = data_pars['coly']
@@ -232,7 +233,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
    
     log("######### Train model: ###########################################################")
     log(str(model_dict)[:1000])
-    post_process_fun = model_dict['model_pars']['post_process_fun']    
+    post_process_fun = model_dict['model_pars']['post_process_fun']
     dfXy, dfXytest   = train(model_dict, dfXy, cols, post_process_fun)
 
 
