@@ -269,7 +269,7 @@ def preprocess(config=None, nsample=None):
     print(mdict)
 
     from source import run_preprocess2, run_preprocess
-    run_preprocess2.run_preprocess(model_name     =  config_name,
+    run_preprocess.run_preprocess(model_name     =  config_name,
                                 path_data         =  m['path_data_train'],
                                 path_output       =  m['path_model'],
                                 path_config_model =  m['path_config_model'],
