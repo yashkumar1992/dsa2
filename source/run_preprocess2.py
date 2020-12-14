@@ -113,13 +113,13 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     #pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 
     pipe_list = [
-                  {'uri' : 'source/preprocessors.py::pdf_coly',                'pars' : {},   'cols_family': 'coly', 'df_group':'coly', 'type' : 'coly' },
-                  {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars' : {   }, 'cols_family': 'colnum', 'df_group':'dfnum_bin', 'type' : '' },
-                  {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'dfnum_bin', 'df_group':'dfnum_onehot', 'type' : '' },
-                  {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {},     'cols_family': 'colcat', 'df_group':'dfcat_bin', 'type': ''},
-                  {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', '    pars': {},     'cols_family': 'dfcat_bin', 'df_group':'dfcat_onehot','type': ''},
-                  {'uri' : 'source/preprocessors.py::pd_colcross', '           pars' : {   }, 'cols_family': 'colcross', 'df_group':'dfcross_hot',   'type' : 'cross' }
-                ]
+      {'uri' : 'source/preprocessors.py::pdf_coly',               'pars': {}, 'cols_family': 'coly',      'df_group':'coly',         'type': 'coly' },
+      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',    'df_group':'dfnum_bin',    'type': '' },
+      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'dfnum_bin', 'df_group':'dfnum_onehot', 'type': '' },
+      {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',    'df_group':'dfcat_bin',    'type': ''},
+      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'dfcat_bin', 'df_group':'dfcat_onehot', 'type': ''},
+      {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',  'df_group':'dfcross_hot',  'type': 'cross' }
+    ]
 
     # pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
     ##### Load data ###########################################################################
@@ -142,35 +142,49 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     dfi_all          =  OrderedDict() ### Dict of all features
     cols_family_full =  OrderedDict()
 
+
     #####  Filter  ###########################################################################
     if 'filter' in pipe_list_type :
-        pipe_i = pipe_list[   pipe_list_type['filter'] ]
-        pipe_list.remove(   pipe_list_type['filter'] )
+        pipe_i       = pipe_list[   pipe_list_type.index('filter') ]
         pipe_fun     = load_function_uri(pipe_i['uri'])
         df, col_pars = pipe_fun(df, list(df.columns), pars=pipe_i.get('pars', {}))
+        pipe_list.remove(   pipe_list_type.index('filter') )
+
+
+    #####  coly  ###########################################################################
+    if 'coly' in pipe_list_type :
+       pipe_i       = pipe_list[   pipe_list_type.index('coly') ]
+       pipe_fun     = load_function_uri(pipe_i['uri'])
+       df, col_pars = pipe_fun(df, cols_group['coly'], pars=pipe_i.get('pars', {}))
+
+       cols_family_full['coly'] = 'coly'
+       save_features(df[cols_group['coly'] ], "coly", path_features_store)  ### already saved
+       dfi_all['coly'] = df[cols_group['coly'] ]
 
 
 
     #####  Processors  ######################################################################
     for pipe_i in pipe_list :
        log("###################", pipe_i, "##################################################")
-       pipe_fun    =  load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
-       cols_name   =  pipe_i['cols_family']
+       pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
+       cols_name   = pipe_i['cols_family']
        df_group    = pipe_i['df_group']
        col_type    = pipe_i['type']
        try:
            cols_list = cols_group[cols_name]
-           df_=df[[cols_list]]
+           df_       = df[ cols_list]
+
        except:
            print(dfi_all[cols_name].columns)
            cols_list = list(dfi_all[cols_name].columns)
-           df_=dfi_all[cols_name]
+           df_       = dfi_all[cols_name]
        # cols_family = {}
        print(cols_list)
-       cols_family = {} # []  #{}
-       flag_col_in_dfi=False
+       cols_family     = {} # []  #{}
+       flag_col_in_dfi = False
        if cols_name in dfi_all.keys():
            flag_col_in_dfi = True
+
        pars = pipe_i.get('pars', {})
        pars['path_features_store'] = path_features_store
        if col_type == 'cross':
@@ -184,22 +198,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            # cols_family.extend( list(dfi.columns) )  ### all columns names are unique !!!!
 
            save_features(dfi, df_group , path_features_store)  ### already saved
-
            ### Merge sub-family
-           dfi_all[df_group] = pd.concat((dfi_all[df_group], dfi), axis=1) if dfi_all.get(
-               df_group) is not None else dfi
+           dfi_all[df_group] = pd.concat((dfi_all[df_group], dfi), axis=1) if dfi_all.get(df_group) is not None else dfi
 
-       elif col_type == 'coly':
-           dfi, col_pars = pipe_fun(df_, [cols_list], pars=pipe_i.get('pars', {}))
-           ### Save on Disk column names ( pre-processor meta-params)  + dataframe intermediate
-           cols_family[cols_list] = list(dfi.columns)
-           # cols_family.extend( list(dfi.columns) )  ### all columns names are unique !!!!
 
-           save_features(dfi, cols_name + "-" + cols_list, path_features_store)  ### already saved
-
-           ### Merge sub-family
-           dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi), axis=1) if dfi_all.get(
-               cols_name) is not None else dfi
        else:
            for cols_num, cols_i in enumerate(cols_list) :
                 print('------------cols_i----------------')
@@ -219,6 +221,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
                 ### Merge sub-family
                 dfi_all[df_group] =  pd.concat((dfi_all[df_group], dfi), axis=1)  if dfi_all.get(df_group) is not None else dfi
+
        print('------------dfi_all-----------------')
        print(dfi_all)
        print('------------cols_family-------------')
