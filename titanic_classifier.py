@@ -154,7 +154,9 @@ def titanic_lightgbm(path_model_out="") :
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
           #  'coldate',
           #  'coltext',
-          'cols_model_group': [ 'colnum', 'colcat_bin']
+          'cols_model_group': [ 'colnum_bin',
+                              #  'colcat_bin'
+                               ]
 
 
           ### Filter data rows   ##################################################################

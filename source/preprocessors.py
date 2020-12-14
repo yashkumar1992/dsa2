@@ -250,7 +250,15 @@ def pd_colnum_bin(df, col, pars):
     colnum_bin = [x + "_bin" for x in list(colnum_binmap.keys())]
     log(colnum_bin)
     save_features(dfnum_bin, 'dfnum_binmap', path_features_store)
-    return dfnum_bin, colnum_binmap
+
+    col_pars = {}
+    col_pars['colnumbin_map'] = colnum_binmap
+    col_pars['cols_new'] = {
+     'colnum'     :  col ,    ###list
+     'colnum_bin' :  colnum_bin       ### list
+    }
+
+    return dfnum_bin, col_pars
 
 
 
