@@ -249,7 +249,7 @@ def pd_colnum_bin(df, col, pars):
     ### Renaming colunm_bin with suffix
     colnum_bin = [x + "_bin" for x in list(colnum_binmap.keys())]
     log(colnum_bin)
-    save_features(dfnum_bin, 'dfnum_binmap', path_features_store)
+    save_features(dfnum_bin, 'colnum_bin', path_features_store)
 
     col_pars = {}
     col_pars['colnumbin_map'] = colnum_binmap
@@ -257,7 +257,6 @@ def pd_colnum_bin(df, col, pars):
      'colnum'     :  col ,    ###list
      'colnum_bin' :  colnum_bin       ### list
     }
-
     return dfnum_bin, col_pars
 
 
@@ -273,8 +272,16 @@ def pd_colnum_binto_onehot(df, col, pars):
     dfnum_hot, colnum_onehot = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
                                                 colonehot=None, return_val="dataframe,param")
     log(colnum_onehot)
-    save_features(dfnum_hot, 'dfnum_onehot', path_features_store)
-    return dfnum_hot, colnum_onehot
+    save_features(dfnum_hot, 'colnum_onehot', path_features_store)
+
+    col_pars = {}
+    col_pars['colnum_onehot'] = colnum_onehot
+    col_pars['cols_new'] = {
+     # 'colnum'        :  col ,    ###list
+     'colnum_onehot' :  colnum_onehot       ### list
+    }
+
+    return dfnum_hot, col_pars
 
 
 
