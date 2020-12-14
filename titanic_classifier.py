@@ -117,8 +117,10 @@ def titanic_lightgbm(path_model_out="") :
         ### LightGBM API model   #######################################
         ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'binary',
-                               'learning_rate':0.03,'boosting_type':'gbdt'    ### Model hyperparameters
-
+                               # 'n_estimators':3000,
+                               # 'learning_rate':0.001,
+                               'boosting_type':'gbdt',     ### Model hyperparameters
+                                # 'early_stopping_rounds': 5
                               }
 
         ### After prediction  ##########################################
@@ -198,7 +200,9 @@ def titanic_lightgbm2(path_model_out="") :
         ### LightGBM API model   #######################################
         ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'binary',
-                               'learning_rate':0.03,'boosting_type':'gbdt'    ### Model hyperparameters
+                               'n_estimators':10,
+                               'learning_rate':0.01,
+                               'boosting_type':'gbdt'  ### Model hyperparameters
 
                               }
 
@@ -220,7 +224,7 @@ def titanic_lightgbm2(path_model_out="") :
         },
 
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
-                      },
+                      ,'early_stopping_rounds':5},
 
       'data_pars': {
           'cols_input_type' : cols_input_type_1,
@@ -269,7 +273,7 @@ def preprocess(config=None, nsample=None):
     print(mdict)
 
     from source import run_preprocess2, run_preprocess
-    run_preprocess2.run_preprocess(model_name     =  config_name,
+    run_preprocess.run_preprocess(model_name     =  config_name,
                                 path_data         =  m['path_data_train'],
                                 path_output       =  m['path_model'],
                                 path_config_model =  m['path_config_model'],
