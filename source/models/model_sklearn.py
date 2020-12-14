@@ -32,7 +32,7 @@ from sklearn.tree import *
 from lightgbm import LGBMModel, LGBMRegressor, LGBMClassifier
 
 ####################################################################################################
-VERBOSE = False
+VERBOSE = True
 
 
 # MODEL_URI = get_model_uri(__file__)
@@ -73,7 +73,6 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
 
     if "LGBM" in model.model_pars['config_model_name']:
         model.model.fit(Xtrain, ytrain, eval_set=[(Xtest, ytest)], **compute_pars.get("compute_pars", {}))
-
     else:
         model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
 
@@ -182,7 +181,8 @@ def preprocess(prepro_pars):
         df = pd.read_csv(prepro_pars['path'])
         dfX = df[prepro_pars['colX']]
         dfy = df[prepro_pars['coly']]
-        Xtrain, Xtest, ytrain, ytest = train_test_split(dfX.values, dfy.values)
+        Xtrain, Xtest, ytrain, ytest = train_test_split(dfX.values, dfy.values,
+                                                        stratify=dfy.values,test_size=0.1)
         return Xtrain, ytrain, Xtest, ytest
 
     else:

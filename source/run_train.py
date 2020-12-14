@@ -53,7 +53,7 @@ def save_features(df, name, path):
 
 
 from run_preprocess import  preprocess, preprocess_load
-
+# from run_preprocess2 import  preprocess, preprocess_load
 
 ####################################################################################################
 ##### train    #####################################################################################
@@ -232,7 +232,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
    
     log("######### Train model: ###########################################################")
     log(str(model_dict)[:1000])
-    post_process_fun = model_dict['model_pars']['post_process_fun']    
+    post_process_fun = model_dict['model_pars']['post_process_fun']
     dfXy, dfXytest   = train(model_dict, dfXy, cols, post_process_fun)
 
 

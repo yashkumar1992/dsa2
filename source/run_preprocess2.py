@@ -219,7 +219,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     ######  Merge AlL int dfXy  ##################################################################
     dfXy = df[ [coly] + colnum + colcat ]
     for t in dfi_all.keys():
-        if t not in [ 'coly', 'colnum', 'colcat' ] :
+        if t not in [ 'coly', 'colnum', 'colcat'] :
            dfXy = pd.concat((dfXy, dfi_all[t] ), axis=1)
 
     log('----------dfXy------------------', dfXy)
@@ -229,6 +229,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     colXy = list(dfXy.columns)
     colXy.remove(coly)    ##### Only X columns
+    if len(colid)>0:
+        cols_family_full['colid']=colid
     cols_family_full['colX'] = colXy
     save(colXy,            f'{path_pipeline_export}/colsX.pkl' )
     save(cols_family_full, f'{path_pipeline_export}/cols_family.pkl' )
