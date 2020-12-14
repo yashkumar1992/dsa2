@@ -104,7 +104,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
     colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
 
-    colcross_single = cols_group.get('colcross', [])   ### List of single columns
+    # colcross_single = cols_group.get('colcross', [])   ### List of single columns
     coltext         = cols_group.get('coltext', [])
     coldate         = cols_group.get('coldate', [])
     colall          = colnum + colcat + coltext + coldate
@@ -134,12 +134,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ##### Generate features ###################################################################
     os.makedirs(path_pipeline_export, exist_ok=True)
-    log(path_pipeline_export)
-    print('--------------cols_group-----------------')
-    print(cols_group)
-    print('--------------pipe_ist-----------------')
-    print(pipe_list)
-
+    log(path_pipeline_export, cols_group, pipe_list)
 
     from _collections import OrderedDict
     dfi_all          = {} ### Dict of all features
@@ -148,14 +143,14 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     if len(pipe_filter) > 0 :
         log("#####  Filter  #########################################################################")
-        pipe_i       = pipe_list[ 0 ]
+        pipe_i       = pipe_filter[ 0 ]
         pipe_fun     = load_function_uri(pipe_i['uri'])
         df, col_pars = pipe_fun(df, list(df.columns), pars=pipe_i.get('pars', {}))
 
 
     if len(pipe_list_y) > 0 :
         log("#####  coly  ###########################################################################")
-        pipe_i       = pipe_list[ 0 ]
+        pipe_i       = pipe_list_y[ 0 ]
         pipe_fun     = load_function_uri(pipe_i['uri'])
 
         pars                        = pipe_i.get('pars', {})
@@ -168,7 +163,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     #####  Processors  ######################################################################
     for pipe_i in pipe_list_X :
-       log("###################", pipe_i, "#######################################################")
+       log("###################", pipe_i, "#########################################################")
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
        cols_name   = pipe_i['cols_family']
        # df_group    = pipe_i['df_group']
@@ -215,10 +210,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                   save(cols_family_full[colj], f'{path_pipeline_export}/{colj}.pkl')   ### Not Efficient
 
                   dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if dfi_all.get(colj) is not None else dfi
-                  save_features(dfi_all[colj], colj, path_features_store)
+                  save_features(dfi_all[colj], colj, path_features_store)  ### Not Efficient
 
        print('------------dfi_all---------------------', dfi_all)
-       print('------------cols_family-----------------', cols_family)
+       # print('------------cols_family-----------------', cols_family)
 
 
     ######  Merge AlL int dfXy  ##################################################################
