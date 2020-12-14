@@ -249,7 +249,7 @@ def pd_colnum_bin(df, col, pars):
     ### Renaming colunm_bin with suffix
     colnum_bin = [x + "_bin" for x in list(colnum_binmap.keys())]
     log(colnum_bin)
-    save_features(dfnum_bin, 'colnum_bin', path_features_store)
+    save_features(dfnum_bin, 'colnum_bin' + "-" + str(col), path_features_store)
 
     col_pars = {}
     col_pars['colnumbin_map'] = colnum_binmap
@@ -288,7 +288,17 @@ def pd_colnum_binto_onehot(df, col, pars):
 def pd_colcat_to_onehot(df, col, pars):
     # dfbum_bin = df[col]
     if len(col)==1:
-        return df, col
+
+        colnew       = [col[0] + "_onehot"]
+        df[ colnew ] =  df[col]
+        col_pars     = {}
+        col_pars['colcat_onehot'] = colnew
+        col_pars['cols_new'] = {
+         # 'colnum'        :  col ,    ###list
+         'colcat_onehot'   :  colnew      ### list
+        }
+        return df[colnew], col_pars
+
     path_features_store = pars['path_features_store']
     colcat = col
 
@@ -296,8 +306,18 @@ def pd_colcat_to_onehot(df, col, pars):
     dfcat_hot, colcat_onehot = util_feature.pd_col_to_onehot(df[colcat], colname=colcat,
                                                 colonehot=None, return_val="dataframe,param")
     log(dfcat_hot[colcat_onehot].head(5))
-    save_features(dfcat_hot, 'dfcat_onehot', path_features_store)
-    return dfcat_hot, colcat_onehot
+    save_features(dfcat_hot, 'colcat_onehot', path_features_store)
+
+    col_pars = {}
+    col_pars['colcat_onehot'] = colcat_onehot
+    col_pars['cols_new'] = {
+     # 'colnum'        :  col ,    ###list
+     'colcat_onehot' :  colcat_onehot       ### list
+    }
+
+    print("ok ------------")
+    return dfcat_hot, col_pars
+
 
 
 
@@ -315,7 +335,16 @@ def pd_colcat_bin(df, col, pars):
     colcat_map = util_feature.pd_colcat_mapping(df, colcat)
     log(df[colcat].dtypes, colcat_map)
     save_features(dfcat_bin, 'dfcat_bin', path_features_store)
-    return dfcat_bin, colcat_bin_map
+
+
+    col_pars = {}
+    col_pars['colcat_bin_map'] = colcat_bin_map
+    col_pars['cols_new'] = {
+     'colcat'     :  col ,    ###list
+     'colcat_bin' :  colcat_bin       ### list
+    }
+
+    return dfcat_bin, col_pars
 
 
 
