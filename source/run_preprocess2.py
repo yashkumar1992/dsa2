@@ -67,6 +67,7 @@ def save_features(df, name, path=None):
     else:
        log("No saved features, path is none")
 
+
 def load_features(name, path):
     try:
         return pd.read_parquet(f"{path}/{name}/features.parquet")
@@ -122,6 +123,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     ]
 
     # pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
+    pipe_list_X    = [ task for task in pipe_list  if task.get('type', '')  not in ['coly', 'cross']  ]
+    pipe_list_y    = [ task for task in pipe_list  if task.get('type', '')   in ['coly']  ]
+    pipe_filter    = [ task for task in pipe_list  if task.get('type', '')   in ['filter']  ]
     ##### Load data ###########################################################################
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
     print(df)
@@ -130,12 +134,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     ##### Generate features ###################################################################
     os.makedirs(path_pipeline_export, exist_ok=True)
     log(path_pipeline_export)
-    dfi_all   =  {}  ### Dict of all features
     print('--------------cols_group-----------------')
     print(cols_group)
     print('--------------pipe_list-----------------')
     print(pipe_list)
-    pipe_list_type = [   task['type'] for task in pipe_list]
 
 
     from _collections import OrderedDict
@@ -143,28 +145,28 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     cols_family_full =  OrderedDict()
 
 
-    #####  Filter  ###########################################################################
-    if 'filter' in pipe_list_type :
-        pipe_i       = pipe_list[   pipe_list_type.index('filter') ]
+    if len(pipe_filter) > 0 :
+        log("#####  Filter  #########################################################################")
+        pipe_i       = pipe_list[ 0 ]
         pipe_fun     = load_function_uri(pipe_i['uri'])
         df, col_pars = pipe_fun(df, list(df.columns), pars=pipe_i.get('pars', {}))
-        pipe_list.remove(   pipe_list_type.index('filter') )
 
 
-    #####  coly  ###########################################################################
-    if 'coly' in pipe_list_type :
-       pipe_i       = pipe_list[   pipe_list_type.index('coly') ]
+    if len(pipe_list_y) > 0 :
+       log("#####  coly  ###########################################################################")
+       pipe_i       = pipe_list[ 0 ]
        pipe_fun     = load_function_uri(pipe_i['uri'])
-       df, col_pars = pipe_fun(df, cols_group['coly'], pars=pipe_i.get('pars', {}))
 
-       cols_family_full['coly'] = 'coly'
+       pars                        = pipe_i.get('pars', {})
+       pars['path_features_store'] = path_features_store
+       df, col_pars                = pipe_fun(df, cols_group['coly'], pars=pars)
+       dfi_all['coly']             = df[cols_group['coly'] ]
        save_features(df[cols_group['coly'] ], "coly", path_features_store)  ### already saved
-       dfi_all['coly'] = df[cols_group['coly'] ]
 
 
 
     #####  Processors  ######################################################################
-    for pipe_i in pipe_list :
+    for pipe_i in pipe_list_X :
        log("###################", pipe_i, "##################################################")
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
        cols_name   = pipe_i['cols_family']
