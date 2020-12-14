@@ -117,10 +117,10 @@ def titanic_lightgbm(path_model_out="") :
         ### LightGBM API model   #######################################
         ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'binary',
-                               # 'n_estimators':3000,
-                               # 'learning_rate':0.001,
+                               'n_estimators':3000,
+                               'learning_rate':0.001,
                                'boosting_type':'gbdt',     ### Model hyperparameters
-                                # 'early_stopping_rounds': 5
+                                'early_stopping_rounds': 5
                               }
 
         ### After prediction  ##########################################
