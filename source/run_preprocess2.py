@@ -193,10 +193,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            pars['colid']           = colid
            pars['colcross_single'] = cols_group.get('colcross', [])
            dfi, col_pars           = pipe_fun(df_, cols_list, pars= pars)
-
+           print('--------------col_pars-----------------',col_pars['cols_new'].items())
            ### colnum, colnum_bin into cols_family
            for colname, colist in  col_pars['cols_new'].items() :
-              cols_family_full[colname] =  cols_family_full.get(colname, []) + colist
+              cols_family_full[cols_name] =  cols_family_full.get(colname, []) + colist
 
            save_features(dfi, cols_name , path_features_store)  ### already saved
            ### Merge sub-family
@@ -242,8 +242,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     ###### Return values  #######################################################################
-    print('cols_family')
-    pprint(cols_family)
+    print('cols_family_full')
+    pprint(cols_family_full)
     return dfXy, cols_family_full
 
 
@@ -293,7 +293,6 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
     log("#### Model parameters Dynamic loading  ############################################")
     model_dict_fun = load_function_uri(uri_name= path_config_model + "::" + model_name)
     model_dict     = model_dict_fun(path_model_out)   ### params
-
 
     log("#### load input column family  ###################################################")
     try :
