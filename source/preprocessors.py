@@ -164,9 +164,9 @@ def pd_filter_rows(df, col, pars):
     df = df[ df['_isfloat'] > 0 ]
     df = df[df[coly] > ymin]
     df = df[df[coly] < ymax]
-
     del df['_isfloat']
-    return df,coly
+
+    return df, None
 
 
 
@@ -186,7 +186,7 @@ def pd_label_clean(df, col, pars):
     return df,coly
 
 
-def pdf_coly(df, col, pars):
+def pd_coly(df, col, pars):
     ##### Filtering / cleaning rows :   #########################################################
     coly=col
     def isfloat(x):
