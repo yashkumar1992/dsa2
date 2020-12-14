@@ -113,12 +113,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     #pipe_default    = [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
 
     pipe_list = [
-                  {  'uri' : 'source/preprocessors.py::pdf_coly', 'pars' : {}, 'cols_family': 'coly', 'df_group':'coly', 'type' : 'coly' },
-                  {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'df_group':'dfnum_bin', 'type' : '' },
-                  {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'dfnum_bin', 'df_group':'dfnum_onehot', 'type' : '' },
-                  {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'df_group':'dfcat_bin', 'type': ''},
-                  {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'dfcat_bin', 'df_group':'dfcat_onehot','type': ''},
-                  {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross', 'df_group':'dfcross_hot',   'type' : 'cross' }
+                  {'uri' : 'source/preprocessors.py::pdf_coly',                'pars' : {},   'cols_family': 'coly', 'df_group':'coly', 'type' : 'coly' },
+                  {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars' : {   }, 'cols_family': 'colnum', 'df_group':'dfnum_bin', 'type' : '' },
+                  {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'dfnum_bin', 'df_group':'dfnum_onehot', 'type' : '' },
+                  {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {},     'cols_family': 'colcat', 'df_group':'dfcat_bin', 'type': ''},
+                  {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', '    pars': {},     'cols_family': 'dfcat_bin', 'df_group':'dfcat_onehot','type': ''},
+                  {'uri' : 'source/preprocessors.py::pd_colcross', '           pars' : {   }, 'cols_family': 'colcross', 'df_group':'dfcross_hot',   'type' : 'cross' }
                 ]
 
     # pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
@@ -135,23 +135,29 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     print(cols_group)
     print('--------------pipe_list-----------------')
     print(pipe_list)
+    pipe_list_type = [   task['type'] for task in pipe_list]
+
 
     from _collections import OrderedDict
     dfi_all          =  OrderedDict() ### Dict of all features
     cols_family_full =  OrderedDict()
 
     #####  Filter  ###########################################################################
+    if 'filter' in pipe_list_type :
+        pipe_i = pipe_list[   pipe_list_type['filter'] ]
+        pipe_list.remove(   pipe_list_type['filter'] )
+        pipe_fun     = load_function_uri(pipe_i['uri'])
+        df, col_pars = pipe_fun(df, list(df.columns), pars=pipe_i.get('pars', {}))
 
-    #### Coly   ##############################################################################
-    if 'pd_filter' in pipe_list :
-        df = pd
 
+
+    #####  Processors  ######################################################################
     for pipe_i in pipe_list :
        log("###################", pipe_i, "##################################################")
        pipe_fun    =  load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
        cols_name   =  pipe_i['cols_family']
-       df_group = pipe_i['df_group']
-       col_type = pipe_i['type']
+       df_group    = pipe_i['df_group']
+       col_type    = pipe_i['type']
        try:
            cols_list = cols_group[cols_name]
            df_=df[[cols_list]]
