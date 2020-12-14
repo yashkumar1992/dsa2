@@ -375,10 +375,18 @@ def pd_colcross(df, col, pars):
                                                            pct_threshold=0.02,  m_combination=2)
     log(dfcross_hot.head(2).T)
     colcross_pair_onehot = list(dfcross_hot.columns)
-    save_features(dfcross_hot, 'dfcross_onehot', path_features_store)
+    save_features(dfcross_hot, 'colcross_onehot', path_features_store)
     del df_onehot ; gc.collect()
 
-    return dfcross_hot, colcross_pair
+
+    col_pars = {}
+    col_pars['colcat_bin_map'] = colcross_pair
+    col_pars['cols_new'] = {
+     # 'colcat'     :  col ,    ###list
+     'colcat_bin' :  colcross_pair       ### list
+    }
+
+    return dfcross_hot, col_pars
 
 
 def pd_coldate(df, col, pars):
