@@ -157,7 +157,7 @@ def titanic_lightgbm(path_model_out="") :
           #  'coldate',
           #  'coltext',
           'cols_model_group': [ 'colnum_bin',
-                              #  'colcat_bin'
+                               'colcat_bin'
                                ]
 
 
