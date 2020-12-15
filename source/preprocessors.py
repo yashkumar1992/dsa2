@@ -321,20 +321,32 @@ def pd_colcat_to_onehot(df, col, pars):
 
 
 
+from util_feature import load
 
-def pd_colcat_bin(df, col, pars):
+def pd_colcat_bin(df, col=None, pars=None):
     # dfbum_bin = df[col]
-    path_features_store = pars['path_features_store']
-    colcat = col
+    path_pipeline = pars.get('path_pipeline', False)
+    if  path_pipeline:
+       colcat         = load(f'{path_pipeline}/colcat.pkl')
+       colcat_bin_map = load(f'{path_pipeline}/colcat_bin_map.pkl')
+    else :
+       colcat         = col
+       colcat_bin_map = None
+
 
     log("#### Colcat to integer encoding ")
     dfcat_bin, colcat_bin_map = util_feature.pd_colcat_toint(df[colcat], colname=colcat,
-                                                colcat_map=None, suffix="_int")
+                                                colcat_map=  colcat_bin_map ,
+                                                suffix="_int")
     colcat_bin = list(dfcat_bin.columns)
     ##### Colcat processing   ################################################################
     colcat_map = util_feature.pd_colcat_mapping(df, colcat)
     log(df[colcat].dtypes, colcat_map)
-    save_features(dfcat_bin, 'dfcat_bin', path_features_store)
+
+
+    if pars.get('path_features_store', None) is not None :
+       path_features_store = pars['path_features_store']
+       save_features(dfcat_bin, 'dfcat_bin', path_features_store)
 
 
     col_pars = {}
