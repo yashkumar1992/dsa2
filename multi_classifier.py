@@ -238,8 +238,8 @@ def predict(config=None, nsample=None):
     m            = mdict['global_pars']
     print(m)
 
-    from source import run_inference
-    run_inference.run_predict(model_name,
+    from source import run_inference2
+    run_inference2.run_predict(model_name,
                             path_model  = m['path_model'],
                             path_data   = m['path_data_test'],
                             path_output = m['path_output_pred'],
