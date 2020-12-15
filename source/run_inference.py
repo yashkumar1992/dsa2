@@ -28,19 +28,16 @@ print(root)
 def log(*s, n=0, m=1):
     sspace = "#" * n
     sjump = "\n" * m
-
     ### Implement Logging
     print(sjump, sspace, s, sspace, flush=True)
 
 
+
 from util_feature import load, load_function_uri
-
-####################################################################################################
-####################################################################################################
 from util_feature import  load_dataset
+####################################################################################################
+####################################################################################################
 
-
-# @cache.memoize(typed=True,  tag='fib')  ### allow caching results
 def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
     """
       FUNCTIONNAL approach is used for pre-processing, so the code can be EASILY extensible to PYSPPARK.
