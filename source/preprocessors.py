@@ -164,9 +164,9 @@ def pd_filter_rows(df, col, pars):
     df = df[ df['_isfloat'] > 0 ]
     df = df[df[coly] > ymin]
     df = df[df[coly] < ymax]
-
     del df['_isfloat']
-    return df,coly
+
+    return df, col
 
 
 
@@ -186,7 +186,7 @@ def pd_label_clean(df, col, pars):
     return df,coly
 
 
-def pdf_coly(df, col, pars):
+def pd_coly(df, col, pars):
     ##### Filtering / cleaning rows :   #########################################################
     coly=col
     def isfloat(x):
@@ -321,20 +321,32 @@ def pd_colcat_to_onehot(df, col, pars):
 
 
 
+from util_feature import load
 
-def pd_colcat_bin(df, col, pars):
+def pd_colcat_bin(df, col=None, pars=None):
     # dfbum_bin = df[col]
-    path_features_store = pars['path_features_store']
-    colcat = col
+    path_pipeline = pars.get('path_pipeline', False)
+    if  path_pipeline:
+       colcat         = load(f'{path_pipeline}/colcat.pkl')
+       colcat_bin_map = load(f'{path_pipeline}/colcat_bin_map.pkl')
+    else :
+       colcat         = col
+       colcat_bin_map = None
+
 
     log("#### Colcat to integer encoding ")
     dfcat_bin, colcat_bin_map = util_feature.pd_colcat_toint(df[colcat], colname=colcat,
-                                                colcat_map=None, suffix="_int")
+                                                colcat_map=  colcat_bin_map ,
+                                                suffix="_int")
     colcat_bin = list(dfcat_bin.columns)
     ##### Colcat processing   ################################################################
     colcat_map = util_feature.pd_colcat_mapping(df, colcat)
     log(df[colcat].dtypes, colcat_map)
-    save_features(dfcat_bin, 'dfcat_bin', path_features_store)
+
+
+    if pars.get('path_features_store', None) is not None :
+       path_features_store = pars['path_features_store']
+       save_features(dfcat_bin, 'dfcat_bin', path_features_store)
 
 
     col_pars = {}
@@ -414,7 +426,55 @@ if __name__ == "__main__":
 
 
 
+"""
 
+  coltext ---> coltext-coli-svd
+  
+  coldate ---> coltext-coli
+
+
+
+    log("#### Data preparation #############################################################")
+    log(dfX.shape)
+    dfX    = dfX.sample(frac=1.0)
+    itrain = int(0.6 * len(dfX))
+    ival   = int(0.8 * len(dfX))
+    colid  = cols_family['colid']
+    colsX  = data_pars['cols_model']
+    coly   = data_pars['coly']
+    print('colsX',colsX)
+    rm=["name", "summary", "space", "description", "neighborhood_overview", "notes", "transit", "access", "interaction", "house_rules", "host_name", "host_about", "amenities"]
+    colsX = list(set(colsX) - set(rm))
+
+    for col in rm:
+        col1=col+'_svd_0'
+        col2=col+'_svd_1'
+        colsX.append(col1)
+        colsX.append(col2)
+    rm1=["last_review", "host_since", "first_review", "last_scraped"]
+    colsX = list(set(colsX) - set(rm1))
+    for col in rm1:
+        col1=col+'_year'
+        col2=col+'_month'
+        col3=col+'_day'
+        colsX.append(col1)
+        colsX.append(col2)
+        colsX.append(col3)
+    dfX.fillna(0)
+    data_pars['data_type'] = 'ram'
+    data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
+                          'ytrain' : dfX[coly].iloc[:itrain],
+                          'Xtest'  : dfX[colsX].iloc[itrain:ival, :],
+                          'ytest'  : dfX[coly].iloc[itrain:ival],
+
+                          'Xval'   : dfX[colsX].iloc[ival:, :],
+                          'yval'   : dfX[coly].iloc[ival:],
+                          }
+                          
+                          
+
+
+"""
 
 
 

@@ -177,7 +177,9 @@ def titanic_lightgbm(path_model_out="") :
 
 def titanic_lightgbm2(path_model_out="") :
     """
-       Contains all needed informations for Light GBM Classifier model, used for titanic classification task
+        python titanic_classifier.py preprocess --nsample 100  --config titanic_lightgbm2
+
+
     """
     data_name    = "titanic"     ### in data/input/
     model_name   = 'LGBMClassifier'
@@ -214,11 +216,19 @@ def titanic_lightgbm2(path_model_out="") :
         , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
 
 
-                ### Pipeline for data processing ########################
-                'pipe_list' : [ {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
-                  # {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
-                     # {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
-                   ]
+    #### Default Pipeline Execution
+    'pipe_list' : [
+      {'uri' : 'source/preprocessors.py::pd_filter_rows',         'pars': {}, 'cols_family': 'colall',     'cols_out':'colall',        'type': 'filter' },
+      {'uri' : 'source/preprocessors.py::pd_coly',                'pars': {}, 'cols_family': 'coly',       'cols_out':'coly',          'type': 'coly' },
+
+      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',     'cols_out':'colnum_bin',    'type': '' },
+      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out':'colnum_onehot', 'type': '' },
+      {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',     'cols_out':'colcat_bin',    'type': ''},
+      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'cols_out':'colcat_onehot', 'type': ''},
+
+      {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'cols_out':'colcross_hot',  'type': 'cross' }
+    ],
+
 
                }
         },
@@ -228,7 +238,6 @@ def titanic_lightgbm2(path_model_out="") :
 
       'data_pars': {
           'cols_input_type' : cols_input_type_1,
-
 
           ### family of columns for MODEL  ########################################################
           #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
@@ -273,7 +282,7 @@ def preprocess(config=None, nsample=None):
     print(mdict)
 
     from source import run_preprocess2, run_preprocess
-    run_preprocess.run_preprocess(model_name     =  config_name,
+    run_preprocess2.run_preprocess(model_name     =  config_name,
                                 path_data         =  m['path_data_train'],
                                 path_output       =  m['path_model'],
                                 path_config_model =  m['path_config_model'],

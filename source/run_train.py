@@ -299,5 +299,52 @@ if __name__ == "__main__":
     fire.Fire()
 
 
+"""
 
+  coltext ---> coltext-coli-svd
+  
+  coldate ---> coltext-coli
+
+
+
+    log("#### Data preparation #############################################################")
+    log(dfX.shape)
+    dfX    = dfX.sample(frac=1.0)
+    itrain = int(0.6 * len(dfX))
+    ival   = int(0.8 * len(dfX))
+    colid  = cols_family['colid']
+    colsX  = data_pars['cols_model']
+    coly   = data_pars['coly']
+    print('colsX',colsX)
+    rm=["name", "summary", "space", "description", "neighborhood_overview", "notes", "transit", "access", "interaction", "house_rules", "host_name", "host_about", "amenities"]
+    colsX = list(set(colsX) - set(rm))
+
+    for col in rm:
+        col1=col+'_svd_0'
+        col2=col+'_svd_1'
+        colsX.append(col1)
+        colsX.append(col2)
+    rm1=["last_review", "host_since", "first_review", "last_scraped"]
+    colsX = list(set(colsX) - set(rm1))
+    for col in rm1:
+        col1=col+'_year'
+        col2=col+'_month'
+        col3=col+'_day'
+        colsX.append(col1)
+        colsX.append(col2)
+        colsX.append(col3)
+    dfX.fillna(0)
+    data_pars['data_type'] = 'ram'
+    data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
+                          'ytrain' : dfX[coly].iloc[:itrain],
+                          'Xtest'  : dfX[colsX].iloc[itrain:ival, :],
+                          'ytest'  : dfX[coly].iloc[itrain:ival],
+
+                          'Xval'   : dfX[colsX].iloc[ival:, :],
+                          'yval'   : dfX[coly].iloc[ival:],
+                          }
+                          
+                          
+                          
+"""
 
