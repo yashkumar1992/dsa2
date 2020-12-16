@@ -24,7 +24,7 @@ Sex                      male  ...                      male
   ('dfy not loaded', None, TypeError('expected str, bytes or os.PathLike object, not NoneType',)) 
 D:/_devs/Python01/gitdev/dsa2/
 
-  ('--------------pipe_ist-----------------', [{'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'dfnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'dfnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'dfcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'dfcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'dfcross_hot', 'type': 'cross'}]) 
+  ('--------------pipe_ist-----------------', [{'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'dfnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'dfnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'dfcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'dfcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'dfcross_hot', 'type': 'cross'}]) 
 
   ('########### Load column by column type ##################################',) 
 
@@ -44,29 +44,29 @@ D:/_devs/Python01/gitdev/dsa2/
   ('### colnum Map numerics to Category bin  ###########################################',) 
 Pclass
            Pclass               
-             mean size  max  min
+              max size  min mean
 Pclass_bin                      
 0             1.0  107  1.0  1.0
 4             2.0   93  2.0  2.0
 9             3.0  218  3.0  3.0
 Age
-               Age                   
-              mean size    max    min
+           Age                       
+           max size    min       mean
 Age_bin                              
--1        0.250000   88   0.33   0.17
- 0        3.656250   16   8.00   0.75
- 1       12.625000   16  16.00   9.00
- 2       21.000000   97  24.00  17.00
- 3       28.148148   81  32.00  25.00
- 4       36.383720   43  40.00  32.50
- 5       44.460526   38  48.00  40.50
- 6       52.250000   20  55.00  49.00
- 7       60.617645   17  64.00  57.00
- 8       67.000000    1  67.00  67.00
- 9       76.000000    1  76.00  76.00
+-1        0.33   88   0.17   0.250000
+ 0        8.00   16   0.75   3.656250
+ 1       16.00   16   9.00  12.625000
+ 2       24.00   97  17.00  21.000000
+ 3       32.00   81  25.00  28.148148
+ 4       40.00   43  32.50  36.383720
+ 5       48.00   38  40.50  44.460526
+ 6       55.00   20  49.00  52.250000
+ 7       64.00   17  57.00  60.617645
+ 8       67.00    1  67.00  67.000000
+ 9       76.00    1  76.00  76.000000
 SibSp
           SibSp               
-           mean size  max  min
+            max size  min mean
 SibSp_bin                     
 0           0.0  283  0.0  0.0
 1           1.0  110  1.0  1.0
@@ -77,7 +77,7 @@ SibSp_bin
 9           8.0    2  8.0  8.0
 Parch
           Parch               
-           mean size  max  min
+            max size  min mean
 Parch_bin                     
 -1          9.0    2  9.0  9.0
  0          0.0  324  0.0  0.0
@@ -89,15 +89,15 @@ Parch_bin
  9          6.0    1  6.0  6.0
 Fare
                 Fare                             
-                mean size         max         min
+                 max size         min        mean
 Fare_bin                                         
 -1               NaN    1         NaN         NaN
- 0         15.439312  338   50.495800    0.000000
- 1         68.390717   48   93.500000   51.479198
- 2        134.330688   11  151.550003  106.425003
+ 0         50.495800  338    0.000000   15.439312
+ 1         93.500000   48   51.479198   68.390717
+ 2        151.550003   11  106.425003  134.330688
  3        164.866699    2  164.866699  164.866699
- 4        219.772095   10  247.520798  211.337494
- 5        262.553558    7  263.000000  262.375000
+ 4        247.520798   10  211.337494  219.772095
+ 5        263.000000    7  262.375000  262.553558
  9        512.329224    1  512.329224  512.329224
 
   (OrderedDict([('Pclass', [0.9999, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4000000000000004, 2.6, 2.8, 3.0]), ('Age', [0.41989998688697816, 8.378000169992447, 16.336000353097916, 24.294000536203384, 32.25200071930885, 40.21000090241432, 48.16800108551979, 56.12600126862526, 64.08400145173073, 72.0420016348362, 80.00000181794167]), ('SibSp', [-0.0001, 0.8, 1.6, 2.4000000000000004, 3.2, 4.0, 4.800000000000001, 5.6000000000000005, 6.4, 7.2, 8.0]), ('Parch', [-0.0001, 0.6, 1.2, 1.7999999999999998, 2.4, 3.0, 3.5999999999999996, 4.2, 4.8, 5.3999999999999995, 6.0]), ('Fare', [-0.0001, 51.23292236328125, 102.4658447265625, 153.69876708984373, 204.931689453125, 256.16461181640625, 307.39753417968745, 358.6304565429687, 409.86337890625, 461.09630126953124, 512.3292236328125])]),) 
@@ -134,54 +134,22 @@ PassengerId
 
 [418 rows x 5 columns]}) 
 
-  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'dfnum_onehot', 'type': ''}, '#######################################################') 
+  ('------------cols_family_full------------', {'coly': 'Survived', 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'colnum_bin': ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin']}) 
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'dfnum_onehot', 'type': ''}, '#######################################################') 
 
   ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
 
-  ('colnum', ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare']) 
+  ('colnum_bin', ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin']) 
 
-  ('------------cols_i----------------', ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare']) 
+  ('------------cols_i----------------', ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin']) 
 
-  ('### colnum bin to One Hot',) 
-Pclass 3 (418, 5)
-Age 80 (418, 7)
-SibSp 7 (418, 85)
-Parch 8 (418, 91)
-Fare 170 (418, 98)
-Pclass_bin_0 added
-Pclass_bin_4 added
-Pclass_bin_9 added
-Age_bin_0 added
-Age_bin_1 added
-Age_bin_2 added
-Age_bin_3 added
-Age_bin_4 added
-Age_bin_5 added
-Age_bin_6 added
-Age_bin_7 added
-Age_bin_8 added
-Age_bin_9 added
-SibSp_bin_0 added
-SibSp_bin_1 added
-SibSp_bin_2 added
-SibSp_bin_3 added
-SibSp_bin_4 added
-SibSp_bin_6 added
-SibSp_bin_9 added
-Parch_bin_0 added
-Parch_bin_1 added
-Parch_bin_3 added
-Parch_bin_4 added
-Parch_bin_6 added
-Parch_bin_8 added
-Parch_bin_9 added
-Fare_bin_0 added
-Fare_bin_1 added
-Fare_bin_2 added
-Fare_bin_3 added
-Fare_bin_4 added
-Fare_bin_5 added
-Fare_bin_9 added
+  ('###### colnum bin to One Hot  #################################################',) 
+Pclass_bin 3 (418, 5)
+Age_bin 11 (418, 7)
+SibSp_bin 7 (418, 17)
+Parch_bin 8 (418, 23)
+Fare_bin 8 (418, 30)
 
   (['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9'],) 
 
@@ -217,17 +185,19 @@ PassengerId
 PassengerId                              ...                        
 892                     0             0  ...           0           0
 893                     0             0  ...           0           0
-894                     0             0  ...           0           0
+894                     0             1  ...           0           0
 895                     0             0  ...           0           0
 896                     0             0  ...           0           0
 ...                   ...           ...  ...         ...         ...
 1305                    0             0  ...           0           0
-1306                    0             0  ...           0           0
+1306                    1             0  ...           0           0
 1307                    0             0  ...           0           0
 1308                    0             0  ...           0           0
 1309                    0             0  ...           0           0
 
 [418 rows x 34 columns]}) 
+
+  ('------------cols_family_full------------', {'coly': 'Survived', 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'colnum_bin': ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin'], 'colnum_onehot': ['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9']}) 
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'dfcat_bin', 'type': ''}, '#######################################################') 
 
@@ -277,12 +247,12 @@ PassengerId
 PassengerId                              ...                        
 892                     0             0  ...           0           0
 893                     0             0  ...           0           0
-894                     0             0  ...           0           0
+894                     0             1  ...           0           0
 895                     0             0  ...           0           0
 896                     0             0  ...           0           0
 ...                   ...           ...  ...         ...         ...
 1305                    0             0  ...           0           0
-1306                    0             0  ...           0           0
+1306                    1             0  ...           0           0
 1307                    0             0  ...           0           0
 1308                    0             0  ...           0           0
 1309                    0             0  ...           0           0
@@ -317,28 +287,27 @@ PassengerId
 
 [418 rows x 2 columns]}) 
 
-  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'dfcat_onehot', 'type': ''}, '#######################################################') 
+  ('------------cols_family_full------------', {'coly': 'Survived', 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'colnum_bin': ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin'], 'colnum_onehot': ['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9'], 'colcat': ['Sex', 'Embarked'], 'colcat_bin': ['Sex_int', 'Embarked_int']}) 
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'dfcat_onehot', 'type': ''}, '#######################################################') 
 
   ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
 
-  ('colcat', ['Sex', 'Embarked']) 
+  ('colcat_bin', ['Sex_int', 'Embarked_int']) 
 
-  ('------------cols_i----------------', ['Sex', 'Embarked']) 
+  ('------------cols_i----------------', ['Sex_int', 'Embarked_int']) 
 
   ('#### colcat to onehot',) 
-Sex 2 (418, 2)
-Embarked 3 (418, 2)
-Embarked_int_0 added
-Embarked_int_1 added
-Embarked_int_2 added
+Sex_int 2 (418, 2)
+Embarked_int 3 (418, 2)
 
   (             Embarked_int_0  Embarked_int_1  Embarked_int_2
 PassengerId                                                
-892                       0               0               0
-893                       0               0               0
-894                       0               0               0
-895                       0               0               0
-896                       0               0               0,) 
+892                       0               0               1
+893                       1               0               0
+894                       0               0               1
+895                       1               0               0
+896                       1               0               0,) 
 ok ------------
 
   ('------------dfi_all---------------------', {'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
@@ -373,12 +342,12 @@ PassengerId
 PassengerId                              ...                        
 892                     0             0  ...           0           0
 893                     0             0  ...           0           0
-894                     0             0  ...           0           0
+894                     0             1  ...           0           0
 895                     0             0  ...           0           0
 896                     0             0  ...           0           0
 ...                   ...           ...  ...         ...         ...
 1305                    0             0  ...           0           0
-1306                    0             0  ...           0           0
+1306                    1             0  ...           0           0
 1307                    0             0  ...           0           0
 1308                    0             0  ...           0           0
 1309                    0             0  ...           0           0
@@ -413,19 +382,21 @@ PassengerId
 
 [418 rows x 2 columns], 'colcat_onehot':              Embarked_int_0  Embarked_int_1  Embarked_int_2
 PassengerId                                                
-892                       0               0               0
-893                       0               0               0
-894                       0               0               0
-895                       0               0               0
-896                       0               0               0
+892                       0               0               1
+893                       1               0               0
+894                       0               0               1
+895                       1               0               0
+896                       1               0               0
 ...                     ...             ...             ...
-1305                      0               0               0
-1306                      0               0               0
-1307                      0               0               0
-1308                      0               0               0
-1309                      0               0               0
+1305                      1               0               0
+1306                      0               1               0
+1307                      1               0               0
+1308                      1               0               0
+1309                      0               1               0
 
 [418 rows x 3 columns]}) 
+
+  ('------------cols_family_full------------', {'coly': 'Survived', 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'colnum_bin': ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin'], 'colnum_onehot': ['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9'], 'colcat': ['Sex', 'Embarked'], 'colcat_bin': ['Sex_int', 'Embarked_int'], 'colcat_onehot': ['Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2']}) 
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'dfcross_hot', 'type': 'cross'}, '#######################################################') 
 
@@ -435,11 +406,22 @@ PassengerId
 
   ('#####  Cross Features From OneHot Features   ######################################',) 
 
-  (Empty DataFrame
-Columns: [892, 893]
-Index: [],) 
+  (PassengerId                  892  893
+Embarked_int_0-Pclass_bin_0    0    0
+Embarked_int_0-Pclass_bin_4    0    0
+Embarked_int_0-Pclass_bin_9    0    1
+Embarked_int_0-Age_bin_0       0    0
+Embarked_int_0-Age_bin_1       0    0
+...                          ...  ...
+Parch_bin_0-Fare_bin_0         1    1
+Parch_bin_0-Fare_bin_1         0    0
+Parch_bin_1-Fare_bin_0         0    0
+Parch_bin_1-Fare_bin_1         0    0
+Parch_bin_3-Fare_bin_0         0    0
 
-  ('--------------col_pars-----------------', dict_items([('colcross_pair', [])])) 
+[118 rows x 2 columns],) 
+
+  ('--------------col_pars-----------------', dict_items([('colcross_pair', [('Embarked_int_0', 'Pclass_bin_0', 0.11961722488038277), ('Embarked_int_0', 'Pclass_bin_4', 0.18660287081339713), ('Embarked_int_0', 'Pclass_bin_9', 0.3397129186602871), ('Embarked_int_0', 'Age_bin_0', 0.028708133971291867), ('Embarked_int_0', 'Age_bin_1', 0.028708133971291867), ('Embarked_int_0', 'Age_bin_2', 0.17464114832535885), ('Embarked_int_0', 'Age_bin_3', 0.14354066985645933), ('Embarked_int_0', 'Age_bin_4', 0.05741626794258373), ('Embarked_int_0', 'Age_bin_5', 0.05263157894736842), ('Embarked_int_0', 'Age_bin_6', 0.028708133971291867), ('Embarked_int_0', 'Age_bin_7', 0.0215311004784689), ('Embarked_int_0', 'SibSp_bin_0', 0.430622009569378), ('Embarked_int_0', 'SibSp_bin_1', 0.1674641148325359), ('Embarked_int_0', 'SibSp_bin_2', 0.023923444976076555), ('Embarked_int_0', 'Parch_bin_0', 0.49282296650717705), ('Embarked_int_0', 'Parch_bin_1', 0.07177033492822966), ('Embarked_int_0', 'Parch_bin_3', 0.0645933014354067), ('Embarked_int_0', 'Fare_bin_0', 0.5574162679425837), ('Embarked_int_0', 'Fare_bin_1', 0.06220095693779904), ('Embarked_int_1', 'Pclass_bin_0', 0.1339712918660287), ('Embarked_int_1', 'Pclass_bin_4', 0.02631578947368421), ('Embarked_int_1', 'Pclass_bin_9', 0.08373205741626795), ('Embarked_int_1', 'Age_bin_2', 0.03588516746411483), ('Embarked_int_1', 'Age_bin_3', 0.03827751196172249), ('Embarked_int_1', 'Age_bin_4', 0.03349282296650718), ('Embarked_int_1', 'Age_bin_5', 0.03827751196172249), ('Embarked_int_1', 'SibSp_bin_0', 0.14832535885167464), ('Embarked_int_1', 'SibSp_bin_1', 0.08851674641148326), ('Embarked_int_1', 'Parch_bin_0', 0.17464114832535885), ('Embarked_int_1', 'Parch_bin_1', 0.050239234449760764), ('Embarked_int_1', 'Fare_bin_0', 0.14354066985645933), ('Embarked_int_1', 'Fare_bin_1', 0.050239234449760764), ('Embarked_int_1', 'Fare_bin_2', 0.0215311004784689), ('Embarked_int_2', 'Pclass_bin_9', 0.09808612440191387), ('Embarked_int_2', 'Age_bin_2', 0.0215311004784689), ('Embarked_int_2', 'SibSp_bin_0', 0.09808612440191387), ('Embarked_int_2', 'Parch_bin_0', 0.1076555023923445), ('Embarked_int_2', 'Fare_bin_0', 0.1076555023923445), ('Pclass_bin_0', 'Age_bin_2', 0.028708133971291867), ('Pclass_bin_0', 'Age_bin_3', 0.03827751196172249), ('Pclass_bin_0', 'Age_bin_4', 0.03588516746411483), ('Pclass_bin_0', 'Age_bin_5', 0.05502392344497608), ('Pclass_bin_0', 'Age_bin_6', 0.04066985645933014), ('Pclass_bin_0', 'Age_bin_7', 0.02631578947368421), ('Pclass_bin_0', 'SibSp_bin_0', 0.145933014354067), ('Pclass_bin_0', 'SibSp_bin_1', 0.10047846889952153), ('Pclass_bin_0', 'Parch_bin_0', 0.18899521531100477), ('Pclass_bin_0', 'Parch_bin_1', 0.045454545454545456), ('Pclass_bin_0', 'Fare_bin_0', 0.09090909090909091), ('Pclass_bin_0', 'Fare_bin_1', 0.09090909090909091), ('Pclass_bin_0', 'Fare_bin_2', 0.02631578947368421), ('Pclass_bin_0', 'Fare_bin_4', 0.023923444976076555), ('Pclass_bin_4', 'Age_bin_2', 0.0645933014354067), ('Pclass_bin_4', 'Age_bin_3', 0.06698564593301436), ('Pclass_bin_4', 'Age_bin_5', 0.0215311004784689), ('Pclass_bin_4', 'SibSp_bin_0', 0.14832535885167464), ('Pclass_bin_4', 'SibSp_bin_1', 0.0645933014354067), ('Pclass_bin_4', 'Parch_bin_0', 0.1722488038277512), ('Pclass_bin_4', 'Parch_bin_1', 0.02631578947368421), ('Pclass_bin_4', 'Parch_bin_3', 0.0215311004784689), ('Pclass_bin_4', 'Fare_bin_0', 0.21052631578947367), ('Pclass_bin_9', 'Age_bin_0', 0.023923444976076555), ('Pclass_bin_9', 'Age_bin_1', 0.02631578947368421), ('Pclass_bin_9', 'Age_bin_2', 0.13875598086124402), ('Pclass_bin_9', 'Age_bin_3', 0.08851674641148326), ('Pclass_bin_9', 'Age_bin_4', 0.04784688995215311), ('Pclass_bin_9', 'SibSp_bin_0', 0.3827751196172249), ('Pclass_bin_9', 'SibSp_bin_1', 0.09808612440191387), ('Pclass_bin_9', 'Parch_bin_0', 0.4138755980861244), ('Pclass_bin_9', 'Parch_bin_1', 0.05263157894736842), ('Pclass_bin_9', 'Parch_bin_3', 0.0430622009569378), ('Pclass_bin_9', 'Fare_bin_0', 0.507177033492823), ('Age_bin_0', 'SibSp_bin_1', 0.02631578947368421), ('Age_bin_0', 'Parch_bin_1', 0.02631578947368421), ('Age_bin_0', 'Fare_bin_0', 0.03588516746411483), ('Age_bin_1', 'Fare_bin_0', 0.03110047846889952), ('Age_bin_2', 'SibSp_bin_0', 0.16985645933014354), ('Age_bin_2', 'SibSp_bin_1', 0.045454545454545456), ('Age_bin_2', 'Parch_bin_0', 0.20095693779904306), ('Age_bin_2', 'Parch_bin_1', 0.02631578947368421), ('Age_bin_2', 'Fare_bin_0', 0.20095693779904306), ('Age_bin_2', 'Fare_bin_1', 0.03110047846889952), ('Age_bin_3', 'SibSp_bin_0', 0.14354066985645933), ('Age_bin_3', 'SibSp_bin_1', 0.0430622009569378), ('Age_bin_3', 'Parch_bin_0', 0.16985645933014354), ('Age_bin_3', 'Fare_bin_0', 0.1674641148325359), ('Age_bin_4', 'SibSp_bin_0', 0.07416267942583732), ('Age_bin_4', 'SibSp_bin_1', 0.02631578947368421), ('Age_bin_4', 'Parch_bin_0', 0.07894736842105263), ('Age_bin_4', 'Fare_bin_0', 0.07655502392344497), ('Age_bin_5', 'SibSp_bin_0', 0.05980861244019139), ('Age_bin_5', 'SibSp_bin_1', 0.03110047846889952), ('Age_bin_5', 'Parch_bin_0', 0.06937799043062201), ('Age_bin_5', 'Fare_bin_0', 0.05741626794258373), ('Age_bin_5', 'Fare_bin_1', 0.0215311004784689), ('Age_bin_6', 'SibSp_bin_0', 0.0215311004784689), ('Age_bin_6', 'SibSp_bin_1', 0.023923444976076555), ('Age_bin_6', 'Parch_bin_0', 0.03110047846889952), ('Age_bin_6', 'Fare_bin_0', 0.02631578947368421), ('Age_bin_7', 'SibSp_bin_1', 0.0215311004784689), ('Age_bin_7', 'Parch_bin_0', 0.02631578947368421), ('SibSp_bin_0', 'Parch_bin_0', 0.6052631578947368), ('SibSp_bin_0', 'Parch_bin_1', 0.03349282296650718), ('SibSp_bin_0', 'Parch_bin_3', 0.03349282296650718), ('SibSp_bin_0', 'Fare_bin_0', 0.6028708133971292), ('SibSp_bin_0', 'Fare_bin_1', 0.04066985645933014), ('SibSp_bin_1', 'Parch_bin_0', 0.14354066985645933), ('SibSp_bin_1', 'Parch_bin_1', 0.07894736842105263), ('SibSp_bin_1', 'Parch_bin_3', 0.023923444976076555), ('SibSp_bin_1', 'Fare_bin_0', 0.15789473684210525), ('SibSp_bin_1', 'Fare_bin_1', 0.06698564593301436), ('SibSp_bin_2', 'Parch_bin_0', 0.023923444976076555), ('SibSp_bin_2', 'Fare_bin_0', 0.028708133971291867), ('Parch_bin_0', 'Fare_bin_0', 0.6602870813397129), ('Parch_bin_0', 'Fare_bin_1', 0.06937799043062201), ('Parch_bin_1', 'Fare_bin_0', 0.08373205741626795), ('Parch_bin_1', 'Fare_bin_1', 0.02631578947368421), ('Parch_bin_3', 'Fare_bin_0', 0.05502392344497608)])])) 
 
   ('------------dfi_all---------------------', {'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
 PassengerId                                                     
@@ -473,12 +455,12 @@ PassengerId
 PassengerId                              ...                        
 892                     0             0  ...           0           0
 893                     0             0  ...           0           0
-894                     0             0  ...           0           0
+894                     0             1  ...           0           0
 895                     0             0  ...           0           0
 896                     0             0  ...           0           0
 ...                   ...           ...  ...         ...         ...
 1305                    0             0  ...           0           0
-1306                    0             0  ...           0           0
+1306                    1             0  ...           0           0
 1307                    0             0  ...           0           0
 1308                    0             0  ...           0           0
 1309                    0             0  ...           0           0
@@ -513,52 +495,61 @@ PassengerId
 
 [418 rows x 2 columns], 'colcat_onehot':              Embarked_int_0  Embarked_int_1  Embarked_int_2
 PassengerId                                                
-892                       0               0               0
-893                       0               0               0
-894                       0               0               0
-895                       0               0               0
-896                       0               0               0
+892                       0               0               1
+893                       1               0               0
+894                       0               0               1
+895                       1               0               0
+896                       1               0               0
 ...                     ...             ...             ...
-1305                      0               0               0
-1306                      0               0               0
-1307                      0               0               0
-1308                      0               0               0
-1309                      0               0               0
+1305                      1               0               0
+1306                      0               1               0
+1307                      1               0               0
+1308                      1               0               0
+1309                      0               1               0
 
-[418 rows x 3 columns], 'colcross': Empty DataFrame
-Columns: []
-Index: [892, 893, 894, 895, 896, 897, 898, 899, 900, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915, 916, 917, 918, 919, 920, 921, 922, 923, 924, 925, 926, 927, 928, 929, 930, 931, 932, 933, 934, 935, 936, 937, 938, 939, 940, 941, 942, 943, 944, 945, 946, 947, 948, 949, 950, 951, 952, 953, 954, 955, 956, 957, 958, 959, 960, 961, 962, 963, 964, 965, 966, 967, 968, 969, 970, 971, 972, 973, 974, 975, 976, 977, 978, 979, 980, 981, 982, 983, 984, 985, 986, 987, 988, 989, 990, 991, ...]
+[418 rows x 3 columns], 'colcross':              Embarked_int_0-Pclass_bin_0  ...  Parch_bin_3-Fare_bin_0
+PassengerId                               ...                        
+892                                    0  ...                       0
+893                                    0  ...                       0
+894                                    0  ...                       0
+895                                    0  ...                       0
+896                                    0  ...                       0
+...                                  ...  ...                     ...
+1305                                   0  ...                       0
+1306                                   0  ...                       0
+1307                                   0  ...                       0
+1308                                   0  ...                       0
+1309                                   0  ...                       0
 
-[418 rows x 0 columns]}) 
+[418 rows x 118 columns]}) 
+
+  ('------------cols_family_full------------', {'coly': 'Survived', 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'colnum_bin': ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin'], 'colnum_onehot': ['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9'], 'colcat': ['Sex', 'Embarked'], 'colcat_bin': ['Sex_int', 'Embarked_int'], 'colcat_onehot': ['Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2'], 'colcross': [('Embarked_int_0', 'Pclass_bin_0', 0.11961722488038277), ('Embarked_int_0', 'Pclass_bin_4', 0.18660287081339713), ('Embarked_int_0', 'Pclass_bin_9', 0.3397129186602871), ('Embarked_int_0', 'Age_bin_0', 0.028708133971291867), ('Embarked_int_0', 'Age_bin_1', 0.028708133971291867), ('Embarked_int_0', 'Age_bin_2', 0.17464114832535885), ('Embarked_int_0', 'Age_bin_3', 0.14354066985645933), ('Embarked_int_0', 'Age_bin_4', 0.05741626794258373), ('Embarked_int_0', 'Age_bin_5', 0.05263157894736842), ('Embarked_int_0', 'Age_bin_6', 0.028708133971291867), ('Embarked_int_0', 'Age_bin_7', 0.0215311004784689), ('Embarked_int_0', 'SibSp_bin_0', 0.430622009569378), ('Embarked_int_0', 'SibSp_bin_1', 0.1674641148325359), ('Embarked_int_0', 'SibSp_bin_2', 0.023923444976076555), ('Embarked_int_0', 'Parch_bin_0', 0.49282296650717705), ('Embarked_int_0', 'Parch_bin_1', 0.07177033492822966), ('Embarked_int_0', 'Parch_bin_3', 0.0645933014354067), ('Embarked_int_0', 'Fare_bin_0', 0.5574162679425837), ('Embarked_int_0', 'Fare_bin_1', 0.06220095693779904), ('Embarked_int_1', 'Pclass_bin_0', 0.1339712918660287), ('Embarked_int_1', 'Pclass_bin_4', 0.02631578947368421), ('Embarked_int_1', 'Pclass_bin_9', 0.08373205741626795), ('Embarked_int_1', 'Age_bin_2', 0.03588516746411483), ('Embarked_int_1', 'Age_bin_3', 0.03827751196172249), ('Embarked_int_1', 'Age_bin_4', 0.03349282296650718), ('Embarked_int_1', 'Age_bin_5', 0.03827751196172249), ('Embarked_int_1', 'SibSp_bin_0', 0.14832535885167464), ('Embarked_int_1', 'SibSp_bin_1', 0.08851674641148326), ('Embarked_int_1', 'Parch_bin_0', 0.17464114832535885), ('Embarked_int_1', 'Parch_bin_1', 0.050239234449760764), ('Embarked_int_1', 'Fare_bin_0', 0.14354066985645933), ('Embarked_int_1', 'Fare_bin_1', 0.050239234449760764), ('Embarked_int_1', 'Fare_bin_2', 0.0215311004784689), ('Embarked_int_2', 'Pclass_bin_9', 0.09808612440191387), ('Embarked_int_2', 'Age_bin_2', 0.0215311004784689), ('Embarked_int_2', 'SibSp_bin_0', 0.09808612440191387), ('Embarked_int_2', 'Parch_bin_0', 0.1076555023923445), ('Embarked_int_2', 'Fare_bin_0', 0.1076555023923445), ('Pclass_bin_0', 'Age_bin_2', 0.028708133971291867), ('Pclass_bin_0', 'Age_bin_3', 0.03827751196172249), ('Pclass_bin_0', 'Age_bin_4', 0.03588516746411483), ('Pclass_bin_0', 'Age_bin_5', 0.05502392344497608), ('Pclass_bin_0', 'Age_bin_6', 0.04066985645933014), ('Pclass_bin_0', 'Age_bin_7', 0.02631578947368421), ('Pclass_bin_0', 'SibSp_bin_0', 0.145933014354067), ('Pclass_bin_0', 'SibSp_bin_1', 0.10047846889952153), ('Pclass_bin_0', 'Parch_bin_0', 0.18899521531100477), ('Pclass_bin_0', 'Parch_bin_1', 0.045454545454545456), ('Pclass_bin_0', 'Fare_bin_0', 0.09090909090909091), ('Pclass_bin_0', 'Fare_bin_1', 0.09090909090909091), ('Pclass_bin_0', 'Fare_bin_2', 0.02631578947368421), ('Pclass_bin_0', 'Fare_bin_4', 0.023923444976076555), ('Pclass_bin_4', 'Age_bin_2', 0.0645933014354067), ('Pclass_bin_4', 'Age_bin_3', 0.06698564593301436), ('Pclass_bin_4', 'Age_bin_5', 0.0215311004784689), ('Pclass_bin_4', 'SibSp_bin_0', 0.14832535885167464), ('Pclass_bin_4', 'SibSp_bin_1', 0.0645933014354067), ('Pclass_bin_4', 'Parch_bin_0', 0.1722488038277512), ('Pclass_bin_4', 'Parch_bin_1', 0.02631578947368421), ('Pclass_bin_4', 'Parch_bin_3', 0.0215311004784689), ('Pclass_bin_4', 'Fare_bin_0', 0.21052631578947367), ('Pclass_bin_9', 'Age_bin_0', 0.023923444976076555), ('Pclass_bin_9', 'Age_bin_1', 0.02631578947368421), ('Pclass_bin_9', 'Age_bin_2', 0.13875598086124402), ('Pclass_bin_9', 'Age_bin_3', 0.08851674641148326), ('Pclass_bin_9', 'Age_bin_4', 0.04784688995215311), ('Pclass_bin_9', 'SibSp_bin_0', 0.3827751196172249), ('Pclass_bin_9', 'SibSp_bin_1', 0.09808612440191387), ('Pclass_bin_9', 'Parch_bin_0', 0.4138755980861244), ('Pclass_bin_9', 'Parch_bin_1', 0.05263157894736842), ('Pclass_bin_9', 'Parch_bin_3', 0.0430622009569378), ('Pclass_bin_9', 'Fare_bin_0', 0.507177033492823), ('Age_bin_0', 'SibSp_bin_1', 0.02631578947368421), ('Age_bin_0', 'Parch_bin_1', 0.02631578947368421), ('Age_bin_0', 'Fare_bin_0', 0.03588516746411483), ('Age_bin_1', 'Fare_bin_0', 0.03110047846889952), ('Age_bin_2', 'SibSp_bin_0', 0.16985645933014354), ('Age_bin_2', 'SibSp_bin_1', 0.045454545454545456), ('Age_bin_2', 'Parch_bin_0', 0.20095693779904306), ('Age_bin_2', 'Parch_bin_1', 0.02631578947368421), ('Age_bin_2', 'Fare_bin_0', 0.20095693779904306), ('Age_bin_2', 'Fare_bin_1', 0.03110047846889952), ('Age_bin_3', 'SibSp_bin_0', 0.14354066985645933), ('Age_bin_3', 'SibSp_bin_1', 0.0430622009569378), ('Age_bin_3', 'Parch_bin_0', 0.16985645933014354), ('Age_bin_3', 'Fare_bin_0', 0.1674641148325359), ('Age_bin_4', 'SibSp_bin_0', 0.07416267942583732), ('Age_bin_4', 'SibSp_bin_1', 0.02631578947368421), ('Age_bin_4', 'Parch_bin_0', 0.07894736842105263), ('Age_bin_4', 'Fare_bin_0', 0.07655502392344497), ('Age_bin_5', 'SibSp_bin_0', 0.05980861244019139), ('Age_bin_5', 'SibSp_bin_1', 0.03110047846889952), ('Age_bin_5', 'Parch_bin_0', 0.06937799043062201), ('Age_bin_5', 'Fare_bin_0', 0.05741626794258373), ('Age_bin_5', 'Fare_bin_1', 0.0215311004784689), ('Age_bin_6', 'SibSp_bin_0', 0.0215311004784689), ('Age_bin_6', 'SibSp_bin_1', 0.023923444976076555), ('Age_bin_6', 'Parch_bin_0', 0.03110047846889952), ('Age_bin_6', 'Fare_bin_0', 0.02631578947368421), ('Age_bin_7', 'SibSp_bin_1', 0.0215311004784689), ('Age_bin_7', 'Parch_bin_0', 0.02631578947368421), ('SibSp_bin_0', 'Parch_bin_0', 0.6052631578947368), ('SibSp_bin_0', 'Parch_bin_1', 0.03349282296650718), ('SibSp_bin_0', 'Parch_bin_3', 0.03349282296650718), ('SibSp_bin_0', 'Fare_bin_0', 0.6028708133971292), ('SibSp_bin_0', 'Fare_bin_1', 0.04066985645933014), ('SibSp_bin_1', 'Parch_bin_0', 0.14354066985645933), ('SibSp_bin_1', 'Parch_bin_1', 0.07894736842105263), ('SibSp_bin_1', 'Parch_bin_3', 0.023923444976076555), ('SibSp_bin_1', 'Fare_bin_0', 0.15789473684210525), ('SibSp_bin_1', 'Fare_bin_1', 0.06698564593301436), ('SibSp_bin_2', 'Parch_bin_0', 0.023923444976076555), ('SibSp_bin_2', 'Fare_bin_0', 0.028708133971291867), ('Parch_bin_0', 'Fare_bin_0', 0.6602870813397129), ('Parch_bin_0', 'Fare_bin_1', 0.06937799043062201), ('Parch_bin_1', 'Fare_bin_0', 0.08373205741626795), ('Parch_bin_1', 'Fare_bin_1', 0.02631578947368421), ('Parch_bin_3', 'Fare_bin_0', 0.05502392344497608)]}) 
 
   ('######  Merge AlL int dfXy  #############################################################',) 
 
-  ('----------dfXy------------------',              Pclass   Age  ...  Embarked_int_1  Embarked_int_2
-PassengerId                ...                                
-892               3  34.5  ...               0               0
-893               3  47.0  ...               0               0
-894               2  62.0  ...               0               0
-895               3  27.0  ...               0               0
-896               3  22.0  ...               0               0
-...             ...   ...  ...             ...             ...
-1305              3   NaN  ...               0               0
-1306              1  39.0  ...               0               0
-1307              3  38.5  ...               0               0
-1308              3   NaN  ...               0               0
-1309              3   NaN  ...               0               0
+  ('----------dfXy------------------',              Pclass   Age  ...  Parch_bin_1-Fare_bin_1  Parch_bin_3-Fare_bin_0
+PassengerId                ...                                                
+892               3  34.5  ...                       0                       0
+893               3  47.0  ...                       0                       0
+894               2  62.0  ...                       0                       0
+895               3  27.0  ...                       0                       0
+896               3  22.0  ...                       0                       0
+...             ...   ...  ...                     ...                     ...
+1305              3   NaN  ...                       0                       0
+1306              1  39.0  ...                       0                       0
+1307              3  38.5  ...                       0                       0
+1308              3   NaN  ...                       0                       0
+1309              3   NaN  ...                       0                       0
 
-[418 rows x 51 columns], Index(['Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Sex', 'Embarked',
-       'Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin',
-       'Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0',
-       'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5',
-       'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0',
-       'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4',
-       'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1',
-       'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8',
-       'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3',
-       'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9', 'Sex_int', 'Embarked_int',
-       'Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2'],
-      dtype='object')) 
+[418 rows x 169 columns], Index(['Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Sex', 'Embarked',
+       'Pclass_bin', 'Age_bin', 'SibSp_bin',
+       ...
+       'SibSp_bin_1-Parch_bin_3', 'SibSp_bin_1-Fare_bin_0',
+       'SibSp_bin_1-Fare_bin_1', 'SibSp_bin_2-Parch_bin_0',
+       'SibSp_bin_2-Fare_bin_0', 'Parch_bin_0-Fare_bin_0',
+       'Parch_bin_0-Fare_bin_1', 'Parch_bin_1-Fare_bin_0',
+       'Parch_bin_1-Fare_bin_1', 'Parch_bin_3-Fare_bin_0'],
+      dtype='object', length=169)) 
 
   ('###### Return values  ###################################################################',) 
 cols_family_full
@@ -612,11 +603,246 @@ cols_family_full
           'Embarked_int',
           'Embarked_int_0',
           'Embarked_int_1',
-          'Embarked_int_2'],
+          'Embarked_int_2',
+          'Embarked_int_0-Pclass_bin_0',
+          'Embarked_int_0-Pclass_bin_4',
+          'Embarked_int_0-Pclass_bin_9',
+          'Embarked_int_0-Age_bin_0',
+          'Embarked_int_0-Age_bin_1',
+          'Embarked_int_0-Age_bin_2',
+          'Embarked_int_0-Age_bin_3',
+          'Embarked_int_0-Age_bin_4',
+          'Embarked_int_0-Age_bin_5',
+          'Embarked_int_0-Age_bin_6',
+          'Embarked_int_0-Age_bin_7',
+          'Embarked_int_0-SibSp_bin_0',
+          'Embarked_int_0-SibSp_bin_1',
+          'Embarked_int_0-SibSp_bin_2',
+          'Embarked_int_0-Parch_bin_0',
+          'Embarked_int_0-Parch_bin_1',
+          'Embarked_int_0-Parch_bin_3',
+          'Embarked_int_0-Fare_bin_0',
+          'Embarked_int_0-Fare_bin_1',
+          'Embarked_int_1-Pclass_bin_0',
+          'Embarked_int_1-Pclass_bin_4',
+          'Embarked_int_1-Pclass_bin_9',
+          'Embarked_int_1-Age_bin_2',
+          'Embarked_int_1-Age_bin_3',
+          'Embarked_int_1-Age_bin_4',
+          'Embarked_int_1-Age_bin_5',
+          'Embarked_int_1-SibSp_bin_0',
+          'Embarked_int_1-SibSp_bin_1',
+          'Embarked_int_1-Parch_bin_0',
+          'Embarked_int_1-Parch_bin_1',
+          'Embarked_int_1-Fare_bin_0',
+          'Embarked_int_1-Fare_bin_1',
+          'Embarked_int_1-Fare_bin_2',
+          'Embarked_int_2-Pclass_bin_9',
+          'Embarked_int_2-Age_bin_2',
+          'Embarked_int_2-SibSp_bin_0',
+          'Embarked_int_2-Parch_bin_0',
+          'Embarked_int_2-Fare_bin_0',
+          'Pclass_bin_0-Age_bin_2',
+          'Pclass_bin_0-Age_bin_3',
+          'Pclass_bin_0-Age_bin_4',
+          'Pclass_bin_0-Age_bin_5',
+          'Pclass_bin_0-Age_bin_6',
+          'Pclass_bin_0-Age_bin_7',
+          'Pclass_bin_0-SibSp_bin_0',
+          'Pclass_bin_0-SibSp_bin_1',
+          'Pclass_bin_0-Parch_bin_0',
+          'Pclass_bin_0-Parch_bin_1',
+          'Pclass_bin_0-Fare_bin_0',
+          'Pclass_bin_0-Fare_bin_1',
+          'Pclass_bin_0-Fare_bin_2',
+          'Pclass_bin_0-Fare_bin_4',
+          'Pclass_bin_4-Age_bin_2',
+          'Pclass_bin_4-Age_bin_3',
+          'Pclass_bin_4-Age_bin_5',
+          'Pclass_bin_4-SibSp_bin_0',
+          'Pclass_bin_4-SibSp_bin_1',
+          'Pclass_bin_4-Parch_bin_0',
+          'Pclass_bin_4-Parch_bin_1',
+          'Pclass_bin_4-Parch_bin_3',
+          'Pclass_bin_4-Fare_bin_0',
+          'Pclass_bin_9-Age_bin_0',
+          'Pclass_bin_9-Age_bin_1',
+          'Pclass_bin_9-Age_bin_2',
+          'Pclass_bin_9-Age_bin_3',
+          'Pclass_bin_9-Age_bin_4',
+          'Pclass_bin_9-SibSp_bin_0',
+          'Pclass_bin_9-SibSp_bin_1',
+          'Pclass_bin_9-Parch_bin_0',
+          'Pclass_bin_9-Parch_bin_1',
+          'Pclass_bin_9-Parch_bin_3',
+          'Pclass_bin_9-Fare_bin_0',
+          'Age_bin_0-SibSp_bin_1',
+          'Age_bin_0-Parch_bin_1',
+          'Age_bin_0-Fare_bin_0',
+          'Age_bin_1-Fare_bin_0',
+          'Age_bin_2-SibSp_bin_0',
+          'Age_bin_2-SibSp_bin_1',
+          'Age_bin_2-Parch_bin_0',
+          'Age_bin_2-Parch_bin_1',
+          'Age_bin_2-Fare_bin_0',
+          'Age_bin_2-Fare_bin_1',
+          'Age_bin_3-SibSp_bin_0',
+          'Age_bin_3-SibSp_bin_1',
+          'Age_bin_3-Parch_bin_0',
+          'Age_bin_3-Fare_bin_0',
+          'Age_bin_4-SibSp_bin_0',
+          'Age_bin_4-SibSp_bin_1',
+          'Age_bin_4-Parch_bin_0',
+          'Age_bin_4-Fare_bin_0',
+          'Age_bin_5-SibSp_bin_0',
+          'Age_bin_5-SibSp_bin_1',
+          'Age_bin_5-Parch_bin_0',
+          'Age_bin_5-Fare_bin_0',
+          'Age_bin_5-Fare_bin_1',
+          'Age_bin_6-SibSp_bin_0',
+          'Age_bin_6-SibSp_bin_1',
+          'Age_bin_6-Parch_bin_0',
+          'Age_bin_6-Fare_bin_0',
+          'Age_bin_7-SibSp_bin_1',
+          'Age_bin_7-Parch_bin_0',
+          'SibSp_bin_0-Parch_bin_0',
+          'SibSp_bin_0-Parch_bin_1',
+          'SibSp_bin_0-Parch_bin_3',
+          'SibSp_bin_0-Fare_bin_0',
+          'SibSp_bin_0-Fare_bin_1',
+          'SibSp_bin_1-Parch_bin_0',
+          'SibSp_bin_1-Parch_bin_1',
+          'SibSp_bin_1-Parch_bin_3',
+          'SibSp_bin_1-Fare_bin_0',
+          'SibSp_bin_1-Fare_bin_1',
+          'SibSp_bin_2-Parch_bin_0',
+          'SibSp_bin_2-Fare_bin_0',
+          'Parch_bin_0-Fare_bin_0',
+          'Parch_bin_0-Fare_bin_1',
+          'Parch_bin_1-Fare_bin_0',
+          'Parch_bin_1-Fare_bin_1',
+          'Parch_bin_3-Fare_bin_0'],
  'colcat': ['Sex', 'Embarked'],
  'colcat_bin': ['Sex_int', 'Embarked_int'],
  'colcat_onehot': ['Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2'],
- 'colcross': [],
+ 'colcross': [('Embarked_int_0', 'Pclass_bin_0', 0.11961722488038277),
+              ('Embarked_int_0', 'Pclass_bin_4', 0.18660287081339713),
+              ('Embarked_int_0', 'Pclass_bin_9', 0.3397129186602871),
+              ('Embarked_int_0', 'Age_bin_0', 0.028708133971291867),
+              ('Embarked_int_0', 'Age_bin_1', 0.028708133971291867),
+              ('Embarked_int_0', 'Age_bin_2', 0.17464114832535885),
+              ('Embarked_int_0', 'Age_bin_3', 0.14354066985645933),
+              ('Embarked_int_0', 'Age_bin_4', 0.05741626794258373),
+              ('Embarked_int_0', 'Age_bin_5', 0.05263157894736842),
+              ('Embarked_int_0', 'Age_bin_6', 0.028708133971291867),
+              ('Embarked_int_0', 'Age_bin_7', 0.0215311004784689),
+              ('Embarked_int_0', 'SibSp_bin_0', 0.430622009569378),
+              ('Embarked_int_0', 'SibSp_bin_1', 0.1674641148325359),
+              ('Embarked_int_0', 'SibSp_bin_2', 0.023923444976076555),
+              ('Embarked_int_0', 'Parch_bin_0', 0.49282296650717705),
+              ('Embarked_int_0', 'Parch_bin_1', 0.07177033492822966),
+              ('Embarked_int_0', 'Parch_bin_3', 0.0645933014354067),
+              ('Embarked_int_0', 'Fare_bin_0', 0.5574162679425837),
+              ('Embarked_int_0', 'Fare_bin_1', 0.06220095693779904),
+              ('Embarked_int_1', 'Pclass_bin_0', 0.1339712918660287),
+              ('Embarked_int_1', 'Pclass_bin_4', 0.02631578947368421),
+              ('Embarked_int_1', 'Pclass_bin_9', 0.08373205741626795),
+              ('Embarked_int_1', 'Age_bin_2', 0.03588516746411483),
+              ('Embarked_int_1', 'Age_bin_3', 0.03827751196172249),
+              ('Embarked_int_1', 'Age_bin_4', 0.03349282296650718),
+              ('Embarked_int_1', 'Age_bin_5', 0.03827751196172249),
+              ('Embarked_int_1', 'SibSp_bin_0', 0.14832535885167464),
+              ('Embarked_int_1', 'SibSp_bin_1', 0.08851674641148326),
+              ('Embarked_int_1', 'Parch_bin_0', 0.17464114832535885),
+              ('Embarked_int_1', 'Parch_bin_1', 0.050239234449760764),
+              ('Embarked_int_1', 'Fare_bin_0', 0.14354066985645933),
+              ('Embarked_int_1', 'Fare_bin_1', 0.050239234449760764),
+              ('Embarked_int_1', 'Fare_bin_2', 0.0215311004784689),
+              ('Embarked_int_2', 'Pclass_bin_9', 0.09808612440191387),
+              ('Embarked_int_2', 'Age_bin_2', 0.0215311004784689),
+              ('Embarked_int_2', 'SibSp_bin_0', 0.09808612440191387),
+              ('Embarked_int_2', 'Parch_bin_0', 0.1076555023923445),
+              ('Embarked_int_2', 'Fare_bin_0', 0.1076555023923445),
+              ('Pclass_bin_0', 'Age_bin_2', 0.028708133971291867),
+              ('Pclass_bin_0', 'Age_bin_3', 0.03827751196172249),
+              ('Pclass_bin_0', 'Age_bin_4', 0.03588516746411483),
+              ('Pclass_bin_0', 'Age_bin_5', 0.05502392344497608),
+              ('Pclass_bin_0', 'Age_bin_6', 0.04066985645933014),
+              ('Pclass_bin_0', 'Age_bin_7', 0.02631578947368421),
+              ('Pclass_bin_0', 'SibSp_bin_0', 0.145933014354067),
+              ('Pclass_bin_0', 'SibSp_bin_1', 0.10047846889952153),
+              ('Pclass_bin_0', 'Parch_bin_0', 0.18899521531100477),
+              ('Pclass_bin_0', 'Parch_bin_1', 0.045454545454545456),
+              ('Pclass_bin_0', 'Fare_bin_0', 0.09090909090909091),
+              ('Pclass_bin_0', 'Fare_bin_1', 0.09090909090909091),
+              ('Pclass_bin_0', 'Fare_bin_2', 0.02631578947368421),
+              ('Pclass_bin_0', 'Fare_bin_4', 0.023923444976076555),
+              ('Pclass_bin_4', 'Age_bin_2', 0.0645933014354067),
+              ('Pclass_bin_4', 'Age_bin_3', 0.06698564593301436),
+              ('Pclass_bin_4', 'Age_bin_5', 0.0215311004784689),
+              ('Pclass_bin_4', 'SibSp_bin_0', 0.14832535885167464),
+              ('Pclass_bin_4', 'SibSp_bin_1', 0.0645933014354067),
+              ('Pclass_bin_4', 'Parch_bin_0', 0.1722488038277512),
+              ('Pclass_bin_4', 'Parch_bin_1', 0.02631578947368421),
+              ('Pclass_bin_4', 'Parch_bin_3', 0.0215311004784689),
+              ('Pclass_bin_4', 'Fare_bin_0', 0.21052631578947367),
+              ('Pclass_bin_9', 'Age_bin_0', 0.023923444976076555),
+              ('Pclass_bin_9', 'Age_bin_1', 0.02631578947368421),
+              ('Pclass_bin_9', 'Age_bin_2', 0.13875598086124402),
+              ('Pclass_bin_9', 'Age_bin_3', 0.08851674641148326),
+              ('Pclass_bin_9', 'Age_bin_4', 0.04784688995215311),
+              ('Pclass_bin_9', 'SibSp_bin_0', 0.3827751196172249),
+              ('Pclass_bin_9', 'SibSp_bin_1', 0.09808612440191387),
+              ('Pclass_bin_9', 'Parch_bin_0', 0.4138755980861244),
+              ('Pclass_bin_9', 'Parch_bin_1', 0.05263157894736842),
+              ('Pclass_bin_9', 'Parch_bin_3', 0.0430622009569378),
+              ('Pclass_bin_9', 'Fare_bin_0', 0.507177033492823),
+              ('Age_bin_0', 'SibSp_bin_1', 0.02631578947368421),
+              ('Age_bin_0', 'Parch_bin_1', 0.02631578947368421),
+              ('Age_bin_0', 'Fare_bin_0', 0.03588516746411483),
+              ('Age_bin_1', 'Fare_bin_0', 0.03110047846889952),
+              ('Age_bin_2', 'SibSp_bin_0', 0.16985645933014354),
+              ('Age_bin_2', 'SibSp_bin_1', 0.045454545454545456),
+              ('Age_bin_2', 'Parch_bin_0', 0.20095693779904306),
+              ('Age_bin_2', 'Parch_bin_1', 0.02631578947368421),
+              ('Age_bin_2', 'Fare_bin_0', 0.20095693779904306),
+              ('Age_bin_2', 'Fare_bin_1', 0.03110047846889952),
+              ('Age_bin_3', 'SibSp_bin_0', 0.14354066985645933),
+              ('Age_bin_3', 'SibSp_bin_1', 0.0430622009569378),
+              ('Age_bin_3', 'Parch_bin_0', 0.16985645933014354),
+              ('Age_bin_3', 'Fare_bin_0', 0.1674641148325359),
+              ('Age_bin_4', 'SibSp_bin_0', 0.07416267942583732),
+              ('Age_bin_4', 'SibSp_bin_1', 0.02631578947368421),
+              ('Age_bin_4', 'Parch_bin_0', 0.07894736842105263),
+              ('Age_bin_4', 'Fare_bin_0', 0.07655502392344497),
+              ('Age_bin_5', 'SibSp_bin_0', 0.05980861244019139),
+              ('Age_bin_5', 'SibSp_bin_1', 0.03110047846889952),
+              ('Age_bin_5', 'Parch_bin_0', 0.06937799043062201),
+              ('Age_bin_5', 'Fare_bin_0', 0.05741626794258373),
+              ('Age_bin_5', 'Fare_bin_1', 0.0215311004784689),
+              ('Age_bin_6', 'SibSp_bin_0', 0.0215311004784689),
+              ('Age_bin_6', 'SibSp_bin_1', 0.023923444976076555),
+              ('Age_bin_6', 'Parch_bin_0', 0.03110047846889952),
+              ('Age_bin_6', 'Fare_bin_0', 0.02631578947368421),
+              ('Age_bin_7', 'SibSp_bin_1', 0.0215311004784689),
+              ('Age_bin_7', 'Parch_bin_0', 0.02631578947368421),
+              ('SibSp_bin_0', 'Parch_bin_0', 0.6052631578947368),
+              ('SibSp_bin_0', 'Parch_bin_1', 0.03349282296650718),
+              ('SibSp_bin_0', 'Parch_bin_3', 0.03349282296650718),
+              ('SibSp_bin_0', 'Fare_bin_0', 0.6028708133971292),
+              ('SibSp_bin_0', 'Fare_bin_1', 0.04066985645933014),
+              ('SibSp_bin_1', 'Parch_bin_0', 0.14354066985645933),
+              ('SibSp_bin_1', 'Parch_bin_1', 0.07894736842105263),
+              ('SibSp_bin_1', 'Parch_bin_3', 0.023923444976076555),
+              ('SibSp_bin_1', 'Fare_bin_0', 0.15789473684210525),
+              ('SibSp_bin_1', 'Fare_bin_1', 0.06698564593301436),
+              ('SibSp_bin_2', 'Parch_bin_0', 0.023923444976076555),
+              ('SibSp_bin_2', 'Fare_bin_0', 0.028708133971291867),
+              ('Parch_bin_0', 'Fare_bin_0', 0.6602870813397129),
+              ('Parch_bin_0', 'Fare_bin_1', 0.06937799043062201),
+              ('Parch_bin_1', 'Fare_bin_0', 0.08373205741626795),
+              ('Parch_bin_1', 'Fare_bin_1', 0.02631578947368421),
+              ('Parch_bin_3', 'Fare_bin_0', 0.05502392344497608)],
  'colid': 'PassengerId',
  'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'],
  'colnum_bin': ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin'],

@@ -124,7 +124,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     os.makedirs(path_pipeline_export, exist_ok=True)
     log(path_pipeline_export)
     dfi_all          = {} ### Dict of all features
-    cols_family_full = {'colid' : colid}
+    cols_family_all  = {'colid' : colid}
 
 
     if len(pipe_filter) > 0 :
@@ -144,12 +144,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         pars['path_pipeline_export'] = path_pipeline_export
         df, col_pars                 = pipe_fun(df, cols_group['coly'], pars=pars)   ### coly can remove rows
         dfi_all['coly']              = df[cols_group['coly'] ]
-        cols_family_full['coly']     = cols_group['coly']
+        cols_family_all['coly']      = cols_group['coly']
         save_features(df[cols_group['coly'] ], "coly", path_features_store)  ### already saved
         save(coly, f'{path_pipeline_export}/coly.pkl')
 
 
-    #####  Processors  ######################################################################
+    #####  Processors  ###############################################################################
     for pipe_i in pipe_list_X :
        log("###################", pipe_i, "##########################################################")
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
@@ -171,13 +171,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            pars['colcross_single'] = cols_group.get('colcross', [])
 
        dfi, col_pars           = pipe_fun(df_, cols_list, pars= pars)
-       # print('--------------col_pars-----------------',col_pars['cols_new'].items())
-       ### colnum, colnum_bin into cols_family
-       for colj, colist in  col_pars['cols_new'].items() :
-          cols_family_full[colj] =  cols_family_full.get(colj, []) + colist
 
+       ### Concatenate colnum, colnum_bin into cols_family_all
+       for colj, colist in  col_pars['cols_new'].items() :
           ### Merge sub-family
-          dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
+          cols_family_all[colj] = cols_family_all.get(colj, []) + colist
+          dfi_all[colj]          = pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
           save_features(dfi_all[colj], colj, path_features_store)
 
 
@@ -188,10 +187,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
             dfi, col_pars = pipe_fun(df_[ cols_list ], cols_list, pars= pars)
             log(dfi, col_pars)
 
-            ### colnum, colnum_bin into cols_family_full
+            ### colnum, colnum_bin into cols_family_all
             for colj, colist in  col_pars['cols_new'].items() :
-              cols_family_full[colj] =  cols_family_full.get(colj, []) + colist
-              # save(cols_family_full[colj], f'{path_pipeline_export}/{colj}.pkl')   ### Not Efficient
+              cols_family_all[colj] =  cols_family_all.get(colj, []) + colist
+              # save(cols_family_all[colj], f'{path_pipeline_export}/{colj}.pkl')   ### Not Efficient
 
               dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
               save_features(dfi_all[colj], colj, path_features_store)
@@ -210,15 +209,15 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colXy = list(dfXy.columns)
     colXy.remove(coly)    ##### Only X columns
     if len(colid)>0:
-        cols_family_full['colid']=colid
-    cols_family_full['colX'] = colXy
+        cols_family_all['colid']=colid
+    cols_family_all['colX'] = colXy
     save(colXy,            f'{path_pipeline_export}/colsX.pkl' )
-    save(cols_family_full, f'{path_pipeline_export}/cols_family.pkl' )
+    save(cols_family_all, f'{path_pipeline_export}/cols_family.pkl' )
 
 
     ###### Return values  #######################################################################
-    print('cols_family_full', cols_family_full)
-    return dfXy, cols_family_full
+    print('cols_family_all', cols_family_all)
+    return dfXy, cols_family_all
 
 
 

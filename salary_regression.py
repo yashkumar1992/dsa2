@@ -176,8 +176,8 @@ def salary_elasticnetcv(path_model_out=""):
         , 'post_process_fun': copy.deepcopy(post_process_fun)
         , 'pre_process_pars': {'y_norm_fun' : copy.deepcopy(pre_process_fun),
 
-                        ### Pipeline for data processing.
-                       'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
+        ### Pipeline for data processing.
+        'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
                                                      }
                                                          },
     'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
@@ -303,7 +303,7 @@ def preprocess(config=None, nsample=None):
     mdict        = globals()[config_name]()
     print(mdict)
 
-    from source import run_preprocess
+    from source import run_preprocess, run_preprocess2
     run_preprocess.run_preprocess(model_name      =  config_name,
                                 path_data         =  path_data_train,
                                 path_output       =  path_model,
@@ -337,15 +337,16 @@ def check():
 ####################################################################################
 ####### Inference ##################################################################
 def predict(config=None, nsample=None):
-    config_name  =  config  if config is not None else "titanic_lightgbm"
+    config_name  =  config  if config is not None else config_default
     mdict        = globals()[config_name]()
     print(mdict)
 
-    from source import run_inference
-    run_inference.run_predict(model_name,
+    from source import run_inference, run_inference2
+    run_inference2.run_predict(model_name,
                             path_model  = path_model,
                             path_data   = path_data_test,
                             path_output = path_output_pred,
+                            cols_group  = mdict['data_pars']['cols_input_type'],
                             n_sample    = nsample if nsample is not None else n_sample)
 
 
