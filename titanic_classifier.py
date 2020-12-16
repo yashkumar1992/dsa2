@@ -157,7 +157,7 @@ def titanic_lightgbm(path_model_out="") :
           #  'coldate',
           #  'coltext',
           'cols_model_group': [ 'colnum_bin',
-                                'colcat_bin'
+                               'colcat_bin'
                                ]
 
 
@@ -321,15 +321,16 @@ def predict(config=None, nsample=None):
     config_name  =  config  if config is not None else config_default
     mdict        = globals()[config_name]()
     m            = mdict['global_pars']
+    print(mdict['data_pars']['cols_input_type'])
     print(m)
 
-    from source import run_inference
-    run_inference.run_predict(model_name,
+    from source import run_inference,run_inference2
+    run_inference2.run_predict(model_name,
                             path_model  = m['path_model'],
                             path_data   = m['path_data_test'],
                             path_output = m['path_output_pred'],
-                            n_sample    = nsample if nsample is not None else m['n_sample'],
-                            model_dict  = mdict
+                            cols_group=mdict['data_pars']['cols_input_type'],
+                            n_sample    = nsample if nsample is not None else m['n_sample'])
 
                             )
 

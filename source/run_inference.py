@@ -64,18 +64,18 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
     pipe_list       = preprocess_pars.get('pipe_list', pipe_default)
 
 
+    if "dfcat_bin" in pipe_list :
+        log("###### Colcat as integer encoded  ####################################")
+        dfcat_bin, _ = pd_colcat_toint(df[colcat],  colname=colcat,
+                                                     colcat_map=colcat_bin_map, suffix="_int")
+        colcat_bin = list(dfcat_bin.columns)
+
     if "dfcat_hot" in pipe_list :
        log("###### Colcat to onehot ###############################################")
        dfcat_hot, _ = pd_col_to_onehot(df[colcat],  colname=colcat,
                                                   colonehot=colcat_onehot, return_val="dataframe,param")
        log(dfcat_hot[colcat_onehot].head(5))
 
-
-    if "dfcat_bin" in pipe_list :
-        log("###### Colcat as integer encoded  ####################################")
-        dfcat_bin, _ = pd_colcat_toint(df[colcat],  colname=colcat,
-                                                     colcat_map=colcat_bin_map, suffix="_int")
-        colcat_bin = list(dfcat_bin.columns)
 
     if "dfnum_bin" in pipe_list :
         log("###### Colnum Preprocess   ###########################################")
@@ -94,7 +94,9 @@ def preprocess(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}):
                                          colonehot=colnum_onehot, return_val="dataframe,param")
         log(dfnum_hot[colnum_onehot].head(5))
 
-
+    print('------------dfcat_hot---------------------', dfcat_hot)
+    print('------------dfnum_hot---------------------', dfnum_hot)
+    print('------------colcross_single_onehot_select---------------------', colcross_single_onehot_select)
     if "dfcross_hot" in pipe_list :
         log("####### colcross cross features   ###################################################")
         dfcross_hot = pd.DataFrame()
