@@ -132,7 +132,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     log(path_pipeline_export)
 
     dfi_all          = {} ### Dict of all features
-    cols_family_full = {}
+    cols_family_full = {'colid' : colid}
+
+
+    save(colid, f'{path_pipeline_export}/colid.pkl')
 
 
     if len(pipe_filter) > 0 :
@@ -153,6 +156,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         dfi_all['coly']             = df[cols_group['coly'] ]
         save_features(df[cols_group['coly'] ], "coly", path_features_store)  ### already saved
         cols_family_full['coly']    = cols_group['coly']
+        save(coly, f'{path_pipeline_export}/coly.pkl')
 
 
     #####  Processors  ######################################################################
@@ -173,7 +177,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
        cols_family     = {}
        pars            = pipe_i.get('pars', {})
-       pars['path_features_store'] = path_features_store
+       pars['path_features_store']  = path_features_store
+       pars['path_pipeline_export'] = path_pipeline_export
 
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
@@ -191,9 +196,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi), axis=1) if cols_name in dfi_all else dfi
 
        else:
-           for cols_i in cols_list :
-                log('------------cols_i----------------', cols_i)
-                dfi, col_pars = pipe_fun(df_[[cols_i]], [cols_i], pars= pars)
+                # for cols_i in cols_list :
+                log('------------cols_i----------------', cols_list)
+                dfi, col_pars = pipe_fun(df_[ cols_list ], cols_list, pars= pars)
                 # print(dfi)
                 # print(col_pars)
 
