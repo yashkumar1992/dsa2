@@ -1,0 +1,20 @@
+D:/_devs/Python01/gitdev/dsa2/
+os.getcwd D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:/_devs/Python01/gitdev/dsa2/data/
+{'config_name': 'multi_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multi_lightgbm/', 'n_sample': 6000}
+D:/_devs/Python01/gitdev/dsa2/
+Traceback (most recent call last):
+  File "multi_classifier.py", line 271, in <module>
+    fire.Fire()
+  File "D:\_devs\Python01\ana3\envs\py36\lib\site-packages\fire\core.py", line 138, in Fire
+    component_trace = _Fire(component, args, parsed_flag_args, context, name)
+  File "D:\_devs\Python01\ana3\envs\py36\lib\site-packages\fire\core.py", line 468, in _Fire
+    target=component.__name__)
+  File "D:\_devs\Python01\ana3\envs\py36\lib\site-packages\fire\core.py", line 672, in _CallAndUpdateTrace
+    component = fn(*varargs, **kwargs)
+  File "multi_classifier.py", line 246, in predict
+    n_sample    = nsample if nsample is not None else m['n_sample'])
+TypeError: run_predict() missing 1 required positional argument: 'cols_group'
