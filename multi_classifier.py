@@ -71,8 +71,8 @@ colid   = 'pet_id'
 coly    = 'pet_category'
 coldate = ['issue_date','listing_date']
 colcat  = ['color_type','condition']
-colnum  = ['length(m)','height(cm)','X1','X2','breed_category']
-colcross= ['condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']
+colnum  = ['length(m)','height(cm)','X1','X2'] # ,'breed_category'
+colcross= ['condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2']  # , 'breed_category'
 
 
 cols_input_type_1 = {  "coly"   :   coly
