@@ -1,0 +1,2920 @@
+os.getcwd D:\_devs\Python01\gitdev\dsa2
+D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:/_devs/Python01/gitdev/dsa2/data/
+{'model_pars': {'model_path': '', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'binary', 'n_estimators': 3000, 'learning_rate': 0.001, 'boosting_type': 'gbdt', 'early_stopping_rounds': 5}, 'post_process_fun': <function titanic_lightgbm.<locals>.post_process_fun at 0x000001B331116488>, 'pre_process_pars': {'y_norm_fun': <function titanic_lightgbm.<locals>.pre_process_fun at 0x000001B331116510>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score']}, 'data_pars': {'n_sample': 1000, 'cols_input_type': {'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 2, 'ymin': -1}}, 'global_pars': {'config_name': 'titanic_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//titanic_classifier.py', 'path_model': 'data/output/titanic/a01_LGBMClassifier/', 'path_data_train': 'data/input/titanic/train/', 'path_data_test': 'data/input/titanic/test/', 'path_output_pred': '/data/output/titanic/pred_a01_titanic_lightgbm/', 'n_sample': 1000}}
+D:/_devs/Python01/gitdev/dsa2/
+os.getcwd D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier/',) 
+  ('#### Model Params Dynamic loading  ###############################################',) 
+
+  ('D:\\_devs\\Python01\\gitdev',) 
+D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:/_devs/Python01/gitdev/dsa2/data/
+  ({'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'binary', 'n_estimators': 3000, 'learning_rate': 0.001, 'boosting_type': 'gbdt', 'early_stopping_rounds': 5}, 'post_process_fun': <function titanic_lightgbm.<locals>.post_process_fun at 0x000001B33113B158>, 'pre_process_pars': {'y_norm_fun': <function titanic_lightgbm.<locals>.pre_process_fun at 0x000001B33113B7B8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score']}, 'data_pars': {'n_sample': 1000, 'cols_input_type': {'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 2, 'ymin': -1}}, 'global_pars': {'config_name': 'titanic_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//titanic_classifier.py', 'path_model': 'data/output/titanic/a01_LGBMClassifier/', 'path_data_train': 'data/input/titanic/train/', 'path_data_test': 'data/input/titanic/test/', 'path_output_pred': '/data/output/titanic/pred_a01_titanic_lightgbm/', 'n_sample': 1000}},) 
+  ('#### load input column family  ###################################################',) 
+  ({'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']},) 
+  ('#### Preprocess  #################################################################',) 
+
+  ({'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']},) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colid.pkl',) 
+
+  ('loading', 'PassengerId', 'D:/_devs/Python01/gitdev/dsa2/data/input/titanic/train//features.zip') 
+['D:/_devs/Python01/gitdev/dsa2/data/input/titanic/train\\features.zip']
+
+  ('dfX_raw',                                    0  ...                  890
+PassengerId                        1  ...                  891
+Pclass                             3  ...                    3
+Name         Braund, Mr. Owen Harris  ...  Dooley, Mr. Patrick
+Sex                             male  ...                 male
+
+[4 rows x 891 columns]) 
+
+  ('dfy',    PassengerId  Survived
+0            1         0
+1            2         1
+2            3         1
+3            4         1
+4            5         0) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline/',) 
+
+  ('#####  coly  ###########################################################################',) 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+D:/_devs/Python01/gitdev/dsa2/
+
+  ('y_norm_fun preprocess_pars',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//coly/features.parquet',) 
+
+  (             Survived
+PassengerId          
+1                   0
+2                   1
+3                   1
+4                   1
+5                   0
+...               ...
+887                 0
+888                 1
+889                 0
+890                 1
+891                 0
+
+[891 rows x 1 columns], ['Survived']) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//coly.pkl',) 
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'dfnum_bin', 'type': ''}, '##########################################################') 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+
+  (None,) 
+
+  ('### colnum Map numerics to Category bin  ###########################################',) 
+Pclass
+           Pclass               
+             size  max mean  min
+Pclass_bin                      
+0             216  1.0  1.0  1.0
+4             184  2.0  2.0  2.0
+9             491  3.0  3.0  3.0
+Age
+         Age                             
+        size        max       mean    min
+Age_bin                                  
+0         54   8.000000   3.355000   0.42
+1         46  16.000000  13.467391   9.00
+2        193  24.000000  20.778238  17.00
+3        330  32.200001  30.183939  24.50
+4        118  40.000000  36.177967  32.50
+5         70  48.000000  44.400002  40.50
+6         45  56.000000  51.944443  49.00
+7         24  64.000000  60.291668  57.00
+8          9  71.000000  68.166664  65.00
+9          2  80.000000  77.000000  74.00
+SibSp
+          SibSp               
+           size  max mean  min
+SibSp_bin                     
+0           608  0.0  0.0  0.0
+1           209  1.0  1.0  1.0
+2            28  2.0  2.0  2.0
+3            16  3.0  3.0  3.0
+4            18  4.0  4.0  4.0
+6             5  5.0  5.0  5.0
+9             7  8.0  8.0  8.0
+Parch
+          Parch               
+           size  max mean  min
+Parch_bin                     
+0           678  0.0  0.0  0.0
+1           118  1.0  1.0  1.0
+3            80  2.0  2.0  2.0
+4             5  3.0  3.0  3.0
+6             4  4.0  4.0  4.0
+8             5  5.0  5.0  5.0
+9             1  6.0  6.0  6.0
+Fare
+         Fare                                    
+         size         max        mean         min
+Fare_bin                                         
+0         732   50.495800   15.595536    0.000000
+1         106   93.500000   69.483727   51.479198
+2          31  153.462494  128.930237  106.425003
+3           2  164.866699  164.866699  164.866699
+4          11  247.520798  224.766663  211.337494
+5           6  263.000000  262.791656  262.375000
+9           3  512.329224  512.329224  512.329224
+
+  (OrderedDict([('Pclass', [0.9999, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4000000000000004, 2.6, 2.8, 3.0]), ('Age', [0.41989998688697816, 8.378000169992447, 16.336000353097916, 24.294000536203384, 32.25200071930885, 40.21000090241432, 48.16800108551979, 56.12600126862526, 64.08400145173073, 72.0420016348362, 80.00000181794167]), ('SibSp', [-0.0001, 0.8, 1.6, 2.4000000000000004, 3.2, 4.0, 4.800000000000001, 5.6000000000000005, 6.4, 7.2, 8.0]), ('Parch', [-0.0001, 0.6, 1.2, 1.7999999999999998, 2.4, 3.0, 3.5999999999999996, 4.2, 4.8, 5.3999999999999995, 6.0]), ('Fare', [-0.0001, 51.23292236328125, 102.4658447265625, 153.69876708984373, 204.931689453125, 256.16461181640625, 307.39753417968745, 358.6304565429687, 409.86337890625, 461.09630126953124, 512.3292236328125])]),) 
+
+  (['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin'],) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colnum_binmap.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colnum_bin.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colnum/features.parquet',) 
+
+  (             Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin']) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colnum_bin/features.parquet',) 
+
+  (             Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin']) 
+------------dfi_all--------------------- {'coly': PassengerId
+1      0
+2      1
+3      1
+4      1
+5      0
+      ..
+887    0
+888    1
+889    0
+890    1
+891    0
+Name: Survived, Length: 891, dtype: int64, 'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], 'colnum_bin':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns]}
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'dfnum_onehot', 'type': ''}, '##########################################################') 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+
+  ('###### colnum bin to One Hot  #################################################',) 
+Pclass_bin 3 (891, 5)
+Age_bin 10 (891, 7)
+SibSp_bin 7 (891, 16)
+Parch_bin 7 (891, 22)
+Fare_bin 7 (891, 28)
+
+  (['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9'],) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colnum_onehot.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colnum_onehot/features.parquet',) 
+
+  (             Pclass_bin_0  Pclass_bin_4  ...  Fare_bin_5  Fare_bin_9
+PassengerId                              ...                        
+1                       0             0  ...           0           0
+2                       1             0  ...           0           0
+3                       0             0  ...           0           0
+4                       1             0  ...           0           0
+5                       0             0  ...           0           0
+...                   ...           ...  ...         ...         ...
+887                     0             1  ...           0           0
+888                     1             0  ...           0           0
+889                     0             0  ...           0           0
+890                     1             0  ...           0           0
+891                     0             0  ...           0           0
+
+[891 rows x 34 columns], ['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9']) 
+------------dfi_all--------------------- {'coly': PassengerId
+1      0
+2      1
+3      1
+4      1
+5      0
+      ..
+887    0
+888    1
+889    0
+890    1
+891    0
+Name: Survived, Length: 891, dtype: int64, 'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], 'colnum_bin':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], 'colnum_onehot':              Pclass_bin_0  Pclass_bin_4  ...  Fare_bin_5  Fare_bin_9
+PassengerId                              ...                        
+1                       0             0  ...           0           0
+2                       1             0  ...           0           0
+3                       0             0  ...           0           0
+4                       1             0  ...           0           0
+5                       0             0  ...           0           0
+...                   ...           ...  ...         ...         ...
+887                     0             1  ...           0           0
+888                     1             0  ...           0           0
+889                     0             0  ...           0           0
+890                     1             0  ...           0           0
+891                     0             0  ...           0           0
+
+[891 rows x 34 columns]}
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'dfcat_bin', 'type': ''}, '##########################################################') 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+
+  ('#### Colcat to integer encoding ',) 
+
+  (Sex         object
+Embarked    object
+dtype: object, {'cat_map': {'Sex': {'female': 0, 'male': 1}, 'Embarked': {'C': 0, 'Q': 1, 'S': 2}}, 'cat_map_inverse': {'Sex': {0: 'female', 1: 'male'}, 'Embarked': {0: 'C', 1: 'Q', 2: 'S'}}}) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcat_bin_map.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcat_bin.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colcat/features.parquet',) 
+
+  (             Sex_int  Embarked_int
+PassengerId                       
+1                  0             0
+2                  1             1
+3                  1             0
+4                  1             0
+5                  0             0
+...              ...           ...
+887                0             0
+888                1             0
+889                1             0
+890                0             1
+891                0             2
+
+[891 rows x 2 columns], ['Sex_int', 'Embarked_int']) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colcat_bin/features.parquet',) 
+
+  (             Sex_int  Embarked_int
+PassengerId                       
+1                  0             0
+2                  1             1
+3                  1             0
+4                  1             0
+5                  0             0
+...              ...           ...
+887                0             0
+888                1             0
+889                1             0
+890                0             1
+891                0             2
+
+[891 rows x 2 columns], ['Sex_int', 'Embarked_int']) 
+------------dfi_all--------------------- {'coly': PassengerId
+1      0
+2      1
+3      1
+4      1
+5      0
+      ..
+887    0
+888    1
+889    0
+890    1
+891    0
+Name: Survived, Length: 891, dtype: int64, 'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], 'colnum_bin':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], 'colnum_onehot':              Pclass_bin_0  Pclass_bin_4  ...  Fare_bin_5  Fare_bin_9
+PassengerId                              ...                        
+1                       0             0  ...           0           0
+2                       1             0  ...           0           0
+3                       0             0  ...           0           0
+4                       1             0  ...           0           0
+5                       0             0  ...           0           0
+...                   ...           ...  ...         ...         ...
+887                     0             1  ...           0           0
+888                     1             0  ...           0           0
+889                     0             0  ...           0           0
+890                     1             0  ...           0           0
+891                     0             0  ...           0           0
+
+[891 rows x 34 columns], 'colcat':              Sex_int  Embarked_int
+PassengerId                       
+1                  0             0
+2                  1             1
+3                  1             0
+4                  1             0
+5                  0             0
+...              ...           ...
+887                0             0
+888                1             0
+889                1             0
+890                0             1
+891                0             2
+
+[891 rows x 2 columns], 'colcat_bin':              Sex_int  Embarked_int
+PassengerId                       
+1                  0             0
+2                  1             1
+3                  1             0
+4                  1             0
+5                  0             0
+...              ...           ...
+887                0             0
+888                1             0
+889                1             0
+890                0             1
+891                0             2
+
+[891 rows x 2 columns]}
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'dfcat_onehot', 'type': ''}, '##########################################################') 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+
+  ('#### colcat to onehot',) 
+Sex_int 2 (891, 2)
+Embarked_int 3 (891, 2)
+
+  (             Embarked_int_0  Embarked_int_1  Embarked_int_2
+PassengerId                                                
+1                         1               0               0
+2                         0               1               0
+3                         1               0               0
+4                         1               0               0
+5                         1               0               0,) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcat_onehot.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcat.pkl',) 
+ok ------------
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colcat_onehot/features.parquet',) 
+
+  (             Embarked_int_0  Embarked_int_1  Embarked_int_2
+PassengerId                                                
+1                         1               0               0
+2                         0               1               0
+3                         1               0               0
+4                         1               0               0
+5                         1               0               0
+...                     ...             ...             ...
+887                       1               0               0
+888                       1               0               0
+889                       1               0               0
+890                       0               1               0
+891                       0               0               1
+
+[891 rows x 3 columns], ['Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2']) 
+------------dfi_all--------------------- {'coly': PassengerId
+1      0
+2      1
+3      1
+4      1
+5      0
+      ..
+887    0
+888    1
+889    0
+890    1
+891    0
+Name: Survived, Length: 891, dtype: int64, 'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], 'colnum_bin':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], 'colnum_onehot':              Pclass_bin_0  Pclass_bin_4  ...  Fare_bin_5  Fare_bin_9
+PassengerId                              ...                        
+1                       0             0  ...           0           0
+2                       1             0  ...           0           0
+3                       0             0  ...           0           0
+4                       1             0  ...           0           0
+5                       0             0  ...           0           0
+...                   ...           ...  ...         ...         ...
+887                     0             1  ...           0           0
+888                     1             0  ...           0           0
+889                     0             0  ...           0           0
+890                     1             0  ...           0           0
+891                     0             0  ...           0           0
+
+[891 rows x 34 columns], 'colcat':              Sex_int  Embarked_int
+PassengerId                       
+1                  0             0
+2                  1             1
+3                  1             0
+4                  1             0
+5                  0             0
+...              ...           ...
+887                0             0
+888                1             0
+889                1             0
+890                0             1
+891                0             2
+
+[891 rows x 2 columns], 'colcat_bin':              Sex_int  Embarked_int
+PassengerId                       
+1                  0             0
+2                  1             1
+3                  1             0
+4                  1             0
+5                  0             0
+...              ...           ...
+887                0             0
+888                1             0
+889                1             0
+890                0             1
+891                0             2
+
+[891 rows x 2 columns], 'colcat_onehot':              Embarked_int_0  Embarked_int_1  Embarked_int_2
+PassengerId                                                
+1                         1               0               0
+2                         0               1               0
+3                         1               0               0
+4                         1               0               0
+5                         1               0               0
+...                     ...             ...             ...
+887                       1               0               0
+888                       1               0               0
+889                       1               0               0
+890                       0               1               0
+891                       0               0               1
+
+[891 rows x 3 columns]}
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'dfcross_hot', 'type': 'cross'}, '##########################################################') 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+
+  ('#####  Cross Features From OneHot Features   ######################################',) 
+
+  (PassengerId                  1  2
+Embarked_int_0-Pclass_bin_0  0  0
+Embarked_int_0-Pclass_bin_4  0  0
+Embarked_int_0-Pclass_bin_9  1  0
+Embarked_int_0-Age_bin_0     0  0
+Embarked_int_0-Age_bin_1     0  0
+...                         .. ..
+Parch_bin_0-Fare_bin_0       1  0
+Parch_bin_0-Fare_bin_1       0  1
+Parch_bin_1-Fare_bin_0       0  0
+Parch_bin_1-Fare_bin_1       0  0
+Parch_bin_3-Fare_bin_0       0  0
+
+[117 rows x 2 columns],) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcross_single_onehot_select.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcross_pair.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colcross_pair/features.parquet',) 
+
+  (             Embarked_int_0-Pclass_bin_0  ...  Parch_bin_3-Fare_bin_0
+PassengerId                               ...                        
+1                                      0  ...                       0
+2                                      0  ...                       0
+3                                      0  ...                       0
+4                                      1  ...                       0
+5                                      0  ...                       0
+...                                  ...  ...                     ...
+887                                    0  ...                       0
+888                                    1  ...                       0
+889                                    0  ...                       1
+890                                    0  ...                       0
+891                                    0  ...                       0
+
+[891 rows x 117 columns], ['Embarked_int_0-Pclass_bin_0', 'Embarked_int_0-Pclass_bin_4', 'Embarked_int_0-Pclass_bin_9', 'Embarked_int_0-Age_bin_0', 'Embarked_int_0-Age_bin_1', 'Embarked_int_0-Age_bin_2', 'Embarked_int_0-Age_bin_3', 'Embarked_int_0-Age_bin_4', 'Embarked_int_0-Age_bin_5', 'Embarked_int_0-Age_bin_6', 'Embarked_int_0-Age_bin_7', 'Embarked_int_0-SibSp_bin_0', 'Embarked_int_0-SibSp_bin_1', 'Embarked_int_0-SibSp_bin_2', 'Embarked_int_0-Parch_bin_0', 'Embarked_int_0-Parch_bin_1', 'Embarked_int_0-Parch_bin_3', 'Embarked_int_0-Fare_bin_0', 'Embarked_int_0-Fare_bin_1', 'Embarked_int_1-Pclass_bin_0', 'Embarked_int_1-Pclass_bin_9', 'Embarked_int_1-Age_bin_2', 'Embarked_int_1-Age_bin_3', 'Embarked_int_1-Age_bin_4', 'Embarked_int_1-SibSp_bin_0', 'Embarked_int_1-SibSp_bin_1', 'Embarked_int_1-Parch_bin_0', 'Embarked_int_1-Parch_bin_1', 'Embarked_int_1-Fare_bin_0', 'Embarked_int_1-Fare_bin_1', 'Embarked_int_2-Pclass_bin_9', 'Embarked_int_2-Age_bin_3', 'Embarked_int_2-SibSp_bin_0', 'Embarked_int_2-Parch_bin_0', 'Embarked_int_2-Fare_bin_0', 'Pclass_bin_0-Age_bin_2', 'Pclass_bin_0-Age_bin_3', 'Pclass_bin_0-Age_bin_4', 'Pclass_bin_0-Age_bin_5', 'Pclass_bin_0-Age_bin_6', 'Pclass_bin_0-SibSp_bin_0', 'Pclass_bin_0-SibSp_bin_1', 'Pclass_bin_0-Parch_bin_0', 'Pclass_bin_0-Parch_bin_1', 'Pclass_bin_0-Parch_bin_3', 'Pclass_bin_0-Fare_bin_0', 'Pclass_bin_0-Fare_bin_1', 'Pclass_bin_0-Fare_bin_2', 'Pclass_bin_4-Age_bin_2', 'Pclass_bin_4-Age_bin_3', 'Pclass_bin_4-Age_bin_4', 'Pclass_bin_4-SibSp_bin_0', 'Pclass_bin_4-SibSp_bin_1', 'Pclass_bin_4-Parch_bin_0', 'Pclass_bin_4-Parch_bin_1', 'Pclass_bin_4-Fare_bin_0', 'Pclass_bin_9-Age_bin_0', 'Pclass_bin_9-Age_bin_1', 'Pclass_bin_9-Age_bin_2', 'Pclass_bin_9-Age_bin_3', 'Pclass_bin_9-Age_bin_4', 'Pclass_bin_9-Age_bin_5', 'Pclass_bin_9-SibSp_bin_0', 'Pclass_bin_9-SibSp_bin_1', 'Pclass_bin_9-SibSp_bin_4', 'Pclass_bin_9-Parch_bin_0', 'Pclass_bin_9-Parch_bin_1', 'Pclass_bin_9-Parch_bin_3', 'Pclass_bin_9-Fare_bin_0', 'Age_bin_0-Parch_bin_1', 'Age_bin_0-Parch_bin_3', 'Age_bin_0-Fare_bin_0', 'Age_bin_1-SibSp_bin_0', 'Age_bin_1-Parch_bin_0', 'Age_bin_1-Fare_bin_0', 'Age_bin_2-SibSp_bin_0', 'Age_bin_2-SibSp_bin_1', 'Age_bin_2-Parch_bin_0', 'Age_bin_2-Parch_bin_1', 'Age_bin_2-Parch_bin_3', 'Age_bin_2-Fare_bin_0', 'Age_bin_2-Fare_bin_1', 'Age_bin_3-SibSp_bin_0', 'Age_bin_3-SibSp_bin_1', 'Age_bin_3-Parch_bin_0', 'Age_bin_3-Fare_bin_0', 'Age_bin_3-Fare_bin_1', 'Age_bin_4-SibSp_bin_0', 'Age_bin_4-SibSp_bin_1', 'Age_bin_4-Parch_bin_0', 'Age_bin_4-Fare_bin_0', 'Age_bin_5-SibSp_bin_0', 'Age_bin_5-SibSp_bin_1', 'Age_bin_5-Parch_bin_0', 'Age_bin_5-Fare_bin_0', 'Age_bin_6-SibSp_bin_0', 'Age_bin_6-Parch_bin_0', 'Age_bin_6-Fare_bin_0', 'Age_bin_7-SibSp_bin_0', 'Age_bin_7-Parch_bin_0', 'SibSp_bin_0-Parch_bin_0', 'SibSp_bin_0-Parch_bin_1', 'SibSp_bin_0-Parch_bin_3', 'SibSp_bin_0-Fare_bin_0', 'SibSp_bin_0-Fare_bin_1', 'SibSp_bin_1-Parch_bin_0', 'SibSp_bin_1-Parch_bin_1', 'SibSp_bin_1-Parch_bin_3', 'SibSp_bin_1-Fare_bin_0', 'SibSp_bin_1-Fare_bin_1', 'SibSp_bin_2-Fare_bin_0', 'SibSp_bin_4-Fare_bin_0', 'Parch_bin_0-Fare_bin_0', 'Parch_bin_0-Fare_bin_1', 'Parch_bin_1-Fare_bin_0', 'Parch_bin_1-Fare_bin_1', 'Parch_bin_3-Fare_bin_0']) 
+------------dfi_all--------------------- {'coly': PassengerId
+1      0
+2      1
+3      1
+4      1
+5      0
+      ..
+887    0
+888    1
+889    0
+890    1
+891    0
+Name: Survived, Length: 891, dtype: int64, 'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], 'colnum_bin':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                                                     
+1                     9        2          1          0         0
+2                     0        4          1          0         1
+3                     9        3          0          0         0
+4                     0        4          1          0         1
+5                     9        4          0          0         0
+...                 ...      ...        ...        ...       ...
+887                   4        3          0          0         0
+888                   0        2          0          0         0
+889                   9        2          1          3         0
+890                   0        3          0          0         0
+891                   9        3          0          0         0
+
+[891 rows x 5 columns], 'colnum_onehot':              Pclass_bin_0  Pclass_bin_4  ...  Fare_bin_5  Fare_bin_9
+PassengerId                              ...                        
+1                       0             0  ...           0           0
+2                       1             0  ...           0           0
+3                       0             0  ...           0           0
+4                       1             0  ...           0           0
+5                       0             0  ...           0           0
+...                   ...           ...  ...         ...         ...
+887                     0             1  ...           0           0
+888                     1             0  ...           0           0
+889                     0             0  ...           0           0
+890                     1             0  ...           0           0
+891                     0             0  ...           0           0
+
+[891 rows x 34 columns], 'colcat':              Sex_int  Embarked_int
+PassengerId                       
+1                  0             0
+2                  1             1
+3                  1             0
+4                  1             0
+5                  0             0
+...              ...           ...
+887                0             0
+888                1             0
+889                1             0
+890                0             1
+891                0             2
+
+[891 rows x 2 columns], 'colcat_bin':              Sex_int  Embarked_int
+PassengerId                       
+1                  0             0
+2                  1             1
+3                  1             0
+4                  1             0
+5                  0             0
+...              ...           ...
+887                0             0
+888                1             0
+889                1             0
+890                0             1
+891                0             2
+
+[891 rows x 2 columns], 'colcat_onehot':              Embarked_int_0  Embarked_int_1  Embarked_int_2
+PassengerId                                                
+1                         1               0               0
+2                         0               1               0
+3                         1               0               0
+4                         1               0               0
+5                         1               0               0
+...                     ...             ...             ...
+887                       1               0               0
+888                       1               0               0
+889                       1               0               0
+890                       0               1               0
+891                       0               0               1
+
+[891 rows x 3 columns], 'colcross_pair':              Embarked_int_0-Pclass_bin_0  ...  Parch_bin_3-Fare_bin_0
+PassengerId                               ...                        
+1                                      0  ...                       0
+2                                      0  ...                       0
+3                                      0  ...                       0
+4                                      1  ...                       0
+5                                      0  ...                       0
+...                                  ...  ...                     ...
+887                                    0  ...                       0
+888                                    1  ...                       0
+889                                    0  ...                       1
+890                                    0  ...                       0
+891                                    0  ...                       0
+
+[891 rows x 117 columns]}
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//dfX/features.parquet',) 
+
+  (             Survived  Pclass  ...  Parch_bin_1-Fare_bin_1  Parch_bin_3-Fare_bin_0
+PassengerId                    ...                                                
+1                   0       3  ...                       0                       0
+2                   1       1  ...                       0                       0
+3                   1       3  ...                       0                       0
+4                   1       1  ...                       0                       0
+5                   0       3  ...                       0                       0
+...               ...     ...  ...                     ...                     ...
+887                 0       2  ...                       0                       0
+888                 1       1  ...                       0                       0
+889                 0       3  ...                       0                       1
+890                 1       1  ...                       0                       0
+891                 0       3  ...                       0                       0
+
+[891 rows x 169 columns], ['Survived', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Sex', 'Embarked', 'Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin', 'Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9', 'Sex_int', 'Embarked_int', 'Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2', 'Embarked_int_0-Pclass_bin_0', 'Embarked_int_0-Pclass_bin_4', 'Embarked_int_0-Pclass_bin_9', 'Embarked_int_0-Age_bin_0', 'Embarked_int_0-Age_bin_1', 'Embarked_int_0-Age_bin_2', 'Embarked_int_0-Age_bin_3', 'Embarked_int_0-Age_bin_4', 'Embarked_int_0-Age_bin_5', 'Embarked_int_0-Age_bin_6', 'Embarked_int_0-Age_bin_7', 'Embarked_int_0-SibSp_bin_0', 'Embarked_int_0-SibSp_bin_1', 'Embarked_int_0-SibSp_bin_2', 'Embarked_int_0-Parch_bin_0', 'Embarked_int_0-Parch_bin_1', 'Embarked_int_0-Parch_bin_3', 'Embarked_int_0-Fare_bin_0', 'Embarked_int_0-Fare_bin_1', 'Embarked_int_1-Pclass_bin_0', 'Embarked_int_1-Pclass_bin_9', 'Embarked_int_1-Age_bin_2', 'Embarked_int_1-Age_bin_3', 'Embarked_int_1-Age_bin_4', 'Embarked_int_1-SibSp_bin_0', 'Embarked_int_1-SibSp_bin_1', 'Embarked_int_1-Parch_bin_0', 'Embarked_int_1-Parch_bin_1', 'Embarked_int_1-Fare_bin_0', 'Embarked_int_1-Fare_bin_1', 'Embarked_int_2-Pclass_bin_9', 'Embarked_int_2-Age_bin_3', 'Embarked_int_2-SibSp_bin_0', 'Embarked_int_2-Parch_bin_0', 'Embarked_int_2-Fare_bin_0', 'Pclass_bin_0-Age_bin_2', 'Pclass_bin_0-Age_bin_3', 'Pclass_bin_0-Age_bin_4', 'Pclass_bin_0-Age_bin_5', 'Pclass_bin_0-Age_bin_6', 'Pclass_bin_0-SibSp_bin_0', 'Pclass_bin_0-SibSp_bin_1', 'Pclass_bin_0-Parch_bin_0', 'Pclass_bin_0-Parch_bin_1', 'Pclass_bin_0-Parch_bin_3', 'Pclass_bin_0-Fare_bin_0', 'Pclass_bin_0-Fare_bin_1', 'Pclass_bin_0-Fare_bin_2', 'Pclass_bin_4-Age_bin_2', 'Pclass_bin_4-Age_bin_3', 'Pclass_bin_4-Age_bin_4', 'Pclass_bin_4-SibSp_bin_0', 'Pclass_bin_4-SibSp_bin_1', 'Pclass_bin_4-Parch_bin_0', 'Pclass_bin_4-Parch_bin_1', 'Pclass_bin_4-Fare_bin_0', 'Pclass_bin_9-Age_bin_0', 'Pclass_bin_9-Age_bin_1', 'Pclass_bin_9-Age_bin_2', 'Pclass_bin_9-Age_bin_3', 'Pclass_bin_9-Age_bin_4', 'Pclass_bin_9-Age_bin_5', 'Pclass_bin_9-SibSp_bin_0', 'Pclass_bin_9-SibSp_bin_1', 'Pclass_bin_9-SibSp_bin_4', 'Pclass_bin_9-Parch_bin_0', 'Pclass_bin_9-Parch_bin_1', 'Pclass_bin_9-Parch_bin_3', 'Pclass_bin_9-Fare_bin_0', 'Age_bin_0-Parch_bin_1', 'Age_bin_0-Parch_bin_3', 'Age_bin_0-Fare_bin_0', 'Age_bin_1-SibSp_bin_0', 'Age_bin_1-Parch_bin_0', 'Age_bin_1-Fare_bin_0', 'Age_bin_2-SibSp_bin_0', 'Age_bin_2-SibSp_bin_1', 'Age_bin_2-Parch_bin_0', 'Age_bin_2-Parch_bin_1', 'Age_bin_2-Parch_bin_3', 'Age_bin_2-Fare_bin_0', 'Age_bin_2-Fare_bin_1', 'Age_bin_3-SibSp_bin_0', 'Age_bin_3-SibSp_bin_1', 'Age_bin_3-Parch_bin_0', 'Age_bin_3-Fare_bin_0', 'Age_bin_3-Fare_bin_1', 'Age_bin_4-SibSp_bin_0', 'Age_bin_4-SibSp_bin_1', 'Age_bin_4-Parch_bin_0', 'Age_bin_4-Fare_bin_0', 'Age_bin_5-SibSp_bin_0', 'Age_bin_5-SibSp_bin_1', 'Age_bin_5-Parch_bin_0', 'Age_bin_5-Fare_bin_0', 'Age_bin_6-SibSp_bin_0', 'Age_bin_6-Parch_bin_0', 'Age_bin_6-Fare_bin_0', 'Age_bin_7-SibSp_bin_0', 'Age_bin_7-Parch_bin_0', 'SibSp_bin_0-Parch_bin_0', 'SibSp_bin_0-Parch_bin_1', 'SibSp_bin_0-Parch_bin_3', 'SibSp_bin_0-Fare_bin_0', 'SibSp_bin_0-Fare_bin_1', 'SibSp_bin_1-Parch_bin_0', 'SibSp_bin_1-Parch_bin_1', 'SibSp_bin_1-Parch_bin_3', 'SibSp_bin_1-Fare_bin_0', 'SibSp_bin_1-Fare_bin_1', 'SibSp_bin_2-Fare_bin_0', 'SibSp_bin_4-Fare_bin_0', 'Parch_bin_0-Fare_bin_0', 'Parch_bin_0-Fare_bin_1', 'Parch_bin_1-Fare_bin_0', 'Parch_bin_1-Fare_bin_1', 'Parch_bin_3-Fare_bin_0']) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colsX.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//cols_family.pkl',) 
+cols_family_all {'colid': 'PassengerId', 'coly': 'Survived', 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'colnum_bin': ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin'], 'colnum_onehot': ['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9'], 'colcat': ['Sex', 'Embarked'], 'colcat_bin': ['Sex_int', 'Embarked_int'], 'colcat_onehot': ['Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2'], 'colcross_pair': [('Embarked_int_0', 'Pclass_bin_0', 0.1447811447811448), ('Embarked_int_0', 'Pclass_bin_4', 0.1840628507295174), ('Embarked_int_0', 'Pclass_bin_9', 0.3961840628507295), ('Embarked_int_0', 'Age_bin_0', 0.04713804713804714), ('Embarked_int_0', 'Age_bin_1', 0.03591470258136925), ('Embarked_int_0', 'Age_bin_2', 0.1717171717171717), ('Embarked_int_0', 'Age_bin_3', 0.23681257014590348), ('Embarked_int_0', 'Age_bin_4', 0.10549943883277217), ('Embarked_int_0', 'Age_bin_5', 0.06621773288439955), ('Embarked_int_0', 'Age_bin_6', 0.03479236812570146), ('Embarked_int_0', 'Age_bin_7', 0.020202020202020204), ('Embarked_int_0', 'SibSp_bin_0', 0.49382716049382713), ('Embarked_int_0', 'SibSp_bin_1', 0.1627384960718294), ('Embarked_int_0', 'SibSp_bin_2', 0.02132435465768799), ('Embarked_int_0', 'Parch_bin_0', 0.5454545454545454), ('Embarked_int_0', 'Parch_bin_1', 0.0920314253647587), ('Embarked_int_0', 'Parch_bin_3', 0.07295173961840629), ('Embarked_int_0', 'Fare_bin_0', 0.6172839506172839), ('Embarked_int_0', 'Fare_bin_1', 0.08080808080808081), ('Embarked_int_1', 'Pclass_bin_0', 0.09539842873176206), ('Embarked_int_1', 'Pclass_bin_9', 0.07407407407407407), ('Embarked_int_1', 'Age_bin_2', 0.038159371492704826), ('Embarked_int_1', 'Age_bin_3', 0.0707070707070707), ('Embarked_int_1', 'Age_bin_4', 0.02356902356902357), ('Embarked_int_1', 'SibSp_bin_0', 0.122334455667789), ('Embarked_int_1', 'SibSp_bin_1', 0.05948372615039282), ('Embarked_int_1', 'Parch_bin_0', 0.13804713804713806), ('Embarked_int_1', 'Parch_bin_1', 0.03367003367003367), ('Embarked_int_1', 'Fare_bin_0', 0.12008978675645342), ('Embarked_int_1', 'Fare_bin_1', 0.03591470258136925), ('Embarked_int_2', 'Pclass_bin_9', 0.08080808080808081), ('Embarked_int_2', 'Age_bin_3', 0.06285072951739619), ('Embarked_int_2', 'SibSp_bin_0', 0.06621773288439955), ('Embarked_int_2', 'Parch_bin_0', 0.07744107744107744), ('Embarked_int_2', 'Fare_bin_0', 0.08417508417508418), ('Pclass_bin_0', 'Age_bin_2', 0.03367003367003367), ('Pclass_bin_0', 'Age_bin_3', 0.06621773288439955), ('Pclass_bin_0', 'Age_bin_4', 0.04713804713804714), ('Pclass_bin_0', 'Age_bin_5', 0.030303030303030304), ('Pclass_bin_0', 'Age_bin_6', 0.030303030303030304), ('Pclass_bin_0', 'SibSp_bin_0', 0.1537598204264871), ('Pclass_bin_0', 'SibSp_bin_1', 0.07968574635241302), ('Pclass_bin_0', 'Parch_bin_0', 0.1829405162738496), ('Pclass_bin_0', 'Parch_bin_1', 0.03479236812570146), ('Pclass_bin_0', 'Parch_bin_3', 0.02356902356902357), ('Pclass_bin_0', 'Fare_bin_0', 0.08754208754208755), ('Pclass_bin_0', 'Fare_bin_1', 0.09539842873176206), ('Pclass_bin_0', 'Fare_bin_2', 0.03479236812570146), ('Pclass_bin_4', 'Age_bin_2', 0.04152637485970819), ('Pclass_bin_4', 'Age_bin_3', 0.06509539842873176), ('Pclass_bin_4', 'Age_bin_4', 0.038159371492704826), ('Pclass_bin_4', 'SibSp_bin_0', 0.13468013468013468), ('Pclass_bin_4', 'SibSp_bin_1', 0.06172839506172839), ('Pclass_bin_4', 'Parch_bin_0', 0.15039281705948374), ('Pclass_bin_4', 'Parch_bin_1', 0.03591470258136925), ('Pclass_bin_4', 'Fare_bin_0', 0.19865319865319866), ('Pclass_bin_9', 'Age_bin_0', 0.038159371492704826), ('Pclass_bin_9', 'Age_bin_1', 0.04040404040404041), ('Pclass_bin_9', 'Age_bin_2', 0.1414141414141414), ('Pclass_bin_9', 'Age_bin_3', 0.23905723905723905), ('Pclass_bin_9', 'Age_bin_4', 0.04713804713804714), ('Pclass_bin_9', 'Age_bin_5', 0.031425364758698095), ('Pclass_bin_9', 'SibSp_bin_0', 0.3939393939393939), ('Pclass_bin_9', 'SibSp_bin_1', 0.0931537598204265), ('Pclass_bin_9', 'SibSp_bin_4', 0.020202020202020204), ('Pclass_bin_9', 'Parch_bin_0', 0.4276094276094276), ('Pclass_bin_9', 'Parch_bin_1', 0.06172839506172839), ('Pclass_bin_9', 'Parch_bin_3', 0.04826038159371493), ('Pclass_bin_9', 'Fare_bin_0', 0.5353535353535354), ('Age_bin_0', 'Parch_bin_1', 0.037037037037037035), ('Age_bin_0', 'Parch_bin_3', 0.02244668911335578), ('Age_bin_0', 'Fare_bin_0', 0.05723905723905724), ('Age_bin_1', 'SibSp_bin_0', 0.02356902356902357), ('Age_bin_1', 'Parch_bin_0', 0.02356902356902357), ('Age_bin_1', 'Fare_bin_0', 0.04601571268237935), ('Age_bin_2', 'SibSp_bin_0', 0.15039281705948374), ('Age_bin_2', 'SibSp_bin_1', 0.038159371492704826), ('Age_bin_2', 'Parch_bin_0', 0.16161616161616163), ('Age_bin_2', 'Parch_bin_1', 0.024691358024691357), ('Age_bin_2', 'Parch_bin_3', 0.028058361391694726), ('Age_bin_2', 'Fare_bin_0', 0.1739618406285073), ('Age_bin_2', 'Fare_bin_1', 0.028058361391694726), ('Age_bin_3', 'SibSp_bin_0', 0.2884399551066218), ('Age_bin_3', 'SibSp_bin_1', 0.07407407407407407), ('Age_bin_3', 'Parch_bin_0', 0.34231200897867564), ('Age_bin_3', 'Fare_bin_0', 0.3265993265993266), ('Age_bin_3', 'Fare_bin_1', 0.031425364758698095), ('Age_bin_4', 'SibSp_bin_0', 0.08529741863075196), ('Age_bin_4', 'SibSp_bin_1', 0.04489337822671156), ('Age_bin_4', 'Parch_bin_0', 0.10101010101010101), ('Age_bin_4', 'Fare_bin_0', 0.09988776655443322), ('Age_bin_5', 'SibSp_bin_0', 0.05387205387205387), ('Age_bin_5', 'SibSp_bin_1', 0.02244668911335578), ('Age_bin_5', 'Parch_bin_0', 0.05948372615039282), ('Age_bin_5', 'Fare_bin_0', 0.06060606060606061), ('Age_bin_6', 'SibSp_bin_0', 0.03254769921436588), ('Age_bin_6', 'Parch_bin_0', 0.04040404040404041), ('Age_bin_6', 'Fare_bin_0', 0.029180695847362513), ('Age_bin_7', 'SibSp_bin_0', 0.02132435465768799), ('Age_bin_7', 'Parch_bin_0', 0.02132435465768799), ('SibSp_bin_0', 'Parch_bin_0', 0.6026936026936027), ('SibSp_bin_0', 'Parch_bin_1', 0.04264870931537598), ('SibSp_bin_0', 'Parch_bin_3', 0.03254769921436588), ('SibSp_bin_0', 'Fare_bin_0', 0.6049382716049383), ('SibSp_bin_0', 'Fare_bin_1', 0.04713804713804714), ('SibSp_bin_1', 'Parch_bin_0', 0.13804713804713806), ('SibSp_bin_1', 'Parch_bin_1', 0.06397306397306397), ('SibSp_bin_1', 'Parch_bin_3', 0.02132435465768799), ('SibSp_bin_1', 'Fare_bin_0', 0.1537598204264871), ('SibSp_bin_1', 'Fare_bin_1', 0.058361391694725026), ('SibSp_bin_2', 'Fare_bin_0', 0.02244668911335578), ('SibSp_bin_4', 'Fare_bin_0', 0.020202020202020204), ('Parch_bin_0', 'Fare_bin_0', 0.6475869809203143), ('Parch_bin_0', 'Fare_bin_1', 0.08529741863075196), ('Parch_bin_1', 'Fare_bin_0', 0.09988776655443322), ('Parch_bin_1', 'Fare_bin_1', 0.020202020202020204), ('Parch_bin_3', 'Fare_bin_0', 0.058361391694725026)], 'colX': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Sex', 'Embarked', 'Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin', 'Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9', 'Sex_int', 'Embarked_int', 'Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2', 'Embarked_int_0-Pclass_bin_0', 'Embarked_int_0-Pclass_bin_4', 'Embarked_int_0-Pclass_bin_9', 'Embarked_int_0-Age_bin_0', 'Embarked_int_0-Age_bin_1', 'Embarked_int_0-Age_bin_2', 'Embarked_int_0-Age_bin_3', 'Embarked_int_0-Age_bin_4', 'Embarked_int_0-Age_bin_5', 'Embarked_int_0-Age_bin_6', 'Embarked_int_0-Age_bin_7', 'Embarked_int_0-SibSp_bin_0', 'Embarked_int_0-SibSp_bin_1', 'Embarked_int_0-SibSp_bin_2', 'Embarked_int_0-Parch_bin_0', 'Embarked_int_0-Parch_bin_1', 'Embarked_int_0-Parch_bin_3', 'Embarked_int_0-Fare_bin_0', 'Embarked_int_0-Fare_bin_1', 'Embarked_int_1-Pclass_bin_0', 'Embarked_int_1-Pclass_bin_9', 'Embarked_int_1-Age_bin_2', 'Embarked_int_1-Age_bin_3', 'Embarked_int_1-Age_bin_4', 'Embarked_int_1-SibSp_bin_0', 'Embarked_int_1-SibSp_bin_1', 'Embarked_int_1-Parch_bin_0', 'Embarked_int_1-Parch_bin_1', 'Embarked_int_1-Fare_bin_0', 'Embarked_int_1-Fare_bin_1', 'Embarked_int_2-Pclass_bin_9', 'Embarked_int_2-Age_bin_3', 'Embarked_int_2-SibSp_bin_0', 'Embarked_int_2-Parch_bin_0', 'Embarked_int_2-Fare_bin_0', 'Pclass_bin_0-Age_bin_2', 'Pclass_bin_0-Age_bin_3', 'Pclass_bin_0-Age_bin_4', 'Pclass_bin_0-Age_bin_5', 'Pclass_bin_0-Age_bin_6', 'Pclass_bin_0-SibSp_bin_0', 'Pclass_bin_0-SibSp_bin_1', 'Pclass_bin_0-Parch_bin_0', 'Pclass_bin_0-Parch_bin_1', 'Pclass_bin_0-Parch_bin_3', 'Pclass_bin_0-Fare_bin_0', 'Pclass_bin_0-Fare_bin_1', 'Pclass_bin_0-Fare_bin_2', 'Pclass_bin_4-Age_bin_2', 'Pclass_bin_4-Age_bin_3', 'Pclass_bin_4-Age_bin_4', 'Pclass_bin_4-SibSp_bin_0', 'Pclass_bin_4-SibSp_bin_1', 'Pclass_bin_4-Parch_bin_0', 'Pclass_bin_4-Parch_bin_1', 'Pclass_bin_4-Fare_bin_0', 'Pclass_bin_9-Age_bin_0', 'Pclass_bin_9-Age_bin_1', 'Pclass_bin_9-Age_bin_2', 'Pclass_bin_9-Age_bin_3', 'Pclass_bin_9-Age_bin_4', 'Pclass_bin_9-Age_bin_5', 'Pclass_bin_9-SibSp_bin_0', 'Pclass_bin_9-SibSp_bin_1', 'Pclass_bin_9-SibSp_bin_4', 'Pclass_bin_9-Parch_bin_0', 'Pclass_bin_9-Parch_bin_1', 'Pclass_bin_9-Parch_bin_3', 'Pclass_bin_9-Fare_bin_0', 'Age_bin_0-Parch_bin_1', 'Age_bin_0-Parch_bin_3', 'Age_bin_0-Fare_bin_0', 'Age_bin_1-SibSp_bin_0', 'Age_bin_1-Parch_bin_0', 'Age_bin_1-Fare_bin_0', 'Age_bin_2-SibSp_bin_0', 'Age_bin_2-SibSp_bin_1', 'Age_bin_2-Parch_bin_0', 'Age_bin_2-Parch_bin_1', 'Age_bin_2-Parch_bin_3', 'Age_bin_2-Fare_bin_0', 'Age_bin_2-Fare_bin_1', 'Age_bin_3-SibSp_bin_0', 'Age_bin_3-SibSp_bin_1', 'Age_bin_3-Parch_bin_0', 'Age_bin_3-Fare_bin_0', 'Age_bin_3-Fare_bin_1', 'Age_bin_4-SibSp_bin_0', 'Age_bin_4-SibSp_bin_1', 'Age_bin_4-Parch_bin_0', 'Age_bin_4-Fare_bin_0', 'Age_bin_5-SibSp_bin_0', 'Age_bin_5-SibSp_bin_1', 'Age_bin_5-Parch_bin_0', 'Age_bin_5-Fare_bin_0', 'Age_bin_6-SibSp_bin_0', 'Age_bin_6-Parch_bin_0', 'Age_bin_6-Fare_bin_0', 'Age_bin_7-SibSp_bin_0', 'Age_bin_7-Parch_bin_0', 'SibSp_bin_0-Parch_bin_0', 'SibSp_bin_0-Parch_bin_1', 'SibSp_bin_0-Parch_bin_3', 'SibSp_bin_0-Fare_bin_0', 'SibSp_bin_0-Fare_bin_1', 'SibSp_bin_1-Parch_bin_0', 'SibSp_bin_1-Parch_bin_1', 'SibSp_bin_1-Parch_bin_3', 'SibSp_bin_1-Fare_bin_0', 'SibSp_bin_1-Fare_bin_1', 'SibSp_bin_2-Fare_bin_0', 'SibSp_bin_4-Fare_bin_0', 'Parch_bin_0-Fare_bin_0', 'Parch_bin_0-Fare_bin_1', 'Parch_bin_1-Fare_bin_0', 'Parch_bin_1-Fare_bin_1', 'Parch_bin_3-Fare_bin_0']}
+  ('used columns', ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin', 'Sex_int', 'Embarked_int'], 'Survived') 
+  ('######### Train model: ###########################################################',) 
+  ("{'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'binary', 'n_estimators': 3000, 'learning_rate': 0.001, 'boosting_type': 'gbdt', 'early_stopping_rounds': 5}, 'post_process_fun': <function titanic_lightgbm.<locals>.post_process_fun at 0x000001B33113B158>, 'pre_process_pars': {'y_norm_fun': <function titanic_lightgbm.<locals>.pre_process_fun at 0x000001B33113B7B8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline/'}}, 'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score']}, 'data_pars': {'n_sample': 1000, 'cols_input_type': {'coly': 'Survived', 'colid': 'PassengerId', 'colcat",) 
+  ('#### Data preparation #############################################################',) 
+  ((891, 169),) 
+------------data_pars--------------------- {'n_sample': 1000, 'cols_input_type': {'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 2, 'ymin': -1}, 'coly': 'Survived', 'cols_model': ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin', 'Sex_int', 'Embarked_int']}
+  ('dfX',              Pclass_bin  Age_bin  SibSp_bin  ...  Fare_bin  Sex_int  Embarked_int
+PassengerId                                  ...                                 
+34                    4        8          0  ...         0        0             0
+131                   9        4          0  ...         0        0             1
+42                    4        3          1  ...         0        1             0
+287                   9        3          0  ...         0        0             0
+24                    0        3          0  ...         0        0             0
+...                 ...      ...        ...  ...       ...      ...           ...
+128                   9        2          0  ...         0        0             0
+631                   0        9          0  ...         0        0             0
+214                   4        3          0  ...         0        0             0
+616                   4        2          1  ...         1        1             0
+379                   9        2          0  ...         0        0             1
+
+[891 rows x 7 columns]) 
+  ('dfy', PassengerId
+34     0
+131    0
+42     0
+287    1
+24     1
+      ..
+128    1
+631    1
+214    0
+616    1
+379    0
+Name: Survived, Length: 891, dtype: int64) 
+  ('#### Model Instance ##########################################################',) 
+  (<module 'models.model_sklearn' from 'D:\\_devs\\Python01\\gitdev\\dsa2\\source\\models\\model_sklearn.py'>,) 
+<class 'lightgbm.sklearn.LGBMClassifier'> LGBMClassifier(early_stopping_rounds=5, learning_rate=0.001, n_estimators=3000,
+               objective='binary')
+(534, 7) LGBMClassifier(early_stopping_rounds=5, learning_rate=0.001, n_estimators=3000,
+               objective='binary')
+[1]	valid_0's binary_logloss: 0.654918
+Training until validation scores don't improve for 5 rounds
+[2]	valid_0's binary_logloss: 0.654528
+[3]	valid_0's binary_logloss: 0.654138
+[4]	valid_0's binary_logloss: 0.65375
+[5]	valid_0's binary_logloss: 0.653363
+[6]	valid_0's binary_logloss: 0.652976
+[7]	valid_0's binary_logloss: 0.65259
+[8]	valid_0's binary_logloss: 0.652206
+[9]	valid_0's binary_logloss: 0.651822
+[10]	valid_0's binary_logloss: 0.651439
+[11]	valid_0's binary_logloss: 0.651057
+[12]	valid_0's binary_logloss: 0.650676
+[13]	valid_0's binary_logloss: 0.650295
+[14]	valid_0's binary_logloss: 0.649916
+[15]	valid_0's binary_logloss: 0.649537
+[16]	valid_0's binary_logloss: 0.64916
+[17]	valid_0's binary_logloss: 0.648783
+[18]	valid_0's binary_logloss: 0.648407
+[19]	valid_0's binary_logloss: 0.648032
+[20]	valid_0's binary_logloss: 0.647658
+[21]	valid_0's binary_logloss: 0.647285
+[22]	valid_0's binary_logloss: 0.646912
+[23]	valid_0's binary_logloss: 0.646541
+[24]	valid_0's binary_logloss: 0.64617
+[25]	valid_0's binary_logloss: 0.6458
+[26]	valid_0's binary_logloss: 0.645431
+[27]	valid_0's binary_logloss: 0.645063
+[28]	valid_0's binary_logloss: 0.644696
+[29]	valid_0's binary_logloss: 0.64433
+[30]	valid_0's binary_logloss: 0.643964
+[31]	valid_0's binary_logloss: 0.643599
+[32]	valid_0's binary_logloss: 0.643235
+[33]	valid_0's binary_logloss: 0.642872
+[34]	valid_0's binary_logloss: 0.64251
+[35]	valid_0's binary_logloss: 0.642149
+[36]	valid_0's binary_logloss: 0.641788
+[37]	valid_0's binary_logloss: 0.641428
+[38]	valid_0's binary_logloss: 0.64107
+[39]	valid_0's binary_logloss: 0.640711
+[40]	valid_0's binary_logloss: 0.640354
+[41]	valid_0's binary_logloss: 0.639998
+[42]	valid_0's binary_logloss: 0.639642
+[43]	valid_0's binary_logloss: 0.639287
+[44]	valid_0's binary_logloss: 0.638933
+[45]	valid_0's binary_logloss: 0.63858
+[46]	valid_0's binary_logloss: 0.638227
+[47]	valid_0's binary_logloss: 0.637876
+[48]	valid_0's binary_logloss: 0.637525
+[49]	valid_0's binary_logloss: 0.637175
+[50]	valid_0's binary_logloss: 0.636826
+[51]	valid_0's binary_logloss: 0.636477
+[52]	valid_0's binary_logloss: 0.636129
+[53]	valid_0's binary_logloss: 0.635782
+[54]	valid_0's binary_logloss: 0.635436
+[55]	valid_0's binary_logloss: 0.635091
+[56]	valid_0's binary_logloss: 0.634746
+[57]	valid_0's binary_logloss: 0.634403
+[58]	valid_0's binary_logloss: 0.63406
+[59]	valid_0's binary_logloss: 0.633717
+[60]	valid_0's binary_logloss: 0.633376
+[61]	valid_0's binary_logloss: 0.633035
+[62]	valid_0's binary_logloss: 0.632695
+[63]	valid_0's binary_logloss: 0.632356
+[64]	valid_0's binary_logloss: 0.632018
+[65]	valid_0's binary_logloss: 0.63168
+[66]	valid_0's binary_logloss: 0.631343
+[67]	valid_0's binary_logloss: 0.631007
+[68]	valid_0's binary_logloss: 0.630672
+[69]	valid_0's binary_logloss: 0.630337
+[70]	valid_0's binary_logloss: 0.630003
+[71]	valid_0's binary_logloss: 0.62967
+[72]	valid_0's binary_logloss: 0.629337
+[73]	valid_0's binary_logloss: 0.629006
+[74]	valid_0's binary_logloss: 0.628672
+[75]	valid_0's binary_logloss: 0.628338
+[76]	valid_0's binary_logloss: 0.628
+[77]	valid_0's binary_logloss: 0.627668
+[78]	valid_0's binary_logloss: 0.62734
+[79]	valid_0's binary_logloss: 0.627004
+[80]	valid_0's binary_logloss: 0.626674
+[81]	valid_0's binary_logloss: 0.62634
+[82]	valid_0's binary_logloss: 0.626011
+[83]	valid_0's binary_logloss: 0.625679
+[84]	valid_0's binary_logloss: 0.625352
+[85]	valid_0's binary_logloss: 0.62502
+[86]	valid_0's binary_logloss: 0.624695
+[87]	valid_0's binary_logloss: 0.624364
+[88]	valid_0's binary_logloss: 0.62404
+[89]	valid_0's binary_logloss: 0.623712
+[90]	valid_0's binary_logloss: 0.623389
+[91]	valid_0's binary_logloss: 0.623062
+[92]	valid_0's binary_logloss: 0.622741
+[93]	valid_0's binary_logloss: 0.622418
+[94]	valid_0's binary_logloss: 0.622098
+[95]	valid_0's binary_logloss: 0.621774
+[96]	valid_0's binary_logloss: 0.621455
+[97]	valid_0's binary_logloss: 0.621132
+[98]	valid_0's binary_logloss: 0.620815
+[99]	valid_0's binary_logloss: 0.620494
+[100]	valid_0's binary_logloss: 0.620178
+[101]	valid_0's binary_logloss: 0.619858
+[102]	valid_0's binary_logloss: 0.619543
+[103]	valid_0's binary_logloss: 0.619225
+[104]	valid_0's binary_logloss: 0.618912
+[105]	valid_0's binary_logloss: 0.618594
+[106]	valid_0's binary_logloss: 0.618283
+[107]	valid_0's binary_logloss: 0.617975
+[108]	valid_0's binary_logloss: 0.617659
+[109]	valid_0's binary_logloss: 0.61735
+[110]	valid_0's binary_logloss: 0.617036
+[111]	valid_0's binary_logloss: 0.616727
+[112]	valid_0's binary_logloss: 0.616415
+[113]	valid_0's binary_logloss: 0.616108
+[114]	valid_0's binary_logloss: 0.615796
+[115]	valid_0's binary_logloss: 0.615491
+[116]	valid_0's binary_logloss: 0.615181
+[117]	valid_0's binary_logloss: 0.614876
+[118]	valid_0's binary_logloss: 0.614568
+[119]	valid_0's binary_logloss: 0.614265
+[120]	valid_0's binary_logloss: 0.613957
+[121]	valid_0's binary_logloss: 0.613655
+[122]	valid_0's binary_logloss: 0.613352
+[123]	valid_0's binary_logloss: 0.613052
+[124]	valid_0's binary_logloss: 0.612747
+[125]	valid_0's binary_logloss: 0.612448
+[126]	valid_0's binary_logloss: 0.612144
+[127]	valid_0's binary_logloss: 0.611847
+[128]	valid_0's binary_logloss: 0.611544
+[129]	valid_0's binary_logloss: 0.611248
+[130]	valid_0's binary_logloss: 0.610947
+[131]	valid_0's binary_logloss: 0.610651
+[132]	valid_0's binary_logloss: 0.610352
+[133]	valid_0's binary_logloss: 0.610058
+[134]	valid_0's binary_logloss: 0.609759
+[135]	valid_0's binary_logloss: 0.609466
+[136]	valid_0's binary_logloss: 0.609169
+[137]	valid_0's binary_logloss: 0.608881
+[138]	valid_0's binary_logloss: 0.60859
+[139]	valid_0's binary_logloss: 0.608294
+[140]	valid_0's binary_logloss: 0.608005
+[141]	valid_0's binary_logloss: 0.607711
+[142]	valid_0's binary_logloss: 0.607422
+[143]	valid_0's binary_logloss: 0.607129
+[144]	valid_0's binary_logloss: 0.606842
+[145]	valid_0's binary_logloss: 0.60655
+[146]	valid_0's binary_logloss: 0.606264
+[147]	valid_0's binary_logloss: 0.605974
+[148]	valid_0's binary_logloss: 0.605689
+[149]	valid_0's binary_logloss: 0.6054
+[150]	valid_0's binary_logloss: 0.605116
+[151]	valid_0's binary_logloss: 0.604831
+[152]	valid_0's binary_logloss: 0.604549
+[153]	valid_0's binary_logloss: 0.604262
+[154]	valid_0's binary_logloss: 0.603981
+[155]	valid_0's binary_logloss: 0.603695
+[156]	valid_0's binary_logloss: 0.603415
+[157]	valid_0's binary_logloss: 0.603131
+[158]	valid_0's binary_logloss: 0.602852
+[159]	valid_0's binary_logloss: 0.602568
+[160]	valid_0's binary_logloss: 0.602291
+[161]	valid_0's binary_logloss: 0.602009
+[162]	valid_0's binary_logloss: 0.601732
+[163]	valid_0's binary_logloss: 0.601451
+[164]	valid_0's binary_logloss: 0.601176
+[165]	valid_0's binary_logloss: 0.600896
+[166]	valid_0's binary_logloss: 0.600625
+[167]	valid_0's binary_logloss: 0.600352
+[168]	valid_0's binary_logloss: 0.600073
+[169]	valid_0's binary_logloss: 0.599801
+[170]	valid_0's binary_logloss: 0.599524
+[171]	valid_0's binary_logloss: 0.599253
+[172]	valid_0's binary_logloss: 0.598977
+[173]	valid_0's binary_logloss: 0.598707
+[174]	valid_0's binary_logloss: 0.598432
+[175]	valid_0's binary_logloss: 0.598163
+[176]	valid_0's binary_logloss: 0.597889
+[177]	valid_0's binary_logloss: 0.597622
+[178]	valid_0's binary_logloss: 0.597349
+[179]	valid_0's binary_logloss: 0.597082
+[180]	valid_0's binary_logloss: 0.596811
+[181]	valid_0's binary_logloss: 0.596548
+[182]	valid_0's binary_logloss: 0.596278
+[183]	valid_0's binary_logloss: 0.596014
+[184]	valid_0's binary_logloss: 0.595744
+[185]	valid_0's binary_logloss: 0.595481
+[186]	valid_0's binary_logloss: 0.595213
+[187]	valid_0's binary_logloss: 0.594951
+[188]	valid_0's binary_logloss: 0.594684
+[189]	valid_0's binary_logloss: 0.594422
+[190]	valid_0's binary_logloss: 0.594157
+[191]	valid_0's binary_logloss: 0.593896
+[192]	valid_0's binary_logloss: 0.593632
+[193]	valid_0's binary_logloss: 0.593373
+[194]	valid_0's binary_logloss: 0.593109
+[195]	valid_0's binary_logloss: 0.592854
+[196]	valid_0's binary_logloss: 0.592591
+[197]	valid_0's binary_logloss: 0.592334
+[198]	valid_0's binary_logloss: 0.592078
+[199]	valid_0's binary_logloss: 0.591817
+[200]	valid_0's binary_logloss: 0.591561
+[201]	valid_0's binary_logloss: 0.591301
+[202]	valid_0's binary_logloss: 0.591047
+[203]	valid_0's binary_logloss: 0.590788
+[204]	valid_0's binary_logloss: 0.590535
+[205]	valid_0's binary_logloss: 0.590277
+[206]	valid_0's binary_logloss: 0.590025
+[207]	valid_0's binary_logloss: 0.589768
+[208]	valid_0's binary_logloss: 0.589517
+[209]	valid_0's binary_logloss: 0.589261
+[210]	valid_0's binary_logloss: 0.589014
+[211]	valid_0's binary_logloss: 0.588759
+[212]	valid_0's binary_logloss: 0.58851
+[213]	valid_0's binary_logloss: 0.588256
+[214]	valid_0's binary_logloss: 0.588008
+[215]	valid_0's binary_logloss: 0.587755
+[216]	valid_0's binary_logloss: 0.587508
+[217]	valid_0's binary_logloss: 0.587257
+[218]	valid_0's binary_logloss: 0.587011
+[219]	valid_0's binary_logloss: 0.58676
+[220]	valid_0's binary_logloss: 0.586515
+[221]	valid_0's binary_logloss: 0.586265
+[222]	valid_0's binary_logloss: 0.586021
+[223]	valid_0's binary_logloss: 0.585773
+[224]	valid_0's binary_logloss: 0.58553
+[225]	valid_0's binary_logloss: 0.585285
+[226]	valid_0's binary_logloss: 0.585043
+[227]	valid_0's binary_logloss: 0.584801
+[228]	valid_0's binary_logloss: 0.584555
+[229]	valid_0's binary_logloss: 0.584314
+[230]	valid_0's binary_logloss: 0.584069
+[231]	valid_0's binary_logloss: 0.58383
+[232]	valid_0's binary_logloss: 0.583585
+[233]	valid_0's binary_logloss: 0.583347
+[234]	valid_0's binary_logloss: 0.583104
+[235]	valid_0's binary_logloss: 0.582866
+[236]	valid_0's binary_logloss: 0.582624
+[237]	valid_0's binary_logloss: 0.582387
+[238]	valid_0's binary_logloss: 0.582146
+[239]	valid_0's binary_logloss: 0.58191
+[240]	valid_0's binary_logloss: 0.581672
+[241]	valid_0's binary_logloss: 0.581438
+[242]	valid_0's binary_logloss: 0.581198
+[243]	valid_0's binary_logloss: 0.580965
+[244]	valid_0's binary_logloss: 0.580726
+[245]	valid_0's binary_logloss: 0.580493
+[246]	valid_0's binary_logloss: 0.580256
+[247]	valid_0's binary_logloss: 0.580024
+[248]	valid_0's binary_logloss: 0.579787
+[249]	valid_0's binary_logloss: 0.579556
+[250]	valid_0's binary_logloss: 0.579321
+[251]	valid_0's binary_logloss: 0.579091
+[252]	valid_0's binary_logloss: 0.578856
+[253]	valid_0's binary_logloss: 0.578627
+[254]	valid_0's binary_logloss: 0.578393
+[255]	valid_0's binary_logloss: 0.578168
+[256]	valid_0's binary_logloss: 0.577935
+[257]	valid_0's binary_logloss: 0.577708
+[258]	valid_0's binary_logloss: 0.577481
+[259]	valid_0's binary_logloss: 0.57725
+[260]	valid_0's binary_logloss: 0.577024
+[261]	valid_0's binary_logloss: 0.576792
+[262]	valid_0's binary_logloss: 0.576567
+[263]	valid_0's binary_logloss: 0.576337
+[264]	valid_0's binary_logloss: 0.576113
+[265]	valid_0's binary_logloss: 0.575883
+[266]	valid_0's binary_logloss: 0.57566
+[267]	valid_0's binary_logloss: 0.575432
+[268]	valid_0's binary_logloss: 0.57521
+[269]	valid_0's binary_logloss: 0.574983
+[270]	valid_0's binary_logloss: 0.574763
+[271]	valid_0's binary_logloss: 0.574537
+[272]	valid_0's binary_logloss: 0.574317
+[273]	valid_0's binary_logloss: 0.574091
+[274]	valid_0's binary_logloss: 0.57387
+[275]	valid_0's binary_logloss: 0.573646
+[276]	valid_0's binary_logloss: 0.573428
+[277]	valid_0's binary_logloss: 0.573204
+[278]	valid_0's binary_logloss: 0.572985
+[279]	valid_0's binary_logloss: 0.572763
+[280]	valid_0's binary_logloss: 0.572546
+[281]	valid_0's binary_logloss: 0.572324
+[282]	valid_0's binary_logloss: 0.572107
+[283]	valid_0's binary_logloss: 0.571886
+[284]	valid_0's binary_logloss: 0.571671
+[285]	valid_0's binary_logloss: 0.571454
+[286]	valid_0's binary_logloss: 0.571239
+[287]	valid_0's binary_logloss: 0.571019
+[288]	valid_0's binary_logloss: 0.570805
+[289]	valid_0's binary_logloss: 0.570592
+[290]	valid_0's binary_logloss: 0.570375
+[291]	valid_0's binary_logloss: 0.570161
+[292]	valid_0's binary_logloss: 0.569944
+[293]	valid_0's binary_logloss: 0.569733
+[294]	valid_0's binary_logloss: 0.569517
+[295]	valid_0's binary_logloss: 0.569305
+[296]	valid_0's binary_logloss: 0.56909
+[297]	valid_0's binary_logloss: 0.56888
+[298]	valid_0's binary_logloss: 0.568666
+[299]	valid_0's binary_logloss: 0.568457
+[300]	valid_0's binary_logloss: 0.568245
+[301]	valid_0's binary_logloss: 0.568036
+[302]	valid_0's binary_logloss: 0.567824
+[303]	valid_0's binary_logloss: 0.567616
+[304]	valid_0's binary_logloss: 0.567403
+[305]	valid_0's binary_logloss: 0.567196
+[306]	valid_0's binary_logloss: 0.566985
+[307]	valid_0's binary_logloss: 0.56678
+[308]	valid_0's binary_logloss: 0.566569
+[309]	valid_0's binary_logloss: 0.566363
+[310]	valid_0's binary_logloss: 0.566153
+[311]	valid_0's binary_logloss: 0.56595
+[312]	valid_0's binary_logloss: 0.56574
+[313]	valid_0's binary_logloss: 0.565537
+[314]	valid_0's binary_logloss: 0.565328
+[315]	valid_0's binary_logloss: 0.565129
+[316]	valid_0's binary_logloss: 0.564921
+[317]	valid_0's binary_logloss: 0.56472
+[318]	valid_0's binary_logloss: 0.564517
+[319]	valid_0's binary_logloss: 0.564311
+[320]	valid_0's binary_logloss: 0.564111
+[321]	valid_0's binary_logloss: 0.563906
+[322]	valid_0's binary_logloss: 0.563706
+[323]	valid_0's binary_logloss: 0.563501
+[324]	valid_0's binary_logloss: 0.563301
+[325]	valid_0's binary_logloss: 0.563098
+[326]	valid_0's binary_logloss: 0.5629
+[327]	valid_0's binary_logloss: 0.562696
+[328]	valid_0's binary_logloss: 0.562498
+[329]	valid_0's binary_logloss: 0.562297
+[330]	valid_0's binary_logloss: 0.562103
+[331]	valid_0's binary_logloss: 0.561901
+[332]	valid_0's binary_logloss: 0.561705
+[333]	valid_0's binary_logloss: 0.561504
+[334]	valid_0's binary_logloss: 0.56131
+[335]	valid_0's binary_logloss: 0.561109
+[336]	valid_0's binary_logloss: 0.560915
+[337]	valid_0's binary_logloss: 0.560715
+[338]	valid_0's binary_logloss: 0.560522
+[339]	valid_0's binary_logloss: 0.560324
+[340]	valid_0's binary_logloss: 0.560131
+[341]	valid_0's binary_logloss: 0.559934
+[342]	valid_0's binary_logloss: 0.559741
+[343]	valid_0's binary_logloss: 0.559544
+[344]	valid_0's binary_logloss: 0.559353
+[345]	valid_0's binary_logloss: 0.559157
+[346]	valid_0's binary_logloss: 0.55897
+[347]	valid_0's binary_logloss: 0.558773
+[348]	valid_0's binary_logloss: 0.558584
+[349]	valid_0's binary_logloss: 0.558395
+[350]	valid_0's binary_logloss: 0.5582
+[351]	valid_0's binary_logloss: 0.558012
+[352]	valid_0's binary_logloss: 0.557818
+[353]	valid_0's binary_logloss: 0.55763
+[354]	valid_0's binary_logloss: 0.557437
+[355]	valid_0's binary_logloss: 0.55725
+[356]	valid_0's binary_logloss: 0.557059
+[357]	valid_0's binary_logloss: 0.556871
+[358]	valid_0's binary_logloss: 0.55668
+[359]	valid_0's binary_logloss: 0.556495
+[360]	valid_0's binary_logloss: 0.556305
+[361]	valid_0's binary_logloss: 0.556123
+[362]	valid_0's binary_logloss: 0.555931
+[363]	valid_0's binary_logloss: 0.555747
+[364]	valid_0's binary_logloss: 0.555559
+[365]	valid_0's binary_logloss: 0.555376
+[366]	valid_0's binary_logloss: 0.55519
+[367]	valid_0's binary_logloss: 0.555006
+[368]	valid_0's binary_logloss: 0.554819
+[369]	valid_0's binary_logloss: 0.55464
+[370]	valid_0's binary_logloss: 0.554453
+[371]	valid_0's binary_logloss: 0.554272
+[372]	valid_0's binary_logloss: 0.554087
+[373]	valid_0's binary_logloss: 0.553907
+[374]	valid_0's binary_logloss: 0.553724
+[375]	valid_0's binary_logloss: 0.553544
+[376]	valid_0's binary_logloss: 0.55336
+[377]	valid_0's binary_logloss: 0.553182
+[378]	valid_0's binary_logloss: 0.553003
+[379]	valid_0's binary_logloss: 0.55282
+[380]	valid_0's binary_logloss: 0.552645
+[381]	valid_0's binary_logloss: 0.552462
+[382]	valid_0's binary_logloss: 0.552286
+[383]	valid_0's binary_logloss: 0.552104
+[384]	valid_0's binary_logloss: 0.551927
+[385]	valid_0's binary_logloss: 0.551748
+[386]	valid_0's binary_logloss: 0.551572
+[387]	valid_0's binary_logloss: 0.551392
+[388]	valid_0's binary_logloss: 0.551218
+[389]	valid_0's binary_logloss: 0.551038
+[390]	valid_0's binary_logloss: 0.550863
+[391]	valid_0's binary_logloss: 0.550687
+[392]	valid_0's binary_logloss: 0.550513
+[393]	valid_0's binary_logloss: 0.550335
+[394]	valid_0's binary_logloss: 0.550162
+[395]	valid_0's binary_logloss: 0.549984
+[396]	valid_0's binary_logloss: 0.549814
+[397]	valid_0's binary_logloss: 0.549637
+[398]	valid_0's binary_logloss: 0.549465
+[399]	valid_0's binary_logloss: 0.54929
+[400]	valid_0's binary_logloss: 0.549119
+[401]	valid_0's binary_logloss: 0.548943
+[402]	valid_0's binary_logloss: 0.548775
+[403]	valid_0's binary_logloss: 0.5486
+[404]	valid_0's binary_logloss: 0.548431
+[405]	valid_0's binary_logloss: 0.548256
+[406]	valid_0's binary_logloss: 0.548087
+[407]	valid_0's binary_logloss: 0.547916
+[408]	valid_0's binary_logloss: 0.547747
+[409]	valid_0's binary_logloss: 0.547579
+[410]	valid_0's binary_logloss: 0.547407
+[411]	valid_0's binary_logloss: 0.54724
+[412]	valid_0's binary_logloss: 0.54707
+[413]	valid_0's binary_logloss: 0.546902
+[414]	valid_0's binary_logloss: 0.546731
+[415]	valid_0's binary_logloss: 0.546566
+[416]	valid_0's binary_logloss: 0.546395
+[417]	valid_0's binary_logloss: 0.546229
+[418]	valid_0's binary_logloss: 0.546061
+[419]	valid_0's binary_logloss: 0.545896
+[420]	valid_0's binary_logloss: 0.545726
+[421]	valid_0's binary_logloss: 0.545563
+[422]	valid_0's binary_logloss: 0.545394
+[423]	valid_0's binary_logloss: 0.545233
+[424]	valid_0's binary_logloss: 0.545064
+[425]	valid_0's binary_logloss: 0.544901
+[426]	valid_0's binary_logloss: 0.544736
+[427]	valid_0's binary_logloss: 0.544572
+[428]	valid_0's binary_logloss: 0.544404
+[429]	valid_0's binary_logloss: 0.544245
+[430]	valid_0's binary_logloss: 0.544078
+[431]	valid_0's binary_logloss: 0.543919
+[432]	valid_0's binary_logloss: 0.543754
+[433]	valid_0's binary_logloss: 0.543591
+[434]	valid_0's binary_logloss: 0.543428
+[435]	valid_0's binary_logloss: 0.543268
+[436]	valid_0's binary_logloss: 0.543104
+[437]	valid_0's binary_logloss: 0.542946
+[438]	valid_0's binary_logloss: 0.542782
+[439]	valid_0's binary_logloss: 0.542622
+[440]	valid_0's binary_logloss: 0.542462
+[441]	valid_0's binary_logloss: 0.542303
+[442]	valid_0's binary_logloss: 0.542143
+[443]	valid_0's binary_logloss: 0.541985
+[444]	valid_0's binary_logloss: 0.541823
+[445]	valid_0's binary_logloss: 0.541667
+[446]	valid_0's binary_logloss: 0.541505
+[447]	valid_0's binary_logloss: 0.541348
+[448]	valid_0's binary_logloss: 0.54119
+[449]	valid_0's binary_logloss: 0.541034
+[450]	valid_0's binary_logloss: 0.540876
+[451]	valid_0's binary_logloss: 0.54072
+[452]	valid_0's binary_logloss: 0.54056
+[453]	valid_0's binary_logloss: 0.540408
+[454]	valid_0's binary_logloss: 0.540248
+[455]	valid_0's binary_logloss: 0.540094
+[456]	valid_0's binary_logloss: 0.539938
+[457]	valid_0's binary_logloss: 0.539784
+[458]	valid_0's binary_logloss: 0.539628
+[459]	valid_0's binary_logloss: 0.539475
+[460]	valid_0's binary_logloss: 0.539317
+[461]	valid_0's binary_logloss: 0.539168
+[462]	valid_0's binary_logloss: 0.53901
+[463]	valid_0's binary_logloss: 0.538859
+[464]	valid_0's binary_logloss: 0.538704
+[465]	valid_0's binary_logloss: 0.538553
+[466]	valid_0's binary_logloss: 0.538397
+[467]	valid_0's binary_logloss: 0.538249
+[468]	valid_0's binary_logloss: 0.538094
+[469]	valid_0's binary_logloss: 0.537946
+[470]	valid_0's binary_logloss: 0.53779
+[471]	valid_0's binary_logloss: 0.537641
+[472]	valid_0's binary_logloss: 0.53749
+[473]	valid_0's binary_logloss: 0.537341
+[474]	valid_0's binary_logloss: 0.537187
+[475]	valid_0's binary_logloss: 0.537042
+[476]	valid_0's binary_logloss: 0.536889
+[477]	valid_0's binary_logloss: 0.536743
+[478]	valid_0's binary_logloss: 0.53659
+[479]	valid_0's binary_logloss: 0.536443
+[480]	valid_0's binary_logloss: 0.536294
+[481]	valid_0's binary_logloss: 0.536147
+[482]	valid_0's binary_logloss: 0.535996
+[483]	valid_0's binary_logloss: 0.535852
+[484]	valid_0's binary_logloss: 0.535701
+[485]	valid_0's binary_logloss: 0.535558
+[486]	valid_0's binary_logloss: 0.535407
+[487]	valid_0's binary_logloss: 0.535263
+[488]	valid_0's binary_logloss: 0.535116
+[489]	valid_0's binary_logloss: 0.534972
+[490]	valid_0's binary_logloss: 0.534822
+[491]	valid_0's binary_logloss: 0.53468
+[492]	valid_0's binary_logloss: 0.534532
+[493]	valid_0's binary_logloss: 0.534391
+[494]	valid_0's binary_logloss: 0.534243
+[495]	valid_0's binary_logloss: 0.5341
+[496]	valid_0's binary_logloss: 0.533956
+[497]	valid_0's binary_logloss: 0.533812
+[498]	valid_0's binary_logloss: 0.533666
+[499]	valid_0's binary_logloss: 0.533527
+[500]	valid_0's binary_logloss: 0.533381
+[501]	valid_0's binary_logloss: 0.533242
+[502]	valid_0's binary_logloss: 0.533097
+[503]	valid_0's binary_logloss: 0.532956
+[504]	valid_0's binary_logloss: 0.532812
+[505]	valid_0's binary_logloss: 0.532673
+[506]	valid_0's binary_logloss: 0.532528
+[507]	valid_0's binary_logloss: 0.532391
+[508]	valid_0's binary_logloss: 0.532247
+[509]	valid_0's binary_logloss: 0.532111
+[510]	valid_0's binary_logloss: 0.531968
+[511]	valid_0's binary_logloss: 0.531829
+[512]	valid_0's binary_logloss: 0.531688
+[513]	valid_0's binary_logloss: 0.53155
+[514]	valid_0's binary_logloss: 0.531408
+[515]	valid_0's binary_logloss: 0.531273
+[516]	valid_0's binary_logloss: 0.531131
+[517]	valid_0's binary_logloss: 0.530997
+[518]	valid_0's binary_logloss: 0.530856
+[519]	valid_0's binary_logloss: 0.530719
+[520]	valid_0's binary_logloss: 0.53058
+[521]	valid_0's binary_logloss: 0.530445
+[522]	valid_0's binary_logloss: 0.530305
+[523]	valid_0's binary_logloss: 0.530172
+[524]	valid_0's binary_logloss: 0.530032
+[525]	valid_0's binary_logloss: 0.5299
+[526]	valid_0's binary_logloss: 0.52976
+[527]	valid_0's binary_logloss: 0.529626
+[528]	valid_0's binary_logloss: 0.52949
+[529]	valid_0's binary_logloss: 0.529356
+[530]	valid_0's binary_logloss: 0.529221
+[531]	valid_0's binary_logloss: 0.529088
+[532]	valid_0's binary_logloss: 0.52895
+[533]	valid_0's binary_logloss: 0.52882
+[534]	valid_0's binary_logloss: 0.528682
+[535]	valid_0's binary_logloss: 0.52855
+[536]	valid_0's binary_logloss: 0.528415
+[537]	valid_0's binary_logloss: 0.528284
+[538]	valid_0's binary_logloss: 0.52815
+[539]	valid_0's binary_logloss: 0.52802
+[540]	valid_0's binary_logloss: 0.527884
+[541]	valid_0's binary_logloss: 0.527756
+[542]	valid_0's binary_logloss: 0.52762
+[543]	valid_0's binary_logloss: 0.52749
+[544]	valid_0's binary_logloss: 0.527358
+[545]	valid_0's binary_logloss: 0.527228
+[546]	valid_0's binary_logloss: 0.527096
+[547]	valid_0's binary_logloss: 0.526967
+[548]	valid_0's binary_logloss: 0.526834
+[549]	valid_0's binary_logloss: 0.526707
+[550]	valid_0's binary_logloss: 0.526573
+[551]	valid_0's binary_logloss: 0.526445
+[552]	valid_0's binary_logloss: 0.526315
+[553]	valid_0's binary_logloss: 0.526187
+[554]	valid_0's binary_logloss: 0.526058
+[555]	valid_0's binary_logloss: 0.525931
+[556]	valid_0's binary_logloss: 0.5258
+[557]	valid_0's binary_logloss: 0.525675
+[558]	valid_0's binary_logloss: 0.525543
+[559]	valid_0's binary_logloss: 0.525419
+[560]	valid_0's binary_logloss: 0.525289
+[561]	valid_0's binary_logloss: 0.525163
+[562]	valid_0's binary_logloss: 0.525035
+[563]	valid_0's binary_logloss: 0.52491
+[564]	valid_0's binary_logloss: 0.524781
+[565]	valid_0's binary_logloss: 0.524659
+[566]	valid_0's binary_logloss: 0.524529
+[567]	valid_0's binary_logloss: 0.524406
+[568]	valid_0's binary_logloss: 0.524278
+[569]	valid_0's binary_logloss: 0.524154
+[570]	valid_0's binary_logloss: 0.524028
+[571]	valid_0's binary_logloss: 0.523905
+[572]	valid_0's binary_logloss: 0.523777
+[573]	valid_0's binary_logloss: 0.523657
+[574]	valid_0's binary_logloss: 0.523529
+[575]	valid_0's binary_logloss: 0.523408
+[576]	valid_0's binary_logloss: 0.523282
+[577]	valid_0's binary_logloss: 0.52316
+[578]	valid_0's binary_logloss: 0.523036
+[579]	valid_0's binary_logloss: 0.522915
+[580]	valid_0's binary_logloss: 0.522791
+[581]	valid_0's binary_logloss: 0.52267
+[582]	valid_0's binary_logloss: 0.522545
+[583]	valid_0's binary_logloss: 0.522427
+[584]	valid_0's binary_logloss: 0.522301
+[585]	valid_0's binary_logloss: 0.522181
+[586]	valid_0's binary_logloss: 0.522059
+[587]	valid_0's binary_logloss: 0.521939
+[588]	valid_0's binary_logloss: 0.521818
+[589]	valid_0's binary_logloss: 0.521699
+[590]	valid_0's binary_logloss: 0.521575
+[591]	valid_0's binary_logloss: 0.521459
+[592]	valid_0's binary_logloss: 0.521336
+[593]	valid_0's binary_logloss: 0.521219
+[594]	valid_0's binary_logloss: 0.521096
+[595]	valid_0's binary_logloss: 0.520978
+[596]	valid_0's binary_logloss: 0.520859
+[597]	valid_0's binary_logloss: 0.520742
+[598]	valid_0's binary_logloss: 0.52062
+[599]	valid_0's binary_logloss: 0.520505
+[600]	valid_0's binary_logloss: 0.520384
+[601]	valid_0's binary_logloss: 0.52027
+[602]	valid_0's binary_logloss: 0.520149
+[603]	valid_0's binary_logloss: 0.520032
+[604]	valid_0's binary_logloss: 0.519914
+[605]	valid_0's binary_logloss: 0.519799
+[606]	valid_0's binary_logloss: 0.519681
+[607]	valid_0's binary_logloss: 0.519566
+[608]	valid_0's binary_logloss: 0.519447
+[609]	valid_0's binary_logloss: 0.519334
+[610]	valid_0's binary_logloss: 0.519216
+[611]	valid_0's binary_logloss: 0.519102
+[612]	valid_0's binary_logloss: 0.518984
+[613]	valid_0's binary_logloss: 0.51887
+[614]	valid_0's binary_logloss: 0.518754
+[615]	valid_0's binary_logloss: 0.518641
+[616]	valid_0's binary_logloss: 0.518523
+[617]	valid_0's binary_logloss: 0.518413
+[618]	valid_0's binary_logloss: 0.518296
+[619]	valid_0's binary_logloss: 0.518186
+[620]	valid_0's binary_logloss: 0.518068
+[621]	valid_0's binary_logloss: 0.517957
+[622]	valid_0's binary_logloss: 0.517842
+[623]	valid_0's binary_logloss: 0.51773
+[624]	valid_0's binary_logloss: 0.517614
+[625]	valid_0's binary_logloss: 0.517505
+[626]	valid_0's binary_logloss: 0.51739
+[627]	valid_0's binary_logloss: 0.517281
+[628]	valid_0's binary_logloss: 0.517166
+[629]	valid_0's binary_logloss: 0.517056
+[630]	valid_0's binary_logloss: 0.516943
+[631]	valid_0's binary_logloss: 0.516834
+[632]	valid_0's binary_logloss: 0.516722
+[633]	valid_0's binary_logloss: 0.516611
+[634]	valid_0's binary_logloss: 0.516497
+[635]	valid_0's binary_logloss: 0.516391
+[636]	valid_0's binary_logloss: 0.516277
+[637]	valid_0's binary_logloss: 0.516168
+[638]	valid_0's binary_logloss: 0.516062
+[639]	valid_0's binary_logloss: 0.51595
+[640]	valid_0's binary_logloss: 0.515844
+[641]	valid_0's binary_logloss: 0.515731
+[642]	valid_0's binary_logloss: 0.515624
+[643]	valid_0's binary_logloss: 0.515513
+[644]	valid_0's binary_logloss: 0.515406
+[645]	valid_0's binary_logloss: 0.515297
+[646]	valid_0's binary_logloss: 0.51519
+[647]	valid_0's binary_logloss: 0.515079
+[648]	valid_0's binary_logloss: 0.514975
+[649]	valid_0's binary_logloss: 0.514864
+[650]	valid_0's binary_logloss: 0.51476
+[651]	valid_0's binary_logloss: 0.514646
+[652]	valid_0's binary_logloss: 0.514537
+[653]	valid_0's binary_logloss: 0.514426
+[654]	valid_0's binary_logloss: 0.514319
+[655]	valid_0's binary_logloss: 0.514206
+[656]	valid_0's binary_logloss: 0.5141
+[657]	valid_0's binary_logloss: 0.513988
+[658]	valid_0's binary_logloss: 0.513881
+[659]	valid_0's binary_logloss: 0.513769
+[660]	valid_0's binary_logloss: 0.513662
+[661]	valid_0's binary_logloss: 0.513556
+[662]	valid_0's binary_logloss: 0.513448
+[663]	valid_0's binary_logloss: 0.513339
+[664]	valid_0's binary_logloss: 0.513232
+[665]	valid_0's binary_logloss: 0.513121
+[666]	valid_0's binary_logloss: 0.513015
+[667]	valid_0's binary_logloss: 0.512909
+[668]	valid_0's binary_logloss: 0.512805
+[669]	valid_0's binary_logloss: 0.512695
+[670]	valid_0's binary_logloss: 0.512589
+[671]	valid_0's binary_logloss: 0.512481
+[672]	valid_0's binary_logloss: 0.512376
+[673]	valid_0's binary_logloss: 0.512269
+[674]	valid_0's binary_logloss: 0.512167
+[675]	valid_0's binary_logloss: 0.512058
+[676]	valid_0's binary_logloss: 0.511956
+[677]	valid_0's binary_logloss: 0.511848
+[678]	valid_0's binary_logloss: 0.511743
+[679]	valid_0's binary_logloss: 0.511636
+[680]	valid_0's binary_logloss: 0.511533
+[681]	valid_0's binary_logloss: 0.511431
+[682]	valid_0's binary_logloss: 0.511328
+[683]	valid_0's binary_logloss: 0.51122
+[684]	valid_0's binary_logloss: 0.511119
+[685]	valid_0's binary_logloss: 0.511012
+[686]	valid_0's binary_logloss: 0.510912
+[687]	valid_0's binary_logloss: 0.510808
+[688]	valid_0's binary_logloss: 0.510707
+[689]	valid_0's binary_logloss: 0.510602
+[690]	valid_0's binary_logloss: 0.5105
+[691]	valid_0's binary_logloss: 0.510396
+[692]	valid_0's binary_logloss: 0.510295
+[693]	valid_0's binary_logloss: 0.510189
+[694]	valid_0's binary_logloss: 0.510094
+[695]	valid_0's binary_logloss: 0.509989
+[696]	valid_0's binary_logloss: 0.50989
+[697]	valid_0's binary_logloss: 0.509786
+[698]	valid_0's binary_logloss: 0.509686
+[699]	valid_0's binary_logloss: 0.509583
+[700]	valid_0's binary_logloss: 0.509487
+[701]	valid_0's binary_logloss: 0.509383
+[702]	valid_0's binary_logloss: 0.509286
+[703]	valid_0's binary_logloss: 0.509182
+[704]	valid_0's binary_logloss: 0.509084
+[705]	valid_0's binary_logloss: 0.508981
+[706]	valid_0's binary_logloss: 0.508883
+[707]	valid_0's binary_logloss: 0.508786
+[708]	valid_0's binary_logloss: 0.508687
+[709]	valid_0's binary_logloss: 0.508587
+[710]	valid_0's binary_logloss: 0.508489
+[711]	valid_0's binary_logloss: 0.508387
+[712]	valid_0's binary_logloss: 0.508291
+[713]	valid_0's binary_logloss: 0.508193
+[714]	valid_0's binary_logloss: 0.508098
+[715]	valid_0's binary_logloss: 0.507997
+[716]	valid_0's binary_logloss: 0.507905
+[717]	valid_0's binary_logloss: 0.507805
+[718]	valid_0's binary_logloss: 0.507714
+[719]	valid_0's binary_logloss: 0.507615
+[720]	valid_0's binary_logloss: 0.507524
+[721]	valid_0's binary_logloss: 0.507423
+[722]	valid_0's binary_logloss: 0.507335
+[723]	valid_0's binary_logloss: 0.507235
+[724]	valid_0's binary_logloss: 0.507146
+[725]	valid_0's binary_logloss: 0.507047
+[726]	valid_0's binary_logloss: 0.506952
+[727]	valid_0's binary_logloss: 0.50686
+[728]	valid_0's binary_logloss: 0.506766
+[729]	valid_0's binary_logloss: 0.506674
+[730]	valid_0's binary_logloss: 0.506581
+[731]	valid_0's binary_logloss: 0.506488
+[732]	valid_0's binary_logloss: 0.506394
+[733]	valid_0's binary_logloss: 0.506302
+[734]	valid_0's binary_logloss: 0.506211
+[735]	valid_0's binary_logloss: 0.506119
+[736]	valid_0's binary_logloss: 0.506027
+[737]	valid_0's binary_logloss: 0.505935
+[738]	valid_0's binary_logloss: 0.505845
+[739]	valid_0's binary_logloss: 0.505753
+[740]	valid_0's binary_logloss: 0.505661
+[741]	valid_0's binary_logloss: 0.505571
+[742]	valid_0's binary_logloss: 0.50548
+[743]	valid_0's binary_logloss: 0.505386
+[744]	valid_0's binary_logloss: 0.505299
+[745]	valid_0's binary_logloss: 0.50521
+[746]	valid_0's binary_logloss: 0.50512
+[747]	valid_0's binary_logloss: 0.505029
+[748]	valid_0's binary_logloss: 0.50494
+[749]	valid_0's binary_logloss: 0.504849
+[750]	valid_0's binary_logloss: 0.504761
+[751]	valid_0's binary_logloss: 0.504671
+[752]	valid_0's binary_logloss: 0.504584
+[753]	valid_0's binary_logloss: 0.504494
+[754]	valid_0's binary_logloss: 0.504405
+[755]	valid_0's binary_logloss: 0.504317
+[756]	valid_0's binary_logloss: 0.504229
+[757]	valid_0's binary_logloss: 0.504141
+[758]	valid_0's binary_logloss: 0.504053
+[759]	valid_0's binary_logloss: 0.503966
+[760]	valid_0's binary_logloss: 0.503873
+[761]	valid_0's binary_logloss: 0.503791
+[762]	valid_0's binary_logloss: 0.503698
+[763]	valid_0's binary_logloss: 0.503615
+[764]	valid_0's binary_logloss: 0.503524
+[765]	valid_0's binary_logloss: 0.503441
+[766]	valid_0's binary_logloss: 0.503351
+[767]	valid_0's binary_logloss: 0.503268
+[768]	valid_0's binary_logloss: 0.503178
+[769]	valid_0's binary_logloss: 0.503096
+[770]	valid_0's binary_logloss: 0.503005
+[771]	valid_0's binary_logloss: 0.502925
+[772]	valid_0's binary_logloss: 0.502834
+[773]	valid_0's binary_logloss: 0.502754
+[774]	valid_0's binary_logloss: 0.502664
+[775]	valid_0's binary_logloss: 0.502584
+[776]	valid_0's binary_logloss: 0.502494
+[777]	valid_0's binary_logloss: 0.502408
+[778]	valid_0's binary_logloss: 0.502325
+[779]	valid_0's binary_logloss: 0.50224
+[780]	valid_0's binary_logloss: 0.502157
+[781]	valid_0's binary_logloss: 0.502071
+[782]	valid_0's binary_logloss: 0.501988
+[783]	valid_0's binary_logloss: 0.501903
+[784]	valid_0's binary_logloss: 0.501821
+[785]	valid_0's binary_logloss: 0.501736
+[786]	valid_0's binary_logloss: 0.501653
+[787]	valid_0's binary_logloss: 0.50157
+[788]	valid_0's binary_logloss: 0.501487
+[789]	valid_0's binary_logloss: 0.501405
+[790]	valid_0's binary_logloss: 0.501322
+[791]	valid_0's binary_logloss: 0.50124
+[792]	valid_0's binary_logloss: 0.501157
+[793]	valid_0's binary_logloss: 0.501074
+[794]	valid_0's binary_logloss: 0.500993
+[795]	valid_0's binary_logloss: 0.500911
+[796]	valid_0's binary_logloss: 0.500825
+[797]	valid_0's binary_logloss: 0.500747
+[798]	valid_0's binary_logloss: 0.500663
+[799]	valid_0's binary_logloss: 0.500585
+[800]	valid_0's binary_logloss: 0.500501
+[801]	valid_0's binary_logloss: 0.500422
+[802]	valid_0's binary_logloss: 0.500337
+[803]	valid_0's binary_logloss: 0.500262
+[804]	valid_0's binary_logloss: 0.500176
+[805]	valid_0's binary_logloss: 0.500101
+[806]	valid_0's binary_logloss: 0.500016
+[807]	valid_0's binary_logloss: 0.499941
+[808]	valid_0's binary_logloss: 0.499857
+[809]	valid_0's binary_logloss: 0.499782
+[810]	valid_0's binary_logloss: 0.499697
+[811]	valid_0's binary_logloss: 0.499622
+[812]	valid_0's binary_logloss: 0.499539
+[813]	valid_0's binary_logloss: 0.499459
+[814]	valid_0's binary_logloss: 0.499382
+[815]	valid_0's binary_logloss: 0.499302
+[816]	valid_0's binary_logloss: 0.499226
+[817]	valid_0's binary_logloss: 0.499149
+[818]	valid_0's binary_logloss: 0.499072
+[819]	valid_0's binary_logloss: 0.498997
+[820]	valid_0's binary_logloss: 0.498924
+[821]	valid_0's binary_logloss: 0.498845
+[822]	valid_0's binary_logloss: 0.498772
+[823]	valid_0's binary_logloss: 0.498693
+[824]	valid_0's binary_logloss: 0.498621
+[825]	valid_0's binary_logloss: 0.498542
+[826]	valid_0's binary_logloss: 0.498471
+[827]	valid_0's binary_logloss: 0.498391
+[828]	valid_0's binary_logloss: 0.498321
+[829]	valid_0's binary_logloss: 0.498241
+[830]	valid_0's binary_logloss: 0.498172
+[831]	valid_0's binary_logloss: 0.498093
+[832]	valid_0's binary_logloss: 0.498019
+[833]	valid_0's binary_logloss: 0.497944
+[834]	valid_0's binary_logloss: 0.497871
+[835]	valid_0's binary_logloss: 0.497797
+[836]	valid_0's binary_logloss: 0.497722
+[837]	valid_0's binary_logloss: 0.49765
+[838]	valid_0's binary_logloss: 0.497576
+[839]	valid_0's binary_logloss: 0.497503
+[840]	valid_0's binary_logloss: 0.497429
+[841]	valid_0's binary_logloss: 0.497357
+[842]	valid_0's binary_logloss: 0.497284
+[843]	valid_0's binary_logloss: 0.497212
+[844]	valid_0's binary_logloss: 0.497138
+[845]	valid_0's binary_logloss: 0.497065
+[846]	valid_0's binary_logloss: 0.496993
+[847]	valid_0's binary_logloss: 0.496921
+[848]	valid_0's binary_logloss: 0.496849
+[849]	valid_0's binary_logloss: 0.496773
+[850]	valid_0's binary_logloss: 0.496706
+[851]	valid_0's binary_logloss: 0.49663
+[852]	valid_0's binary_logloss: 0.496562
+[853]	valid_0's binary_logloss: 0.496487
+[854]	valid_0's binary_logloss: 0.49642
+[855]	valid_0's binary_logloss: 0.496345
+[856]	valid_0's binary_logloss: 0.496278
+[857]	valid_0's binary_logloss: 0.496204
+[858]	valid_0's binary_logloss: 0.496137
+[859]	valid_0's binary_logloss: 0.496063
+[860]	valid_0's binary_logloss: 0.495997
+[861]	valid_0's binary_logloss: 0.495922
+[862]	valid_0's binary_logloss: 0.495857
+[863]	valid_0's binary_logloss: 0.495782
+[864]	valid_0's binary_logloss: 0.495717
+[865]	valid_0's binary_logloss: 0.495643
+[866]	valid_0's binary_logloss: 0.495579
+[867]	valid_0's binary_logloss: 0.495504
+[868]	valid_0's binary_logloss: 0.495436
+[869]	valid_0's binary_logloss: 0.495366
+[870]	valid_0's binary_logloss: 0.495296
+[871]	valid_0's binary_logloss: 0.495228
+[872]	valid_0's binary_logloss: 0.495159
+[873]	valid_0's binary_logloss: 0.495091
+[874]	valid_0's binary_logloss: 0.495022
+[875]	valid_0's binary_logloss: 0.494954
+[876]	valid_0's binary_logloss: 0.494886
+[877]	valid_0's binary_logloss: 0.494819
+[878]	valid_0's binary_logloss: 0.49475
+[879]	valid_0's binary_logloss: 0.494683
+[880]	valid_0's binary_logloss: 0.494615
+[881]	valid_0's binary_logloss: 0.494548
+[882]	valid_0's binary_logloss: 0.494481
+[883]	valid_0's binary_logloss: 0.494418
+[884]	valid_0's binary_logloss: 0.494347
+[885]	valid_0's binary_logloss: 0.494284
+[886]	valid_0's binary_logloss: 0.494213
+[887]	valid_0's binary_logloss: 0.494146
+[888]	valid_0's binary_logloss: 0.494081
+[889]	valid_0's binary_logloss: 0.494014
+[890]	valid_0's binary_logloss: 0.493947
+[891]	valid_0's binary_logloss: 0.493882
+[892]	valid_0's binary_logloss: 0.493815
+[893]	valid_0's binary_logloss: 0.49375
+[894]	valid_0's binary_logloss: 0.493684
+[895]	valid_0's binary_logloss: 0.493619
+[896]	valid_0's binary_logloss: 0.493554
+[897]	valid_0's binary_logloss: 0.493489
+[898]	valid_0's binary_logloss: 0.493422
+[899]	valid_0's binary_logloss: 0.493357
+[900]	valid_0's binary_logloss: 0.493293
+[901]	valid_0's binary_logloss: 0.493227
+[902]	valid_0's binary_logloss: 0.493163
+[903]	valid_0's binary_logloss: 0.493098
+[904]	valid_0's binary_logloss: 0.493035
+[905]	valid_0's binary_logloss: 0.49297
+[906]	valid_0's binary_logloss: 0.492902
+[907]	valid_0's binary_logloss: 0.492842
+[908]	valid_0's binary_logloss: 0.492773
+[909]	valid_0's binary_logloss: 0.492715
+[910]	valid_0's binary_logloss: 0.492646
+[911]	valid_0's binary_logloss: 0.492588
+[912]	valid_0's binary_logloss: 0.49252
+[913]	valid_0's binary_logloss: 0.492461
+[914]	valid_0's binary_logloss: 0.492394
+[915]	valid_0's binary_logloss: 0.492336
+[916]	valid_0's binary_logloss: 0.492268
+[917]	valid_0's binary_logloss: 0.49221
+[918]	valid_0's binary_logloss: 0.492143
+[919]	valid_0's binary_logloss: 0.492085
+[920]	valid_0's binary_logloss: 0.492018
+[921]	valid_0's binary_logloss: 0.49196
+[922]	valid_0's binary_logloss: 0.491895
+[923]	valid_0's binary_logloss: 0.491832
+[924]	valid_0's binary_logloss: 0.491771
+[925]	valid_0's binary_logloss: 0.491709
+[926]	valid_0's binary_logloss: 0.491648
+[927]	valid_0's binary_logloss: 0.491586
+[928]	valid_0's binary_logloss: 0.491524
+[929]	valid_0's binary_logloss: 0.491464
+[930]	valid_0's binary_logloss: 0.491401
+[931]	valid_0's binary_logloss: 0.491341
+[932]	valid_0's binary_logloss: 0.49128
+[933]	valid_0's binary_logloss: 0.49122
+[934]	valid_0's binary_logloss: 0.491158
+[935]	valid_0's binary_logloss: 0.491099
+[936]	valid_0's binary_logloss: 0.491038
+[937]	valid_0's binary_logloss: 0.490979
+[938]	valid_0's binary_logloss: 0.490922
+[939]	valid_0's binary_logloss: 0.490857
+[940]	valid_0's binary_logloss: 0.490803
+[941]	valid_0's binary_logloss: 0.490738
+[942]	valid_0's binary_logloss: 0.490683
+[943]	valid_0's binary_logloss: 0.490619
+[944]	valid_0's binary_logloss: 0.490561
+[945]	valid_0's binary_logloss: 0.490501
+[946]	valid_0's binary_logloss: 0.490442
+[947]	valid_0's binary_logloss: 0.490383
+[948]	valid_0's binary_logloss: 0.490324
+[949]	valid_0's binary_logloss: 0.490266
+[950]	valid_0's binary_logloss: 0.490207
+[951]	valid_0's binary_logloss: 0.490149
+[952]	valid_0's binary_logloss: 0.49009
+[953]	valid_0's binary_logloss: 0.490032
+[954]	valid_0's binary_logloss: 0.489974
+[955]	valid_0's binary_logloss: 0.489917
+[956]	valid_0's binary_logloss: 0.489858
+[957]	valid_0's binary_logloss: 0.489801
+[958]	valid_0's binary_logloss: 0.489743
+[959]	valid_0's binary_logloss: 0.489685
+[960]	valid_0's binary_logloss: 0.489628
+[961]	valid_0's binary_logloss: 0.48957
+[962]	valid_0's binary_logloss: 0.489514
+[963]	valid_0's binary_logloss: 0.489452
+[964]	valid_0's binary_logloss: 0.4894
+[965]	valid_0's binary_logloss: 0.489339
+[966]	valid_0's binary_logloss: 0.489286
+[967]	valid_0's binary_logloss: 0.489224
+[968]	valid_0's binary_logloss: 0.489173
+[969]	valid_0's binary_logloss: 0.489112
+[970]	valid_0's binary_logloss: 0.489059
+[971]	valid_0's binary_logloss: 0.489
+[972]	valid_0's binary_logloss: 0.488947
+[973]	valid_0's binary_logloss: 0.488888
+[974]	valid_0's binary_logloss: 0.488836
+[975]	valid_0's binary_logloss: 0.488777
+[976]	valid_0's binary_logloss: 0.488725
+[977]	valid_0's binary_logloss: 0.488666
+[978]	valid_0's binary_logloss: 0.488614
+[979]	valid_0's binary_logloss: 0.488556
+[980]	valid_0's binary_logloss: 0.488504
+[981]	valid_0's binary_logloss: 0.488444
+[982]	valid_0's binary_logloss: 0.48839
+[983]	valid_0's binary_logloss: 0.488335
+[984]	valid_0's binary_logloss: 0.488281
+[985]	valid_0's binary_logloss: 0.48823
+[986]	valid_0's binary_logloss: 0.488172
+[987]	valid_0's binary_logloss: 0.488122
+[988]	valid_0's binary_logloss: 0.488064
+[989]	valid_0's binary_logloss: 0.488014
+[990]	valid_0's binary_logloss: 0.487956
+[991]	valid_0's binary_logloss: 0.487906
+[992]	valid_0's binary_logloss: 0.487848
+[993]	valid_0's binary_logloss: 0.487799
+[994]	valid_0's binary_logloss: 0.487741
+[995]	valid_0's binary_logloss: 0.487692
+[996]	valid_0's binary_logloss: 0.487634
+[997]	valid_0's binary_logloss: 0.487586
+[998]	valid_0's binary_logloss: 0.487529
+[999]	valid_0's binary_logloss: 0.48748
+[1000]	valid_0's binary_logloss: 0.487423
+[1001]	valid_0's binary_logloss: 0.487371
+[1002]	valid_0's binary_logloss: 0.487317
+[1003]	valid_0's binary_logloss: 0.487265
+[1004]	valid_0's binary_logloss: 0.487213
+[1005]	valid_0's binary_logloss: 0.48716
+[1006]	valid_0's binary_logloss: 0.487108
+[1007]	valid_0's binary_logloss: 0.487055
+[1008]	valid_0's binary_logloss: 0.487004
+[1009]	valid_0's binary_logloss: 0.486951
+[1010]	valid_0's binary_logloss: 0.4869
+[1011]	valid_0's binary_logloss: 0.486848
+[1012]	valid_0's binary_logloss: 0.486798
+[1013]	valid_0's binary_logloss: 0.486745
+[1014]	valid_0's binary_logloss: 0.486694
+[1015]	valid_0's binary_logloss: 0.486643
+[1016]	valid_0's binary_logloss: 0.486592
+[1017]	valid_0's binary_logloss: 0.486541
+[1018]	valid_0's binary_logloss: 0.48649
+[1019]	valid_0's binary_logloss: 0.48644
+[1020]	valid_0's binary_logloss: 0.486389
+[1021]	valid_0's binary_logloss: 0.486339
+[1022]	valid_0's binary_logloss: 0.486284
+[1023]	valid_0's binary_logloss: 0.486238
+[1024]	valid_0's binary_logloss: 0.486184
+[1025]	valid_0's binary_logloss: 0.486138
+[1026]	valid_0's binary_logloss: 0.486084
+[1027]	valid_0's binary_logloss: 0.486037
+[1028]	valid_0's binary_logloss: 0.485984
+[1029]	valid_0's binary_logloss: 0.485938
+[1030]	valid_0's binary_logloss: 0.485889
+[1031]	valid_0's binary_logloss: 0.485839
+[1032]	valid_0's binary_logloss: 0.48579
+[1033]	valid_0's binary_logloss: 0.485741
+[1034]	valid_0's binary_logloss: 0.485692
+[1035]	valid_0's binary_logloss: 0.485643
+[1036]	valid_0's binary_logloss: 0.485594
+[1037]	valid_0's binary_logloss: 0.485544
+[1038]	valid_0's binary_logloss: 0.485494
+[1039]	valid_0's binary_logloss: 0.485446
+[1040]	valid_0's binary_logloss: 0.485395
+[1041]	valid_0's binary_logloss: 0.485344
+[1042]	valid_0's binary_logloss: 0.485298
+[1043]	valid_0's binary_logloss: 0.485247
+[1044]	valid_0's binary_logloss: 0.485201
+[1045]	valid_0's binary_logloss: 0.485149
+[1046]	valid_0's binary_logloss: 0.485104
+[1047]	valid_0's binary_logloss: 0.485053
+[1048]	valid_0's binary_logloss: 0.485008
+[1049]	valid_0's binary_logloss: 0.484956
+[1050]	valid_0's binary_logloss: 0.484911
+[1051]	valid_0's binary_logloss: 0.484858
+[1052]	valid_0's binary_logloss: 0.484815
+[1053]	valid_0's binary_logloss: 0.484763
+[1054]	valid_0's binary_logloss: 0.48472
+[1055]	valid_0's binary_logloss: 0.484668
+[1056]	valid_0's binary_logloss: 0.484625
+[1057]	valid_0's binary_logloss: 0.484573
+[1058]	valid_0's binary_logloss: 0.484531
+[1059]	valid_0's binary_logloss: 0.484479
+[1060]	valid_0's binary_logloss: 0.484437
+[1061]	valid_0's binary_logloss: 0.484385
+[1062]	valid_0's binary_logloss: 0.484339
+[1063]	valid_0's binary_logloss: 0.484292
+[1064]	valid_0's binary_logloss: 0.484244
+[1065]	valid_0's binary_logloss: 0.484199
+[1066]	valid_0's binary_logloss: 0.484152
+[1067]	valid_0's binary_logloss: 0.484106
+[1068]	valid_0's binary_logloss: 0.484059
+[1069]	valid_0's binary_logloss: 0.484014
+[1070]	valid_0's binary_logloss: 0.483967
+[1071]	valid_0's binary_logloss: 0.483922
+[1072]	valid_0's binary_logloss: 0.483876
+[1073]	valid_0's binary_logloss: 0.483835
+[1074]	valid_0's binary_logloss: 0.483785
+[1075]	valid_0's binary_logloss: 0.483744
+[1076]	valid_0's binary_logloss: 0.483694
+[1077]	valid_0's binary_logloss: 0.483652
+[1078]	valid_0's binary_logloss: 0.483604
+[1079]	valid_0's binary_logloss: 0.483562
+[1080]	valid_0's binary_logloss: 0.483514
+[1081]	valid_0's binary_logloss: 0.483468
+[1082]	valid_0's binary_logloss: 0.483424
+[1083]	valid_0's binary_logloss: 0.483379
+[1084]	valid_0's binary_logloss: 0.483335
+[1085]	valid_0's binary_logloss: 0.483289
+[1086]	valid_0's binary_logloss: 0.483246
+[1087]	valid_0's binary_logloss: 0.483201
+[1088]	valid_0's binary_logloss: 0.483158
+[1089]	valid_0's binary_logloss: 0.483113
+[1090]	valid_0's binary_logloss: 0.48307
+[1091]	valid_0's binary_logloss: 0.483025
+[1092]	valid_0's binary_logloss: 0.48298
+[1093]	valid_0's binary_logloss: 0.482937
+[1094]	valid_0's binary_logloss: 0.482892
+[1095]	valid_0's binary_logloss: 0.482849
+[1096]	valid_0's binary_logloss: 0.482805
+[1097]	valid_0's binary_logloss: 0.482763
+[1098]	valid_0's binary_logloss: 0.482718
+[1099]	valid_0's binary_logloss: 0.482677
+[1100]	valid_0's binary_logloss: 0.482632
+[1101]	valid_0's binary_logloss: 0.48259
+[1102]	valid_0's binary_logloss: 0.482543
+[1103]	valid_0's binary_logloss: 0.482505
+[1104]	valid_0's binary_logloss: 0.482457
+[1105]	valid_0's binary_logloss: 0.48242
+[1106]	valid_0's binary_logloss: 0.482373
+[1107]	valid_0's binary_logloss: 0.482333
+[1108]	valid_0's binary_logloss: 0.482276
+[1109]	valid_0's binary_logloss: 0.482224
+[1110]	valid_0's binary_logloss: 0.482167
+[1111]	valid_0's binary_logloss: 0.482115
+[1112]	valid_0's binary_logloss: 0.482058
+[1113]	valid_0's binary_logloss: 0.482006
+[1114]	valid_0's binary_logloss: 0.48195
+[1115]	valid_0's binary_logloss: 0.481898
+[1116]	valid_0's binary_logloss: 0.481842
+[1117]	valid_0's binary_logloss: 0.48179
+[1118]	valid_0's binary_logloss: 0.481735
+[1119]	valid_0's binary_logloss: 0.481683
+[1120]	valid_0's binary_logloss: 0.481627
+[1121]	valid_0's binary_logloss: 0.481576
+[1122]	valid_0's binary_logloss: 0.481521
+[1123]	valid_0's binary_logloss: 0.481466
+[1124]	valid_0's binary_logloss: 0.481415
+[1125]	valid_0's binary_logloss: 0.48136
+[1126]	valid_0's binary_logloss: 0.481309
+[1127]	valid_0's binary_logloss: 0.481254
+[1128]	valid_0's binary_logloss: 0.481203
+[1129]	valid_0's binary_logloss: 0.481149
+[1130]	valid_0's binary_logloss: 0.481098
+[1131]	valid_0's binary_logloss: 0.481044
+[1132]	valid_0's binary_logloss: 0.480994
+[1133]	valid_0's binary_logloss: 0.480939
+[1134]	valid_0's binary_logloss: 0.480888
+[1135]	valid_0's binary_logloss: 0.480834
+[1136]	valid_0's binary_logloss: 0.480784
+[1137]	valid_0's binary_logloss: 0.48073
+[1138]	valid_0's binary_logloss: 0.480681
+[1139]	valid_0's binary_logloss: 0.480627
+[1140]	valid_0's binary_logloss: 0.480578
+[1141]	valid_0's binary_logloss: 0.480524
+[1142]	valid_0's binary_logloss: 0.480475
+[1143]	valid_0's binary_logloss: 0.480422
+[1144]	valid_0's binary_logloss: 0.480369
+[1145]	valid_0's binary_logloss: 0.48032
+[1146]	valid_0's binary_logloss: 0.480267
+[1147]	valid_0's binary_logloss: 0.480218
+[1148]	valid_0's binary_logloss: 0.480165
+[1149]	valid_0's binary_logloss: 0.480116
+[1150]	valid_0's binary_logloss: 0.480064
+[1151]	valid_0's binary_logloss: 0.480016
+[1152]	valid_0's binary_logloss: 0.479963
+[1153]	valid_0's binary_logloss: 0.479915
+[1154]	valid_0's binary_logloss: 0.479863
+[1155]	valid_0's binary_logloss: 0.479815
+[1156]	valid_0's binary_logloss: 0.479763
+[1157]	valid_0's binary_logloss: 0.479715
+[1158]	valid_0's binary_logloss: 0.479672
+[1159]	valid_0's binary_logloss: 0.479624
+[1160]	valid_0's binary_logloss: 0.479573
+[1161]	valid_0's binary_logloss: 0.479534
+[1162]	valid_0's binary_logloss: 0.479483
+[1163]	valid_0's binary_logloss: 0.479445
+[1164]	valid_0's binary_logloss: 0.479394
+[1165]	valid_0's binary_logloss: 0.479351
+[1166]	valid_0's binary_logloss: 0.479304
+[1167]	valid_0's binary_logloss: 0.479253
+[1168]	valid_0's binary_logloss: 0.479215
+[1169]	valid_0's binary_logloss: 0.479165
+[1170]	valid_0's binary_logloss: 0.479127
+[1171]	valid_0's binary_logloss: 0.479066
+[1172]	valid_0's binary_logloss: 0.479011
+[1173]	valid_0's binary_logloss: 0.47897
+[1174]	valid_0's binary_logloss: 0.478915
+[1175]	valid_0's binary_logloss: 0.478856
+[1176]	valid_0's binary_logloss: 0.478819
+[1177]	valid_0's binary_logloss: 0.47876
+[1178]	valid_0's binary_logloss: 0.478705
+[1179]	valid_0's binary_logloss: 0.478664
+[1180]	valid_0's binary_logloss: 0.478609
+[1181]	valid_0's binary_logloss: 0.478551
+[1182]	valid_0's binary_logloss: 0.478518
+[1183]	valid_0's binary_logloss: 0.47846
+[1184]	valid_0's binary_logloss: 0.478406
+[1185]	valid_0's binary_logloss: 0.47837
+[1186]	valid_0's binary_logloss: 0.478315
+[1187]	valid_0's binary_logloss: 0.478258
+[1188]	valid_0's binary_logloss: 0.478221
+[1189]	valid_0's binary_logloss: 0.478168
+[1190]	valid_0's binary_logloss: 0.47811
+[1191]	valid_0's binary_logloss: 0.478078
+[1192]	valid_0's binary_logloss: 0.478021
+[1193]	valid_0's binary_logloss: 0.477967
+[1194]	valid_0's binary_logloss: 0.477932
+[1195]	valid_0's binary_logloss: 0.477879
+[1196]	valid_0's binary_logloss: 0.477822
+[1197]	valid_0's binary_logloss: 0.47779
+[1198]	valid_0's binary_logloss: 0.477733
+[1199]	valid_0's binary_logloss: 0.47768
+[1200]	valid_0's binary_logloss: 0.477645
+[1201]	valid_0's binary_logloss: 0.477592
+[1202]	valid_0's binary_logloss: 0.477536
+[1203]	valid_0's binary_logloss: 0.477504
+[1204]	valid_0's binary_logloss: 0.477448
+[1205]	valid_0's binary_logloss: 0.477395
+[1206]	valid_0's binary_logloss: 0.47736
+[1207]	valid_0's binary_logloss: 0.477309
+[1208]	valid_0's binary_logloss: 0.477253
+[1209]	valid_0's binary_logloss: 0.477218
+[1210]	valid_0's binary_logloss: 0.477166
+[1211]	valid_0's binary_logloss: 0.477111
+[1212]	valid_0's binary_logloss: 0.477079
+[1213]	valid_0's binary_logloss: 0.477024
+[1214]	valid_0's binary_logloss: 0.476972
+[1215]	valid_0's binary_logloss: 0.476937
+[1216]	valid_0's binary_logloss: 0.476886
+[1217]	valid_0's binary_logloss: 0.476831
+[1218]	valid_0's binary_logloss: 0.476799
+[1219]	valid_0's binary_logloss: 0.476745
+[1220]	valid_0's binary_logloss: 0.476694
+[1221]	valid_0's binary_logloss: 0.476659
+[1222]	valid_0's binary_logloss: 0.476609
+[1223]	valid_0's binary_logloss: 0.476554
+[1224]	valid_0's binary_logloss: 0.476523
+[1225]	valid_0's binary_logloss: 0.476469
+[1226]	valid_0's binary_logloss: 0.476419
+[1227]	valid_0's binary_logloss: 0.476384
+[1228]	valid_0's binary_logloss: 0.476334
+[1229]	valid_0's binary_logloss: 0.47628
+[1230]	valid_0's binary_logloss: 0.476246
+[1231]	valid_0's binary_logloss: 0.476196
+[1232]	valid_0's binary_logloss: 0.476142
+[1233]	valid_0's binary_logloss: 0.476111
+[1234]	valid_0's binary_logloss: 0.476058
+[1235]	valid_0's binary_logloss: 0.476008
+[1236]	valid_0's binary_logloss: 0.475974
+[1237]	valid_0's binary_logloss: 0.475925
+[1238]	valid_0's binary_logloss: 0.475872
+[1239]	valid_0's binary_logloss: 0.475841
+[1240]	valid_0's binary_logloss: 0.475789
+[1241]	valid_0's binary_logloss: 0.475739
+[1242]	valid_0's binary_logloss: 0.475706
+[1243]	valid_0's binary_logloss: 0.475657
+[1244]	valid_0's binary_logloss: 0.475604
+[1245]	valid_0's binary_logloss: 0.475574
+[1246]	valid_0's binary_logloss: 0.475522
+[1247]	valid_0's binary_logloss: 0.475474
+[1248]	valid_0's binary_logloss: 0.47544
+[1249]	valid_0's binary_logloss: 0.475392
+[1250]	valid_0's binary_logloss: 0.47534
+[1251]	valid_0's binary_logloss: 0.475311
+[1252]	valid_0's binary_logloss: 0.475259
+[1253]	valid_0's binary_logloss: 0.475207
+[1254]	valid_0's binary_logloss: 0.475178
+[1255]	valid_0's binary_logloss: 0.475127
+[1256]	valid_0's binary_logloss: 0.475079
+[1257]	valid_0's binary_logloss: 0.475046
+[1258]	valid_0's binary_logloss: 0.474998
+[1259]	valid_0's binary_logloss: 0.474946
+[1260]	valid_0's binary_logloss: 0.474918
+[1261]	valid_0's binary_logloss: 0.474867
+[1262]	valid_0's binary_logloss: 0.474819
+[1263]	valid_0's binary_logloss: 0.474787
+[1264]	valid_0's binary_logloss: 0.47474
+[1265]	valid_0's binary_logloss: 0.474689
+[1266]	valid_0's binary_logloss: 0.474661
+[1267]	valid_0's binary_logloss: 0.474611
+[1268]	valid_0's binary_logloss: 0.474564
+[1269]	valid_0's binary_logloss: 0.474532
+[1270]	valid_0's binary_logloss: 0.474485
+[1271]	valid_0's binary_logloss: 0.474435
+[1272]	valid_0's binary_logloss: 0.474407
+[1273]	valid_0's binary_logloss: 0.474357
+[1274]	valid_0's binary_logloss: 0.474307
+[1275]	valid_0's binary_logloss: 0.474279
+[1276]	valid_0's binary_logloss: 0.474229
+[1277]	valid_0's binary_logloss: 0.474184
+[1278]	valid_0's binary_logloss: 0.474152
+[1279]	valid_0's binary_logloss: 0.474106
+[1280]	valid_0's binary_logloss: 0.474057
+[1281]	valid_0's binary_logloss: 0.474029
+[1282]	valid_0's binary_logloss: 0.47398
+[1283]	valid_0's binary_logloss: 0.473934
+[1284]	valid_0's binary_logloss: 0.473903
+[1285]	valid_0's binary_logloss: 0.473858
+[1286]	valid_0's binary_logloss: 0.473809
+[1287]	valid_0's binary_logloss: 0.473782
+[1288]	valid_0's binary_logloss: 0.473733
+[1289]	valid_0's binary_logloss: 0.473689
+[1290]	valid_0's binary_logloss: 0.473658
+[1291]	valid_0's binary_logloss: 0.473613
+[1292]	valid_0's binary_logloss: 0.473565
+[1293]	valid_0's binary_logloss: 0.473538
+[1294]	valid_0's binary_logloss: 0.47349
+[1295]	valid_0's binary_logloss: 0.473445
+[1296]	valid_0's binary_logloss: 0.473415
+[1297]	valid_0's binary_logloss: 0.473367
+[1298]	valid_0's binary_logloss: 0.473323
+[1299]	valid_0's binary_logloss: 0.473293
+[1300]	valid_0's binary_logloss: 0.473249
+[1301]	valid_0's binary_logloss: 0.473201
+[1302]	valid_0's binary_logloss: 0.473174
+[1303]	valid_0's binary_logloss: 0.473127
+[1304]	valid_0's binary_logloss: 0.473083
+[1305]	valid_0's binary_logloss: 0.473053
+[1306]	valid_0's binary_logloss: 0.47301
+[1307]	valid_0's binary_logloss: 0.472963
+[1308]	valid_0's binary_logloss: 0.472937
+[1309]	valid_0's binary_logloss: 0.47289
+[1310]	valid_0's binary_logloss: 0.472847
+[1311]	valid_0's binary_logloss: 0.472817
+[1312]	valid_0's binary_logloss: 0.472774
+[1313]	valid_0's binary_logloss: 0.472728
+[1314]	valid_0's binary_logloss: 0.472702
+[1315]	valid_0's binary_logloss: 0.472656
+[1316]	valid_0's binary_logloss: 0.472613
+[1317]	valid_0's binary_logloss: 0.472584
+[1318]	valid_0's binary_logloss: 0.472542
+[1319]	valid_0's binary_logloss: 0.472495
+[1320]	valid_0's binary_logloss: 0.472466
+[1321]	valid_0's binary_logloss: 0.472423
+[1322]	valid_0's binary_logloss: 0.472377
+[1323]	valid_0's binary_logloss: 0.472352
+[1324]	valid_0's binary_logloss: 0.472307
+[1325]	valid_0's binary_logloss: 0.472265
+[1326]	valid_0's binary_logloss: 0.472236
+[1327]	valid_0's binary_logloss: 0.472195
+[1328]	valid_0's binary_logloss: 0.472149
+[1329]	valid_0's binary_logloss: 0.472124
+[1330]	valid_0's binary_logloss: 0.472079
+[1331]	valid_0's binary_logloss: 0.472037
+[1332]	valid_0's binary_logloss: 0.472009
+[1333]	valid_0's binary_logloss: 0.471968
+[1334]	valid_0's binary_logloss: 0.471923
+[1335]	valid_0's binary_logloss: 0.471899
+[1336]	valid_0's binary_logloss: 0.471854
+[1337]	valid_0's binary_logloss: 0.471813
+[1338]	valid_0's binary_logloss: 0.471785
+[1339]	valid_0's binary_logloss: 0.471743
+[1340]	valid_0's binary_logloss: 0.471699
+[1341]	valid_0's binary_logloss: 0.471675
+[1342]	valid_0's binary_logloss: 0.47163
+[1343]	valid_0's binary_logloss: 0.471586
+[1344]	valid_0's binary_logloss: 0.471563
+[1345]	valid_0's binary_logloss: 0.471518
+[1346]	valid_0's binary_logloss: 0.471478
+[1347]	valid_0's binary_logloss: 0.471451
+[1348]	valid_0's binary_logloss: 0.471411
+[1349]	valid_0's binary_logloss: 0.471367
+[1350]	valid_0's binary_logloss: 0.471343
+[1351]	valid_0's binary_logloss: 0.4713
+[1352]	valid_0's binary_logloss: 0.47126
+[1353]	valid_0's binary_logloss: 0.471233
+[1354]	valid_0's binary_logloss: 0.471193
+[1355]	valid_0's binary_logloss: 0.47115
+[1356]	valid_0's binary_logloss: 0.471126
+[1357]	valid_0's binary_logloss: 0.471083
+[1358]	valid_0's binary_logloss: 0.471043
+[1359]	valid_0's binary_logloss: 0.471016
+[1360]	valid_0's binary_logloss: 0.470977
+[1361]	valid_0's binary_logloss: 0.470935
+[1362]	valid_0's binary_logloss: 0.470912
+[1363]	valid_0's binary_logloss: 0.470869
+[1364]	valid_0's binary_logloss: 0.47083
+[1365]	valid_0's binary_logloss: 0.470804
+[1366]	valid_0's binary_logloss: 0.470761
+[1367]	valid_0's binary_logloss: 0.470722
+[1368]	valid_0's binary_logloss: 0.470696
+[1369]	valid_0's binary_logloss: 0.470658
+[1370]	valid_0's binary_logloss: 0.470615
+[1371]	valid_0's binary_logloss: 0.470593
+[1372]	valid_0's binary_logloss: 0.47055
+[1373]	valid_0's binary_logloss: 0.470512
+[1374]	valid_0's binary_logloss: 0.470486
+[1375]	valid_0's binary_logloss: 0.470448
+[1376]	valid_0's binary_logloss: 0.470406
+[1377]	valid_0's binary_logloss: 0.470384
+[1378]	valid_0's binary_logloss: 0.470342
+[1379]	valid_0's binary_logloss: 0.470321
+[1380]	valid_0's binary_logloss: 0.470279
+[1381]	valid_0's binary_logloss: 0.470241
+[1382]	valid_0's binary_logloss: 0.470216
+[1383]	valid_0's binary_logloss: 0.470178
+[1384]	valid_0's binary_logloss: 0.470137
+[1385]	valid_0's binary_logloss: 0.470116
+[1386]	valid_0's binary_logloss: 0.470073
+[1387]	valid_0's binary_logloss: 0.470036
+[1388]	valid_0's binary_logloss: 0.470011
+[1389]	valid_0's binary_logloss: 0.46997
+[1390]	valid_0's binary_logloss: 0.469933
+[1391]	valid_0's binary_logloss: 0.469909
+[1392]	valid_0's binary_logloss: 0.469871
+[1393]	valid_0's binary_logloss: 0.469831
+[1394]	valid_0's binary_logloss: 0.46981
+[1395]	valid_0's binary_logloss: 0.469769
+[1396]	valid_0's binary_logloss: 0.469733
+[1397]	valid_0's binary_logloss: 0.469708
+[1398]	valid_0's binary_logloss: 0.469671
+[1399]	valid_0's binary_logloss: 0.469631
+[1400]	valid_0's binary_logloss: 0.46961
+[1401]	valid_0's binary_logloss: 0.46957
+[1402]	valid_0's binary_logloss: 0.469533
+[1403]	valid_0's binary_logloss: 0.469509
+[1404]	valid_0's binary_logloss: 0.469473
+[1405]	valid_0's binary_logloss: 0.469433
+[1406]	valid_0's binary_logloss: 0.469413
+[1407]	valid_0's binary_logloss: 0.469373
+[1408]	valid_0's binary_logloss: 0.469337
+[1409]	valid_0's binary_logloss: 0.469314
+[1410]	valid_0's binary_logloss: 0.469278
+[1411]	valid_0's binary_logloss: 0.469238
+[1412]	valid_0's binary_logloss: 0.469218
+[1413]	valid_0's binary_logloss: 0.469179
+[1414]	valid_0's binary_logloss: 0.469139
+[1415]	valid_0's binary_logloss: 0.469119
+[1416]	valid_0's binary_logloss: 0.46908
+[1417]	valid_0's binary_logloss: 0.469045
+[1418]	valid_0's binary_logloss: 0.469022
+[1419]	valid_0's binary_logloss: 0.468986
+[1420]	valid_0's binary_logloss: 0.468963
+[1421]	valid_0's binary_logloss: 0.468928
+[1422]	valid_0's binary_logloss: 0.46889
+[1423]	valid_0's binary_logloss: 0.46887
+[1424]	valid_0's binary_logloss: 0.468832
+[1425]	valid_0's binary_logloss: 0.468797
+[1426]	valid_0's binary_logloss: 0.468773
+[1427]	valid_0's binary_logloss: 0.468738
+[1428]	valid_0's binary_logloss: 0.4687
+[1429]	valid_0's binary_logloss: 0.468681
+[1430]	valid_0's binary_logloss: 0.468643
+[1431]	valid_0's binary_logloss: 0.468609
+[1432]	valid_0's binary_logloss: 0.468586
+[1433]	valid_0's binary_logloss: 0.468552
+[1434]	valid_0's binary_logloss: 0.468514
+[1435]	valid_0's binary_logloss: 0.468495
+[1436]	valid_0's binary_logloss: 0.468457
+[1437]	valid_0's binary_logloss: 0.46842
+[1438]	valid_0's binary_logloss: 0.4684
+[1439]	valid_0's binary_logloss: 0.468363
+[1440]	valid_0's binary_logloss: 0.468329
+[1441]	valid_0's binary_logloss: 0.468307
+[1442]	valid_0's binary_logloss: 0.468273
+[1443]	valid_0's binary_logloss: 0.468236
+[1444]	valid_0's binary_logloss: 0.468218
+[1445]	valid_0's binary_logloss: 0.468181
+[1446]	valid_0's binary_logloss: 0.468147
+[1447]	valid_0's binary_logloss: 0.468125
+[1448]	valid_0's binary_logloss: 0.468092
+[1449]	valid_0's binary_logloss: 0.46807
+[1450]	valid_0's binary_logloss: 0.468036
+[1451]	valid_0's binary_logloss: 0.467999
+[1452]	valid_0's binary_logloss: 0.467981
+[1453]	valid_0's binary_logloss: 0.467945
+[1454]	valid_0's binary_logloss: 0.467912
+[1455]	valid_0's binary_logloss: 0.467891
+[1456]	valid_0's binary_logloss: 0.467857
+[1457]	valid_0's binary_logloss: 0.467821
+[1458]	valid_0's binary_logloss: 0.467804
+[1459]	valid_0's binary_logloss: 0.467767
+[1460]	valid_0's binary_logloss: 0.467731
+[1461]	valid_0's binary_logloss: 0.467713
+[1462]	valid_0's binary_logloss: 0.467677
+[1463]	valid_0's binary_logloss: 0.467645
+[1464]	valid_0's binary_logloss: 0.467624
+[1465]	valid_0's binary_logloss: 0.467591
+[1466]	valid_0's binary_logloss: 0.467556
+[1467]	valid_0's binary_logloss: 0.467538
+[1468]	valid_0's binary_logloss: 0.467503
+[1469]	valid_0's binary_logloss: 0.467471
+[1470]	valid_0's binary_logloss: 0.46745
+[1471]	valid_0's binary_logloss: 0.467418
+[1472]	valid_0's binary_logloss: 0.467382
+[1473]	valid_0's binary_logloss: 0.467365
+[1474]	valid_0's binary_logloss: 0.46733
+[1475]	valid_0's binary_logloss: 0.467313
+[1476]	valid_0's binary_logloss: 0.467278
+[1477]	valid_0's binary_logloss: 0.467246
+[1478]	valid_0's binary_logloss: 0.467226
+[1479]	valid_0's binary_logloss: 0.467195
+[1480]	valid_0's binary_logloss: 0.46716
+[1481]	valid_0's binary_logloss: 0.467141
+[1482]	valid_0's binary_logloss: 0.467106
+[1483]	valid_0's binary_logloss: 0.467075
+[1484]	valid_0's binary_logloss: 0.467053
+[1485]	valid_0's binary_logloss: 0.467018
+[1486]	valid_0's binary_logloss: 0.466987
+[1487]	valid_0's binary_logloss: 0.466966
+[1488]	valid_0's binary_logloss: 0.466935
+[1489]	valid_0's binary_logloss: 0.466901
+[1490]	valid_0's binary_logloss: 0.466883
+[1491]	valid_0's binary_logloss: 0.466849
+[1492]	valid_0's binary_logloss: 0.466817
+[1493]	valid_0's binary_logloss: 0.466796
+[1494]	valid_0's binary_logloss: 0.466765
+[1495]	valid_0's binary_logloss: 0.466731
+[1496]	valid_0's binary_logloss: 0.466713
+[1497]	valid_0's binary_logloss: 0.46668
+[1498]	valid_0's binary_logloss: 0.466662
+[1499]	valid_0's binary_logloss: 0.466628
+[1500]	valid_0's binary_logloss: 0.466598
+[1501]	valid_0's binary_logloss: 0.466577
+[1502]	valid_0's binary_logloss: 0.466546
+[1503]	valid_0's binary_logloss: 0.466512
+[1504]	valid_0's binary_logloss: 0.466495
+[1505]	valid_0's binary_logloss: 0.466462
+[1506]	valid_0's binary_logloss: 0.466432
+[1507]	valid_0's binary_logloss: 0.466411
+[1508]	valid_0's binary_logloss: 0.466381
+[1509]	valid_0's binary_logloss: 0.46636
+[1510]	valid_0's binary_logloss: 0.466328
+[1511]	valid_0's binary_logloss: 0.466297
+[1512]	valid_0's binary_logloss: 0.466276
+[1513]	valid_0's binary_logloss: 0.466247
+[1514]	valid_0's binary_logloss: 0.466214
+[1515]	valid_0's binary_logloss: 0.466197
+[1516]	valid_0's binary_logloss: 0.466164
+[1517]	valid_0's binary_logloss: 0.466135
+[1518]	valid_0's binary_logloss: 0.466115
+[1519]	valid_0's binary_logloss: 0.466086
+[1520]	valid_0's binary_logloss: 0.466065
+[1521]	valid_0's binary_logloss: 0.466036
+[1522]	valid_0's binary_logloss: 0.466003
+[1523]	valid_0's binary_logloss: 0.465987
+[1524]	valid_0's binary_logloss: 0.465955
+[1525]	valid_0's binary_logloss: 0.465926
+[1526]	valid_0's binary_logloss: 0.465906
+[1527]	valid_0's binary_logloss: 0.465877
+[1528]	valid_0's binary_logloss: 0.465845
+[1529]	valid_0's binary_logloss: 0.465828
+[1530]	valid_0's binary_logloss: 0.465796
+[1531]	valid_0's binary_logloss: 0.46578
+[1532]	valid_0's binary_logloss: 0.465748
+[1533]	valid_0's binary_logloss: 0.46572
+[1534]	valid_0's binary_logloss: 0.4657
+[1535]	valid_0's binary_logloss: 0.465669
+[1536]	valid_0's binary_logloss: 0.465641
+[1537]	valid_0's binary_logloss: 0.465621
+[1538]	valid_0's binary_logloss: 0.465592
+[1539]	valid_0's binary_logloss: 0.465561
+[1540]	valid_0's binary_logloss: 0.465545
+[1541]	valid_0's binary_logloss: 0.465514
+[1542]	valid_0's binary_logloss: 0.465498
+[1543]	valid_0's binary_logloss: 0.465467
+[1544]	valid_0's binary_logloss: 0.465439
+[1545]	valid_0's binary_logloss: 0.46542
+[1546]	valid_0's binary_logloss: 0.465392
+[1547]	valid_0's binary_logloss: 0.465361
+[1548]	valid_0's binary_logloss: 0.465345
+[1549]	valid_0's binary_logloss: 0.465314
+[1550]	valid_0's binary_logloss: 0.465299
+[1551]	valid_0's binary_logloss: 0.465268
+[1552]	valid_0's binary_logloss: 0.465241
+[1553]	valid_0's binary_logloss: 0.465222
+[1554]	valid_0's binary_logloss: 0.465195
+[1555]	valid_0's binary_logloss: 0.465164
+[1556]	valid_0's binary_logloss: 0.465148
+[1557]	valid_0's binary_logloss: 0.465118
+[1558]	valid_0's binary_logloss: 0.465091
+[1559]	valid_0's binary_logloss: 0.465073
+[1560]	valid_0's binary_logloss: 0.465042
+[1561]	valid_0's binary_logloss: 0.465027
+[1562]	valid_0's binary_logloss: 0.464997
+[1563]	valid_0's binary_logloss: 0.46497
+[1564]	valid_0's binary_logloss: 0.464952
+[1565]	valid_0's binary_logloss: 0.464925
+[1566]	valid_0's binary_logloss: 0.464895
+[1567]	valid_0's binary_logloss: 0.46488
+[1568]	valid_0's binary_logloss: 0.464851
+[1569]	valid_0's binary_logloss: 0.464824
+[1570]	valid_0's binary_logloss: 0.464805
+[1571]	valid_0's binary_logloss: 0.464779
+[1572]	valid_0's binary_logloss: 0.464761
+[1573]	valid_0's binary_logloss: 0.464735
+[1574]	valid_0's binary_logloss: 0.464706
+[1575]	valid_0's binary_logloss: 0.464691
+[1576]	valid_0's binary_logloss: 0.464662
+[1577]	valid_0's binary_logloss: 0.464636
+[1578]	valid_0's binary_logloss: 0.464617
+[1579]	valid_0's binary_logloss: 0.464592
+[1580]	valid_0's binary_logloss: 0.464574
+[1581]	valid_0's binary_logloss: 0.464548
+[1582]	valid_0's binary_logloss: 0.464519
+[1583]	valid_0's binary_logloss: 0.464505
+[1584]	valid_0's binary_logloss: 0.464476
+[1585]	valid_0's binary_logloss: 0.464447
+[1586]	valid_0's binary_logloss: 0.464432
+[1587]	valid_0's binary_logloss: 0.464404
+[1588]	valid_0's binary_logloss: 0.464378
+[1589]	valid_0's binary_logloss: 0.464361
+[1590]	valid_0's binary_logloss: 0.464336
+[1591]	valid_0's binary_logloss: 0.464319
+[1592]	valid_0's binary_logloss: 0.464293
+[1593]	valid_0's binary_logloss: 0.464264
+[1594]	valid_0's binary_logloss: 0.464251
+[1595]	valid_0's binary_logloss: 0.464222
+[1596]	valid_0's binary_logloss: 0.464197
+[1597]	valid_0's binary_logloss: 0.46418
+[1598]	valid_0's binary_logloss: 0.464156
+[1599]	valid_0's binary_logloss: 0.464139
+[1600]	valid_0's binary_logloss: 0.464113
+[1601]	valid_0's binary_logloss: 0.464085
+[1602]	valid_0's binary_logloss: 0.464072
+[1603]	valid_0's binary_logloss: 0.464044
+[1604]	valid_0's binary_logloss: 0.464019
+[1605]	valid_0's binary_logloss: 0.464003
+[1606]	valid_0's binary_logloss: 0.463978
+[1607]	valid_0's binary_logloss: 0.463962
+[1608]	valid_0's binary_logloss: 0.463936
+[1609]	valid_0's binary_logloss: 0.463909
+[1610]	valid_0's binary_logloss: 0.463892
+[1611]	valid_0's binary_logloss: 0.463867
+[1612]	valid_0's binary_logloss: 0.463838
+[1613]	valid_0's binary_logloss: 0.463825
+[1614]	valid_0's binary_logloss: 0.463796
+[1615]	valid_0's binary_logloss: 0.46377
+[1616]	valid_0's binary_logloss: 0.463754
+[1617]	valid_0's binary_logloss: 0.463728
+[1618]	valid_0's binary_logloss: 0.463713
+[1619]	valid_0's binary_logloss: 0.463687
+[1620]	valid_0's binary_logloss: 0.463659
+[1621]	valid_0's binary_logloss: 0.463645
+[1622]	valid_0's binary_logloss: 0.463617
+[1623]	valid_0's binary_logloss: 0.463592
+[1624]	valid_0's binary_logloss: 0.463576
+[1625]	valid_0's binary_logloss: 0.463551
+[1626]	valid_0's binary_logloss: 0.463536
+[1627]	valid_0's binary_logloss: 0.463511
+[1628]	valid_0's binary_logloss: 0.463482
+[1629]	valid_0's binary_logloss: 0.463469
+[1630]	valid_0's binary_logloss: 0.463442
+[1631]	valid_0's binary_logloss: 0.463417
+[1632]	valid_0's binary_logloss: 0.463402
+[1633]	valid_0's binary_logloss: 0.463377
+[1634]	valid_0's binary_logloss: 0.463362
+[1635]	valid_0's binary_logloss: 0.463337
+[1636]	valid_0's binary_logloss: 0.463309
+[1637]	valid_0's binary_logloss: 0.463294
+[1638]	valid_0's binary_logloss: 0.46327
+[1639]	valid_0's binary_logloss: 0.463242
+[1640]	valid_0's binary_logloss: 0.46323
+[1641]	valid_0's binary_logloss: 0.463202
+[1642]	valid_0's binary_logloss: 0.46319
+[1643]	valid_0's binary_logloss: 0.463163
+[1644]	valid_0's binary_logloss: 0.463139
+[1645]	valid_0's binary_logloss: 0.463124
+[1646]	valid_0's binary_logloss: 0.4631
+[1647]	valid_0's binary_logloss: 0.463073
+[1648]	valid_0's binary_logloss: 0.463061
+[1649]	valid_0's binary_logloss: 0.463034
+[1650]	valid_0's binary_logloss: 0.463022
+[1651]	valid_0's binary_logloss: 0.462995
+[1652]	valid_0's binary_logloss: 0.462972
+[1653]	valid_0's binary_logloss: 0.462957
+[1654]	valid_0's binary_logloss: 0.462933
+[1655]	valid_0's binary_logloss: 0.462906
+[1656]	valid_0's binary_logloss: 0.462895
+[1657]	valid_0's binary_logloss: 0.462869
+[1658]	valid_0's binary_logloss: 0.462857
+[1659]	valid_0's binary_logloss: 0.462831
+[1660]	valid_0's binary_logloss: 0.462807
+[1661]	valid_0's binary_logloss: 0.462792
+[1662]	valid_0's binary_logloss: 0.462766
+[1663]	valid_0's binary_logloss: 0.462743
+[1664]	valid_0's binary_logloss: 0.462729
+[1665]	valid_0's binary_logloss: 0.462706
+[1666]	valid_0's binary_logloss: 0.462691
+[1667]	valid_0's binary_logloss: 0.462668
+[1668]	valid_0's binary_logloss: 0.462642
+[1669]	valid_0's binary_logloss: 0.462632
+[1670]	valid_0's binary_logloss: 0.462606
+[1671]	valid_0's binary_logloss: 0.462583
+[1672]	valid_0's binary_logloss: 0.462569
+[1673]	valid_0's binary_logloss: 0.462546
+[1674]	valid_0's binary_logloss: 0.462532
+[1675]	valid_0's binary_logloss: 0.462509
+[1676]	valid_0's binary_logloss: 0.462484
+[1677]	valid_0's binary_logloss: 0.462474
+[1678]	valid_0's binary_logloss: 0.462448
+[1679]	valid_0's binary_logloss: 0.462425
+[1680]	valid_0's binary_logloss: 0.462411
+[1681]	valid_0's binary_logloss: 0.462389
+[1682]	valid_0's binary_logloss: 0.462376
+[1683]	valid_0's binary_logloss: 0.462354
+[1684]	valid_0's binary_logloss: 0.462328
+[1685]	valid_0's binary_logloss: 0.462317
+[1686]	valid_0's binary_logloss: 0.462292
+[1687]	valid_0's binary_logloss: 0.462271
+[1688]	valid_0's binary_logloss: 0.462257
+[1689]	valid_0's binary_logloss: 0.462232
+[1690]	valid_0's binary_logloss: 0.462221
+[1691]	valid_0's binary_logloss: 0.462197
+[1692]	valid_0's binary_logloss: 0.462175
+[1693]	valid_0's binary_logloss: 0.462162
+[1694]	valid_0's binary_logloss: 0.46214
+[1695]	valid_0's binary_logloss: 0.462116
+[1696]	valid_0's binary_logloss: 0.462105
+[1697]	valid_0's binary_logloss: 0.46208
+[1698]	valid_0's binary_logloss: 0.46207
+[1699]	valid_0's binary_logloss: 0.462046
+[1700]	valid_0's binary_logloss: 0.462025
+[1701]	valid_0's binary_logloss: 0.462012
+[1702]	valid_0's binary_logloss: 0.46199
+[1703]	valid_0's binary_logloss: 0.461977
+[1704]	valid_0's binary_logloss: 0.461956
+[1705]	valid_0's binary_logloss: 0.461932
+[1706]	valid_0's binary_logloss: 0.461922
+[1707]	valid_0's binary_logloss: 0.461897
+[1708]	valid_0's binary_logloss: 0.461877
+[1709]	valid_0's binary_logloss: 0.461864
+[1710]	valid_0's binary_logloss: 0.461843
+[1711]	valid_0's binary_logloss: 0.461831
+[1712]	valid_0's binary_logloss: 0.46181
+[1713]	valid_0's binary_logloss: 0.461786
+[1714]	valid_0's binary_logloss: 0.461776
+[1715]	valid_0's binary_logloss: 0.461753
+[1716]	valid_0's binary_logloss: 0.461729
+[1717]	valid_0's binary_logloss: 0.46172
+[1718]	valid_0's binary_logloss: 0.461695
+[1719]	valid_0's binary_logloss: 0.461686
+[1720]	valid_0's binary_logloss: 0.461663
+[1721]	valid_0's binary_logloss: 0.461642
+[1722]	valid_0's binary_logloss: 0.46163
+[1723]	valid_0's binary_logloss: 0.46161
+[1724]	valid_0's binary_logloss: 0.461586
+[1725]	valid_0's binary_logloss: 0.461577
+[1726]	valid_0's binary_logloss: 0.461554
+[1727]	valid_0's binary_logloss: 0.461545
+[1728]	valid_0's binary_logloss: 0.461522
+[1729]	valid_0's binary_logloss: 0.461501
+[1730]	valid_0's binary_logloss: 0.46149
+[1731]	valid_0's binary_logloss: 0.46147
+[1732]	valid_0's binary_logloss: 0.461458
+[1733]	valid_0's binary_logloss: 0.461438
+[1734]	valid_0's binary_logloss: 0.461414
+[1735]	valid_0's binary_logloss: 0.461406
+[1736]	valid_0's binary_logloss: 0.461383
+[1737]	valid_0's binary_logloss: 0.461364
+[1738]	valid_0's binary_logloss: 0.461352
+[1739]	valid_0's binary_logloss: 0.461333
+[1740]	valid_0's binary_logloss: 0.46132
+[1741]	valid_0's binary_logloss: 0.461298
+[1742]	valid_0's binary_logloss: 0.461278
+[1743]	valid_0's binary_logloss: 0.461267
+[1744]	valid_0's binary_logloss: 0.461248
+[1745]	valid_0's binary_logloss: 0.461224
+[1746]	valid_0's binary_logloss: 0.461216
+[1747]	valid_0's binary_logloss: 0.461194
+[1748]	valid_0's binary_logloss: 0.461186
+[1749]	valid_0's binary_logloss: 0.461163
+[1750]	valid_0's binary_logloss: 0.461144
+[1751]	valid_0's binary_logloss: 0.461133
+[1752]	valid_0's binary_logloss: 0.461114
+[1753]	valid_0's binary_logloss: 0.461092
+[1754]	valid_0's binary_logloss: 0.461084
+[1755]	valid_0's binary_logloss: 0.461061
+[1756]	valid_0's binary_logloss: 0.461054
+[1757]	valid_0's binary_logloss: 0.461032
+[1758]	valid_0's binary_logloss: 0.461014
+[1759]	valid_0's binary_logloss: 0.461003
+[1760]	valid_0's binary_logloss: 0.460984
+[1761]	valid_0's binary_logloss: 0.460974
+[1762]	valid_0's binary_logloss: 0.460955
+[1763]	valid_0's binary_logloss: 0.460934
+[1764]	valid_0's binary_logloss: 0.460927
+[1765]	valid_0's binary_logloss: 0.460905
+[1766]	valid_0's binary_logloss: 0.460886
+[1767]	valid_0's binary_logloss: 0.460876
+[1768]	valid_0's binary_logloss: 0.460855
+[1769]	valid_0's binary_logloss: 0.460848
+[1770]	valid_0's binary_logloss: 0.460826
+[1771]	valid_0's binary_logloss: 0.460808
+[1772]	valid_0's binary_logloss: 0.460799
+[1773]	valid_0's binary_logloss: 0.46078
+[1774]	valid_0's binary_logloss: 0.46076
+[1775]	valid_0's binary_logloss: 0.460752
+[1776]	valid_0's binary_logloss: 0.460731
+[1777]	valid_0's binary_logloss: 0.460725
+[1778]	valid_0's binary_logloss: 0.460704
+[1779]	valid_0's binary_logloss: 0.460686
+[1780]	valid_0's binary_logloss: 0.460675
+[1781]	valid_0's binary_logloss: 0.460658
+[1782]	valid_0's binary_logloss: 0.460648
+[1783]	valid_0's binary_logloss: 0.460631
+[1784]	valid_0's binary_logloss: 0.46061
+[1785]	valid_0's binary_logloss: 0.460603
+[1786]	valid_0's binary_logloss: 0.460583
+[1787]	valid_0's binary_logloss: 0.460565
+[1788]	valid_0's binary_logloss: 0.460556
+[1789]	valid_0's binary_logloss: 0.460538
+[1790]	valid_0's binary_logloss: 0.460528
+[1791]	valid_0's binary_logloss: 0.460511
+[1792]	valid_0's binary_logloss: 0.460491
+[1793]	valid_0's binary_logloss: 0.460485
+[1794]	valid_0's binary_logloss: 0.460464
+[1795]	valid_0's binary_logloss: 0.460458
+[1796]	valid_0's binary_logloss: 0.460438
+[1797]	valid_0's binary_logloss: 0.460418
+[1798]	valid_0's binary_logloss: 0.460412
+[1799]	valid_0's binary_logloss: 0.460391
+[1800]	valid_0's binary_logloss: 0.460374
+[1801]	valid_0's binary_logloss: 0.460365
+[1802]	valid_0's binary_logloss: 0.460348
+[1803]	valid_0's binary_logloss: 0.460338
+[1804]	valid_0's binary_logloss: 0.460322
+[1805]	valid_0's binary_logloss: 0.460302
+[1806]	valid_0's binary_logloss: 0.460296
+[1807]	valid_0's binary_logloss: 0.460277
+[1808]	valid_0's binary_logloss: 0.460259
+[1809]	valid_0's binary_logloss: 0.460251
+[1810]	valid_0's binary_logloss: 0.460234
+[1811]	valid_0's binary_logloss: 0.460226
+[1812]	valid_0's binary_logloss: 0.460209
+[1813]	valid_0's binary_logloss: 0.460189
+[1814]	valid_0's binary_logloss: 0.460183
+[1815]	valid_0's binary_logloss: 0.460164
+[1816]	valid_0's binary_logloss: 0.460161
+[1817]	valid_0's binary_logloss: 0.46014
+[1818]	valid_0's binary_logloss: 0.460124
+[1819]	valid_0's binary_logloss: 0.460118
+[1820]	valid_0's binary_logloss: 0.460102
+[1821]	valid_0's binary_logloss: 0.460095
+[1822]	valid_0's binary_logloss: 0.460078
+[1823]	valid_0's binary_logloss: 0.46006
+[1824]	valid_0's binary_logloss: 0.460053
+[1825]	valid_0's binary_logloss: 0.460037
+[1826]	valid_0's binary_logloss: 0.460017
+[1827]	valid_0's binary_logloss: 0.460014
+[1828]	valid_0's binary_logloss: 0.459996
+[1829]	valid_0's binary_logloss: 0.459993
+[1830]	valid_0's binary_logloss: 0.459974
+[1831]	valid_0's binary_logloss: 0.459957
+[1832]	valid_0's binary_logloss: 0.459952
+[1833]	valid_0's binary_logloss: 0.459936
+[1834]	valid_0's binary_logloss: 0.45993
+[1835]	valid_0's binary_logloss: 0.459914
+[1836]	valid_0's binary_logloss: 0.459895
+[1837]	valid_0's binary_logloss: 0.459892
+[1838]	valid_0's binary_logloss: 0.459874
+[1839]	valid_0's binary_logloss: 0.45987
+[1840]	valid_0's binary_logloss: 0.459852
+[1841]	valid_0's binary_logloss: 0.459837
+[1842]	valid_0's binary_logloss: 0.459831
+[1843]	valid_0's binary_logloss: 0.459816
+[1844]	valid_0's binary_logloss: 0.45981
+[1845]	valid_0's binary_logloss: 0.459794
+[1846]	valid_0's binary_logloss: 0.459776
+[1847]	valid_0's binary_logloss: 0.459774
+[1848]	valid_0's binary_logloss: 0.459755
+[1849]	valid_0's binary_logloss: 0.45974
+[1850]	valid_0's binary_logloss: 0.459735
+[1851]	valid_0's binary_logloss: 0.45972
+[1852]	valid_0's binary_logloss: 0.459713
+[1853]	valid_0's binary_logloss: 0.459696
+[1854]	valid_0's binary_logloss: 0.459681
+[1855]	valid_0's binary_logloss: 0.459676
+[1856]	valid_0's binary_logloss: 0.459661
+[1857]	valid_0's binary_logloss: 0.459655
+[1858]	valid_0's binary_logloss: 0.45964
+[1859]	valid_0's binary_logloss: 0.459623
+[1860]	valid_0's binary_logloss: 0.459621
+[1861]	valid_0's binary_logloss: 0.459602
+[1862]	valid_0's binary_logloss: 0.4596
+[1863]	valid_0's binary_logloss: 0.459583
+[1864]	valid_0's binary_logloss: 0.459568
+[1865]	valid_0's binary_logloss: 0.459563
+[1866]	valid_0's binary_logloss: 0.459548
+[1867]	valid_0's binary_logloss: 0.459544
+[1868]	valid_0's binary_logloss: 0.459529
+[1869]	valid_0's binary_logloss: 0.459511
+[1870]	valid_0's binary_logloss: 0.459509
+[1871]	valid_0's binary_logloss: 0.459492
+[1872]	valid_0's binary_logloss: 0.459491
+[1873]	valid_0's binary_logloss: 0.459473
+[1874]	valid_0's binary_logloss: 0.459458
+[1875]	valid_0's binary_logloss: 0.459454
+[1876]	valid_0's binary_logloss: 0.45944
+[1877]	valid_0's binary_logloss: 0.459435
+[1878]	valid_0's binary_logloss: 0.459421
+[1879]	valid_0's binary_logloss: 0.459404
+[1880]	valid_0's binary_logloss: 0.4594
+[1881]	valid_0's binary_logloss: 0.459386
+[1882]	valid_0's binary_logloss: 0.459381
+[1883]	valid_0's binary_logloss: 0.459367
+[1884]	valid_0's binary_logloss: 0.45935
+[1885]	valid_0's binary_logloss: 0.459349
+[1886]	valid_0's binary_logloss: 0.459331
+[1887]	valid_0's binary_logloss: 0.459318
+[1888]	valid_0's binary_logloss: 0.459314
+[1889]	valid_0's binary_logloss: 0.4593
+[1890]	valid_0's binary_logloss: 0.459295
+[1891]	valid_0's binary_logloss: 0.459282
+[1892]	valid_0's binary_logloss: 0.459266
+[1893]	valid_0's binary_logloss: 0.459264
+[1894]	valid_0's binary_logloss: 0.459247
+[1895]	valid_0's binary_logloss: 0.459246
+[1896]	valid_0's binary_logloss: 0.45923
+[1897]	valid_0's binary_logloss: 0.459217
+[1898]	valid_0's binary_logloss: 0.459212
+[1899]	valid_0's binary_logloss: 0.459199
+[1900]	valid_0's binary_logloss: 0.459195
+[1901]	valid_0's binary_logloss: 0.459182
+[1902]	valid_0's binary_logloss: 0.459165
+[1903]	valid_0's binary_logloss: 0.459164
+[1904]	valid_0's binary_logloss: 0.459148
+[1905]	valid_0's binary_logloss: 0.459148
+[1906]	valid_0's binary_logloss: 0.459138
+[1907]	valid_0's binary_logloss: 0.459138
+[1908]	valid_0's binary_logloss: 0.459122
+[1909]	valid_0's binary_logloss: 0.459114
+[1910]	valid_0's binary_logloss: 0.459112
+[1911]	valid_0's binary_logloss: 0.459109
+[1912]	valid_0's binary_logloss: 0.459096
+[1913]	valid_0's binary_logloss: 0.459087
+[1914]	valid_0's binary_logloss: 0.459087
+[1915]	valid_0's binary_logloss: 0.459078
+[1916]	valid_0's binary_logloss: 0.459078
+[1917]	valid_0's binary_logloss: 0.459062
+[1918]	valid_0's binary_logloss: 0.459061
+[1919]	valid_0's binary_logloss: 0.459054
+[1920]	valid_0's binary_logloss: 0.459053
+[1921]	valid_0's binary_logloss: 0.459037
+[1922]	valid_0's binary_logloss: 0.459037
+[1923]	valid_0's binary_logloss: 0.459029
+[1924]	valid_0's binary_logloss: 0.459029
+[1925]	valid_0's binary_logloss: 0.45902
+[1926]	valid_0's binary_logloss: 0.45902
+[1927]	valid_0's binary_logloss: 0.459005
+[1928]	valid_0's binary_logloss: 0.459005
+[1929]	valid_0's binary_logloss: 0.458996
+[1930]	valid_0's binary_logloss: 0.458996
+[1931]	valid_0's binary_logloss: 0.458981
+[1932]	valid_0's binary_logloss: 0.458976
+[1933]	valid_0's binary_logloss: 0.458972
+[1934]	valid_0's binary_logloss: 0.458973
+[1935]	valid_0's binary_logloss: 0.458965
+[1936]	valid_0's binary_logloss: 0.458964
+[1937]	valid_0's binary_logloss: 0.45895
+[1938]	valid_0's binary_logloss: 0.458942
+[1939]	valid_0's binary_logloss: 0.458942
+[1940]	valid_0's binary_logloss: 0.458926
+[1941]	valid_0's binary_logloss: 0.458927
+[1942]	valid_0's binary_logloss: 0.458919
+[1943]	valid_0's binary_logloss: 0.45892
+[1944]	valid_0's binary_logloss: 0.458912
+[1945]	valid_0's binary_logloss: 0.458912
+[1946]	valid_0's binary_logloss: 0.458897
+[1947]	valid_0's binary_logloss: 0.458898
+[1948]	valid_0's binary_logloss: 0.45889
+[1949]	valid_0's binary_logloss: 0.45889
+[1950]	valid_0's binary_logloss: 0.458876
+[1951]	valid_0's binary_logloss: 0.458875
+[1952]	valid_0's binary_logloss: 0.458868
+[1953]	valid_0's binary_logloss: 0.458869
+[1954]	valid_0's binary_logloss: 0.458862
+[1955]	valid_0's binary_logloss: 0.458862
+[1956]	valid_0's binary_logloss: 0.458847
+[1957]	valid_0's binary_logloss: 0.458848
+[1958]	valid_0's binary_logloss: 0.458841
+[1959]	valid_0's binary_logloss: 0.458841
+[1960]	valid_0's binary_logloss: 0.458827
+[1961]	valid_0's binary_logloss: 0.458823
+[1962]	valid_0's binary_logloss: 0.45882
+[1963]	valid_0's binary_logloss: 0.458816
+[1964]	valid_0's binary_logloss: 0.458814
+[1965]	valid_0's binary_logloss: 0.458815
+[1966]	valid_0's binary_logloss: 0.4588
+[1967]	valid_0's binary_logloss: 0.458793
+[1968]	valid_0's binary_logloss: 0.458794
+[1969]	valid_0's binary_logloss: 0.45878
+[1970]	valid_0's binary_logloss: 0.45878
+[1971]	valid_0's binary_logloss: 0.458773
+[1972]	valid_0's binary_logloss: 0.458775
+[1973]	valid_0's binary_logloss: 0.458767
+[1974]	valid_0's binary_logloss: 0.458768
+[1975]	valid_0's binary_logloss: 0.458755
+[1976]	valid_0's binary_logloss: 0.458756
+[1977]	valid_0's binary_logloss: 0.458748
+[1978]	valid_0's binary_logloss: 0.45875
+[1979]	valid_0's binary_logloss: 0.458736
+[1980]	valid_0's binary_logloss: 0.458736
+[1981]	valid_0's binary_logloss: 0.45873
+[1982]	valid_0's binary_logloss: 0.458731
+[1983]	valid_0's binary_logloss: 0.458725
+[1984]	valid_0's binary_logloss: 0.458726
+[1985]	valid_0's binary_logloss: 0.458712
+[1986]	valid_0's binary_logloss: 0.458708
+[1987]	valid_0's binary_logloss: 0.458706
+[1988]	valid_0's binary_logloss: 0.458703
+[1989]	valid_0's binary_logloss: 0.458702
+[1990]	valid_0's binary_logloss: 0.458703
+[1991]	valid_0's binary_logloss: 0.458689
+[1992]	valid_0's binary_logloss: 0.458685
+[1993]	valid_0's binary_logloss: 0.458685
+[1994]	valid_0's binary_logloss: 0.458674
+[1995]	valid_0's binary_logloss: 0.458672
+[1996]	valid_0's binary_logloss: 0.458666
+[1997]	valid_0's binary_logloss: 0.458668
+[1998]	valid_0's binary_logloss: 0.458653
+[1999]	valid_0's binary_logloss: 0.458656
+[2000]	valid_0's binary_logloss: 0.458649
+[2001]	valid_0's binary_logloss: 0.458653
+[2002]	valid_0's binary_logloss: 0.458646
+[2003]	valid_0's binary_logloss: 0.45865
+[2004]	valid_0's binary_logloss: 0.458637
+[2005]	valid_0's binary_logloss: 0.45864
+[2006]	valid_0's binary_logloss: 0.458634
+[2007]	valid_0's binary_logloss: 0.458638
+[2008]	valid_0's binary_logloss: 0.458624
+[2009]	valid_0's binary_logloss: 0.458621
+[2010]	valid_0's binary_logloss: 0.458623
+[2011]	valid_0's binary_logloss: 0.458619
+[2012]	valid_0's binary_logloss: 0.45862
+[2013]	valid_0's binary_logloss: 0.458624
+[2014]	valid_0's binary_logloss: 0.458611
+[2015]	valid_0's binary_logloss: 0.458607
+[2016]	valid_0's binary_logloss: 0.458604
+[2017]	valid_0's binary_logloss: 0.458594
+[2018]	valid_0's binary_logloss: 0.458595
+[2019]	valid_0's binary_logloss: 0.458585
+[2020]	valid_0's binary_logloss: 0.458586
+[2021]	valid_0's binary_logloss: 0.458583
+[2022]	valid_0's binary_logloss: 0.458584
+[2023]	valid_0's binary_logloss: 0.458574
+[2024]	valid_0's binary_logloss: 0.458569
+[2025]	valid_0's binary_logloss: 0.458572
+[2026]	valid_0's binary_logloss: 0.458567
+[2027]	valid_0's binary_logloss: 0.458563
+[2028]	valid_0's binary_logloss: 0.458554
+[2029]	valid_0's binary_logloss: 0.458554
+[2030]	valid_0's binary_logloss: 0.458545
+[2031]	valid_0's binary_logloss: 0.458546
+[2032]	valid_0's binary_logloss: 0.458543
+[2033]	valid_0's binary_logloss: 0.458545
+[2034]	valid_0's binary_logloss: 0.458535
+[2035]	valid_0's binary_logloss: 0.458537
+[2036]	valid_0's binary_logloss: 0.458534
+[2037]	valid_0's binary_logloss: 0.458536
+[2038]	valid_0's binary_logloss: 0.458533
+[2039]	valid_0's binary_logloss: 0.458529
+[2040]	valid_0's binary_logloss: 0.45852
+[2041]	valid_0's binary_logloss: 0.458508
+[2042]	valid_0's binary_logloss: 0.458511
+[2043]	valid_0's binary_logloss: 0.458506
+[2044]	valid_0's binary_logloss: 0.458511
+[2045]	valid_0's binary_logloss: 0.458499
+[2046]	valid_0's binary_logloss: 0.458503
+[2047]	valid_0's binary_logloss: 0.458498
+[2048]	valid_0's binary_logloss: 0.458503
+[2049]	valid_0's binary_logloss: 0.45849
+[2050]	valid_0's binary_logloss: 0.458488
+[2051]	valid_0's binary_logloss: 0.458485
+[2052]	valid_0's binary_logloss: 0.458489
+[2053]	valid_0's binary_logloss: 0.458477
+[2054]	valid_0's binary_logloss: 0.458475
+[2055]	valid_0's binary_logloss: 0.458476
+[2056]	valid_0's binary_logloss: 0.458465
+[2057]	valid_0's binary_logloss: 0.45847
+[2058]	valid_0's binary_logloss: 0.458465
+[2059]	valid_0's binary_logloss: 0.458464
+[2060]	valid_0's binary_logloss: 0.458452
+[2061]	valid_0's binary_logloss: 0.458458
+[2062]	valid_0's binary_logloss: 0.458445
+[2063]	valid_0's binary_logloss: 0.458443
+[2064]	valid_0's binary_logloss: 0.458446
+[2065]	valid_0's binary_logloss: 0.458443
+[2066]	valid_0's binary_logloss: 0.458445
+[2067]	valid_0's binary_logloss: 0.458436
+[2068]	valid_0's binary_logloss: 0.458438
+[2069]	valid_0's binary_logloss: 0.458436
+[2070]	valid_0's binary_logloss: 0.458434
+[2071]	valid_0's binary_logloss: 0.458425
+[2072]	valid_0's binary_logloss: 0.458427
+[2073]	valid_0's binary_logloss: 0.458418
+[2074]	valid_0's binary_logloss: 0.458414
+[2075]	valid_0's binary_logloss: 0.458418
+[2076]	valid_0's binary_logloss: 0.458421
+[2077]	valid_0's binary_logloss: 0.458412
+[2078]	valid_0's binary_logloss: 0.458407
+[2079]	valid_0's binary_logloss: 0.458408
+[2080]	valid_0's binary_logloss: 0.458396
+[2081]	valid_0's binary_logloss: 0.458401
+[2082]	valid_0's binary_logloss: 0.45839
+[2083]	valid_0's binary_logloss: 0.458396
+[2084]	valid_0's binary_logloss: 0.45839
+[2085]	valid_0's binary_logloss: 0.458396
+[2086]	valid_0's binary_logloss: 0.458391
+[2087]	valid_0's binary_logloss: 0.458395
+Early stopping, best iteration is:
+[2082]	valid_0's binary_logloss: 0.45839
+  ('#### Metrics #################################################################',) 
+  ('Actual    : ', PassengerId
+34     0
+131    0
+42     0
+287    1
+24     1
+      ..
+128    1
+631    1
+214    0
+616    1
+379    0
+Name: Survived, Length: 891, dtype: int64) 
+  ('Prediction: ', PassengerId
+34     0
+131    0
+42     1
+287    0
+24     0
+      ..
+128    0
+631    0
+214    0
+616    1
+379    0
+Name: Survived_pred, Length: 891, dtype: int64) 
+  ({'metrics_test':                metric_name  metric_val  n_sample
+0           accuracy_score    0.849162       179
+1  average_precision_score    0.745491       179},) 
+  ('############ saving model, dfX, columns', 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//model/') 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//model//colsX.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//model//coly.pkl',) 
+  ({'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'binary', 'n_estimators': 3000, 'learning_rate': 0.001, 'boosting_type': 'gbdt', 'early_stopping_rounds': 5}, 'post_process_fun': <function titanic_lightgbm.<locals>.post_process_fun at 0x000001B33113B158>, 'pre_process_pars': {'y_norm_fun': <function titanic_lightgbm.<locals>.pre_process_fun at 0x000001B33113B7B8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline/'}}, {'metric_list': ['accuracy_score', 'average_precision_score']}) 
+  ('############ check re-loaded', {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'binary', 'n_estimators': 3000, 'learning_rate': 0.001, 'boosting_type': 'gbdt', 'early_stopping_rounds': 5}, 'post_process_fun': <function titanic_lightgbm.<locals>.post_process_fun at 0x000001B332EA4A60>, 'pre_process_pars': {'y_norm_fun': <function titanic_lightgbm.<locals>.pre_process_fun at 0x000001B332EA47B8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline/'}}) 
+  ('######### export #################################',) 
+  ('######### finish #################################',) 

@@ -164,9 +164,9 @@ def pd_filter_rows(df, col, pars):
     df = df[ df['_isfloat'] > 0 ]
     df = df[df[coly] > ymin]
     df = df[df[coly] < ymax]
-
     del df['_isfloat']
-    return df,coly
+
+    return df, col
 
 
 
@@ -186,6 +186,37 @@ def pd_label_clean(df, col, pars):
     return df,coly
 
 
+def pd_coly(df, col, pars):
+    ##### Filtering / cleaning rows :   #########################################################
+    coly=col
+    def isfloat(x):
+        try :
+            a= float(x)
+            return 1
+        except:
+            return 0
+    df['_isfloat'] = df[ coly ].apply(lambda x : isfloat(x) )
+    df             = df[ df['_isfloat'] > 0 ]
+    del df['_isfloat']
+
+    ymin, ymax = pars.get('ymin', -9999999999.0), pars.get('ymax', 999999999.0)
+    df = df[df[coly] > ymin]
+    df = df[df[coly] < ymax]
+    ##### Label processing   ####################################################################
+    y_norm_fun = None
+    # Target coly processing, Normalization process  , customize by model
+    log("y_norm_fun preprocess_pars")
+    y_norm_fun = pars.get('y_norm_fun', None)
+
+
+    if y_norm_fun is not None:
+        df[coly] = df[coly].apply(lambda x: y_norm_fun(x))
+        # save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
+        if pars.get('path_features_store', None) is not None:
+            path_features_store = pars['path_features_store']
+            save_features(df[coly], 'dfy', path_features_store)
+    return df,col
+
 
 def pd_colnum(df, col, pars):
     colnum = col
@@ -198,80 +229,159 @@ def pd_colnum_normalize(df, col, pars):
     log("### colnum normalize  ###############################################################")
     from util_feature import pd_colnum_normalize
     colnum = col
-    path_features_store = pars['path_features_store']
+
     pars = { 'pipe_list': [ {'name': 'fillna', 'naval' : 0.0 }, {'name': 'minmax'} ]}
     dfnum_norm, colnum_norm = pd_colnum_normalize(df, colname=colnum,  pars=pars, suffix = "_norm",
                                                   return_val="dataframe,param")
     log(colnum_norm)
-    save_features(dfnum_norm, 'dfnum_norm', path_features_store)
+    if pars.get('path_features_store', None) is not None:
+        path_features_store = pars['path_features_store']
+        save_features(dfnum_norm, 'dfnum_norm', path_features_store)
     return dfnum_norm, colnum_norm
 
 
 def pd_colnum_bin(df, col, pars):
     from util_feature import  pd_colnum_tocat
-    path_features_store = pars['path_features_store']
+
+    path_pipeline = pars.get('path_pipeline', False)
+    if  path_pipeline:
+       colnum_binmap  = load(f'{path_pipeline}/colnum_binmap.pkl')
+    else :
+       colnum_binmap  = None
+
+    log(colnum_binmap)
     colnum = col
     log("### colnum Map numerics to Category bin  ###########################################")
-    print(colnum)
-    dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=colnum, colexclude=None, colbinmap=None,
+    dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=colnum, colexclude=None, colbinmap=colnum_binmap,
                                                bins=10, suffix="_bin", method="uniform",
                                                return_val="dataframe,param")
     log(colnum_binmap)
     ### Renaming colunm_bin with suffix
     colnum_bin = [x + "_bin" for x in list(colnum_binmap.keys())]
     log(colnum_bin)
-    save_features(dfnum_bin, 'dfnum_binmap', path_features_store)
-    return dfnum_bin, colnum_binmap
+
+    if 'path_features_store' in pars:
+        save_features(dfnum_bin, 'colnum_bin' + "-" + str(col), pars['path_features_store'])
+        save(colnum_binmap,  pars['path_pipeline_export'] + "/colnum_binmap.pkl" )
+        save(colnum_bin,     pars['path_pipeline_export'] + "/colnum_bin.pkl" )
 
 
+    col_pars = {}
+    col_pars['colnumbin_map'] = colnum_binmap
+    col_pars['cols_new'] = {
+     'colnum'     :  col ,    ###list
+     'colnum_bin' :  colnum_bin       ### list
+    }
+    return dfnum_bin, col_pars
 
-def pd_colnum_binto_onehot(df, col, pars):
+
+def pd_colnum_binto_onehot(df, col=None, pars=None):
     assert isinstance(col, list) and isinstance(df, pd.DataFrame)
+    dfnum_bin     = df[col]
+    colnum_bin    = col
+    path_pipeline = pars.get('path_pipeline', False)
+    colnum_onehot = load(f'{path_pipeline}/colnum_onehot.pkl') if  path_pipeline else None
 
+
+    log("###### colnum bin to One Hot  #################################################")
     from util_feature import  pd_col_to_onehot
-    dfnum_bin = df[col]
-    path_features_store = pars['path_features_store']
-    colnum_bin = col
-    log("### colnum bin to One Hot")
     dfnum_hot, colnum_onehot = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
-                                                colonehot=None, return_val="dataframe,param")
+                                                colonehot=colnum_onehot, return_val="dataframe,param")
     log(colnum_onehot)
-    save_features(dfnum_hot, 'dfnum_onehot', path_features_store)
-    return dfnum_hot, colnum_onehot
+
+    if 'path_features_store' in pars :
+        save_features(dfnum_hot, 'colnum_onehot', pars['path_features_store'])
+        save(colnum_onehot,  pars['path_pipeline_export'] + "/colnum_onehot.pkl" )
+
+    col_pars = {}
+    col_pars['colnum_onehot'] = colnum_onehot
+    col_pars['cols_new'] = {
+     # 'colnum'        :  col ,    ###list
+     'colnum_onehot' :  colnum_onehot       ### list
+    }
+    return dfnum_hot, col_pars
 
 
-
-def pd_colcat_to_onehot(df, col, pars):
-    # dfbum_bin = df[col]
+def pd_colcat_to_onehot(df, col=None, pars=None):
+    dfbum_bin = df[col]
     if len(col)==1:
-        return df, col
-    path_features_store = pars['path_features_store']
-    colcat = col
 
+        colnew       = [col[0] + "_onehot"]
+        df[ colnew ] =  df[col]
+        col_pars     = {}
+        col_pars['colcat_onehot'] = colnew
+        col_pars['cols_new'] = {
+         # 'colnum'        :  col ,    ###list
+         'colcat_onehot'   :  colnew      ### list
+        }
+        return df[colnew], col_pars
+
+    path_pipeline = pars.get('path_pipeline', False)
+    if  path_pipeline:
+       colcat_onehot = load(f'{path_pipeline}/colcat_onehot.pkl')
+    else :
+       colcat_onehot = None
+
+    colcat = col
     log("#### colcat to onehot")
     dfcat_hot, colcat_onehot = util_feature.pd_col_to_onehot(df[colcat], colname=colcat,
-                                                colonehot=None, return_val="dataframe,param")
+                                                colonehot=colcat_onehot, return_val="dataframe,param")
     log(dfcat_hot[colcat_onehot].head(5))
-    save_features(dfcat_hot, 'dfcat_onehot', path_features_store)
-    return dfcat_hot, colcat_onehot
+
+    if 'path_features_store' in pars :
+        path_features_store = pars['path_features_store']
+        save_features(dfcat_hot, 'colcat_onehot', path_features_store)
+        save(colcat_onehot,  pars['path_pipeline_export'] + "/colcat_onehot.pkl" )
+        save(colcat,         pars['path_pipeline_export'] + "/colcat.pkl" )
+
+    col_pars = {}
+    col_pars['colcat_onehot'] = colcat_onehot
+    col_pars['cols_new'] = {
+     # 'colnum'        :  col ,    ###list
+     'colcat_onehot' :  colcat_onehot       ### list
+    }
+
+    print("ok ------------")
+    return dfcat_hot, col_pars
 
 
 
 
-def pd_colcat_bin(df, col, pars):
+from util_feature import load
+
+def pd_colcat_bin(df, col=None, pars=None):
     # dfbum_bin = df[col]
-    path_features_store = pars['path_features_store']
-    colcat = col
+    path_pipeline = pars.get('path_pipeline', False)
+    if  path_pipeline:
+       colcat_bin_map = load(f'{path_pipeline}/colcat_bin_map.pkl')
+    else :
+       colcat_bin_map = None
 
+    colcat = col
     log("#### Colcat to integer encoding ")
     dfcat_bin, colcat_bin_map = util_feature.pd_colcat_toint(df[colcat], colname=colcat,
-                                                colcat_map=None, suffix="_int")
+                                                colcat_map=  colcat_bin_map ,
+                                                suffix="_int")
     colcat_bin = list(dfcat_bin.columns)
     ##### Colcat processing   ################################################################
     colcat_map = util_feature.pd_colcat_mapping(df, colcat)
     log(df[colcat].dtypes, colcat_map)
-    save_features(dfcat_bin, 'dfcat_bin', path_features_store)
-    return dfcat_bin, colcat_bin_map
+
+
+    if 'path_features_store' in pars :
+       save_features(dfcat_bin, 'dfcat_bin', pars['path_features_store'])
+       save(colcat_bin_map,  pars['path_pipeline_export'] + "/colcat_bin_map.pkl" )
+       save(colcat_bin,      pars['path_pipeline_export'] + "/colcat_bin.pkl" )
+
+
+    col_pars = {}
+    col_pars['colcat_bin_map'] = colcat_bin_map
+    col_pars['cols_new'] = {
+     'colcat'     :  col ,    ###list
+     'colcat_bin' :  colcat_bin       ### list
+    }
+
+    return dfcat_bin, col_pars
 
 
 
@@ -279,33 +389,45 @@ def pd_colcross(df, col, pars):
     log("#####  Cross Features From OneHot Features   ######################################")
     from util_feature import pd_feature_generate_cross
 
-
-    path_features_store = pars['path_features_store']
     dfcat_hot = pars['dfcat_hot']
     dfnum_hot = pars['dfnum_hot']
     colid     = pars['colid']
-    colcross_single   = pars['colcross_single']
 
     try :
        df_onehot = dfcat_hot.join(dfnum_hot, on=colid, how='left')
     except :
        df_onehot = copy.deepcopy(dfcat_hot)
 
+    colcross_single = pars['colcross_single']
+    if  'path_pipeline' in pars :   #### Load existing column list
+       colcross_single = load( pars['path_pipeline']  +f'/colcross_single_onehot_select.pkl')
+
     colcross_single_onehot_select = []
-    for t in list(df_onehot) :
-        for c1 in colcross_single :
-            if c1 in t :
+    for t in list(df_onehot.columns):
+       for c1 in colcross_single:
+           if c1 in t:
                colcross_single_onehot_select.append(t)
+
 
     df_onehot = df_onehot[colcross_single_onehot_select ]
     dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
                                                            pct_threshold=0.02,  m_combination=2)
     log(dfcross_hot.head(2).T)
     colcross_pair_onehot = list(dfcross_hot.columns)
-    save_features(dfcross_hot, 'dfcross_onehot', path_features_store)
-    del df_onehot ; gc.collect()
 
-    return dfcross_hot, colcross_pair
+    if 'path_features_store' in pars:
+        save_features(dfcross_hot, 'colcross_onehot', pars['path_features_store'])
+        save(colcross_single_onehot_select, pars['path_pipeline_export'] + '/colcross_single_onehot_select.pkl')
+        save(colcross_pair,                 pars['path_pipeline_export'] + '/colcross_pair.pkl')
+
+    col_pars = {}
+    col_pars['colcross_pair'] = colcross_pair
+    col_pars['cols_new'] = {
+     # 'colcross_single'     :  col ,    ###list
+     'colcross_pair' :  colcross_pair       ### list
+    }
+
+    return dfcross_hot, col_pars
 
 
 def pd_coldate(df, col, pars):
@@ -318,8 +440,11 @@ def pd_coldate(df, col, pars):
     for coldate_i in coldate :
         dfdate_i =  util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
         dfdate  = pd.concat((dfdate, dfdate_i))  if dfdate is not None else dfdate_i
-        save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
-    save_features(dfdate, 'dfdate', path_features_store)
+        if pars.get('path_features_store', None) is not None:
+            path_features_store = pars['path_features_store']
+            save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
+    if pars.get('path_features_store', None) is not None:
+        save_features(dfdate, 'dfdate', path_features_store)
     return dfdate, None
 
 
@@ -333,7 +458,55 @@ if __name__ == "__main__":
 
 
 
+"""
 
+  coltext ---> coltext-coli-svd
+  
+  coldate ---> coltext-coli
+
+
+
+    log("#### Data preparation #############################################################")
+    log(dfX.shape)
+    dfX    = dfX.sample(frac=1.0)
+    itrain = int(0.6 * len(dfX))
+    ival   = int(0.8 * len(dfX))
+    colid  = cols_family['colid']
+    colsX  = data_pars['cols_model']
+    coly   = data_pars['coly']
+    print('colsX',colsX)
+    rm=["name", "summary", "space", "description", "neighborhood_overview", "notes", "transit", "access", "interaction", "house_rules", "host_name", "host_about", "amenities"]
+    colsX = list(set(colsX) - set(rm))
+
+    for col in rm:
+        col1=col+'_svd_0'
+        col2=col+'_svd_1'
+        colsX.append(col1)
+        colsX.append(col2)
+    rm1=["last_review", "host_since", "first_review", "last_scraped"]
+    colsX = list(set(colsX) - set(rm1))
+    for col in rm1:
+        col1=col+'_year'
+        col2=col+'_month'
+        col3=col+'_day'
+        colsX.append(col1)
+        colsX.append(col2)
+        colsX.append(col3)
+    dfX.fillna(0)
+    data_pars['data_type'] = 'ram'
+    data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
+                          'ytrain' : dfX[coly].iloc[:itrain],
+                          'Xtest'  : dfX[colsX].iloc[itrain:ival, :],
+                          'ytest'  : dfX[coly].iloc[itrain:ival],
+
+                          'Xval'   : dfX[colsX].iloc[ival:, :],
+                          'yval'   : dfX[coly].iloc[ival:],
+                          }
+                          
+                          
+
+
+"""
 
 
 

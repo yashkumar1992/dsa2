@@ -302,7 +302,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         log(dfcross_hot.head(2).T)
         colcross_pair_onehot = list(dfcross_hot.columns)
         save_features(dfcross_hot, 'dfcross_onehot', path_features_store)
-        del df_onehot ; gc.collect()
+        del df_onehot ,colcross_pair_onehot
 
     
 
@@ -369,8 +369,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         if t in locals() :
             print('localT', t, locals()[t])
             dfXy = pd.concat((dfXy, locals()[t] ), axis=1)
-    save_features(dfXy, 'dfX', path_features_store)
 
+    save_features(dfXy, 'dfX', path_features_store)
     colXy = list(dfXy.columns)
     colXy.remove(coly)    ##### Only X columns
     cols_family['colX'] = colXy

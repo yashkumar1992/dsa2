@@ -18,7 +18,7 @@ import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
 
 ###################################################################################
-from source import util_feature
+from source import run_train
 
 
 ####################################################################################
@@ -70,9 +70,9 @@ config_default  = 'multi_lightgbm'
 colid   = 'pet_id'
 coly    = 'pet_category'
 coldate = ['issue_date','listing_date']
-colcat  = ['color_type']
-colnum  = ['length(m)','height(cm)','condition','X1','X2','breed_category']
-colcross= ['condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2', 'breed_category']
+colcat  = ['color_type','condition']
+colnum  = ['length(m)','height(cm)','X1','X2'] # ,'breed_category'
+colcross= ['condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2']  # , 'breed_category'
 
 
 cols_input_type_1 = {  "coly"   :   coly
@@ -121,8 +121,7 @@ def multi_lightgbm(path_model_out="") :
 
     def pre_process_fun_multi(y):
         ### Before the prediction is done
-        map_dict_={0:0,1:1,2:2,4:3}
-        return  map_dict_[y]
+        return  int(y)
 
 
     model_dict = {'model_pars': {
@@ -162,7 +161,7 @@ def multi_lightgbm(path_model_out="") :
 
           ### Column family used as model input  #####################
           # "colnum"      "colcat_bin"   "colcross_onehot"
-          'cols_model_group': [ 'colnum', 'colcat_bin']
+          'cols_model_group': [ 'colnum_bin','colcat_bin']
 
 
           ### Filter data rows   #####################################
@@ -198,7 +197,7 @@ def preprocess(config=None, nsample=None):
     print(mdict)
 
     from source import run_preprocess2, run_preprocess
-    run_preprocess.run_preprocess(model_name     =  config_name,
+    run_preprocess2.run_preprocess(model_name      =  config_name,
                                 path_data         =  m['path_data_train'],
                                 path_output       =  m['path_model'],
                                 path_config_model =  m['path_config_model'],
@@ -239,11 +238,12 @@ def predict(config=None, nsample=None):
     m            = mdict['global_pars']
     print(m)
 
-    from source import run_inference
-    run_inference.run_predict(model_name,
+    from source import run_inference2
+    run_inference2.run_predict(model_name,
                             path_model  = m['path_model'],
                             path_data   = m['path_data_test'],
                             path_output = m['path_output_pred'],
+                            cols_group  = mdict['data_pars']['cols_input_type'],
                             n_sample    = nsample if nsample is not None else m['n_sample'])
 
 

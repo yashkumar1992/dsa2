@@ -1,0 +1,946 @@
+D:/_devs/Python01/gitdev/dsa2/
+os.getcwd D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:/_devs/Python01/gitdev/dsa2/data/
+{'model_pars': {'model_path': '', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x000002C229F2CEA0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x000002C229F2CF28>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 5, 'ymin': -1}}, 'global_pars': {'config_name': 'multi_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multi_lightgbm/', 'n_sample': 6000}}
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier/',) 
+  ('#### Model Params Dynamic loading  ###############################################',) 
+
+  ('D:\\_devs\\Python01\\gitdev',) 
+D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:/_devs/Python01/gitdev/dsa2/data/
+  ({'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x000002C229F380D0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x000002C229F386A8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 5, 'ymin': -1}}, 'global_pars': {'config_name': 'multi_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multi_lightgbm/', 'n_sample': 6000}},) 
+  ('#### load input column family  ###################################################',) 
+  ({'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']},) 
+  ('#### Preprocess  #################################################################',) 
+
+  ({'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']},) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colid.pkl',) 
+
+  ('loading', 'pet_id', 'D:/_devs/Python01/gitdev/dsa2/data/input/multiclass/train//features.zip') 
+['D:/_devs/Python01/gitdev/dsa2/data/input/multiclass/train\\features.zip']
+
+  ('dfX_raw',                                 0  ...                18833
+pet_id                 ANSL_69903  ...           ANSL_73558
+issue_date    2016-07-10 00:00:00  ...  2011-12-13 00:00:00
+listing_date  2016-09-21 16:25:00  ...  2018-10-26 14:18:00
+condition                       2  ...                    0
+
+[4 rows x 18834 columns]) 
+
+  ('dfy', Empty DataFrame
+Columns: []
+Index: []) 
+
+  ('dfy not loaded', 'D:/_devs/Python01/gitdev/dsa2/data/input/multiclass/train//target.zip', KeyError("None of ['pet_id'] are in the columns",)) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline/',) 
+
+  ('#####  coly  ###########################################################################',) 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+D:/_devs/Python01/gitdev/dsa2/
+
+  ('y_norm_fun preprocess_pars',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//coly/features.parquet',) 
+
+  (            pet_category
+pet_id                  
+ANSL_69903             1
+ANSL_66892             2
+ANSL_69750             4
+ANSL_71623             2
+ANSL_57969             1
+...                  ...
+ANSL_52485             1
+ANSL_60352             2
+ANSL_50323             2
+ANSL_66106             1
+ANSL_51656             2
+
+[6000 rows x 1 columns], ['pet_category']) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//coly.pkl',) 
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'dfnum_bin', 'type': ''}, '##########################################################') 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+
+  (None,) 
+
+  ('### colnum Map numerics to Category bin  ###########################################',) 
+length(m)
+              length(m)                 
+                   mean   min size   max
+length(m)_bin                           
+0              0.049067  0.00  579  0.09
+1              0.143678  0.10  590  0.19
+2              0.243772  0.20  639  0.29
+3              0.344924  0.30  591  0.39
+4              0.450227  0.40  618  0.50
+5              0.550512  0.51  547  0.59
+6              0.651234  0.60  640  0.70
+7              0.749318  0.71  528  0.79
+8              0.848691  0.80  703  0.90
+9              0.953558  0.91  565  1.00
+height(cm)
+               height(cm)                           
+                     mean        min size        max
+height(cm)_bin                                      
+0                7.198111   5.030000  614   9.520000
+1               11.788912   9.540000  588  14.020000
+2               16.300425  14.030000  612  18.510000
+3               20.753338  18.530001  623  23.010000
+4               25.169584  23.020000  576  27.510000
+5               29.688238  27.520000  607  32.000000
+6               34.298466  32.020000  580  36.500000
+7               38.782181  36.509998  546  40.990002
+8               43.254009  41.000000  616  45.490002
+9               47.754230  45.500000  638  49.990002
+X1
+               X1                  
+             mean   min  size   max
+X1_bin                             
+0        0.004689   0.0  3412   1.0
+1        2.071429   2.0    14   3.0
+2        4.333333   4.0     3   5.0
+3        6.991786   6.0   487   7.0
+4        8.745455   8.0    55   9.0
+5       10.866667  10.0    15  11.0
+6       12.985580  12.0  1387  13.0
+7       14.994220  14.0   173  15.0
+8       16.299999  16.0   270  17.0
+9       18.005434  18.0   184  19.0
+X2
+         X2                
+       mean  min  size  max
+X2_bin                     
+0       1.0  1.0  2731  1.0
+1       2.0  2.0    65  2.0
+2       3.0  3.0    18  3.0
+3       4.0  4.0   407  4.0
+4       5.0  5.0     5  5.0
+6       6.0  6.0     3  6.0
+7       7.0  7.0  1117  7.0
+8       8.0  8.0    16  8.0
+9       9.0  9.0  1638  9.0
+
+  (OrderedDict([('length(m)', [-0.0001, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0]), ('height(cm)', [5.02990020980835, 9.526000499725342, 14.022000789642334, 18.518001079559326, 23.01400136947632, 27.51000165939331, 32.0060019493103, 36.502002239227295, 40.99800252914429, 45.49400281906128, 49.99000310897827]), ('X1', [-0.0001, 1.9, 3.8, 5.699999999999999, 7.6, 9.5, 11.399999999999999, 13.299999999999999, 15.2, 17.099999999999998, 19.0]), ('X2', [0.9999, 1.8, 2.6, 3.4000000000000004, 4.2, 5.0, 5.800000000000001, 6.6000000000000005, 7.4, 8.2, 9.0])]),) 
+
+  (['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin'],) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_binmap.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_bin.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colnum/features.parquet',) 
+
+  (            length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], ['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin']) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colnum_bin/features.parquet',) 
+
+  (            length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], ['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin']) 
+------------dfi_all--------------------- {'coly': pet_id
+ANSL_69903    1
+ANSL_66892    2
+ANSL_69750    4
+ANSL_71623    2
+ANSL_57969    1
+             ..
+ANSL_52485    1
+ANSL_60352    2
+ANSL_50323    2
+ANSL_66106    1
+ANSL_51656    2
+Name: pet_category, Length: 6000, dtype: int64, 'colnum':             length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], 'colnum_bin':             length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns]}
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'dfnum_onehot', 'type': ''}, '##########################################################') 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+
+  ('### colnum bin to One Hot',) 
+length(m)_bin 10 (6000, 4)
+height(cm)_bin 10 (6000, 13)
+X1_bin 10 (6000, 22)
+X2_bin 9 (6000, 31)
+
+  (['length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9'],) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_onehot.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colnum_onehot/features.parquet',) 
+
+  (            length(m)_bin_0  length(m)_bin_1  ...  X2_bin_8  X2_bin_9
+pet_id                                        ...                    
+ANSL_69903                0                0  ...         0         1
+ANSL_66892                0                0  ...         0         1
+ANSL_69750                0                1  ...         0         0
+ANSL_71623                0                0  ...         0         0
+ANSL_57969                0                0  ...         0         0
+...                     ...              ...  ...       ...       ...
+ANSL_52485                0                0  ...         0         0
+ANSL_60352                0                0  ...         0         0
+ANSL_50323                0                0  ...         0         0
+ANSL_66106                0                1  ...         0         0
+ANSL_51656                0                0  ...         0         1
+
+[6000 rows x 39 columns], ['length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9']) 
+------------dfi_all--------------------- {'coly': pet_id
+ANSL_69903    1
+ANSL_66892    2
+ANSL_69750    4
+ANSL_71623    2
+ANSL_57969    1
+             ..
+ANSL_52485    1
+ANSL_60352    2
+ANSL_50323    2
+ANSL_66106    1
+ANSL_51656    2
+Name: pet_category, Length: 6000, dtype: int64, 'colnum':             length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], 'colnum_bin':             length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], 'colnum_onehot':             length(m)_bin_0  length(m)_bin_1  ...  X2_bin_8  X2_bin_9
+pet_id                                        ...                    
+ANSL_69903                0                0  ...         0         1
+ANSL_66892                0                0  ...         0         1
+ANSL_69750                0                1  ...         0         0
+ANSL_71623                0                0  ...         0         0
+ANSL_57969                0                0  ...         0         0
+...                     ...              ...  ...       ...       ...
+ANSL_52485                0                0  ...         0         0
+ANSL_60352                0                0  ...         0         0
+ANSL_50323                0                0  ...         0         0
+ANSL_66106                0                1  ...         0         0
+ANSL_51656                0                0  ...         0         1
+
+[6000 rows x 39 columns]}
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'dfcat_bin', 'type': ''}, '##########################################################') 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+
+  ('#### Colcat to integer encoding ',) 
+
+  (color_type     object
+condition     float64
+dtype: object, {'cat_map': {'color_type': {'Agouti': 0, 'Apricot': 1, 'Black': 2, 'Black Brindle': 3, 'Black Smoke': 4, 'Black Tabby': 5, 'Blue': 6, 'Blue Cream': 7, 'Blue Merle': 8, 'Blue Point': 9, 'Blue Smoke': 10, 'Blue Tabby': 11, 'Blue Tick': 12, 'Blue Tiger': 13, 'Brown': 14, 'Brown Brindle': 15, 'Brown Merle': 16, 'Brown Tabby': 17, 'Brown Tiger': 18, 'Buff': 19, 'Calico': 20, 'Calico Point': 21, 'Chocolate': 22, 'Chocolate Point': 23, 'Cream': 24, 'Cream Tabby': 25, 'Fawn': 26, 'Flame Point': 27, 'Gold': 28, 'Gray': 29, 'Gray Tabby': 30, 'Green': 31, 'Lilac Point': 32, 'Liver': 33, 'Liver Tick': 34, 'Lynx Point': 35, 'Orange': 36, 'Orange Tabby': 37, 'Red': 38, 'Red Merle': 39, 'Red Tick': 40, 'Sable': 41, 'Seal Point': 42, 'Silver': 43, 'Silver Tabby': 44, 'Tan': 45, 'Torbie': 46, 'Tortie': 47, 'Tortie Point': 48, 'Tricolor': 49, 'White': 50, 'Yellow': 51, 'Yellow Brindle': 52}, 'condition': {0.0: 0, 1.0: 1, 2.0: 2}}, 'cat_map_inverse': {'color_type': {0: 'Agouti', 1: 'Apricot', 2: 'Black', 3: 'Black Brindle', 4: 'Black Smoke', 5: 'Black Tabby', 6: 'Blue', 7: 'Blue Cream', 8: 'Blue Merle', 9: 'Blue Point', 10: 'Blue Smoke', 11: 'Blue Tabby', 12: 'Blue Tick', 13: 'Blue Tiger', 14: 'Brown', 15: 'Brown Brindle', 16: 'Brown Merle', 17: 'Brown Tabby', 18: 'Brown Tiger', 19: 'Buff', 20: 'Calico', 21: 'Calico Point', 22: 'Chocolate', 23: 'Chocolate Point', 24: 'Cream', 25: 'Cream Tabby', 26: 'Fawn', 27: 'Flame Point', 28: 'Gold', 29: 'Gray', 30: 'Gray Tabby', 31: 'Green', 32: 'Lilac Point', 33: 'Liver', 34: 'Liver Tick', 35: 'Lynx Point', 36: 'Orange', 37: 'Orange Tabby', 38: 'Red', 39: 'Red Merle', 40: 'Red Tick', 41: 'Sable', 42: 'Seal Point', 43: 'Silver', 44: 'Silver Tabby', 45: 'Tan', 46: 'Torbie', 47: 'Tortie', 48: 'Tortie Point', 49: 'Tricolor', 50: 'White', 51: 'Yellow', 52: 'Yellow Brindle'}, 'condition': {0: 0.0, 1: 1.0, 2: 2.0}}}) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_bin_map.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_bin.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colcat/features.parquet',) 
+
+  (            color_type_int  condition_int
+pet_id                                   
+ANSL_69903               0              0
+ANSL_66892               1              1
+ANSL_69750               2             -1
+ANSL_71623               1              1
+ANSL_57969               3              0
+...                    ...            ...
+ANSL_52485              31              0
+ANSL_60352               3              2
+ANSL_50323               3              1
+ANSL_66106               1              2
+ANSL_51656               3              1
+
+[6000 rows x 2 columns], ['color_type_int', 'condition_int']) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colcat_bin/features.parquet',) 
+
+  (            color_type_int  condition_int
+pet_id                                   
+ANSL_69903               0              0
+ANSL_66892               1              1
+ANSL_69750               2             -1
+ANSL_71623               1              1
+ANSL_57969               3              0
+...                    ...            ...
+ANSL_52485              31              0
+ANSL_60352               3              2
+ANSL_50323               3              1
+ANSL_66106               1              2
+ANSL_51656               3              1
+
+[6000 rows x 2 columns], ['color_type_int', 'condition_int']) 
+------------dfi_all--------------------- {'coly': pet_id
+ANSL_69903    1
+ANSL_66892    2
+ANSL_69750    4
+ANSL_71623    2
+ANSL_57969    1
+             ..
+ANSL_52485    1
+ANSL_60352    2
+ANSL_50323    2
+ANSL_66106    1
+ANSL_51656    2
+Name: pet_category, Length: 6000, dtype: int64, 'colnum':             length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], 'colnum_bin':             length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], 'colnum_onehot':             length(m)_bin_0  length(m)_bin_1  ...  X2_bin_8  X2_bin_9
+pet_id                                        ...                    
+ANSL_69903                0                0  ...         0         1
+ANSL_66892                0                0  ...         0         1
+ANSL_69750                0                1  ...         0         0
+ANSL_71623                0                0  ...         0         0
+ANSL_57969                0                0  ...         0         0
+...                     ...              ...  ...       ...       ...
+ANSL_52485                0                0  ...         0         0
+ANSL_60352                0                0  ...         0         0
+ANSL_50323                0                0  ...         0         0
+ANSL_66106                0                1  ...         0         0
+ANSL_51656                0                0  ...         0         1
+
+[6000 rows x 39 columns], 'colcat':             color_type_int  condition_int
+pet_id                                   
+ANSL_69903               0              0
+ANSL_66892               1              1
+ANSL_69750               2             -1
+ANSL_71623               1              1
+ANSL_57969               3              0
+...                    ...            ...
+ANSL_52485              31              0
+ANSL_60352               3              2
+ANSL_50323               3              1
+ANSL_66106               1              2
+ANSL_51656               3              1
+
+[6000 rows x 2 columns], 'colcat_bin':             color_type_int  condition_int
+pet_id                                   
+ANSL_69903               0              0
+ANSL_66892               1              1
+ANSL_69750               2             -1
+ANSL_71623               1              1
+ANSL_57969               3              0
+...                    ...            ...
+ANSL_52485              31              0
+ANSL_60352               3              2
+ANSL_50323               3              1
+ANSL_66106               1              2
+ANSL_51656               3              1
+
+[6000 rows x 2 columns]}
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'dfcat_onehot', 'type': ''}, '##########################################################') 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+
+  ('#### colcat to onehot',) 
+color_type_int 53 (6000, 2)
+condition_int 4 (6000, 54)
+
+  (            color_type_int_0  ...  condition_int_2
+pet_id                        ...                 
+ANSL_69903                 1  ...                0
+ANSL_66892                 0  ...                0
+ANSL_69750                 0  ...                0
+ANSL_71623                 0  ...                0
+ANSL_57969                 0  ...                0
+
+[5 rows x 57 columns],) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_onehot.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat.pkl',) 
+ok ------------
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colcat_onehot/features.parquet',) 
+
+  (            color_type_int_0  ...  condition_int_2
+pet_id                        ...                 
+ANSL_69903                 1  ...                0
+ANSL_66892                 0  ...                0
+ANSL_69750                 0  ...                0
+ANSL_71623                 0  ...                0
+ANSL_57969                 0  ...                0
+...                      ...  ...              ...
+ANSL_52485                 0  ...                0
+ANSL_60352                 0  ...                1
+ANSL_50323                 0  ...                0
+ANSL_66106                 0  ...                1
+ANSL_51656                 0  ...                0
+
+[6000 rows x 57 columns], ['color_type_int_0', 'color_type_int_1', 'color_type_int_2', 'color_type_int_3', 'color_type_int_4', 'color_type_int_5', 'color_type_int_6', 'color_type_int_7', 'color_type_int_8', 'color_type_int_9', 'color_type_int_10', 'color_type_int_11', 'color_type_int_12', 'color_type_int_13', 'color_type_int_14', 'color_type_int_15', 'color_type_int_16', 'color_type_int_17', 'color_type_int_18', 'color_type_int_19', 'color_type_int_20', 'color_type_int_21', 'color_type_int_22', 'color_type_int_23', 'color_type_int_24', 'color_type_int_25', 'color_type_int_26', 'color_type_int_27', 'color_type_int_28', 'color_type_int_29', 'color_type_int_30', 'color_type_int_31', 'color_type_int_32', 'color_type_int_33', 'color_type_int_34', 'color_type_int_35', 'color_type_int_36', 'color_type_int_37', 'color_type_int_38', 'color_type_int_39', 'color_type_int_40', 'color_type_int_41', 'color_type_int_42', 'color_type_int_43', 'color_type_int_44', 'color_type_int_45', 'color_type_int_46', 'color_type_int_47', 'color_type_int_48', 'color_type_int_49', 'color_type_int_50', 'color_type_int_51', 'color_type_int_52', 'condition_int_-1', 'condition_int_0', 'condition_int_1', 'condition_int_2']) 
+------------dfi_all--------------------- {'coly': pet_id
+ANSL_69903    1
+ANSL_66892    2
+ANSL_69750    4
+ANSL_71623    2
+ANSL_57969    1
+             ..
+ANSL_52485    1
+ANSL_60352    2
+ANSL_50323    2
+ANSL_66106    1
+ANSL_51656    2
+Name: pet_category, Length: 6000, dtype: int64, 'colnum':             length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], 'colnum_bin':             length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], 'colnum_onehot':             length(m)_bin_0  length(m)_bin_1  ...  X2_bin_8  X2_bin_9
+pet_id                                        ...                    
+ANSL_69903                0                0  ...         0         1
+ANSL_66892                0                0  ...         0         1
+ANSL_69750                0                1  ...         0         0
+ANSL_71623                0                0  ...         0         0
+ANSL_57969                0                0  ...         0         0
+...                     ...              ...  ...       ...       ...
+ANSL_52485                0                0  ...         0         0
+ANSL_60352                0                0  ...         0         0
+ANSL_50323                0                0  ...         0         0
+ANSL_66106                0                1  ...         0         0
+ANSL_51656                0                0  ...         0         1
+
+[6000 rows x 39 columns], 'colcat':             color_type_int  condition_int
+pet_id                                   
+ANSL_69903               0              0
+ANSL_66892               1              1
+ANSL_69750               2             -1
+ANSL_71623               1              1
+ANSL_57969               3              0
+...                    ...            ...
+ANSL_52485              31              0
+ANSL_60352               3              2
+ANSL_50323               3              1
+ANSL_66106               1              2
+ANSL_51656               3              1
+
+[6000 rows x 2 columns], 'colcat_bin':             color_type_int  condition_int
+pet_id                                   
+ANSL_69903               0              0
+ANSL_66892               1              1
+ANSL_69750               2             -1
+ANSL_71623               1              1
+ANSL_57969               3              0
+...                    ...            ...
+ANSL_52485              31              0
+ANSL_60352               3              2
+ANSL_50323               3              1
+ANSL_66106               1              2
+ANSL_51656               3              1
+
+[6000 rows x 2 columns], 'colcat_onehot':             color_type_int_0  ...  condition_int_2
+pet_id                        ...                 
+ANSL_69903                 1  ...                0
+ANSL_66892                 0  ...                0
+ANSL_69750                 0  ...                0
+ANSL_71623                 0  ...                0
+ANSL_57969                 0  ...                0
+...                      ...  ...              ...
+ANSL_52485                 0  ...                0
+ANSL_60352                 0  ...                1
+ANSL_50323                 0  ...                0
+ANSL_66106                 0  ...                1
+ANSL_51656                 0  ...                0
+
+[6000 rows x 57 columns]}
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'dfcross_hot', 'type': 'cross'}, '##########################################################') 
+
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+
+  ('#####  Cross Features From OneHot Features   ######################################',) 
+
+  ('False/colcross_single_onehot_select.pkl',) 
+
+  (pet_id                            ANSL_69903  ANSL_66892
+color_type_int_0-condition_int_0           1           0
+color_type_int_0-condition_int_1           0           0
+color_type_int_0-condition_int_2           0           0
+color_type_int_0-X1_bin_0                  0           0
+color_type_int_0-X1_bin_6                  1           0
+...                                      ...         ...
+X1_bin_3-X2_bin_0                          0           0
+X1_bin_6-X2_bin_9                          1           1
+X1_bin_7-X2_bin_3                          0           0
+X1_bin_8-X2_bin_9                          0           0
+X1_bin_9-X2_bin_3                          0           0
+
+[224 rows x 2 columns],) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcross_single_onehot_select.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcross_pair.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colcross_pair/features.parquet',) 
+
+  (            color_type_int_0-condition_int_0  ...  X1_bin_9-X2_bin_3
+pet_id                                        ...                   
+ANSL_69903                                 1  ...                  0
+ANSL_66892                                 0  ...                  0
+ANSL_69750                                 0  ...                  0
+ANSL_71623                                 0  ...                  0
+ANSL_57969                                 0  ...                  1
+...                                      ...  ...                ...
+ANSL_52485                                 0  ...                  1
+ANSL_60352                                 0  ...                  0
+ANSL_50323                                 0  ...                  0
+ANSL_66106                                 0  ...                  0
+ANSL_51656                                 0  ...                  0
+
+[6000 rows x 224 columns], ['color_type_int_0-condition_int_0', 'color_type_int_0-condition_int_1', 'color_type_int_0-condition_int_2', 'color_type_int_0-X1_bin_0', 'color_type_int_0-X1_bin_6', 'color_type_int_0-X2_bin_0', 'color_type_int_0-X2_bin_9', 'color_type_int_1-condition_int_0', 'color_type_int_1-condition_int_1', 'color_type_int_1-condition_int_2', 'color_type_int_1-X1_bin_0', 'color_type_int_1-X1_bin_6', 'color_type_int_1-X2_bin_0', 'color_type_int_1-X2_bin_7', 'color_type_int_1-X2_bin_9', 'color_type_int_2-condition_int_-1', 'color_type_int_2-condition_int_1', 'color_type_int_2-condition_int_2', 'color_type_int_2-X1_bin_0', 'color_type_int_2-X2_bin_0', 'color_type_int_2-X2_bin_3', 'color_type_int_2-X2_bin_7', 'color_type_int_3-condition_int_0', 'color_type_int_3-condition_int_1', 'color_type_int_3-condition_int_2', 'color_type_int_3-length(m)_bin_0', 'color_type_int_3-length(m)_bin_1', 'color_type_int_3-length(m)_bin_2', 'color_type_int_3-length(m)_bin_3', 'color_type_int_3-length(m)_bin_4', 'color_type_int_3-length(m)_bin_5', 'color_type_int_3-length(m)_bin_6', 'color_type_int_3-length(m)_bin_7', 'color_type_int_3-length(m)_bin_8', 'color_type_int_3-length(m)_bin_9', 'color_type_int_3-height(cm)_bin_0', 'color_type_int_3-height(cm)_bin_1', 'color_type_int_3-height(cm)_bin_2', 'color_type_int_3-height(cm)_bin_3', 'color_type_int_3-height(cm)_bin_4', 'color_type_int_3-height(cm)_bin_5', 'color_type_int_3-height(cm)_bin_6', 'color_type_int_3-height(cm)_bin_7', 'color_type_int_3-height(cm)_bin_8', 'color_type_int_3-height(cm)_bin_9', 'color_type_int_3-X1_bin_0', 'color_type_int_3-X1_bin_6', 'color_type_int_3-X2_bin_0', 'color_type_int_3-X2_bin_7', 'color_type_int_3-X2_bin_9', 'color_type_int_8-X1_bin_0', 'color_type_int_8-X2_bin_0', 'color_type_int_14-condition_int_1', 'color_type_int_14-X2_bin_0', 'color_type_int_16-condition_int_1', 'color_type_int_16-condition_int_2', 'color_type_int_16-X1_bin_0', 'color_type_int_16-X2_bin_0', 'condition_int_-1-X1_bin_6', 'condition_int_-1-X1_bin_7', 'condition_int_-1-X2_bin_3', 'condition_int_-1-X2_bin_9', 'condition_int_0-length(m)_bin_0', 'condition_int_0-length(m)_bin_1', 'condition_int_0-length(m)_bin_2', 'condition_int_0-length(m)_bin_3', 'condition_int_0-length(m)_bin_4', 'condition_int_0-length(m)_bin_5', 'condition_int_0-length(m)_bin_6', 'condition_int_0-length(m)_bin_8', 'condition_int_0-length(m)_bin_9', 'condition_int_0-height(cm)_bin_0', 'condition_int_0-height(cm)_bin_1', 'condition_int_0-height(cm)_bin_2', 'condition_int_0-height(cm)_bin_3', 'condition_int_0-height(cm)_bin_4', 'condition_int_0-height(cm)_bin_5', 'condition_int_0-height(cm)_bin_6', 'condition_int_0-height(cm)_bin_8', 'condition_int_0-height(cm)_bin_9', 'condition_int_0-X1_bin_0', 'condition_int_0-X1_bin_6', 'condition_int_0-X1_bin_8', 'condition_int_0-X2_bin_0', 'condition_int_0-X2_bin_7', 'condition_int_0-X2_bin_9', 'condition_int_1-length(m)_bin_0', 'condition_int_1-length(m)_bin_1', 'condition_int_1-length(m)_bin_2', 'condition_int_1-length(m)_bin_3', 'condition_int_1-length(m)_bin_4', 'condition_int_1-length(m)_bin_5', 'condition_int_1-length(m)_bin_6', 'condition_int_1-length(m)_bin_7', 'condition_int_1-length(m)_bin_8', 'condition_int_1-length(m)_bin_9', 'condition_int_1-height(cm)_bin_0', 'condition_int_1-height(cm)_bin_1', 'condition_int_1-height(cm)_bin_2', 'condition_int_1-height(cm)_bin_3', 'condition_int_1-height(cm)_bin_4', 'condition_int_1-height(cm)_bin_5', 'condition_int_1-height(cm)_bin_6', 'condition_int_1-height(cm)_bin_7', 'condition_int_1-height(cm)_bin_8', 'condition_int_1-height(cm)_bin_9', 'condition_int_1-X1_bin_0', 'condition_int_1-X1_bin_3', 'condition_int_1-X1_bin_6', 'condition_int_1-X2_bin_0', 'condition_int_1-X2_bin_7', 'condition_int_1-X2_bin_9', 'condition_int_2-length(m)_bin_0', 'condition_int_2-length(m)_bin_1', 'condition_int_2-length(m)_bin_2', 'condition_int_2-length(m)_bin_3', 'condition_int_2-length(m)_bin_4', 'condition_int_2-length(m)_bin_5', 'condition_int_2-length(m)_bin_6', 'condition_int_2-length(m)_bin_7', 'condition_int_2-length(m)_bin_8', 'condition_int_2-length(m)_bin_9', 'condition_int_2-height(cm)_bin_0', 'condition_int_2-height(cm)_bin_1', 'condition_int_2-height(cm)_bin_2', 'condition_int_2-height(cm)_bin_3', 'condition_int_2-height(cm)_bin_4', 'condition_int_2-height(cm)_bin_5', 'condition_int_2-height(cm)_bin_6', 'condition_int_2-height(cm)_bin_7', 'condition_int_2-height(cm)_bin_8', 'condition_int_2-height(cm)_bin_9', 'condition_int_2-X1_bin_0', 'condition_int_2-X1_bin_3', 'condition_int_2-X1_bin_6', 'condition_int_2-X2_bin_0', 'condition_int_2-X2_bin_7', 'condition_int_2-X2_bin_9', 'length(m)_bin_0-X1_bin_0', 'length(m)_bin_0-X1_bin_6', 'length(m)_bin_0-X2_bin_0', 'length(m)_bin_0-X2_bin_9', 'length(m)_bin_1-X1_bin_0', 'length(m)_bin_1-X1_bin_6', 'length(m)_bin_1-X2_bin_0', 'length(m)_bin_1-X2_bin_9', 'length(m)_bin_2-X1_bin_0', 'length(m)_bin_2-X1_bin_6', 'length(m)_bin_2-X2_bin_0', 'length(m)_bin_2-X2_bin_7', 'length(m)_bin_2-X2_bin_9', 'length(m)_bin_3-X1_bin_0', 'length(m)_bin_3-X1_bin_6', 'length(m)_bin_3-X2_bin_0', 'length(m)_bin_3-X2_bin_9', 'length(m)_bin_4-X1_bin_0', 'length(m)_bin_4-X1_bin_6', 'length(m)_bin_4-X2_bin_0', 'length(m)_bin_4-X2_bin_9', 'length(m)_bin_5-X1_bin_0', 'length(m)_bin_5-X1_bin_6', 'length(m)_bin_5-X2_bin_0', 'length(m)_bin_5-X2_bin_9', 'length(m)_bin_6-X1_bin_0', 'length(m)_bin_6-X1_bin_6', 'length(m)_bin_6-X2_bin_0', 'length(m)_bin_6-X2_bin_9', 'length(m)_bin_7-X1_bin_0', 'length(m)_bin_7-X2_bin_0', 'length(m)_bin_7-X2_bin_9', 'length(m)_bin_8-X1_bin_0', 'length(m)_bin_8-X1_bin_6', 'length(m)_bin_8-X2_bin_0', 'length(m)_bin_8-X2_bin_9', 'length(m)_bin_9-X1_bin_0', 'length(m)_bin_9-X2_bin_0', 'length(m)_bin_9-X2_bin_9', 'height(cm)_bin_0-X1_bin_0', 'height(cm)_bin_0-X1_bin_6', 'height(cm)_bin_0-X2_bin_0', 'height(cm)_bin_0-X2_bin_9', 'height(cm)_bin_1-X1_bin_0', 'height(cm)_bin_1-X1_bin_6', 'height(cm)_bin_1-X2_bin_0', 'height(cm)_bin_1-X2_bin_9', 'height(cm)_bin_2-X1_bin_0', 'height(cm)_bin_2-X1_bin_6', 'height(cm)_bin_2-X2_bin_0', 'height(cm)_bin_2-X2_bin_9', 'height(cm)_bin_3-X1_bin_0', 'height(cm)_bin_3-X1_bin_6', 'height(cm)_bin_3-X2_bin_0', 'height(cm)_bin_3-X2_bin_9', 'height(cm)_bin_4-X1_bin_0', 'height(cm)_bin_4-X1_bin_6', 'height(cm)_bin_4-X2_bin_0', 'height(cm)_bin_4-X2_bin_9', 'height(cm)_bin_5-X1_bin_0', 'height(cm)_bin_5-X1_bin_6', 'height(cm)_bin_5-X2_bin_0', 'height(cm)_bin_5-X2_bin_9', 'height(cm)_bin_6-X1_bin_0', 'height(cm)_bin_6-X1_bin_6', 'height(cm)_bin_6-X2_bin_0', 'height(cm)_bin_6-X2_bin_9', 'height(cm)_bin_7-X1_bin_0', 'height(cm)_bin_7-X2_bin_0', 'height(cm)_bin_7-X2_bin_9', 'height(cm)_bin_8-X1_bin_0', 'height(cm)_bin_8-X1_bin_6', 'height(cm)_bin_8-X2_bin_0', 'height(cm)_bin_8-X2_bin_9', 'height(cm)_bin_9-X1_bin_0', 'height(cm)_bin_9-X1_bin_6', 'height(cm)_bin_9-X2_bin_0', 'height(cm)_bin_9-X2_bin_7', 'height(cm)_bin_9-X2_bin_9', 'X1_bin_0-X2_bin_0', 'X1_bin_0-X2_bin_7', 'X1_bin_3-X2_bin_0', 'X1_bin_6-X2_bin_9', 'X1_bin_7-X2_bin_3', 'X1_bin_8-X2_bin_9', 'X1_bin_9-X2_bin_3']) 
+------------dfi_all--------------------- {'coly': pet_id
+ANSL_69903    1
+ANSL_66892    2
+ANSL_69750    4
+ANSL_71623    2
+ANSL_57969    1
+             ..
+ANSL_52485    1
+ANSL_60352    2
+ANSL_50323    2
+ANSL_66106    1
+ANSL_51656    2
+Name: pet_category, Length: 6000, dtype: int64, 'colnum':             length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], 'colnum_bin':             length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], 'colnum_onehot':             length(m)_bin_0  length(m)_bin_1  ...  X2_bin_8  X2_bin_9
+pet_id                                        ...                    
+ANSL_69903                0                0  ...         0         1
+ANSL_66892                0                0  ...         0         1
+ANSL_69750                0                1  ...         0         0
+ANSL_71623                0                0  ...         0         0
+ANSL_57969                0                0  ...         0         0
+...                     ...              ...  ...       ...       ...
+ANSL_52485                0                0  ...         0         0
+ANSL_60352                0                0  ...         0         0
+ANSL_50323                0                0  ...         0         0
+ANSL_66106                0                1  ...         0         0
+ANSL_51656                0                0  ...         0         1
+
+[6000 rows x 39 columns], 'colcat':             color_type_int  condition_int
+pet_id                                   
+ANSL_69903               0              0
+ANSL_66892               1              1
+ANSL_69750               2             -1
+ANSL_71623               1              1
+ANSL_57969               3              0
+...                    ...            ...
+ANSL_52485              31              0
+ANSL_60352               3              2
+ANSL_50323               3              1
+ANSL_66106               1              2
+ANSL_51656               3              1
+
+[6000 rows x 2 columns], 'colcat_bin':             color_type_int  condition_int
+pet_id                                   
+ANSL_69903               0              0
+ANSL_66892               1              1
+ANSL_69750               2             -1
+ANSL_71623               1              1
+ANSL_57969               3              0
+...                    ...            ...
+ANSL_52485              31              0
+ANSL_60352               3              2
+ANSL_50323               3              1
+ANSL_66106               1              2
+ANSL_51656               3              1
+
+[6000 rows x 2 columns], 'colcat_onehot':             color_type_int_0  ...  condition_int_2
+pet_id                        ...                 
+ANSL_69903                 1  ...                0
+ANSL_66892                 0  ...                0
+ANSL_69750                 0  ...                0
+ANSL_71623                 0  ...                0
+ANSL_57969                 0  ...                0
+...                      ...  ...              ...
+ANSL_52485                 0  ...                0
+ANSL_60352                 0  ...                1
+ANSL_50323                 0  ...                0
+ANSL_66106                 0  ...                1
+ANSL_51656                 0  ...                0
+
+[6000 rows x 57 columns], 'colcross_pair':             color_type_int_0-condition_int_0  ...  X1_bin_9-X2_bin_3
+pet_id                                        ...                   
+ANSL_69903                                 1  ...                  0
+ANSL_66892                                 0  ...                  0
+ANSL_69750                                 0  ...                  0
+ANSL_71623                                 0  ...                  0
+ANSL_57969                                 0  ...                  1
+...                                      ...  ...                ...
+ANSL_52485                                 0  ...                  1
+ANSL_60352                                 0  ...                  0
+ANSL_50323                                 0  ...                  0
+ANSL_66106                                 0  ...                  0
+ANSL_51656                                 0  ...                  0
+
+[6000 rows x 224 columns]}
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//dfX/features.parquet',) 
+
+  (            pet_category  length(m)  ...  X1_bin_8-X2_bin_9  X1_bin_9-X2_bin_3
+pet_id                               ...                                      
+ANSL_69903             1       0.80  ...                  0                  0
+ANSL_66892             2       0.72  ...                  0                  0
+ANSL_69750             4       0.15  ...                  0                  0
+ANSL_71623             2       0.62  ...                  0                  0
+ANSL_57969             1       0.50  ...                  0                  1
+...                  ...        ...  ...                ...                ...
+ANSL_52485             1       0.50  ...                  0                  1
+ANSL_60352             2       0.83  ...                  0                  0
+ANSL_50323             2       0.61  ...                  0                  0
+ANSL_66106             1       0.15  ...                  0                  0
+ANSL_51656             2       0.95  ...                  0                  0
+
+[6000 rows x 333 columns], ['pet_category', 'length(m)', 'height(cm)', 'X1', 'X2', 'color_type', 'condition', 'length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin', 'length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9', 'color_type_int', 'condition_int', 'color_type_int_0', 'color_type_int_1', 'color_type_int_2', 'color_type_int_3', 'color_type_int_4', 'color_type_int_5', 'color_type_int_6', 'color_type_int_7', 'color_type_int_8', 'color_type_int_9', 'color_type_int_10', 'color_type_int_11', 'color_type_int_12', 'color_type_int_13', 'color_type_int_14', 'color_type_int_15', 'color_type_int_16', 'color_type_int_17', 'color_type_int_18', 'color_type_int_19', 'color_type_int_20', 'color_type_int_21', 'color_type_int_22', 'color_type_int_23', 'color_type_int_24', 'color_type_int_25', 'color_type_int_26', 'color_type_int_27', 'color_type_int_28', 'color_type_int_29', 'color_type_int_30', 'color_type_int_31', 'color_type_int_32', 'color_type_int_33', 'color_type_int_34', 'color_type_int_35', 'color_type_int_36', 'color_type_int_37', 'color_type_int_38', 'color_type_int_39', 'color_type_int_40', 'color_type_int_41', 'color_type_int_42', 'color_type_int_43', 'color_type_int_44', 'color_type_int_45', 'color_type_int_46', 'color_type_int_47', 'color_type_int_48', 'color_type_int_49', 'color_type_int_50', 'color_type_int_51', 'color_type_int_52', 'condition_int_-1', 'condition_int_0', 'condition_int_1', 'condition_int_2', 'color_type_int_0-condition_int_0', 'color_type_int_0-condition_int_1', 'color_type_int_0-condition_int_2', 'color_type_int_0-X1_bin_0', 'color_type_int_0-X1_bin_6', 'color_type_int_0-X2_bin_0', 'color_type_int_0-X2_bin_9', 'color_type_int_1-condition_int_0', 'color_type_int_1-condition_int_1', 'color_type_int_1-condition_int_2', 'color_type_int_1-X1_bin_0', 'color_type_int_1-X1_bin_6', 'color_type_int_1-X2_bin_0', 'color_type_int_1-X2_bin_7', 'color_type_int_1-X2_bin_9', 'color_type_int_2-condition_int_-1', 'color_type_int_2-condition_int_1', 'color_type_int_2-condition_int_2', 'color_type_int_2-X1_bin_0', 'color_type_int_2-X2_bin_0', 'color_type_int_2-X2_bin_3', 'color_type_int_2-X2_bin_7', 'color_type_int_3-condition_int_0', 'color_type_int_3-condition_int_1', 'color_type_int_3-condition_int_2', 'color_type_int_3-length(m)_bin_0', 'color_type_int_3-length(m)_bin_1', 'color_type_int_3-length(m)_bin_2', 'color_type_int_3-length(m)_bin_3', 'color_type_int_3-length(m)_bin_4', 'color_type_int_3-length(m)_bin_5', 'color_type_int_3-length(m)_bin_6', 'color_type_int_3-length(m)_bin_7', 'color_type_int_3-length(m)_bin_8', 'color_type_int_3-length(m)_bin_9', 'color_type_int_3-height(cm)_bin_0', 'color_type_int_3-height(cm)_bin_1', 'color_type_int_3-height(cm)_bin_2', 'color_type_int_3-height(cm)_bin_3', 'color_type_int_3-height(cm)_bin_4', 'color_type_int_3-height(cm)_bin_5', 'color_type_int_3-height(cm)_bin_6', 'color_type_int_3-height(cm)_bin_7', 'color_type_int_3-height(cm)_bin_8', 'color_type_int_3-height(cm)_bin_9', 'color_type_int_3-X1_bin_0', 'color_type_int_3-X1_bin_6', 'color_type_int_3-X2_bin_0', 'color_type_int_3-X2_bin_7', 'color_type_int_3-X2_bin_9', 'color_type_int_8-X1_bin_0', 'color_type_int_8-X2_bin_0', 'color_type_int_14-condition_int_1', 'color_type_int_14-X2_bin_0', 'color_type_int_16-condition_int_1', 'color_type_int_16-condition_int_2', 'color_type_int_16-X1_bin_0', 'color_type_int_16-X2_bin_0', 'condition_int_-1-X1_bin_6', 'condition_int_-1-X1_bin_7', 'condition_int_-1-X2_bin_3', 'condition_int_-1-X2_bin_9', 'condition_int_0-length(m)_bin_0', 'condition_int_0-length(m)_bin_1', 'condition_int_0-length(m)_bin_2', 'condition_int_0-length(m)_bin_3', 'condition_int_0-length(m)_bin_4', 'condition_int_0-length(m)_bin_5', 'condition_int_0-length(m)_bin_6', 'condition_int_0-length(m)_bin_8', 'condition_int_0-length(m)_bin_9', 'condition_int_0-height(cm)_bin_0', 'condition_int_0-height(cm)_bin_1', 'condition_int_0-height(cm)_bin_2', 'condition_int_0-height(cm)_bin_3', 'condition_int_0-height(cm)_bin_4', 'condition_int_0-height(cm)_bin_5', 'condition_int_0-height(cm)_bin_6', 'condition_int_0-height(cm)_bin_8', 'condition_int_0-height(cm)_bin_9', 'condition_int_0-X1_bin_0', 'condition_int_0-X1_bin_6', 'condition_int_0-X1_bin_8', 'condition_int_0-X2_bin_0', 'condition_int_0-X2_bin_7', 'condition_int_0-X2_bin_9', 'condition_int_1-length(m)_bin_0', 'condition_int_1-length(m)_bin_1', 'condition_int_1-length(m)_bin_2', 'condition_int_1-length(m)_bin_3', 'condition_int_1-length(m)_bin_4', 'condition_int_1-length(m)_bin_5', 'condition_int_1-length(m)_bin_6', 'condition_int_1-length(m)_bin_7', 'condition_int_1-length(m)_bin_8', 'condition_int_1-length(m)_bin_9', 'condition_int_1-height(cm)_bin_0', 'condition_int_1-height(cm)_bin_1', 'condition_int_1-height(cm)_bin_2', 'condition_int_1-height(cm)_bin_3', 'condition_int_1-height(cm)_bin_4', 'condition_int_1-height(cm)_bin_5', 'condition_int_1-height(cm)_bin_6', 'condition_int_1-height(cm)_bin_7', 'condition_int_1-height(cm)_bin_8', 'condition_int_1-height(cm)_bin_9', 'condition_int_1-X1_bin_0', 'condition_int_1-X1_bin_3', 'condition_int_1-X1_bin_6', 'condition_int_1-X2_bin_0', 'condition_int_1-X2_bin_7', 'condition_int_1-X2_bin_9', 'condition_int_2-length(m)_bin_0', 'condition_int_2-length(m)_bin_1', 'condition_int_2-length(m)_bin_2', 'condition_int_2-length(m)_bin_3', 'condition_int_2-length(m)_bin_4', 'condition_int_2-length(m)_bin_5', 'condition_int_2-length(m)_bin_6', 'condition_int_2-length(m)_bin_7', 'condition_int_2-length(m)_bin_8', 'condition_int_2-length(m)_bin_9', 'condition_int_2-height(cm)_bin_0', 'condition_int_2-height(cm)_bin_1', 'condition_int_2-height(cm)_bin_2', 'condition_int_2-height(cm)_bin_3', 'condition_int_2-height(cm)_bin_4', 'condition_int_2-height(cm)_bin_5', 'condition_int_2-height(cm)_bin_6', 'condition_int_2-height(cm)_bin_7', 'condition_int_2-height(cm)_bin_8', 'condition_int_2-height(cm)_bin_9', 'condition_int_2-X1_bin_0', 'condition_int_2-X1_bin_3', 'condition_int_2-X1_bin_6', 'condition_int_2-X2_bin_0', 'condition_int_2-X2_bin_7', 'condition_int_2-X2_bin_9', 'length(m)_bin_0-X1_bin_0', 'length(m)_bin_0-X1_bin_6', 'length(m)_bin_0-X2_bin_0', 'length(m)_bin_0-X2_bin_9', 'length(m)_bin_1-X1_bin_0', 'length(m)_bin_1-X1_bin_6', 'length(m)_bin_1-X2_bin_0', 'length(m)_bin_1-X2_bin_9', 'length(m)_bin_2-X1_bin_0', 'length(m)_bin_2-X1_bin_6', 'length(m)_bin_2-X2_bin_0', 'length(m)_bin_2-X2_bin_7', 'length(m)_bin_2-X2_bin_9', 'length(m)_bin_3-X1_bin_0', 'length(m)_bin_3-X1_bin_6', 'length(m)_bin_3-X2_bin_0', 'length(m)_bin_3-X2_bin_9', 'length(m)_bin_4-X1_bin_0', 'length(m)_bin_4-X1_bin_6', 'length(m)_bin_4-X2_bin_0', 'length(m)_bin_4-X2_bin_9', 'length(m)_bin_5-X1_bin_0', 'length(m)_bin_5-X1_bin_6', 'length(m)_bin_5-X2_bin_0', 'length(m)_bin_5-X2_bin_9', 'length(m)_bin_6-X1_bin_0', 'length(m)_bin_6-X1_bin_6', 'length(m)_bin_6-X2_bin_0', 'length(m)_bin_6-X2_bin_9', 'length(m)_bin_7-X1_bin_0', 'length(m)_bin_7-X2_bin_0', 'length(m)_bin_7-X2_bin_9', 'length(m)_bin_8-X1_bin_0', 'length(m)_bin_8-X1_bin_6', 'length(m)_bin_8-X2_bin_0', 'length(m)_bin_8-X2_bin_9', 'length(m)_bin_9-X1_bin_0', 'length(m)_bin_9-X2_bin_0', 'length(m)_bin_9-X2_bin_9', 'height(cm)_bin_0-X1_bin_0', 'height(cm)_bin_0-X1_bin_6', 'height(cm)_bin_0-X2_bin_0', 'height(cm)_bin_0-X2_bin_9', 'height(cm)_bin_1-X1_bin_0', 'height(cm)_bin_1-X1_bin_6', 'height(cm)_bin_1-X2_bin_0', 'height(cm)_bin_1-X2_bin_9', 'height(cm)_bin_2-X1_bin_0', 'height(cm)_bin_2-X1_bin_6', 'height(cm)_bin_2-X2_bin_0', 'height(cm)_bin_2-X2_bin_9', 'height(cm)_bin_3-X1_bin_0', 'height(cm)_bin_3-X1_bin_6', 'height(cm)_bin_3-X2_bin_0', 'height(cm)_bin_3-X2_bin_9', 'height(cm)_bin_4-X1_bin_0', 'height(cm)_bin_4-X1_bin_6', 'height(cm)_bin_4-X2_bin_0', 'height(cm)_bin_4-X2_bin_9', 'height(cm)_bin_5-X1_bin_0', 'height(cm)_bin_5-X1_bin_6', 'height(cm)_bin_5-X2_bin_0', 'height(cm)_bin_5-X2_bin_9', 'height(cm)_bin_6-X1_bin_0', 'height(cm)_bin_6-X1_bin_6', 'height(cm)_bin_6-X2_bin_0', 'height(cm)_bin_6-X2_bin_9', 'height(cm)_bin_7-X1_bin_0', 'height(cm)_bin_7-X2_bin_0', 'height(cm)_bin_7-X2_bin_9', 'height(cm)_bin_8-X1_bin_0', 'height(cm)_bin_8-X1_bin_6', 'height(cm)_bin_8-X2_bin_0', 'height(cm)_bin_8-X2_bin_9', 'height(cm)_bin_9-X1_bin_0', 'height(cm)_bin_9-X1_bin_6', 'height(cm)_bin_9-X2_bin_0', 'height(cm)_bin_9-X2_bin_7', 'height(cm)_bin_9-X2_bin_9', 'X1_bin_0-X2_bin_0', 'X1_bin_0-X2_bin_7', 'X1_bin_3-X2_bin_0', 'X1_bin_6-X2_bin_9', 'X1_bin_7-X2_bin_3', 'X1_bin_8-X2_bin_9', 'X1_bin_9-X2_bin_3']) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colsX.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//cols_family.pkl',) 
+cols_family_full {'colid': 'pet_id', 'coly': 'pet_category', 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'colnum_bin': ['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin'], 'colnum_onehot': ['length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9'], 'colcat': ['color_type', 'condition'], 'colcat_bin': ['color_type_int', 'condition_int'], 'colcat_onehot': ['color_type_int_0', 'color_type_int_1', 'color_type_int_2', 'color_type_int_3', 'color_type_int_4', 'color_type_int_5', 'color_type_int_6', 'color_type_int_7', 'color_type_int_8', 'color_type_int_9', 'color_type_int_10', 'color_type_int_11', 'color_type_int_12', 'color_type_int_13', 'color_type_int_14', 'color_type_int_15', 'color_type_int_16', 'color_type_int_17', 'color_type_int_18', 'color_type_int_19', 'color_type_int_20', 'color_type_int_21', 'color_type_int_22', 'color_type_int_23', 'color_type_int_24', 'color_type_int_25', 'color_type_int_26', 'color_type_int_27', 'color_type_int_28', 'color_type_int_29', 'color_type_int_30', 'color_type_int_31', 'color_type_int_32', 'color_type_int_33', 'color_type_int_34', 'color_type_int_35', 'color_type_int_36', 'color_type_int_37', 'color_type_int_38', 'color_type_int_39', 'color_type_int_40', 'color_type_int_41', 'color_type_int_42', 'color_type_int_43', 'color_type_int_44', 'color_type_int_45', 'color_type_int_46', 'color_type_int_47', 'color_type_int_48', 'color_type_int_49', 'color_type_int_50', 'color_type_int_51', 'color_type_int_52', 'condition_int_-1', 'condition_int_0', 'condition_int_1', 'condition_int_2'], 'colcross_pair': [('color_type_int_0', 'condition_int_0', 0.0295), ('color_type_int_0', 'condition_int_1', 0.025833333333333333), ('color_type_int_0', 'condition_int_2', 0.029), ('color_type_int_0', 'X1_bin_0', 0.035166666666666666), ('color_type_int_0', 'X1_bin_6', 0.023), ('color_type_int_0', 'X2_bin_0', 0.042333333333333334), ('color_type_int_0', 'X2_bin_9', 0.036833333333333336), ('color_type_int_1', 'condition_int_0', 0.028), ('color_type_int_1', 'condition_int_1', 0.050666666666666665), ('color_type_int_1', 'condition_int_2', 0.0415), ('color_type_int_1', 'X1_bin_0', 0.07883333333333334), ('color_type_int_1', 'X1_bin_6', 0.03216666666666667), ('color_type_int_1', 'X2_bin_0', 0.05366666666666667), ('color_type_int_1', 'X2_bin_7', 0.03166666666666667), ('color_type_int_1', 'X2_bin_9', 0.033666666666666664), ('color_type_int_2', 'condition_int_-1', 0.024666666666666667), ('color_type_int_2', 'condition_int_1', 0.0285), ('color_type_int_2', 'condition_int_2', 0.029333333333333333), ('color_type_int_2', 'X1_bin_0', 0.05466666666666667), ('color_type_int_2', 'X2_bin_0', 0.034666666666666665), ('color_type_int_2', 'X2_bin_3', 0.023166666666666665), ('color_type_int_2', 'X2_bin_7', 0.02266666666666667), ('color_type_int_3', 'condition_int_0', 0.05383333333333333), ('color_type_int_3', 'condition_int_1', 0.0985), ('color_type_int_3', 'condition_int_2', 0.07516666666666667), ('color_type_int_3', 'length(m)_bin_0', 0.023666666666666666), ('color_type_int_3', 'length(m)_bin_1', 0.02266666666666667), ('color_type_int_3', 'length(m)_bin_2', 0.0255), ('color_type_int_3', 'length(m)_bin_3', 0.02266666666666667), ('color_type_int_3', 'length(m)_bin_4', 0.027833333333333335), ('color_type_int_3', 'length(m)_bin_5', 0.023666666666666666), ('color_type_int_3', 'length(m)_bin_6', 0.025), ('color_type_int_3', 'length(m)_bin_7', 0.023), ('color_type_int_3', 'length(m)_bin_8', 0.027333333333333334), ('color_type_int_3', 'length(m)_bin_9', 0.022), ('color_type_int_3', 'height(cm)_bin_0', 0.026166666666666668), ('color_type_int_3', 'height(cm)_bin_1', 0.024666666666666667), ('color_type_int_3', 'height(cm)_bin_2', 0.024166666666666666), ('color_type_int_3', 'height(cm)_bin_3', 0.024166666666666666), ('color_type_int_3', 'height(cm)_bin_4', 0.0215), ('color_type_int_3', 'height(cm)_bin_5', 0.024333333333333332), ('color_type_int_3', 'height(cm)_bin_6', 0.0235), ('color_type_int_3', 'height(cm)_bin_7', 0.024166666666666666), ('color_type_int_3', 'height(cm)_bin_8', 0.024), ('color_type_int_3', 'height(cm)_bin_9', 0.02666666666666667), ('color_type_int_3', 'X1_bin_0', 0.1395), ('color_type_int_3', 'X1_bin_6', 0.058), ('color_type_int_3', 'X2_bin_0', 0.11133333333333334), ('color_type_int_3', 'X2_bin_7', 0.04533333333333334), ('color_type_int_3', 'X2_bin_9', 0.066), ('color_type_int_8', 'X1_bin_0', 0.027333333333333334), ('color_type_int_8', 'X2_bin_0', 0.0225), ('color_type_int_14', 'condition_int_1', 0.023833333333333335), ('color_type_int_14', 'X2_bin_0', 0.021333333333333333), ('color_type_int_16', 'condition_int_1', 0.0285), ('color_type_int_16', 'condition_int_2', 0.028), ('color_type_int_16', 'X1_bin_0', 0.0515), ('color_type_int_16', 'X2_bin_0', 0.035833333333333335), ('condition_int_-1', 'X1_bin_6', 0.024833333333333332), ('condition_int_-1', 'X1_bin_7', 0.027333333333333334), ('condition_int_-1', 'X2_bin_3', 0.03833333333333333), ('condition_int_-1', 'X2_bin_9', 0.0285), ('condition_int_0', 'length(m)_bin_0', 0.0235), ('condition_int_0', 'length(m)_bin_1', 0.020666666666666667), ('condition_int_0', 'length(m)_bin_2', 0.0245), ('condition_int_0', 'length(m)_bin_3', 0.022333333333333334), ('condition_int_0', 'length(m)_bin_4', 0.023833333333333335), ('condition_int_0', 'length(m)_bin_5', 0.02266666666666667), ('condition_int_0', 'length(m)_bin_6', 0.023666666666666666), ('condition_int_0', 'length(m)_bin_8', 0.026166666666666668), ('condition_int_0', 'length(m)_bin_9', 0.021), ('condition_int_0', 'height(cm)_bin_0', 0.0215), ('condition_int_0', 'height(cm)_bin_1', 0.022833333333333334), ('condition_int_0', 'height(cm)_bin_2', 0.025833333333333333), ('condition_int_0', 'height(cm)_bin_3', 0.023166666666666665), ('condition_int_0', 'height(cm)_bin_4', 0.021), ('condition_int_0', 'height(cm)_bin_5', 0.02266666666666667), ('condition_int_0', 'height(cm)_bin_6', 0.02266666666666667), ('condition_int_0', 'height(cm)_bin_8', 0.0225), ('condition_int_0', 'height(cm)_bin_9', 0.025166666666666667), ('condition_int_0', 'X1_bin_0', 0.07083333333333333), ('condition_int_0', 'X1_bin_6', 0.10633333333333334), ('condition_int_0', 'X1_bin_8', 0.025166666666666667), ('condition_int_0', 'X2_bin_0', 0.022), ('condition_int_0', 'X2_bin_7', 0.04716666666666667), ('condition_int_0', 'X2_bin_9', 0.13166666666666665), ('condition_int_1', 'length(m)_bin_0', 0.03283333333333333), ('condition_int_1', 'length(m)_bin_1', 0.035666666666666666), ('condition_int_1', 'length(m)_bin_2', 0.0365), ('condition_int_1', 'length(m)_bin_3', 0.036166666666666666), ('condition_int_1', 'length(m)_bin_4', 0.039), ('condition_int_1', 'length(m)_bin_5', 0.035833333333333335), ('condition_int_1', 'length(m)_bin_6', 0.04066666666666666), ('condition_int_1', 'length(m)_bin_7', 0.029833333333333333), ('condition_int_1', 'length(m)_bin_8', 0.042666666666666665), ('condition_int_1', 'length(m)_bin_9', 0.036333333333333336), ('condition_int_1', 'height(cm)_bin_0', 0.03883333333333333), ('condition_int_1', 'height(cm)_bin_1', 0.03666666666666667), ('condition_int_1', 'height(cm)_bin_2', 0.03716666666666667), ('condition_int_1', 'height(cm)_bin_3', 0.03816666666666667), ('condition_int_1', 'height(cm)_bin_4', 0.033666666666666664), ('condition_int_1', 'height(cm)_bin_5', 0.035166666666666666), ('condition_int_1', 'height(cm)_bin_6', 0.0355), ('condition_int_1', 'height(cm)_bin_7', 0.03266666666666666), ('condition_int_1', 'height(cm)_bin_8', 0.037), ('condition_int_1', 'height(cm)_bin_9', 0.04066666666666666), ('condition_int_1', 'X1_bin_0', 0.25833333333333336), ('condition_int_1', 'X1_bin_3', 0.03766666666666667), ('condition_int_1', 'X1_bin_6', 0.05416666666666667), ('condition_int_1', 'X2_bin_0', 0.21716666666666667), ('condition_int_1', 'X2_bin_7', 0.07916666666666666), ('condition_int_1', 'X2_bin_9', 0.06066666666666667), ('condition_int_2', 'length(m)_bin_0', 0.0325), ('condition_int_2', 'length(m)_bin_1', 0.034), ('condition_int_2', 'length(m)_bin_2', 0.03716666666666667), ('condition_int_2', 'length(m)_bin_3', 0.03283333333333333), ('condition_int_2', 'length(m)_bin_4', 0.035), ('condition_int_2', 'length(m)_bin_5', 0.029), ('condition_int_2', 'length(m)_bin_6', 0.0345), ('condition_int_2', 'length(m)_bin_7', 0.0305), ('condition_int_2', 'length(m)_bin_8', 0.036166666666666666), ('condition_int_2', 'length(m)_bin_9', 0.0305), ('condition_int_2', 'height(cm)_bin_0', 0.0345), ('condition_int_2', 'height(cm)_bin_1', 0.030333333333333334), ('condition_int_2', 'height(cm)_bin_2', 0.03233333333333333), ('condition_int_2', 'height(cm)_bin_3', 0.033166666666666664), ('condition_int_2', 'height(cm)_bin_4', 0.034833333333333334), ('condition_int_2', 'height(cm)_bin_5', 0.0355), ('condition_int_2', 'height(cm)_bin_6', 0.032), ('condition_int_2', 'height(cm)_bin_7', 0.031166666666666665), ('condition_int_2', 'height(cm)_bin_8', 0.036166666666666666), ('condition_int_2', 'height(cm)_bin_9', 0.03216666666666667), ('condition_int_2', 'X1_bin_0', 0.23316666666666666), ('condition_int_2', 'X1_bin_3', 0.041166666666666664), ('condition_int_2', 'X1_bin_6', 0.04583333333333333), ('condition_int_2', 'X2_bin_0', 0.215), ('condition_int_2', 'X2_bin_7', 0.058666666666666666), ('condition_int_2', 'X2_bin_9', 0.05216666666666667), ('length(m)_bin_0', 'X1_bin_0', 0.05333333333333334), ('length(m)_bin_0', 'X1_bin_6', 0.02266666666666667), ('length(m)_bin_0', 'X2_bin_0', 0.0435), ('length(m)_bin_0', 'X2_bin_9', 0.027166666666666665), ('length(m)_bin_1', 'X1_bin_0', 0.058), ('length(m)_bin_1', 'X1_bin_6', 0.02266666666666667), ('length(m)_bin_1', 'X2_bin_0', 0.0445), ('length(m)_bin_1', 'X2_bin_9', 0.027666666666666666), ('length(m)_bin_2', 'X1_bin_0', 0.0605), ('length(m)_bin_2', 'X1_bin_6', 0.0235), ('length(m)_bin_2', 'X2_bin_0', 0.04733333333333333), ('length(m)_bin_2', 'X2_bin_7', 0.02266666666666667), ('length(m)_bin_2', 'X2_bin_9', 0.02666666666666667), ('length(m)_bin_3', 'X1_bin_0', 0.05583333333333333), ('length(m)_bin_3', 'X1_bin_6', 0.024333333333333332), ('length(m)_bin_3', 'X2_bin_0', 0.043666666666666666), ('length(m)_bin_3', 'X2_bin_9', 0.029166666666666667), ('length(m)_bin_4', 'X1_bin_0', 0.057), ('length(m)_bin_4', 'X1_bin_6', 0.0255), ('length(m)_bin_4', 'X2_bin_0', 0.04833333333333333), ('length(m)_bin_4', 'X2_bin_9', 0.0295), ('length(m)_bin_5', 'X1_bin_0', 0.054), ('length(m)_bin_5', 'X1_bin_6', 0.023666666666666666), ('length(m)_bin_5', 'X2_bin_0', 0.04033333333333333), ('length(m)_bin_5', 'X2_bin_9', 0.026833333333333334), ('length(m)_bin_6', 'X1_bin_0', 0.06066666666666667), ('length(m)_bin_6', 'X1_bin_6', 0.022833333333333334), ('length(m)_bin_6', 'X2_bin_0', 0.050833333333333335), ('length(m)_bin_6', 'X2_bin_9', 0.027833333333333335), ('length(m)_bin_7', 'X1_bin_0', 0.04883333333333333), ('length(m)_bin_7', 'X2_bin_0', 0.039), ('length(m)_bin_7', 'X2_bin_9', 0.022833333333333334), ('length(m)_bin_8', 'X1_bin_0', 0.06516666666666666), ('length(m)_bin_8', 'X1_bin_6', 0.026333333333333334), ('length(m)_bin_8', 'X2_bin_0', 0.05516666666666667), ('length(m)_bin_8', 'X2_bin_9', 0.03183333333333333), ('length(m)_bin_9', 'X1_bin_0', 0.05533333333333333), ('length(m)_bin_9', 'X2_bin_0', 0.0425), ('length(m)_bin_9', 'X2_bin_9', 0.0235), ('height(cm)_bin_0', 'X1_bin_0', 0.058166666666666665), ('height(cm)_bin_0', 'X1_bin_6', 0.023), ('height(cm)_bin_0', 'X2_bin_0', 0.049), ('height(cm)_bin_0', 'X2_bin_9', 0.027333333333333334), ('height(cm)_bin_1', 'X1_bin_0', 0.05366666666666667), ('height(cm)_bin_1', 'X1_bin_6', 0.023166666666666665), ('height(cm)_bin_1', 'X2_bin_0', 0.04016666666666667), ('height(cm)_bin_1', 'X2_bin_9', 0.0285), ('height(cm)_bin_2', 'X1_bin_0', 0.057833333333333334), ('height(cm)_bin_2', 'X1_bin_6', 0.024666666666666667), ('height(cm)_bin_2', 'X2_bin_0', 0.0465), ('height(cm)_bin_2', 'X2_bin_9', 0.0285), ('height(cm)_bin_3', 'X1_bin_0', 0.0595), ('height(cm)_bin_3', 'X1_bin_6', 0.024333333333333332), ('height(cm)_bin_3', 'X2_bin_0', 0.04816666666666667), ('height(cm)_bin_3', 'X2_bin_9', 0.027166666666666665), ('height(cm)_bin_4', 'X1_bin_0', 0.05583333333333333), ('height(cm)_bin_4', 'X1_bin_6', 0.021166666666666667), ('height(cm)_bin_4', 'X2_bin_0', 0.04566666666666667), ('height(cm)_bin_4', 'X2_bin_9', 0.026), ('height(cm)_bin_5', 'X1_bin_0', 0.057), ('height(cm)_bin_5', 'X1_bin_6', 0.0235), ('height(cm)_bin_5', 'X2_bin_0', 0.04666666666666667), ('height(cm)_bin_5', 'X2_bin_9', 0.028), ('height(cm)_bin_6', 'X1_bin_0', 0.057), ('height(cm)_bin_6', 'X1_bin_6', 0.0215), ('height(cm)_bin_6', 'X2_bin_0', 0.04516666666666667), ('height(cm)_bin_6', 'X2_bin_9', 0.025666666666666667), ('height(cm)_bin_7', 'X1_bin_0', 0.05266666666666667), ('height(cm)_bin_7', 'X2_bin_0', 0.0415), ('height(cm)_bin_7', 'X2_bin_9', 0.023333333333333334), ('height(cm)_bin_8', 'X1_bin_0', 0.05733333333333333), ('height(cm)_bin_8', 'X1_bin_6', 0.026166666666666668), ('height(cm)_bin_8', 'X2_bin_0', 0.04583333333333333), ('height(cm)_bin_8', 'X2_bin_9', 0.030666666666666665), ('height(cm)_bin_9', 'X1_bin_0', 0.059666666666666666), ('height(cm)_bin_9', 'X1_bin_6', 0.024166666666666666), ('height(cm)_bin_9', 'X2_bin_0', 0.0465), ('height(cm)_bin_9', 'X2_bin_7', 0.020166666666666666), ('height(cm)_bin_9', 'X2_bin_9', 0.027833333333333335), ('X1_bin_0', 'X2_bin_0', 0.37133333333333335), ('X1_bin_0', 'X2_bin_7', 0.18616666666666667), ('X1_bin_3', 'X2_bin_0', 0.0805), ('X1_bin_6', 'X2_bin_9', 0.22783333333333333), ('X1_bin_7', 'X2_bin_3', 0.028666666666666667), ('X1_bin_8', 'X2_bin_9', 0.045), ('X1_bin_9', 'X2_bin_3', 0.030666666666666665)], 'colX': ['length(m)', 'height(cm)', 'X1', 'X2', 'color_type', 'condition', 'length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin', 'length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9', 'color_type_int', 'condition_int', 'color_type_int_0', 'color_type_int_1', 'color_type_int_2', 'color_type_int_3', 'color_type_int_4', 'color_type_int_5', 'color_type_int_6', 'color_type_int_7', 'color_type_int_8', 'color_type_int_9', 'color_type_int_10', 'color_type_int_11', 'color_type_int_12', 'color_type_int_13', 'color_type_int_14', 'color_type_int_15', 'color_type_int_16', 'color_type_int_17', 'color_type_int_18', 'color_type_int_19', 'color_type_int_20', 'color_type_int_21', 'color_type_int_22', 'color_type_int_23', 'color_type_int_24', 'color_type_int_25', 'color_type_int_26', 'color_type_int_27', 'color_type_int_28', 'color_type_int_29', 'color_type_int_30', 'color_type_int_31', 'color_type_int_32', 'color_type_int_33', 'color_type_int_34', 'color_type_int_35', 'color_type_int_36', 'color_type_int_37', 'color_type_int_38', 'color_type_int_39', 'color_type_int_40', 'color_type_int_41', 'color_type_int_42', 'color_type_int_43', 'color_type_int_44', 'color_type_int_45', 'color_type_int_46', 'color_type_int_47', 'color_type_int_48', 'color_type_int_49', 'color_type_int_50', 'color_type_int_51', 'color_type_int_52', 'condition_int_-1', 'condition_int_0', 'condition_int_1', 'condition_int_2', 'color_type_int_0-condition_int_0', 'color_type_int_0-condition_int_1', 'color_type_int_0-condition_int_2', 'color_type_int_0-X1_bin_0', 'color_type_int_0-X1_bin_6', 'color_type_int_0-X2_bin_0', 'color_type_int_0-X2_bin_9', 'color_type_int_1-condition_int_0', 'color_type_int_1-condition_int_1', 'color_type_int_1-condition_int_2', 'color_type_int_1-X1_bin_0', 'color_type_int_1-X1_bin_6', 'color_type_int_1-X2_bin_0', 'color_type_int_1-X2_bin_7', 'color_type_int_1-X2_bin_9', 'color_type_int_2-condition_int_-1', 'color_type_int_2-condition_int_1', 'color_type_int_2-condition_int_2', 'color_type_int_2-X1_bin_0', 'color_type_int_2-X2_bin_0', 'color_type_int_2-X2_bin_3', 'color_type_int_2-X2_bin_7', 'color_type_int_3-condition_int_0', 'color_type_int_3-condition_int_1', 'color_type_int_3-condition_int_2', 'color_type_int_3-length(m)_bin_0', 'color_type_int_3-length(m)_bin_1', 'color_type_int_3-length(m)_bin_2', 'color_type_int_3-length(m)_bin_3', 'color_type_int_3-length(m)_bin_4', 'color_type_int_3-length(m)_bin_5', 'color_type_int_3-length(m)_bin_6', 'color_type_int_3-length(m)_bin_7', 'color_type_int_3-length(m)_bin_8', 'color_type_int_3-length(m)_bin_9', 'color_type_int_3-height(cm)_bin_0', 'color_type_int_3-height(cm)_bin_1', 'color_type_int_3-height(cm)_bin_2', 'color_type_int_3-height(cm)_bin_3', 'color_type_int_3-height(cm)_bin_4', 'color_type_int_3-height(cm)_bin_5', 'color_type_int_3-height(cm)_bin_6', 'color_type_int_3-height(cm)_bin_7', 'color_type_int_3-height(cm)_bin_8', 'color_type_int_3-height(cm)_bin_9', 'color_type_int_3-X1_bin_0', 'color_type_int_3-X1_bin_6', 'color_type_int_3-X2_bin_0', 'color_type_int_3-X2_bin_7', 'color_type_int_3-X2_bin_9', 'color_type_int_8-X1_bin_0', 'color_type_int_8-X2_bin_0', 'color_type_int_14-condition_int_1', 'color_type_int_14-X2_bin_0', 'color_type_int_16-condition_int_1', 'color_type_int_16-condition_int_2', 'color_type_int_16-X1_bin_0', 'color_type_int_16-X2_bin_0', 'condition_int_-1-X1_bin_6', 'condition_int_-1-X1_bin_7', 'condition_int_-1-X2_bin_3', 'condition_int_-1-X2_bin_9', 'condition_int_0-length(m)_bin_0', 'condition_int_0-length(m)_bin_1', 'condition_int_0-length(m)_bin_2', 'condition_int_0-length(m)_bin_3', 'condition_int_0-length(m)_bin_4', 'condition_int_0-length(m)_bin_5', 'condition_int_0-length(m)_bin_6', 'condition_int_0-length(m)_bin_8', 'condition_int_0-length(m)_bin_9', 'condition_int_0-height(cm)_bin_0', 'condition_int_0-height(cm)_bin_1', 'condition_int_0-height(cm)_bin_2', 'condition_int_0-height(cm)_bin_3', 'condition_int_0-height(cm)_bin_4', 'condition_int_0-height(cm)_bin_5', 'condition_int_0-height(cm)_bin_6', 'condition_int_0-height(cm)_bin_8', 'condition_int_0-height(cm)_bin_9', 'condition_int_0-X1_bin_0', 'condition_int_0-X1_bin_6', 'condition_int_0-X1_bin_8', 'condition_int_0-X2_bin_0', 'condition_int_0-X2_bin_7', 'condition_int_0-X2_bin_9', 'condition_int_1-length(m)_bin_0', 'condition_int_1-length(m)_bin_1', 'condition_int_1-length(m)_bin_2', 'condition_int_1-length(m)_bin_3', 'condition_int_1-length(m)_bin_4', 'condition_int_1-length(m)_bin_5', 'condition_int_1-length(m)_bin_6', 'condition_int_1-length(m)_bin_7', 'condition_int_1-length(m)_bin_8', 'condition_int_1-length(m)_bin_9', 'condition_int_1-height(cm)_bin_0', 'condition_int_1-height(cm)_bin_1', 'condition_int_1-height(cm)_bin_2', 'condition_int_1-height(cm)_bin_3', 'condition_int_1-height(cm)_bin_4', 'condition_int_1-height(cm)_bin_5', 'condition_int_1-height(cm)_bin_6', 'condition_int_1-height(cm)_bin_7', 'condition_int_1-height(cm)_bin_8', 'condition_int_1-height(cm)_bin_9', 'condition_int_1-X1_bin_0', 'condition_int_1-X1_bin_3', 'condition_int_1-X1_bin_6', 'condition_int_1-X2_bin_0', 'condition_int_1-X2_bin_7', 'condition_int_1-X2_bin_9', 'condition_int_2-length(m)_bin_0', 'condition_int_2-length(m)_bin_1', 'condition_int_2-length(m)_bin_2', 'condition_int_2-length(m)_bin_3', 'condition_int_2-length(m)_bin_4', 'condition_int_2-length(m)_bin_5', 'condition_int_2-length(m)_bin_6', 'condition_int_2-length(m)_bin_7', 'condition_int_2-length(m)_bin_8', 'condition_int_2-length(m)_bin_9', 'condition_int_2-height(cm)_bin_0', 'condition_int_2-height(cm)_bin_1', 'condition_int_2-height(cm)_bin_2', 'condition_int_2-height(cm)_bin_3', 'condition_int_2-height(cm)_bin_4', 'condition_int_2-height(cm)_bin_5', 'condition_int_2-height(cm)_bin_6', 'condition_int_2-height(cm)_bin_7', 'condition_int_2-height(cm)_bin_8', 'condition_int_2-height(cm)_bin_9', 'condition_int_2-X1_bin_0', 'condition_int_2-X1_bin_3', 'condition_int_2-X1_bin_6', 'condition_int_2-X2_bin_0', 'condition_int_2-X2_bin_7', 'condition_int_2-X2_bin_9', 'length(m)_bin_0-X1_bin_0', 'length(m)_bin_0-X1_bin_6', 'length(m)_bin_0-X2_bin_0', 'length(m)_bin_0-X2_bin_9', 'length(m)_bin_1-X1_bin_0', 'length(m)_bin_1-X1_bin_6', 'length(m)_bin_1-X2_bin_0', 'length(m)_bin_1-X2_bin_9', 'length(m)_bin_2-X1_bin_0', 'length(m)_bin_2-X1_bin_6', 'length(m)_bin_2-X2_bin_0', 'length(m)_bin_2-X2_bin_7', 'length(m)_bin_2-X2_bin_9', 'length(m)_bin_3-X1_bin_0', 'length(m)_bin_3-X1_bin_6', 'length(m)_bin_3-X2_bin_0', 'length(m)_bin_3-X2_bin_9', 'length(m)_bin_4-X1_bin_0', 'length(m)_bin_4-X1_bin_6', 'length(m)_bin_4-X2_bin_0', 'length(m)_bin_4-X2_bin_9', 'length(m)_bin_5-X1_bin_0', 'length(m)_bin_5-X1_bin_6', 'length(m)_bin_5-X2_bin_0', 'length(m)_bin_5-X2_bin_9', 'length(m)_bin_6-X1_bin_0', 'length(m)_bin_6-X1_bin_6', 'length(m)_bin_6-X2_bin_0', 'length(m)_bin_6-X2_bin_9', 'length(m)_bin_7-X1_bin_0', 'length(m)_bin_7-X2_bin_0', 'length(m)_bin_7-X2_bin_9', 'length(m)_bin_8-X1_bin_0', 'length(m)_bin_8-X1_bin_6', 'length(m)_bin_8-X2_bin_0', 'length(m)_bin_8-X2_bin_9', 'length(m)_bin_9-X1_bin_0', 'length(m)_bin_9-X2_bin_0', 'length(m)_bin_9-X2_bin_9', 'height(cm)_bin_0-X1_bin_0', 'height(cm)_bin_0-X1_bin_6', 'height(cm)_bin_0-X2_bin_0', 'height(cm)_bin_0-X2_bin_9', 'height(cm)_bin_1-X1_bin_0', 'height(cm)_bin_1-X1_bin_6', 'height(cm)_bin_1-X2_bin_0', 'height(cm)_bin_1-X2_bin_9', 'height(cm)_bin_2-X1_bin_0', 'height(cm)_bin_2-X1_bin_6', 'height(cm)_bin_2-X2_bin_0', 'height(cm)_bin_2-X2_bin_9', 'height(cm)_bin_3-X1_bin_0', 'height(cm)_bin_3-X1_bin_6', 'height(cm)_bin_3-X2_bin_0', 'height(cm)_bin_3-X2_bin_9', 'height(cm)_bin_4-X1_bin_0', 'height(cm)_bin_4-X1_bin_6', 'height(cm)_bin_4-X2_bin_0', 'height(cm)_bin_4-X2_bin_9', 'height(cm)_bin_5-X1_bin_0', 'height(cm)_bin_5-X1_bin_6', 'height(cm)_bin_5-X2_bin_0', 'height(cm)_bin_5-X2_bin_9', 'height(cm)_bin_6-X1_bin_0', 'height(cm)_bin_6-X1_bin_6', 'height(cm)_bin_6-X2_bin_0', 'height(cm)_bin_6-X2_bin_9', 'height(cm)_bin_7-X1_bin_0', 'height(cm)_bin_7-X2_bin_0', 'height(cm)_bin_7-X2_bin_9', 'height(cm)_bin_8-X1_bin_0', 'height(cm)_bin_8-X1_bin_6', 'height(cm)_bin_8-X2_bin_0', 'height(cm)_bin_8-X2_bin_9', 'height(cm)_bin_9-X1_bin_0', 'height(cm)_bin_9-X1_bin_6', 'height(cm)_bin_9-X2_bin_0', 'height(cm)_bin_9-X2_bin_7', 'height(cm)_bin_9-X2_bin_9', 'X1_bin_0-X2_bin_0', 'X1_bin_0-X2_bin_7', 'X1_bin_3-X2_bin_0', 'X1_bin_6-X2_bin_9', 'X1_bin_7-X2_bin_3', 'X1_bin_8-X2_bin_9', 'X1_bin_9-X2_bin_3']}
+  ('used columns', ['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin', 'color_type_int', 'condition_int'], 'pet_category') 
+  ('######### Train model: ###########################################################',) 
+  ("{'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x000002C229F380D0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x000002C229F386A8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline/'}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': ",) 
+  ('#### Data preparation #############################################################',) 
+  ((6000, 333),) 
+------------data_pars--------------------- {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 5, 'ymin': -1}, 'coly': 'pet_category', 'cols_model': ['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin', 'color_type_int', 'condition_int']}
+  ('dfX',             length(m)_bin  height(cm)_bin  ...  color_type_int  condition_int
+pet_id                                     ...                               
+ANSL_61116              6               8  ...               0              2
+ANSL_63747              7               5  ...               2             -1
+ANSL_53977              8               1  ...               8              1
+ANSL_51524              7               5  ...              14              1
+ANSL_75467              7               9  ...              14              0
+...                   ...             ...  ...             ...            ...
+ANSL_50476              6               8  ...               0              2
+ANSL_73689              6               9  ...               1              2
+ANSL_66535              3               9  ...               5              2
+ANSL_63887              6               1  ...               2              2
+ANSL_74772              2               9  ...               3              2
+
+[6000 rows x 6 columns]) 
+  ('dfy', pet_id
+ANSL_61116    1
+ANSL_63747    0
+ANSL_53977    1
+ANSL_51524    1
+ANSL_75467    1
+             ..
+ANSL_50476    1
+ANSL_73689    2
+ANSL_66535    2
+ANSL_63887    2
+ANSL_74772    2
+Name: pet_category, Length: 6000, dtype: int64) 
+  ('#### Model Instance ##########################################################',) 
+  (<module 'models.model_sklearn' from 'D:\\_devs\\Python01\\gitdev\\dsa2\\source\\models\\model_sklearn.py'>,) 
+<class 'lightgbm.sklearn.LGBMClassifier'> LGBMClassifier(learning_rate=0.03, metric='multi_logloss', num_class=4,
+               objective='multiclass')
+(3600, 6) LGBMClassifier(learning_rate=0.03, metric='multi_logloss', num_class=4,
+               objective='multiclass')
+[1]	valid_0's multi_logloss: 0.821751
+[2]	valid_0's multi_logloss: 0.796445
+[3]	valid_0's multi_logloss: 0.775122
+[4]	valid_0's multi_logloss: 0.756176
+[5]	valid_0's multi_logloss: 0.738493
+[6]	valid_0's multi_logloss: 0.721666
+[7]	valid_0's multi_logloss: 0.706143
+[8]	valid_0's multi_logloss: 0.691441
+[9]	valid_0's multi_logloss: 0.677437
+[10]	valid_0's multi_logloss: 0.664298
+[11]	valid_0's multi_logloss: 0.651924
+[12]	valid_0's multi_logloss: 0.640178
+[13]	valid_0's multi_logloss: 0.628969
+[14]	valid_0's multi_logloss: 0.618247
+[15]	valid_0's multi_logloss: 0.608201
+[16]	valid_0's multi_logloss: 0.598346
+[17]	valid_0's multi_logloss: 0.588921
+[18]	valid_0's multi_logloss: 0.580156
+[19]	valid_0's multi_logloss: 0.571535
+[20]	valid_0's multi_logloss: 0.56337
+[21]	valid_0's multi_logloss: 0.555568
+[22]	valid_0's multi_logloss: 0.548053
+[23]	valid_0's multi_logloss: 0.541126
+[24]	valid_0's multi_logloss: 0.534132
+[25]	valid_0's multi_logloss: 0.527286
+[26]	valid_0's multi_logloss: 0.52067
+[27]	valid_0's multi_logloss: 0.514395
+[28]	valid_0's multi_logloss: 0.508342
+[29]	valid_0's multi_logloss: 0.502454
+[30]	valid_0's multi_logloss: 0.496838
+[31]	valid_0's multi_logloss: 0.491279
+[32]	valid_0's multi_logloss: 0.485977
+[33]	valid_0's multi_logloss: 0.48102
+[34]	valid_0's multi_logloss: 0.47494
+[35]	valid_0's multi_logloss: 0.47037
+[36]	valid_0's multi_logloss: 0.464597
+[37]	valid_0's multi_logloss: 0.460296
+[38]	valid_0's multi_logloss: 0.455028
+[39]	valid_0's multi_logloss: 0.450896
+[40]	valid_0's multi_logloss: 0.446932
+[41]	valid_0's multi_logloss: 0.443152
+[42]	valid_0's multi_logloss: 0.439524
+[43]	valid_0's multi_logloss: 0.435136
+[44]	valid_0's multi_logloss: 0.43173
+[45]	valid_0's multi_logloss: 0.428493
+[46]	valid_0's multi_logloss: 0.424514
+[47]	valid_0's multi_logloss: 0.420572
+[48]	valid_0's multi_logloss: 0.417728
+[49]	valid_0's multi_logloss: 0.414171
+[50]	valid_0's multi_logloss: 0.409997
+[51]	valid_0's multi_logloss: 0.406676
+[52]	valid_0's multi_logloss: 0.403428
+[53]	valid_0's multi_logloss: 0.400328
+[54]	valid_0's multi_logloss: 0.397277
+[55]	valid_0's multi_logloss: 0.394363
+[56]	valid_0's multi_logloss: 0.391643
+[57]	valid_0's multi_logloss: 0.389148
+[58]	valid_0's multi_logloss: 0.386733
+[59]	valid_0's multi_logloss: 0.384456
+[60]	valid_0's multi_logloss: 0.382116
+[61]	valid_0's multi_logloss: 0.37913
+[62]	valid_0's multi_logloss: 0.377032
+[63]	valid_0's multi_logloss: 0.374155
+[64]	valid_0's multi_logloss: 0.372221
+[65]	valid_0's multi_logloss: 0.369502
+[66]	valid_0's multi_logloss: 0.367652
+[67]	valid_0's multi_logloss: 0.365182
+[68]	valid_0's multi_logloss: 0.364093
+[69]	valid_0's multi_logloss: 0.362252
+[70]	valid_0's multi_logloss: 0.360512
+[71]	valid_0's multi_logloss: 0.35827
+[72]	valid_0's multi_logloss: 0.356766
+[73]	valid_0's multi_logloss: 0.355237
+[74]	valid_0's multi_logloss: 0.353172
+[75]	valid_0's multi_logloss: 0.351822
+[76]	valid_0's multi_logloss: 0.350405
+[77]	valid_0's multi_logloss: 0.348945
+[78]	valid_0's multi_logloss: 0.347479
+[79]	valid_0's multi_logloss: 0.346047
+[80]	valid_0's multi_logloss: 0.344683
+[81]	valid_0's multi_logloss: 0.34336
+[82]	valid_0's multi_logloss: 0.342076
+[83]	valid_0's multi_logloss: 0.340755
+[84]	valid_0's multi_logloss: 0.339439
+[85]	valid_0's multi_logloss: 0.338198
+[86]	valid_0's multi_logloss: 0.337003
+[87]	valid_0's multi_logloss: 0.335773
+[88]	valid_0's multi_logloss: 0.334546
+[89]	valid_0's multi_logloss: 0.333736
+[90]	valid_0's multi_logloss: 0.332578
+[91]	valid_0's multi_logloss: 0.33184
+[92]	valid_0's multi_logloss: 0.331113
+[93]	valid_0's multi_logloss: 0.330409
+[94]	valid_0's multi_logloss: 0.329355
+[95]	valid_0's multi_logloss: 0.328673
+[96]	valid_0's multi_logloss: 0.327702
+[97]	valid_0's multi_logloss: 0.326773
+[98]	valid_0's multi_logloss: 0.325813
+[99]	valid_0's multi_logloss: 0.324973
+[100]	valid_0's multi_logloss: 0.323716
+  ('#### Metrics #################################################################',) 
+  (pet_id                                                     ANSL_61116  ...                                         ANSL_53977
+pet_category                                                        1  ...                                                  1
+length(m)                                                        0.67  ...                                               0.85
+height(cm)                                                       42.6  ...                                              11.33
+X1                                                                  0  ...                                                  0
+X2                                                                  1  ...                                                  7
+...                                                               ...  ...                                                ...
+X1_bin_7-X2_bin_3                                                   0  ...                                                  0
+X1_bin_8-X2_bin_9                                                   0  ...                                                  0
+X1_bin_9-X2_bin_3                                                   0  ...                                                  0
+pet_category_pred                                                   1  ...                                                  2
+pet_category_proba  0.00035669401303698345;0.9655186003318046;0.02...  ...  0.0007738565136961457;0.1879649964056927;0.800...
+
+[335 rows x 3 columns],) 
+  ('Actual    : ', pet_id
+ANSL_61116    1
+ANSL_63747    0
+ANSL_53977    1
+ANSL_51524    1
+ANSL_75467    1
+             ..
+ANSL_50476    1
+ANSL_73689    2
+ANSL_66535    2
+ANSL_63887    2
+ANSL_74772    2
+Name: pet_category, Length: 6000, dtype: int64) 
+  ('Prediction: ', pet_id
+ANSL_61116    1
+ANSL_63747    0
+ANSL_53977    2
+ANSL_51524    1
+ANSL_75467    1
+             ..
+ANSL_50476    1
+ANSL_73689    2
+ANSL_66535    2
+ANSL_63887    2
+ANSL_74772    2
+Name: pet_category_pred, Length: 6000, dtype: int64) 
+  ({'metrics_test':       metric_name  metric_val  n_sample
+0   roc_auc_score    0.937723      1200
+1  accuracy_score    0.868333      1200},) 
+  ('############ saving model, dfX, columns', 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/') 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model//colsX.pkl',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model//coly.pkl',) 
+  ({'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x000002C229F380D0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x000002C229F386A8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline/'}}, {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}) 
+  ('############ check re-loaded', {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x000002C22C0DF730>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x000002C22D25F8C8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline/'}}) 
+  ('######### export #################################',) 
+  ('######### finish #################################',) 
