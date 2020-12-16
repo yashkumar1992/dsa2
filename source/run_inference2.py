@@ -90,7 +90,7 @@ def predict(model_name, path_model, dfX, cols_family):
 
 ####################################################################################################
 ############CLI Command ############################################################################
-def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
+def run_predict(model_name, path_model, path_data, path_output, n_sample=-1, model_dict=None):
     path_output   = root + path_output
     path_data     = root + path_data + "/features.zip"#.zip
     path_model    = root + path_model
@@ -104,6 +104,7 @@ def run_predict(model_name, path_model, path_data, path_output, n_sample=-1):
 
 
     from run_preprocess2 import preprocess_inference   as preprocess
+    cols_group =
     dfX, cols_family = preprocess(df, path_pipeline)
     
     ypred, yproba    = predict(model_name, path_model, dfX, cols_family)
