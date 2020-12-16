@@ -176,7 +176,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        for colj, colist in  col_pars['cols_new'].items() :
           ### Merge sub-family
           cols_family_all[colj] = cols_family_all.get(colj, []) + colist
-          dfi_all[colj]          = pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
+          dfi_all[colj]         = pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
           save_features(dfi_all[colj], colj, path_features_store)
 
        print('------------dfi_all---------------------', dfi_all)
