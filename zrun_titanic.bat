@@ -1,6 +1,9 @@
 
 
 
+del data/output/titanic/*/* >nul 2>&1
+
+
 del zlog/log_titanic_prepro.txt >nul 2>&1
 
 
