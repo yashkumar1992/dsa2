@@ -231,9 +231,9 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
     #### Pipeline Execution  ####################################################
     pipe_default = [
       {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum', 'cols_out':'dfnum_bin',    'type': '' },
-      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum', 'cols_out':'dfnum_onehot', 'type': '' },
+      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out':'dfnum_onehot', 'type': '' },
       {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat', 'cols_out':'dfcat_bin',    'type': ''},
-      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat', 'cols_out':'dfcat_onehot', 'type': ''},
+      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'cols_out':'dfcat_onehot', 'type': ''},
       {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'cols_out':'dfcross_hot',  'type': 'cross' }
     ]
 
@@ -274,8 +274,12 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
        pars        = pipe_i.get('pars', {})
        pars['path_pipeline'] = path_pipeline   ### Storage of local data.
 
-       cols_list   = cols_group[cols_name]
-       df_         = df[ cols_list]
+       try:
+           cols_list   = cols_group[cols_name]
+           df_         = df[ cols_list]
+       except:
+           df_         = dfi_all[cols_name]
+           cols_list   = cols_family_full[cols_name]
        log(cols_name, cols_list)
 
 
@@ -296,7 +300,7 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
        else:
            # for cols_i in cols_list :
             log('------------cols_i----------------', cols_list)
-            dfi, col_pars = pipe_fun(df_[cols_list], cols_list, pars= pars)
+            dfi, col_pars = pipe_fun(df_, cols_list, pars= pars)
 
             ### colnum, colnum_bin into cols_family_full
             for colj, colist in  col_pars['cols_new'].items() :
@@ -304,7 +308,7 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
               dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if  colj in dfi_all else dfi
 
        log('------------dfi_all---------------------', dfi_all)
-
+       log('------------cols_family_full------------', cols_family_full)
 
     log("######  Merge AlL int dfXy  #############################################################")
     dfXy = df[  colnum + colcat ]
