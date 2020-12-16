@@ -63,6 +63,7 @@ def save_features(df, name, path=None):
        else:
            df0=df
        log( f"{path}/{name}/features.parquet" )
+       log(df0, list(df0.columns))
        df0.to_parquet( f"{path}/{name}/features.parquet")
     else:
        log("No saved features, path is none")
@@ -203,8 +204,6 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     for t in dfi_all.keys():
         if t not in [ 'coly', 'colnum', 'colcat'] :
            dfXy = pd.concat((dfXy, dfi_all[t] ), axis=1)
-
-    log('----------dfXy------------------', dfXy,  dfXy.columns)
     save_features(dfXy, 'dfX', path_features_store)
 
 
