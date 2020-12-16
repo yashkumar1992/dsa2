@@ -133,13 +133,14 @@ def titanic_lightgbm(path_model_out="") :
 
 
                 ### Pipeline for data processing ########################
-               'pipe_list'  : [ 'filter',     ### Fitler the data
-                                'label',      ### Normalize the label
-                                'dfnum_bin',  ### Create bins for numerical columns
-                                'dfnum_hot',  ### One hot encoding for numerical columns
-                                'dfcat_bin',  ### Create bins for categorical columns
-                                'dfcat_hot',  ### One hot encoding for categorical columns
-                                'dfcross_hot', ]   ### Crossing of features which are one hot encoded
+                'pipe_list': [
+                    {'uri': 'source/preprocessors.py::pd_coly',                  'pars': {}, 'cols_family': 'coly',        'type': 'coly' },
+                    {'uri': 'source/preprocessors.py::pd_colnum_bin',            'pars': {}, 'cols_family': 'colnum',      'type': ''     },
+                    {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',   'pars': {}, 'cols_family': 'colnum_bin',  'type': ''     },
+                    {'uri': 'source/preprocessors.py::pd_colcat_bin',            'pars': {}, 'cols_family': 'colcat',      'type': ''     },
+                    {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',      'pars': {}, 'cols_family': 'colcat_bin',  'type': ''     },
+                    {'uri': 'source/preprocessors.py::pd_colcross',              'pars': {}, 'cols_family': 'colcross',    'type': 'cross'}
+                ],
                }
         },
 
@@ -171,95 +172,6 @@ def titanic_lightgbm(path_model_out="") :
     ##### Filling Global parameters    #############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
-
-
-
-
-
-def titanic_lightgbm2(path_model_out="") :
-    """
-        python titanic_classifier.py preprocess --nsample 100  --config titanic_lightgbm2
-
-
-    """
-    data_name    = "titanic"     ### in data/input/
-    model_name   = 'LGBMClassifier'
-    n_sample     = 1000
-
-
-    def post_process_fun(y):
-        ### After prediction is done
-        return  int(y)
-
-
-    def pre_process_fun(y):
-        ### Before the prediction is done
-        return  int(y)
-
-
-    model_dict = {'model_pars': {
-        'model_path'       : path_model_out
-
-        ### LightGBM API model   #######################################
-        ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
-        ,'model_pars'       : {'objective': 'binary',
-                               'n_estimators':10,
-                               'learning_rate':0.01,
-                               'boosting_type':'gbdt'  ### Model hyperparameters
-
-                              }
-
-        ### After prediction  ##########################################
-        , 'post_process_fun' : post_process_fun
-
-
-        ### Before prediction  ##########################################
-        , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
-
-
-    #### Default Pipeline Execution
-    'pipe_list' : [
-      {'uri' : 'source/preprocessors.py::pd_filter_rows',         'pars': {}, 'cols_family': 'colall',           'type': 'filter' },
-      {'uri' : 'source/preprocessors.py::pd_coly',                'pars': {}, 'cols_family': 'coly',       'cols_out':'coly',          'type': 'coly' },
-
-      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',     'cols_out':'colnum_bin',    'type': '' },
-      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out':'colnum_onehot', 'type': '' },
-      {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',     'cols_out':'colcat_bin',    'type': ''},
-      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'cols_out':'colcat_onehot', 'type': ''},
-
-      {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'cols_out':'colcross_hot',  'type': 'cross' }
-    ],
-
-
-               }
-        },
-
-      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
-                      ,'early_stopping_rounds':5},
-
-      'data_pars': {
-          'cols_input_type' : cols_input_type_1,
-
-          ### family of columns for MODEL  ########################################################
-          #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
-          ##  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
-          #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
-          #  'coldate',
-          #  'coltext',
-          'cols_model_group': [ 'colnum', 'colcat_bin']
-
-
-          ### Filter data rows   ##################################################################
-         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
-
-         }
-      }
-
-    ##### Filling Global parameters    #############################################################
-    model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
-    return model_dict
-
-
 
 
 
