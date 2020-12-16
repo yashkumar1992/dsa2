@@ -148,7 +148,6 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         cols_family_full['coly']    = cols_group['coly']
         save(coly, f'{path_pipeline_export}/coly.pkl')
 
-
     #####  Processors  ######################################################################
     for pipe_i in pipe_list_X :
        log("###################", pipe_i, "##########################################################")
