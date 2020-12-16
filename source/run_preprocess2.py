@@ -97,6 +97,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colid           = cols_group['colid']  # "jobId"
     colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
     colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
+    save(colid, f'{path_pipeline_export}/colid.pkl')
 
     #### Pipeline Execution ##########################################
     pipe_default = [
@@ -125,9 +126,6 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     cols_family_full = {'colid' : colid}
 
 
-    save(colid, f'{path_pipeline_export}/colid.pkl')
-
-
     if len(pipe_filter) > 0 :
         log("#####  Filter  #########################################################################")
         pipe_i       = pipe_filter[ 0 ]
@@ -140,40 +138,37 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         pipe_i       = pipe_list_y[ 0 ]
         pipe_fun     = load_function_uri(pipe_i['uri'])
 
-        pars                        = pipe_i.get('pars', {})
-        pars['path_features_store'] = path_features_store
-        df, col_pars                = pipe_fun(df, cols_group['coly'], pars=pars)   ### coly can remove rows
-        dfi_all['coly']             = df[cols_group['coly'] ]
+        pars                         = pipe_i.get('pars', {})
+        pars['path_features_store']  = path_features_store
+        pars['path_pipeline_export'] = path_pipeline_export
+        df, col_pars                 = pipe_fun(df, cols_group['coly'], pars=pars)   ### coly can remove rows
+        dfi_all['coly']              = df[cols_group['coly'] ]
+        cols_family_full['coly']     = cols_group['coly']
         save_features(df[cols_group['coly'] ], "coly", path_features_store)  ### already saved
-        cols_family_full['coly']    = cols_group['coly']
         save(coly, f'{path_pipeline_export}/coly.pkl')
+
 
     #####  Processors  ######################################################################
     for pipe_i in pipe_list_X :
        log("###################", pipe_i, "##########################################################")
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
        cols_name   = pipe_i['cols_family']
-       # df_group    = pipe_i['df_group']
        col_type    = pipe_i['type']
-
-       try:
-           cols_list = cols_group[cols_name]
-           df_       = df[ cols_list]
-
-       except: #### Previously computed
-           cols_list = list(dfi_all[cols_name].columns)
-           df_       = dfi_all[cols_name]
-
-       cols_family     = {}
-       pars            = pipe_i.get('pars', {})
+       pars        = pipe_i.get('pars', {})
        pars['path_features_store']  = path_features_store
        pars['path_pipeline_export'] = path_pipeline_export
+
+
+       cols_list   = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
+       df_         = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
+
 
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
            pars['dfcat_hot']       = dfi_all['colcat_onehot']
            pars['colid']           = colid
            pars['colcross_single'] = cols_group.get('colcross', [])
+
            dfi, col_pars           = pipe_fun(df_, cols_list, pars= pars)
            # print('--------------col_pars-----------------',col_pars['cols_new'].items())
            ### colnum, colnum_bin into cols_family
@@ -185,21 +180,21 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            save_features(dfi, cols_name , path_features_store)  ### already saved
 
        else:
-                # for cols_i in cols_list :
-                log('------------cols_i----------------', cols_list)
-                dfi, col_pars = pipe_fun(df_[ cols_list ], cols_list, pars= pars)
-                log(dfi, col_pars)
+            # for cols_i in cols_list :
+            log('------------cols_i----------------', cols_list)
+            dfi, col_pars = pipe_fun(df_[ cols_list ], cols_list, pars= pars)
+            log(dfi, col_pars)
 
-                ### colnum, colnum_bin into cols_family_full
-                for colj, colist in  col_pars['cols_new'].items() :
-                  cols_family_full[colj] =  cols_family_full.get(colj, []) + colist
-                  # save(cols_family_full[colj], f'{path_pipeline_export}/{colj}.pkl')   ### Not Efficient
+            ### colnum, colnum_bin into cols_family_full
+            for colj, colist in  col_pars['cols_new'].items() :
+              cols_family_full[colj] =  cols_family_full.get(colj, []) + colist
+              # save(cols_family_full[colj], f'{path_pipeline_export}/{colj}.pkl')   ### Not Efficient
 
-                  dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
-                  save_features(dfi_all[colj], colj, path_features_store)
+              dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
+              save_features(dfi_all[colj], colj, path_features_store)
 
        print('------------dfi_all---------------------', dfi_all)
-       print('------------cols_family-----------------', cols_family)
+       # print('------------cols_family-----------------', cols_family)
 
 
     ######  Merge AlL int dfXy  ##################################################################
@@ -208,8 +203,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         if t not in [ 'coly', 'colnum', 'colcat'] :
            dfXy = pd.concat((dfXy, dfi_all[t] ), axis=1)
 
-    log('----------dfXy------------------', dfXy)
-    log('----------dfXy.columns----------', dfXy.columns)
+    log('----------dfXy------------------', dfXy,  dfXy.columns)
     save_features(dfXy, 'dfX', path_features_store)
 
 
@@ -223,8 +217,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     ###### Return values  #######################################################################
-    print('cols_family_full')
-    pprint(cols_family_full)
+    print('cols_family_full', cols_family_full)
     return dfXy, cols_family_full
 
 
@@ -278,15 +271,13 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
        cols_name   = pipe_i['cols_family']
        col_type    = pipe_i['type']
+       pars        = pipe_i.get('pars', {})
+       pars['path_pipeline'] = path_pipeline   ### Storage of local data.
 
-
-       cols_list = cols_group[cols_name]
-       df_       = df[ cols_list]
+       cols_list   = cols_group[cols_name]
+       df_         = df[ cols_list]
        log(cols_name, cols_list)
 
-       cols_family           = {}
-       pars                  = pipe_i.get('pars', {})
-       pars['path_pipeline'] = path_pipeline   ### Storage of local data.
 
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
@@ -312,7 +303,7 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
               cols_family_full[colj] =  cols_family_full.get(colj, []) + colist
               dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if  colj in dfi_all else dfi
 
-       log('------------dfi_all---------------------', dfi_all, cols_family)
+       log('------------dfi_all---------------------', dfi_all)
 
 
     log("######  Merge AlL int dfXy  #############################################################")
