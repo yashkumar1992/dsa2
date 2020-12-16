@@ -328,7 +328,10 @@ def predict(config=None, nsample=None):
                             path_model  = m['path_model'],
                             path_data   = m['path_data_test'],
                             path_output = m['path_output_pred'],
-                            n_sample    = nsample if nsample is not None else m['n_sample'])
+                            n_sample    = nsample if nsample is not None else m['n_sample'],
+                            model_dict  = mdict
+
+                            )
 
 
 def run_all():

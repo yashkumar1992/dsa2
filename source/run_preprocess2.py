@@ -77,9 +77,6 @@ def load_features(name, path):
 
 
 ####################################################################################################
-
-
-####################################################################################################
 ####################################################################################################
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={}, filter_pars={}, path_features_store=None):
@@ -199,7 +196,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
            save_features(dfi, cols_name , path_features_store)  ### already saved
            ### Merge sub-family
-           dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi), axis=1) if dfi_all.get(cols_name) is not None else dfi
+           dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi), axis=1) if cols_name in dfi_all else dfi
 
        else:
            for cols_i in cols_list :
@@ -213,7 +210,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
                   cols_family_full[colj] =  cols_family_full.get(colj, []) + colist
                   save(cols_family_full[colj], f'{path_pipeline_export}/{colj}.pkl')   ### Not Efficient
 
-                  dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if dfi_all.get(colj) is not None else dfi
+                  dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
                   save_features(dfi_all[colj], colj, path_features_store)
 
        print('------------dfi_all---------------------', dfi_all)
@@ -258,15 +255,14 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
                               pd_feature_generate_cross)
 
 
-    #### Pipeline Execution
+    #### Pipeline Execution  ####################################################
     pipe_default = [
-      {'uri' : 'source/preprocessors.py::pd_coly',                'pars': preprocess_pars, 'cols_family': 'coly',       'cols_out':'coly',         'type': 'coly' },
 
-      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',     'cols_out':'dfnum_bin',    'type': '' },
-      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out':'dfnum_onehot', 'type': '' },
+      #{'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',     'cols_out':'dfnum_bin',    'type': '' },
+      #{'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out':'dfnum_onehot', 'type': '' },
       {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',     'cols_out':'dfcat_bin',    'type': ''},
-      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'cols_out':'dfcat_onehot', 'type': ''},
-      {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'cols_out':'dfcross_hot',  'type': 'cross' }
+      #{'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'cols_out':'dfcat_onehot', 'type': ''},
+      #{'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'cols_out':'dfcross_hot',  'type': 'cross' }
     ]
 
     pipe_list = pipe_default
@@ -279,7 +275,7 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
     ##### column names for feature generation #####################################################
     log(cols_group)   ### list of model columns familty
-    colid           = cols_group['colid']  # "jobId"
+    colid           = cols_group['colid']   # "jobId"
     colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
     colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
 
@@ -294,7 +290,7 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
 
     if len(pipe_filter) > 0 :
-        log("#####  Filter  #########################################################################")
+        log("#####  Filter  #######################################################################")
         pipe_i       = pipe_filter[ 0 ]
         pipe_fun     = load_function_uri(pipe_i['uri'])
         df, col_pars = pipe_fun(df, list(df.columns), pars=pipe_i.get('pars', {}))
@@ -332,7 +328,7 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
               cols_family_full[cols_name] =  cols_family_full.get(colname, []) + colist
 
            ### Merge sub-family
-           dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi), axis=1) if dfi_all.get(cols_name) is not None else dfi
+           dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi), axis=1) if cols_name in dfi_all else dfi
 
        else:
            for cols_i in cols_list :
@@ -344,13 +340,13 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
                 ### colnum, colnum_bin into cols_family_full
                 for colj, colist in  col_pars['cols_new'].items() :
                   cols_family_full[colj] =  cols_family_full.get(colj, []) + colist
-                  dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if dfi_all.get(colj) is not None else dfi
+                  dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
 
        print('------------dfi_all---------------------', dfi_all)
        print('------------cols_family-----------------', cols_family)
 
 
-    ######  Merge AlL int dfXy  ##################################################################
+    ######  Merge AlL int dfXy  #################################################################
     dfXy = df[  colnum + colcat ]
     for t in dfi_all.keys():
         if t not in [  'colnum', 'colcat'] :
