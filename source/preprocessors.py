@@ -288,17 +288,16 @@ def pd_colnum_binto_onehot(df, col=None, pars=None):
        colnum_onehot = None
 
     dfnum_bin = df[col]
-
-
     colnum_bin = col
     log("### colnum bin to One Hot")
     dfnum_hot, colnum_onehot = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
                                                 colonehot=colnum_onehot, return_val="dataframe,param")
     log(colnum_onehot)
 
-    if pars.get('path_features_store', None) is not None:
+    if 'path_features_store' in pars :
         path_features_store = pars['path_features_store']
         save_features(dfnum_hot, 'colnum_onehot', path_features_store)
+        save(colnum_onehot,  pars['path_pipeline_export'] + "/colnum_onehot.pkl" )
 
     col_pars = {}
     col_pars['colnum_onehot'] = colnum_onehot
