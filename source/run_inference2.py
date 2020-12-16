@@ -33,7 +33,7 @@ def log(*s, n=0, m=1):
 
 
 from util_feature import load, load_function_uri
-from util_feature import  load_dataset
+from util_feature import load_dataset
 
 
 ####################################################################################################
@@ -90,7 +90,7 @@ def predict(model_name, path_model, dfX, cols_family):
 
 ####################################################################################################
 ############CLI Command ############################################################################
-def run_predict(model_name, path_model, path_data, path_output, n_sample=-1, model_dict=None):
+def run_predict(model_name, path_model, path_data, path_output,cols_group, n_sample=-1):
     path_output   = root + path_output
     path_data     = root + path_data + "/features.zip"#.zip
     path_model    = root + path_model
@@ -104,8 +104,7 @@ def run_predict(model_name, path_model, path_data, path_output, n_sample=-1, mod
 
 
     from run_preprocess2 import preprocess_inference   as preprocess
-    cols_group =
-    dfX, cols_family = preprocess(df, path_pipeline)
+    dfX, cols_family = preprocess(df, path_pipeline, preprocess_pars={'cols_group':cols_group})
     
     ypred, yproba    = predict(model_name, path_model, dfX, cols_family)
 
