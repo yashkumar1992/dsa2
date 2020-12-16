@@ -179,22 +179,6 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
           dfi_all[colj]          = pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
           save_features(dfi_all[colj], colj, path_features_store)
 
-
-       """
-       else:
-            # for cols_i in cols_list :
-            log('------------cols_i----------------', cols_list)
-            dfi, col_pars = pipe_fun(df_[ cols_list ], cols_list, pars= pars)
-            log(dfi, col_pars)
-
-            ### colnum, colnum_bin into cols_family_all
-            for colj, colist in  col_pars['cols_new'].items() :
-              cols_family_all[colj] =  cols_family_all.get(colj, []) + colist
-              # save(cols_family_all[colj], f'{path_pipeline_export}/{colj}.pkl')   ### Not Efficient
-
-              dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
-              save_features(dfi_all[colj], colj, path_features_store)
-       """
        print('------------dfi_all---------------------', dfi_all)
 
 
