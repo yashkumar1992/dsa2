@@ -4,7 +4,7 @@ D:/_devs/Python01/gitdev/dsa2/
 D:\_devs\Python01\gitdev\dsa2
 D:/_devs/Python01/gitdev/dsa2/
 D:/_devs/Python01/gitdev/dsa2/data/
-{'model_pars': {'model_path': '', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x000001E50981AEA0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x000001E50981AF28>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 5, 'ymin': -1}}, 'global_pars': {'config_name': 'multi_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multi_lightgbm/', 'n_sample': 6000}}
+{'model_pars': {'model_path': '', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x00000226FD48CEA0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x00000226FD48CF28>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 5, 'ymin': -1}}, 'global_pars': {'config_name': 'multi_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multi_lightgbm/', 'n_sample': 6000}}
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier/',) 
   ('#### Model Params Dynamic loading  ###############################################',) 
 
@@ -12,14 +12,14 @@ D:/_devs/Python01/gitdev/dsa2/data/
 D:\_devs\Python01\gitdev\dsa2
 D:/_devs/Python01/gitdev/dsa2/
 D:/_devs/Python01/gitdev/dsa2/data/
-  ({'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x000001E5098270D0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x000001E5098276A8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 5, 'ymin': -1}}, 'global_pars': {'config_name': 'multi_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multi_lightgbm/', 'n_sample': 6000}},) 
+  ({'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x00000226FD4980D0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x00000226FD4986A8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 5, 'ymin': -1}}, 'global_pars': {'config_name': 'multi_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multi_lightgbm/', 'n_sample': 6000}},) 
   ('#### load input column family  ###################################################',) 
   ({'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']},) 
   ('#### Preprocess  #################################################################',) 
 
   ({'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']},) 
 
-  (['length(m)', 'height(cm)', 'X1', 'X2', 'color_type', 'condition'],) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colid.pkl',) 
 
   ('loading', 'pet_id', 'D:/_devs/Python01/gitdev/dsa2/data/input/multiclass/train//features.zip') 
 ['D:/_devs/Python01/gitdev/dsa2/data/input/multiclass/train\\features.zip']
@@ -39,8 +39,6 @@ Index: [])
   ('dfy not loaded', 'D:/_devs/Python01/gitdev/dsa2/data/input/multiclass/train//target.zip', KeyError("None of ['pet_id'] are in the columns",)) 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline/',) 
-
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colid.pkl',) 
 
   ('#####  coly  ###########################################################################',) 
 
@@ -63,60 +61,60 @@ D:/_devs/Python01/gitdev/dsa2/
 
   ('### colnum Map numerics to Category bin  ###########################################',) 
 length(m)
-              length(m)                 
-                   mean   min   max size
-length(m)_bin                           
-0              0.049067  0.00  0.09  579
-1              0.143678  0.10  0.19  590
-2              0.243772  0.20  0.29  639
-3              0.344924  0.30  0.39  591
-4              0.450227  0.40  0.50  618
-5              0.550512  0.51  0.59  547
-6              0.651234  0.60  0.70  640
-7              0.749318  0.71  0.79  528
-8              0.848691  0.80  0.90  703
-9              0.953558  0.91  1.00  565
+              length(m)                      
+                   size   max      mean   min
+length(m)_bin                                
+0                   579  0.09  0.049067  0.00
+1                   590  0.19  0.143678  0.10
+2                   639  0.29  0.243772  0.20
+3                   591  0.39  0.344924  0.30
+4                   618  0.50  0.450227  0.40
+5                   547  0.59  0.550512  0.51
+6                   640  0.70  0.651234  0.60
+7                   528  0.79  0.749318  0.71
+8                   703  0.90  0.848691  0.80
+9                   565  1.00  0.953558  0.91
 height(cm)
-               height(cm)                           
-                     mean        min        max size
-height(cm)_bin                                      
-0                7.198111   5.030000   9.520000  614
-1               11.788912   9.540000  14.020000  588
-2               16.300425  14.030000  18.510000  612
-3               20.753338  18.530001  23.010000  623
-4               25.169584  23.020000  27.510000  576
-5               29.688238  27.520000  32.000000  607
-6               34.298466  32.020000  36.500000  580
-7               38.782181  36.509998  40.990002  546
-8               43.254009  41.000000  45.490002  616
-9               47.754230  45.500000  49.990002  638
+               height(cm)                                 
+                     size        max       mean        min
+height(cm)_bin                                            
+0                     614   9.520000   7.198111   5.030000
+1                     588  14.020000  11.788912   9.540000
+2                     612  18.510000  16.300425  14.030000
+3                     623  23.010000  20.753338  18.530001
+4                     576  27.510000  25.169584  23.020000
+5                     607  32.000000  29.688238  27.520000
+6                     580  36.500000  34.298466  32.020000
+7                     546  40.990002  38.782181  36.509998
+8                     616  45.490002  43.254009  41.000000
+9                     638  49.990002  47.754230  45.500000
 X1
-               X1                  
-             mean   min   max  size
+          X1                       
+        size   max       mean   min
 X1_bin                             
-0        0.004689   0.0   1.0  3412
-1        2.071429   2.0   3.0    14
-2        4.333333   4.0   5.0     3
-3        6.991786   6.0   7.0   487
-4        8.745455   8.0   9.0    55
-5       10.866667  10.0  11.0    15
-6       12.985580  12.0  13.0  1387
-7       14.994220  14.0  15.0   173
-8       16.299999  16.0  17.0   270
-9       18.005434  18.0  19.0   184
+0       3412   1.0   0.004689   0.0
+1         14   3.0   2.071429   2.0
+2          3   5.0   4.333333   4.0
+3        487   7.0   6.991786   6.0
+4         55   9.0   8.745455   8.0
+5         15  11.0  10.866667  10.0
+6       1387  13.0  12.985580  12.0
+7        173  15.0  14.994220  14.0
+8        270  17.0  16.299999  16.0
+9        184  19.0  18.005434  18.0
 X2
-         X2                
-       mean  min  max  size
+          X2               
+        size  max mean  min
 X2_bin                     
-0       1.0  1.0  1.0  2731
-1       2.0  2.0  2.0    65
-2       3.0  3.0  3.0    18
-3       4.0  4.0  4.0   407
-4       5.0  5.0  5.0     5
-6       6.0  6.0  6.0     3
-7       7.0  7.0  7.0  1117
-8       8.0  8.0  8.0    16
-9       9.0  9.0  9.0  1638
+0       2731  1.0  1.0  1.0
+1         65  2.0  2.0  2.0
+2         18  3.0  3.0  3.0
+3        407  4.0  4.0  4.0
+4          5  5.0  5.0  5.0
+6          3  6.0  6.0  6.0
+7       1117  7.0  7.0  7.0
+8         16  8.0  8.0  8.0
+9       1638  9.0  9.0  9.0
 
   (OrderedDict([('length(m)', [-0.0001, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0]), ('height(cm)', [5.02990020980835, 9.526000499725342, 14.022000789642334, 18.518001079559326, 23.01400136947632, 27.51000165939331, 32.0060019493103, 36.502002239227295, 40.99800252914429, 45.49400281906128, 49.99000310897827]), ('X1', [-0.0001, 1.9, 3.8, 5.699999999999999, 7.6, 9.5, 11.399999999999999, 13.299999999999999, 15.2, 17.099999999999998, 19.0]), ('X2', [0.9999, 1.8, 2.6, 3.4000000000000004, 4.2, 5.0, 5.800000000000001, 6.6000000000000005, 7.4, 8.2, 9.0])]),) 
 
@@ -126,11 +124,23 @@ X2_bin
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_bin.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum.pkl',) 
+  (            length(m)_bin  height(cm)_bin  X1_bin  X2_bin
+pet_id                                                   
+ANSL_69903              8               0       6       9
+ANSL_66892              7               2       6       9
+ANSL_69750              1               7       7       3
+ANSL_71623              6               2       0       0
+ANSL_57969              4               1       9       3
+...                   ...             ...     ...     ...
+ANSL_52485              4               7       9       3
+ANSL_60352              8               0       0       7
+ANSL_50323              6               2       0       0
+ANSL_66106              1               0       0       0
+ANSL_51656              9               7       6       9
+
+[6000 rows x 4 columns], {'colnumbin_map': OrderedDict([('length(m)', [-0.0001, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0]), ('height(cm)', [5.02990020980835, 9.526000499725342, 14.022000789642334, 18.518001079559326, 23.01400136947632, 27.51000165939331, 32.0060019493103, 36.502002239227295, 40.99800252914429, 45.49400281906128, 49.99000310897827]), ('X1', [-0.0001, 1.9, 3.8, 5.699999999999999, 7.6, 9.5, 11.399999999999999, 13.299999999999999, 15.2, 17.099999999999998, 19.0]), ('X2', [0.9999, 1.8, 2.6, 3.4000000000000004, 4.2, 5.0, 5.800000000000001, 6.6000000000000005, 7.4, 8.2, 9.0])]), 'cols_new': {'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'colnum_bin': ['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin']}}) 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colnum/features.parquet',) 
-
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_bin.pkl',) 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colnum_bin/features.parquet',) 
 ------------dfi_all--------------------- {'coly': pet_id
@@ -174,7 +184,6 @@ ANSL_66106              1               0       0       0
 ANSL_51656              9               7       6       9
 
 [6000 rows x 4 columns]}
-------------cols_family----------------- {}
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'dfnum_onehot', 'type': ''}, '##########################################################') 
 
@@ -190,7 +199,21 @@ X2_bin 9 (6000, 31)
 
   (['length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9'],) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colnum_onehot.pkl',) 
+  (            length(m)_bin_0  length(m)_bin_1  ...  X2_bin_8  X2_bin_9
+pet_id                                        ...                    
+ANSL_69903                0                0  ...         0         1
+ANSL_66892                0                0  ...         0         1
+ANSL_69750                0                1  ...         0         0
+ANSL_71623                0                0  ...         0         0
+ANSL_57969                0                0  ...         0         0
+...                     ...              ...  ...       ...       ...
+ANSL_52485                0                0  ...         0         0
+ANSL_60352                0                0  ...         0         0
+ANSL_50323                0                0  ...         0         0
+ANSL_66106                0                1  ...         0         0
+ANSL_51656                0                0  ...         0         1
+
+[6000 rows x 39 columns], {'colnum_onehot': ['length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9'], 'cols_new': {'colnum_onehot': ['length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9']}}) 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colnum_onehot/features.parquet',) 
 ------------dfi_all--------------------- {'coly': pet_id
@@ -248,7 +271,6 @@ ANSL_66106                0                1  ...         0         0
 ANSL_51656                0                0  ...         0         1
 
 [6000 rows x 39 columns]}
-------------cols_family----------------- {}
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'dfcat_bin', 'type': ''}, '##########################################################') 
 
@@ -266,11 +288,23 @@ dtype: object, {'cat_map': {'color_type': {'Agouti': 0, 'Apricot': 1, 'Black': 2
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_bin.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat.pkl',) 
+  (            color_type_int  condition_int
+pet_id                                   
+ANSL_69903               0              0
+ANSL_66892               1              1
+ANSL_69750               2             -1
+ANSL_71623               1              1
+ANSL_57969               3              0
+...                    ...            ...
+ANSL_52485              31              0
+ANSL_60352               3              2
+ANSL_50323               3              1
+ANSL_66106               1              2
+ANSL_51656               3              1
+
+[6000 rows x 2 columns], {'colcat_bin_map': {'color_type': {'decode': {0: 'Brown Tabby', 1: 'White', 2: 'Brown', 3: 'Black', 4: 'Red', 5: 'Tricolor', 6: 'Calico', 7: 'Brown Brindle', 8: 'Blue', 9: 'Tortie', 10: 'Gray', 11: 'Fawn', 12: 'Buff', 13: 'Torbie', 14: 'Orange Tabby', 15: 'Sable', 16: 'Tan', 17: 'Blue Tick', 18: 'Orange', 19: 'Blue Tabby', 20: 'Chocolate', 21: 'Black Tabby', 22: 'Black Brindle', 23: 'Cream Tabby', 24: 'Gold', 25: 'Calico Point', 26: 'Blue Merle', 27: 'Red Merle', 28: 'Yellow', 29: 'Lynx Point', 30: 'Blue Cream', 31: 'Flame Point', 32: 'Cream', 33: 'Yellow Brindle', 34: 'Blue Tiger', 35: 'Seal Point', 36: 'Red Tick', 37: 'Brown Merle', 38: 'Black Smoke', 39: 'Gray Tabby', 40: 'Green', 41: 'Tortie Point', 42: 'Blue Smoke', 43: 'Apricot', 44: 'Blue Point', 45: 'Silver Tabby', 46: 'Lilac Point', 47: 'Silver', 48: 'Brown Tiger', 49: 'Liver', 50: 'Agouti', 51: 'Chocolate Point', 52: 'Liver Tick'}, 'encode': {'Brown Tabby': 0, 'White': 1, 'Brown': 2, 'Black': 3, 'Red': 4, 'Tricolor': 5, 'Calico': 6, 'Brown Brindle': 7, 'Blue': 8, 'Tortie': 9, 'Gray': 10, 'Fawn': 11, 'Buff': 12, 'Torbie': 13, 'Orange Tabby': 14, 'Sable': 15, 'Tan': 16, 'Blue Tick': 17, 'Orange': 18, 'Blue Tabby': 19, 'Chocolate': 20, 'Black Tabby': 21, 'Black Brindle': 22, 'Cream Tabby': 23, 'Gold': 24, 'Calico Point': 25, 'Blue Merle': 26, 'Red Merle': 27, 'Yellow': 28, 'Lynx Point': 29, 'Blue Cream': 30, 'Flame Point': 31, 'Cream': 32, 'Yellow Brindle': 33, 'Blue Tiger': 34, 'Seal Point': 35, 'Red Tick': 36, 'Brown Merle': 37, 'Black Smoke': 38, 'Gray Tabby': 39, 'Green': 40, 'Tortie Point': 41, 'Blue Smoke': 42, 'Apricot': 43, 'Blue Point': 44, 'Silver Tabby': 45, 'Lilac Point': 46, 'Silver': 47, 'Brown Tiger': 48, 'Liver': 49, 'Agouti': 50, 'Chocolate Point': 51, 'Liver Tick': 52}}, 'condition': {'decode': {0: 2.0, 1: 1.0, 2: 0.0}, 'encode': {2.0: 0, 1.0: 1, 0.0: 2}}}, 'cols_new': {'colcat': ['color_type', 'condition'], 'colcat_bin': ['color_type_int', 'condition_int']}}) 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colcat/features.parquet',) 
-
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_bin.pkl',) 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colcat_bin/features.parquet',) 
 ------------dfi_all--------------------- {'coly': pet_id
@@ -356,7 +390,6 @@ ANSL_66106               1              2
 ANSL_51656               3              1
 
 [6000 rows x 2 columns]}
-------------cols_family----------------- {}
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'dfcat_onehot', 'type': ''}, '##########################################################') 
 
@@ -383,7 +416,21 @@ ANSL_57969                 0  ...                0
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat.pkl',) 
 ok ------------
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colcat_onehot.pkl',) 
+  (            color_type_int_0  ...  condition_int_2
+pet_id                        ...                 
+ANSL_69903                 1  ...                0
+ANSL_66892                 0  ...                0
+ANSL_69750                 0  ...                0
+ANSL_71623                 0  ...                0
+ANSL_57969                 0  ...                0
+...                      ...  ...              ...
+ANSL_52485                 0  ...                0
+ANSL_60352                 0  ...                1
+ANSL_50323                 0  ...                0
+ANSL_66106                 0  ...                1
+ANSL_51656                 0  ...                0
+
+[6000 rows x 57 columns], {'colcat_onehot': ['color_type_int_0', 'color_type_int_1', 'color_type_int_2', 'color_type_int_3', 'color_type_int_4', 'color_type_int_5', 'color_type_int_6', 'color_type_int_7', 'color_type_int_8', 'color_type_int_9', 'color_type_int_10', 'color_type_int_11', 'color_type_int_12', 'color_type_int_13', 'color_type_int_14', 'color_type_int_15', 'color_type_int_16', 'color_type_int_17', 'color_type_int_18', 'color_type_int_19', 'color_type_int_20', 'color_type_int_21', 'color_type_int_22', 'color_type_int_23', 'color_type_int_24', 'color_type_int_25', 'color_type_int_26', 'color_type_int_27', 'color_type_int_28', 'color_type_int_29', 'color_type_int_30', 'color_type_int_31', 'color_type_int_32', 'color_type_int_33', 'color_type_int_34', 'color_type_int_35', 'color_type_int_36', 'color_type_int_37', 'color_type_int_38', 'color_type_int_39', 'color_type_int_40', 'color_type_int_41', 'color_type_int_42', 'color_type_int_43', 'color_type_int_44', 'color_type_int_45', 'color_type_int_46', 'color_type_int_47', 'color_type_int_48', 'color_type_int_49', 'color_type_int_50', 'color_type_int_51', 'color_type_int_52', 'condition_int_-1', 'condition_int_0', 'condition_int_1', 'condition_int_2'], 'cols_new': {'colcat_onehot': ['color_type_int_0', 'color_type_int_1', 'color_type_int_2', 'color_type_int_3', 'color_type_int_4', 'color_type_int_5', 'color_type_int_6', 'color_type_int_7', 'color_type_int_8', 'color_type_int_9', 'color_type_int_10', 'color_type_int_11', 'color_type_int_12', 'color_type_int_13', 'color_type_int_14', 'color_type_int_15', 'color_type_int_16', 'color_type_int_17', 'color_type_int_18', 'color_type_int_19', 'color_type_int_20', 'color_type_int_21', 'color_type_int_22', 'color_type_int_23', 'color_type_int_24', 'color_type_int_25', 'color_type_int_26', 'color_type_int_27', 'color_type_int_28', 'color_type_int_29', 'color_type_int_30', 'color_type_int_31', 'color_type_int_32', 'color_type_int_33', 'color_type_int_34', 'color_type_int_35', 'color_type_int_36', 'color_type_int_37', 'color_type_int_38', 'color_type_int_39', 'color_type_int_40', 'color_type_int_41', 'color_type_int_42', 'color_type_int_43', 'color_type_int_44', 'color_type_int_45', 'color_type_int_46', 'color_type_int_47', 'color_type_int_48', 'color_type_int_49', 'color_type_int_50', 'color_type_int_51', 'color_type_int_52', 'condition_int_-1', 'condition_int_0', 'condition_int_1', 'condition_int_2']}}) 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store//colcat_onehot/features.parquet',) 
 ------------dfi_all--------------------- {'coly': pet_id
@@ -483,7 +530,6 @@ ANSL_66106                 0  ...                1
 ANSL_51656                 0  ...                0
 
 [6000 rows x 57 columns]}
-------------cols_family----------------- {}
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'dfcross_hot', 'type': 'cross'}, '##########################################################') 
 
@@ -624,7 +670,6 @@ ANSL_66106                                 0  ...                  0
 ANSL_51656                                 0  ...                  0
 
 [6000 rows x 224 columns]}
-------------cols_family----------------- {}
 
   ('----------dfXy------------------',             pet_category  length(m)  ...  X1_bin_8-X2_bin_9  X1_bin_9-X2_bin_3
 pet_id                               ...                                      
@@ -640,9 +685,7 @@ ANSL_50323             2       0.61  ...                  0                  0
 ANSL_66106             1       0.15  ...                  0                  0
 ANSL_51656             2       0.95  ...                  0                  0
 
-[6000 rows x 333 columns]) 
-
-  ('----------dfXy.columns----------', Index(['pet_category', 'length(m)', 'height(cm)', 'X1', 'X2', 'color_type',
+[6000 rows x 333 columns], Index(['pet_category', 'length(m)', 'height(cm)', 'X1', 'X2', 'color_type',
        'condition', 'length(m)_bin', 'height(cm)_bin', 'X1_bin',
        ...
        'height(cm)_bin_9-X2_bin_0', 'height(cm)_bin_9-X2_bin_7',
@@ -656,700 +699,40 @@ ANSL_51656             2       0.95  ...                  0                  0
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//colsX.pkl',) 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline//cols_family.pkl',) 
-cols_family_full
-{'colX': ['length(m)',
-          'height(cm)',
-          'X1',
-          'X2',
-          'color_type',
-          'condition',
-          'length(m)_bin',
-          'height(cm)_bin',
-          'X1_bin',
-          'X2_bin',
-          'length(m)_bin_0',
-          'length(m)_bin_1',
-          'length(m)_bin_2',
-          'length(m)_bin_3',
-          'length(m)_bin_4',
-          'length(m)_bin_5',
-          'length(m)_bin_6',
-          'length(m)_bin_7',
-          'length(m)_bin_8',
-          'length(m)_bin_9',
-          'height(cm)_bin_0',
-          'height(cm)_bin_1',
-          'height(cm)_bin_2',
-          'height(cm)_bin_3',
-          'height(cm)_bin_4',
-          'height(cm)_bin_5',
-          'height(cm)_bin_6',
-          'height(cm)_bin_7',
-          'height(cm)_bin_8',
-          'height(cm)_bin_9',
-          'X1_bin_0',
-          'X1_bin_1',
-          'X1_bin_2',
-          'X1_bin_3',
-          'X1_bin_4',
-          'X1_bin_5',
-          'X1_bin_6',
-          'X1_bin_7',
-          'X1_bin_8',
-          'X1_bin_9',
-          'X2_bin_0',
-          'X2_bin_1',
-          'X2_bin_2',
-          'X2_bin_3',
-          'X2_bin_4',
-          'X2_bin_6',
-          'X2_bin_7',
-          'X2_bin_8',
-          'X2_bin_9',
-          'color_type_int',
-          'condition_int',
-          'color_type_int_0',
-          'color_type_int_1',
-          'color_type_int_2',
-          'color_type_int_3',
-          'color_type_int_4',
-          'color_type_int_5',
-          'color_type_int_6',
-          'color_type_int_7',
-          'color_type_int_8',
-          'color_type_int_9',
-          'color_type_int_10',
-          'color_type_int_11',
-          'color_type_int_12',
-          'color_type_int_13',
-          'color_type_int_14',
-          'color_type_int_15',
-          'color_type_int_16',
-          'color_type_int_17',
-          'color_type_int_18',
-          'color_type_int_19',
-          'color_type_int_20',
-          'color_type_int_21',
-          'color_type_int_22',
-          'color_type_int_23',
-          'color_type_int_24',
-          'color_type_int_25',
-          'color_type_int_26',
-          'color_type_int_27',
-          'color_type_int_28',
-          'color_type_int_29',
-          'color_type_int_30',
-          'color_type_int_31',
-          'color_type_int_32',
-          'color_type_int_33',
-          'color_type_int_34',
-          'color_type_int_35',
-          'color_type_int_36',
-          'color_type_int_37',
-          'color_type_int_38',
-          'color_type_int_39',
-          'color_type_int_40',
-          'color_type_int_41',
-          'color_type_int_42',
-          'color_type_int_43',
-          'color_type_int_44',
-          'color_type_int_45',
-          'color_type_int_46',
-          'color_type_int_47',
-          'color_type_int_48',
-          'color_type_int_49',
-          'color_type_int_50',
-          'color_type_int_51',
-          'color_type_int_52',
-          'condition_int_-1',
-          'condition_int_0',
-          'condition_int_1',
-          'condition_int_2',
-          'color_type_int_0-condition_int_0',
-          'color_type_int_0-condition_int_1',
-          'color_type_int_0-condition_int_2',
-          'color_type_int_0-X1_bin_0',
-          'color_type_int_0-X1_bin_6',
-          'color_type_int_0-X2_bin_0',
-          'color_type_int_0-X2_bin_9',
-          'color_type_int_1-condition_int_0',
-          'color_type_int_1-condition_int_1',
-          'color_type_int_1-condition_int_2',
-          'color_type_int_1-X1_bin_0',
-          'color_type_int_1-X1_bin_6',
-          'color_type_int_1-X2_bin_0',
-          'color_type_int_1-X2_bin_7',
-          'color_type_int_1-X2_bin_9',
-          'color_type_int_2-condition_int_-1',
-          'color_type_int_2-condition_int_1',
-          'color_type_int_2-condition_int_2',
-          'color_type_int_2-X1_bin_0',
-          'color_type_int_2-X2_bin_0',
-          'color_type_int_2-X2_bin_3',
-          'color_type_int_2-X2_bin_7',
-          'color_type_int_3-condition_int_0',
-          'color_type_int_3-condition_int_1',
-          'color_type_int_3-condition_int_2',
-          'color_type_int_3-length(m)_bin_0',
-          'color_type_int_3-length(m)_bin_1',
-          'color_type_int_3-length(m)_bin_2',
-          'color_type_int_3-length(m)_bin_3',
-          'color_type_int_3-length(m)_bin_4',
-          'color_type_int_3-length(m)_bin_5',
-          'color_type_int_3-length(m)_bin_6',
-          'color_type_int_3-length(m)_bin_7',
-          'color_type_int_3-length(m)_bin_8',
-          'color_type_int_3-length(m)_bin_9',
-          'color_type_int_3-height(cm)_bin_0',
-          'color_type_int_3-height(cm)_bin_1',
-          'color_type_int_3-height(cm)_bin_2',
-          'color_type_int_3-height(cm)_bin_3',
-          'color_type_int_3-height(cm)_bin_4',
-          'color_type_int_3-height(cm)_bin_5',
-          'color_type_int_3-height(cm)_bin_6',
-          'color_type_int_3-height(cm)_bin_7',
-          'color_type_int_3-height(cm)_bin_8',
-          'color_type_int_3-height(cm)_bin_9',
-          'color_type_int_3-X1_bin_0',
-          'color_type_int_3-X1_bin_6',
-          'color_type_int_3-X2_bin_0',
-          'color_type_int_3-X2_bin_7',
-          'color_type_int_3-X2_bin_9',
-          'color_type_int_8-X1_bin_0',
-          'color_type_int_8-X2_bin_0',
-          'color_type_int_14-condition_int_1',
-          'color_type_int_14-X2_bin_0',
-          'color_type_int_16-condition_int_1',
-          'color_type_int_16-condition_int_2',
-          'color_type_int_16-X1_bin_0',
-          'color_type_int_16-X2_bin_0',
-          'condition_int_-1-X1_bin_6',
-          'condition_int_-1-X1_bin_7',
-          'condition_int_-1-X2_bin_3',
-          'condition_int_-1-X2_bin_9',
-          'condition_int_0-length(m)_bin_0',
-          'condition_int_0-length(m)_bin_1',
-          'condition_int_0-length(m)_bin_2',
-          'condition_int_0-length(m)_bin_3',
-          'condition_int_0-length(m)_bin_4',
-          'condition_int_0-length(m)_bin_5',
-          'condition_int_0-length(m)_bin_6',
-          'condition_int_0-length(m)_bin_8',
-          'condition_int_0-length(m)_bin_9',
-          'condition_int_0-height(cm)_bin_0',
-          'condition_int_0-height(cm)_bin_1',
-          'condition_int_0-height(cm)_bin_2',
-          'condition_int_0-height(cm)_bin_3',
-          'condition_int_0-height(cm)_bin_4',
-          'condition_int_0-height(cm)_bin_5',
-          'condition_int_0-height(cm)_bin_6',
-          'condition_int_0-height(cm)_bin_8',
-          'condition_int_0-height(cm)_bin_9',
-          'condition_int_0-X1_bin_0',
-          'condition_int_0-X1_bin_6',
-          'condition_int_0-X1_bin_8',
-          'condition_int_0-X2_bin_0',
-          'condition_int_0-X2_bin_7',
-          'condition_int_0-X2_bin_9',
-          'condition_int_1-length(m)_bin_0',
-          'condition_int_1-length(m)_bin_1',
-          'condition_int_1-length(m)_bin_2',
-          'condition_int_1-length(m)_bin_3',
-          'condition_int_1-length(m)_bin_4',
-          'condition_int_1-length(m)_bin_5',
-          'condition_int_1-length(m)_bin_6',
-          'condition_int_1-length(m)_bin_7',
-          'condition_int_1-length(m)_bin_8',
-          'condition_int_1-length(m)_bin_9',
-          'condition_int_1-height(cm)_bin_0',
-          'condition_int_1-height(cm)_bin_1',
-          'condition_int_1-height(cm)_bin_2',
-          'condition_int_1-height(cm)_bin_3',
-          'condition_int_1-height(cm)_bin_4',
-          'condition_int_1-height(cm)_bin_5',
-          'condition_int_1-height(cm)_bin_6',
-          'condition_int_1-height(cm)_bin_7',
-          'condition_int_1-height(cm)_bin_8',
-          'condition_int_1-height(cm)_bin_9',
-          'condition_int_1-X1_bin_0',
-          'condition_int_1-X1_bin_3',
-          'condition_int_1-X1_bin_6',
-          'condition_int_1-X2_bin_0',
-          'condition_int_1-X2_bin_7',
-          'condition_int_1-X2_bin_9',
-          'condition_int_2-length(m)_bin_0',
-          'condition_int_2-length(m)_bin_1',
-          'condition_int_2-length(m)_bin_2',
-          'condition_int_2-length(m)_bin_3',
-          'condition_int_2-length(m)_bin_4',
-          'condition_int_2-length(m)_bin_5',
-          'condition_int_2-length(m)_bin_6',
-          'condition_int_2-length(m)_bin_7',
-          'condition_int_2-length(m)_bin_8',
-          'condition_int_2-length(m)_bin_9',
-          'condition_int_2-height(cm)_bin_0',
-          'condition_int_2-height(cm)_bin_1',
-          'condition_int_2-height(cm)_bin_2',
-          'condition_int_2-height(cm)_bin_3',
-          'condition_int_2-height(cm)_bin_4',
-          'condition_int_2-height(cm)_bin_5',
-          'condition_int_2-height(cm)_bin_6',
-          'condition_int_2-height(cm)_bin_7',
-          'condition_int_2-height(cm)_bin_8',
-          'condition_int_2-height(cm)_bin_9',
-          'condition_int_2-X1_bin_0',
-          'condition_int_2-X1_bin_3',
-          'condition_int_2-X1_bin_6',
-          'condition_int_2-X2_bin_0',
-          'condition_int_2-X2_bin_7',
-          'condition_int_2-X2_bin_9',
-          'length(m)_bin_0-X1_bin_0',
-          'length(m)_bin_0-X1_bin_6',
-          'length(m)_bin_0-X2_bin_0',
-          'length(m)_bin_0-X2_bin_9',
-          'length(m)_bin_1-X1_bin_0',
-          'length(m)_bin_1-X1_bin_6',
-          'length(m)_bin_1-X2_bin_0',
-          'length(m)_bin_1-X2_bin_9',
-          'length(m)_bin_2-X1_bin_0',
-          'length(m)_bin_2-X1_bin_6',
-          'length(m)_bin_2-X2_bin_0',
-          'length(m)_bin_2-X2_bin_7',
-          'length(m)_bin_2-X2_bin_9',
-          'length(m)_bin_3-X1_bin_0',
-          'length(m)_bin_3-X1_bin_6',
-          'length(m)_bin_3-X2_bin_0',
-          'length(m)_bin_3-X2_bin_9',
-          'length(m)_bin_4-X1_bin_0',
-          'length(m)_bin_4-X1_bin_6',
-          'length(m)_bin_4-X2_bin_0',
-          'length(m)_bin_4-X2_bin_9',
-          'length(m)_bin_5-X1_bin_0',
-          'length(m)_bin_5-X1_bin_6',
-          'length(m)_bin_5-X2_bin_0',
-          'length(m)_bin_5-X2_bin_9',
-          'length(m)_bin_6-X1_bin_0',
-          'length(m)_bin_6-X1_bin_6',
-          'length(m)_bin_6-X2_bin_0',
-          'length(m)_bin_6-X2_bin_9',
-          'length(m)_bin_7-X1_bin_0',
-          'length(m)_bin_7-X2_bin_0',
-          'length(m)_bin_7-X2_bin_9',
-          'length(m)_bin_8-X1_bin_0',
-          'length(m)_bin_8-X1_bin_6',
-          'length(m)_bin_8-X2_bin_0',
-          'length(m)_bin_8-X2_bin_9',
-          'length(m)_bin_9-X1_bin_0',
-          'length(m)_bin_9-X2_bin_0',
-          'length(m)_bin_9-X2_bin_9',
-          'height(cm)_bin_0-X1_bin_0',
-          'height(cm)_bin_0-X1_bin_6',
-          'height(cm)_bin_0-X2_bin_0',
-          'height(cm)_bin_0-X2_bin_9',
-          'height(cm)_bin_1-X1_bin_0',
-          'height(cm)_bin_1-X1_bin_6',
-          'height(cm)_bin_1-X2_bin_0',
-          'height(cm)_bin_1-X2_bin_9',
-          'height(cm)_bin_2-X1_bin_0',
-          'height(cm)_bin_2-X1_bin_6',
-          'height(cm)_bin_2-X2_bin_0',
-          'height(cm)_bin_2-X2_bin_9',
-          'height(cm)_bin_3-X1_bin_0',
-          'height(cm)_bin_3-X1_bin_6',
-          'height(cm)_bin_3-X2_bin_0',
-          'height(cm)_bin_3-X2_bin_9',
-          'height(cm)_bin_4-X1_bin_0',
-          'height(cm)_bin_4-X1_bin_6',
-          'height(cm)_bin_4-X2_bin_0',
-          'height(cm)_bin_4-X2_bin_9',
-          'height(cm)_bin_5-X1_bin_0',
-          'height(cm)_bin_5-X1_bin_6',
-          'height(cm)_bin_5-X2_bin_0',
-          'height(cm)_bin_5-X2_bin_9',
-          'height(cm)_bin_6-X1_bin_0',
-          'height(cm)_bin_6-X1_bin_6',
-          'height(cm)_bin_6-X2_bin_0',
-          'height(cm)_bin_6-X2_bin_9',
-          'height(cm)_bin_7-X1_bin_0',
-          'height(cm)_bin_7-X2_bin_0',
-          'height(cm)_bin_7-X2_bin_9',
-          'height(cm)_bin_8-X1_bin_0',
-          'height(cm)_bin_8-X1_bin_6',
-          'height(cm)_bin_8-X2_bin_0',
-          'height(cm)_bin_8-X2_bin_9',
-          'height(cm)_bin_9-X1_bin_0',
-          'height(cm)_bin_9-X1_bin_6',
-          'height(cm)_bin_9-X2_bin_0',
-          'height(cm)_bin_9-X2_bin_7',
-          'height(cm)_bin_9-X2_bin_9',
-          'X1_bin_0-X2_bin_0',
-          'X1_bin_0-X2_bin_7',
-          'X1_bin_3-X2_bin_0',
-          'X1_bin_6-X2_bin_9',
-          'X1_bin_7-X2_bin_3',
-          'X1_bin_8-X2_bin_9',
-          'X1_bin_9-X2_bin_3'],
- 'colcat': ['color_type', 'condition'],
- 'colcat_bin': ['color_type_int', 'condition_int'],
- 'colcat_onehot': ['color_type_int_0',
-                   'color_type_int_1',
-                   'color_type_int_2',
-                   'color_type_int_3',
-                   'color_type_int_4',
-                   'color_type_int_5',
-                   'color_type_int_6',
-                   'color_type_int_7',
-                   'color_type_int_8',
-                   'color_type_int_9',
-                   'color_type_int_10',
-                   'color_type_int_11',
-                   'color_type_int_12',
-                   'color_type_int_13',
-                   'color_type_int_14',
-                   'color_type_int_15',
-                   'color_type_int_16',
-                   'color_type_int_17',
-                   'color_type_int_18',
-                   'color_type_int_19',
-                   'color_type_int_20',
-                   'color_type_int_21',
-                   'color_type_int_22',
-                   'color_type_int_23',
-                   'color_type_int_24',
-                   'color_type_int_25',
-                   'color_type_int_26',
-                   'color_type_int_27',
-                   'color_type_int_28',
-                   'color_type_int_29',
-                   'color_type_int_30',
-                   'color_type_int_31',
-                   'color_type_int_32',
-                   'color_type_int_33',
-                   'color_type_int_34',
-                   'color_type_int_35',
-                   'color_type_int_36',
-                   'color_type_int_37',
-                   'color_type_int_38',
-                   'color_type_int_39',
-                   'color_type_int_40',
-                   'color_type_int_41',
-                   'color_type_int_42',
-                   'color_type_int_43',
-                   'color_type_int_44',
-                   'color_type_int_45',
-                   'color_type_int_46',
-                   'color_type_int_47',
-                   'color_type_int_48',
-                   'color_type_int_49',
-                   'color_type_int_50',
-                   'color_type_int_51',
-                   'color_type_int_52',
-                   'condition_int_-1',
-                   'condition_int_0',
-                   'condition_int_1',
-                   'condition_int_2'],
- 'colcross': ['color_type_int',
-              'condition_int',
-              ('color_type_int_0', 'condition_int_0', 0.0295),
-              ('color_type_int_0', 'condition_int_1', 0.025833333333333333),
-              ('color_type_int_0', 'condition_int_2', 0.029),
-              ('color_type_int_0', 'X1_bin_0', 0.035166666666666666),
-              ('color_type_int_0', 'X1_bin_6', 0.023),
-              ('color_type_int_0', 'X2_bin_0', 0.042333333333333334),
-              ('color_type_int_0', 'X2_bin_9', 0.036833333333333336),
-              ('color_type_int_1', 'condition_int_0', 0.028),
-              ('color_type_int_1', 'condition_int_1', 0.050666666666666665),
-              ('color_type_int_1', 'condition_int_2', 0.0415),
-              ('color_type_int_1', 'X1_bin_0', 0.07883333333333334),
-              ('color_type_int_1', 'X1_bin_6', 0.03216666666666667),
-              ('color_type_int_1', 'X2_bin_0', 0.05366666666666667),
-              ('color_type_int_1', 'X2_bin_7', 0.03166666666666667),
-              ('color_type_int_1', 'X2_bin_9', 0.033666666666666664),
-              ('color_type_int_2', 'condition_int_-1', 0.024666666666666667),
-              ('color_type_int_2', 'condition_int_1', 0.0285),
-              ('color_type_int_2', 'condition_int_2', 0.029333333333333333),
-              ('color_type_int_2', 'X1_bin_0', 0.05466666666666667),
-              ('color_type_int_2', 'X2_bin_0', 0.034666666666666665),
-              ('color_type_int_2', 'X2_bin_3', 0.023166666666666665),
-              ('color_type_int_2', 'X2_bin_7', 0.02266666666666667),
-              ('color_type_int_3', 'condition_int_0', 0.05383333333333333),
-              ('color_type_int_3', 'condition_int_1', 0.0985),
-              ('color_type_int_3', 'condition_int_2', 0.07516666666666667),
-              ('color_type_int_3', 'length(m)_bin_0', 0.023666666666666666),
-              ('color_type_int_3', 'length(m)_bin_1', 0.02266666666666667),
-              ('color_type_int_3', 'length(m)_bin_2', 0.0255),
-              ('color_type_int_3', 'length(m)_bin_3', 0.02266666666666667),
-              ('color_type_int_3', 'length(m)_bin_4', 0.027833333333333335),
-              ('color_type_int_3', 'length(m)_bin_5', 0.023666666666666666),
-              ('color_type_int_3', 'length(m)_bin_6', 0.025),
-              ('color_type_int_3', 'length(m)_bin_7', 0.023),
-              ('color_type_int_3', 'length(m)_bin_8', 0.027333333333333334),
-              ('color_type_int_3', 'length(m)_bin_9', 0.022),
-              ('color_type_int_3', 'height(cm)_bin_0', 0.026166666666666668),
-              ('color_type_int_3', 'height(cm)_bin_1', 0.024666666666666667),
-              ('color_type_int_3', 'height(cm)_bin_2', 0.024166666666666666),
-              ('color_type_int_3', 'height(cm)_bin_3', 0.024166666666666666),
-              ('color_type_int_3', 'height(cm)_bin_4', 0.0215),
-              ('color_type_int_3', 'height(cm)_bin_5', 0.024333333333333332),
-              ('color_type_int_3', 'height(cm)_bin_6', 0.0235),
-              ('color_type_int_3', 'height(cm)_bin_7', 0.024166666666666666),
-              ('color_type_int_3', 'height(cm)_bin_8', 0.024),
-              ('color_type_int_3', 'height(cm)_bin_9', 0.02666666666666667),
-              ('color_type_int_3', 'X1_bin_0', 0.1395),
-              ('color_type_int_3', 'X1_bin_6', 0.058),
-              ('color_type_int_3', 'X2_bin_0', 0.11133333333333334),
-              ('color_type_int_3', 'X2_bin_7', 0.04533333333333334),
-              ('color_type_int_3', 'X2_bin_9', 0.066),
-              ('color_type_int_8', 'X1_bin_0', 0.027333333333333334),
-              ('color_type_int_8', 'X2_bin_0', 0.0225),
-              ('color_type_int_14', 'condition_int_1', 0.023833333333333335),
-              ('color_type_int_14', 'X2_bin_0', 0.021333333333333333),
-              ('color_type_int_16', 'condition_int_1', 0.0285),
-              ('color_type_int_16', 'condition_int_2', 0.028),
-              ('color_type_int_16', 'X1_bin_0', 0.0515),
-              ('color_type_int_16', 'X2_bin_0', 0.035833333333333335),
-              ('condition_int_-1', 'X1_bin_6', 0.024833333333333332),
-              ('condition_int_-1', 'X1_bin_7', 0.027333333333333334),
-              ('condition_int_-1', 'X2_bin_3', 0.03833333333333333),
-              ('condition_int_-1', 'X2_bin_9', 0.0285),
-              ('condition_int_0', 'length(m)_bin_0', 0.0235),
-              ('condition_int_0', 'length(m)_bin_1', 0.020666666666666667),
-              ('condition_int_0', 'length(m)_bin_2', 0.0245),
-              ('condition_int_0', 'length(m)_bin_3', 0.022333333333333334),
-              ('condition_int_0', 'length(m)_bin_4', 0.023833333333333335),
-              ('condition_int_0', 'length(m)_bin_5', 0.02266666666666667),
-              ('condition_int_0', 'length(m)_bin_6', 0.023666666666666666),
-              ('condition_int_0', 'length(m)_bin_8', 0.026166666666666668),
-              ('condition_int_0', 'length(m)_bin_9', 0.021),
-              ('condition_int_0', 'height(cm)_bin_0', 0.0215),
-              ('condition_int_0', 'height(cm)_bin_1', 0.022833333333333334),
-              ('condition_int_0', 'height(cm)_bin_2', 0.025833333333333333),
-              ('condition_int_0', 'height(cm)_bin_3', 0.023166666666666665),
-              ('condition_int_0', 'height(cm)_bin_4', 0.021),
-              ('condition_int_0', 'height(cm)_bin_5', 0.02266666666666667),
-              ('condition_int_0', 'height(cm)_bin_6', 0.02266666666666667),
-              ('condition_int_0', 'height(cm)_bin_8', 0.0225),
-              ('condition_int_0', 'height(cm)_bin_9', 0.025166666666666667),
-              ('condition_int_0', 'X1_bin_0', 0.07083333333333333),
-              ('condition_int_0', 'X1_bin_6', 0.10633333333333334),
-              ('condition_int_0', 'X1_bin_8', 0.025166666666666667),
-              ('condition_int_0', 'X2_bin_0', 0.022),
-              ('condition_int_0', 'X2_bin_7', 0.04716666666666667),
-              ('condition_int_0', 'X2_bin_9', 0.13166666666666665),
-              ('condition_int_1', 'length(m)_bin_0', 0.03283333333333333),
-              ('condition_int_1', 'length(m)_bin_1', 0.035666666666666666),
-              ('condition_int_1', 'length(m)_bin_2', 0.0365),
-              ('condition_int_1', 'length(m)_bin_3', 0.036166666666666666),
-              ('condition_int_1', 'length(m)_bin_4', 0.039),
-              ('condition_int_1', 'length(m)_bin_5', 0.035833333333333335),
-              ('condition_int_1', 'length(m)_bin_6', 0.04066666666666666),
-              ('condition_int_1', 'length(m)_bin_7', 0.029833333333333333),
-              ('condition_int_1', 'length(m)_bin_8', 0.042666666666666665),
-              ('condition_int_1', 'length(m)_bin_9', 0.036333333333333336),
-              ('condition_int_1', 'height(cm)_bin_0', 0.03883333333333333),
-              ('condition_int_1', 'height(cm)_bin_1', 0.03666666666666667),
-              ('condition_int_1', 'height(cm)_bin_2', 0.03716666666666667),
-              ('condition_int_1', 'height(cm)_bin_3', 0.03816666666666667),
-              ('condition_int_1', 'height(cm)_bin_4', 0.033666666666666664),
-              ('condition_int_1', 'height(cm)_bin_5', 0.035166666666666666),
-              ('condition_int_1', 'height(cm)_bin_6', 0.0355),
-              ('condition_int_1', 'height(cm)_bin_7', 0.03266666666666666),
-              ('condition_int_1', 'height(cm)_bin_8', 0.037),
-              ('condition_int_1', 'height(cm)_bin_9', 0.04066666666666666),
-              ('condition_int_1', 'X1_bin_0', 0.25833333333333336),
-              ('condition_int_1', 'X1_bin_3', 0.03766666666666667),
-              ('condition_int_1', 'X1_bin_6', 0.05416666666666667),
-              ('condition_int_1', 'X2_bin_0', 0.21716666666666667),
-              ('condition_int_1', 'X2_bin_7', 0.07916666666666666),
-              ('condition_int_1', 'X2_bin_9', 0.06066666666666667),
-              ('condition_int_2', 'length(m)_bin_0', 0.0325),
-              ('condition_int_2', 'length(m)_bin_1', 0.034),
-              ('condition_int_2', 'length(m)_bin_2', 0.03716666666666667),
-              ('condition_int_2', 'length(m)_bin_3', 0.03283333333333333),
-              ('condition_int_2', 'length(m)_bin_4', 0.035),
-              ('condition_int_2', 'length(m)_bin_5', 0.029),
-              ('condition_int_2', 'length(m)_bin_6', 0.0345),
-              ('condition_int_2', 'length(m)_bin_7', 0.0305),
-              ('condition_int_2', 'length(m)_bin_8', 0.036166666666666666),
-              ('condition_int_2', 'length(m)_bin_9', 0.0305),
-              ('condition_int_2', 'height(cm)_bin_0', 0.0345),
-              ('condition_int_2', 'height(cm)_bin_1', 0.030333333333333334),
-              ('condition_int_2', 'height(cm)_bin_2', 0.03233333333333333),
-              ('condition_int_2', 'height(cm)_bin_3', 0.033166666666666664),
-              ('condition_int_2', 'height(cm)_bin_4', 0.034833333333333334),
-              ('condition_int_2', 'height(cm)_bin_5', 0.0355),
-              ('condition_int_2', 'height(cm)_bin_6', 0.032),
-              ('condition_int_2', 'height(cm)_bin_7', 0.031166666666666665),
-              ('condition_int_2', 'height(cm)_bin_8', 0.036166666666666666),
-              ('condition_int_2', 'height(cm)_bin_9', 0.03216666666666667),
-              ('condition_int_2', 'X1_bin_0', 0.23316666666666666),
-              ('condition_int_2', 'X1_bin_3', 0.041166666666666664),
-              ('condition_int_2', 'X1_bin_6', 0.04583333333333333),
-              ('condition_int_2', 'X2_bin_0', 0.215),
-              ('condition_int_2', 'X2_bin_7', 0.058666666666666666),
-              ('condition_int_2', 'X2_bin_9', 0.05216666666666667),
-              ('length(m)_bin_0', 'X1_bin_0', 0.05333333333333334),
-              ('length(m)_bin_0', 'X1_bin_6', 0.02266666666666667),
-              ('length(m)_bin_0', 'X2_bin_0', 0.0435),
-              ('length(m)_bin_0', 'X2_bin_9', 0.027166666666666665),
-              ('length(m)_bin_1', 'X1_bin_0', 0.058),
-              ('length(m)_bin_1', 'X1_bin_6', 0.02266666666666667),
-              ('length(m)_bin_1', 'X2_bin_0', 0.0445),
-              ('length(m)_bin_1', 'X2_bin_9', 0.027666666666666666),
-              ('length(m)_bin_2', 'X1_bin_0', 0.0605),
-              ('length(m)_bin_2', 'X1_bin_6', 0.0235),
-              ('length(m)_bin_2', 'X2_bin_0', 0.04733333333333333),
-              ('length(m)_bin_2', 'X2_bin_7', 0.02266666666666667),
-              ('length(m)_bin_2', 'X2_bin_9', 0.02666666666666667),
-              ('length(m)_bin_3', 'X1_bin_0', 0.05583333333333333),
-              ('length(m)_bin_3', 'X1_bin_6', 0.024333333333333332),
-              ('length(m)_bin_3', 'X2_bin_0', 0.043666666666666666),
-              ('length(m)_bin_3', 'X2_bin_9', 0.029166666666666667),
-              ('length(m)_bin_4', 'X1_bin_0', 0.057),
-              ('length(m)_bin_4', 'X1_bin_6', 0.0255),
-              ('length(m)_bin_4', 'X2_bin_0', 0.04833333333333333),
-              ('length(m)_bin_4', 'X2_bin_9', 0.0295),
-              ('length(m)_bin_5', 'X1_bin_0', 0.054),
-              ('length(m)_bin_5', 'X1_bin_6', 0.023666666666666666),
-              ('length(m)_bin_5', 'X2_bin_0', 0.04033333333333333),
-              ('length(m)_bin_5', 'X2_bin_9', 0.026833333333333334),
-              ('length(m)_bin_6', 'X1_bin_0', 0.06066666666666667),
-              ('length(m)_bin_6', 'X1_bin_6', 0.022833333333333334),
-              ('length(m)_bin_6', 'X2_bin_0', 0.050833333333333335),
-              ('length(m)_bin_6', 'X2_bin_9', 0.027833333333333335),
-              ('length(m)_bin_7', 'X1_bin_0', 0.04883333333333333),
-              ('length(m)_bin_7', 'X2_bin_0', 0.039),
-              ('length(m)_bin_7', 'X2_bin_9', 0.022833333333333334),
-              ('length(m)_bin_8', 'X1_bin_0', 0.06516666666666666),
-              ('length(m)_bin_8', 'X1_bin_6', 0.026333333333333334),
-              ('length(m)_bin_8', 'X2_bin_0', 0.05516666666666667),
-              ('length(m)_bin_8', 'X2_bin_9', 0.03183333333333333),
-              ('length(m)_bin_9', 'X1_bin_0', 0.05533333333333333),
-              ('length(m)_bin_9', 'X2_bin_0', 0.0425),
-              ('length(m)_bin_9', 'X2_bin_9', 0.0235),
-              ('height(cm)_bin_0', 'X1_bin_0', 0.058166666666666665),
-              ('height(cm)_bin_0', 'X1_bin_6', 0.023),
-              ('height(cm)_bin_0', 'X2_bin_0', 0.049),
-              ('height(cm)_bin_0', 'X2_bin_9', 0.027333333333333334),
-              ('height(cm)_bin_1', 'X1_bin_0', 0.05366666666666667),
-              ('height(cm)_bin_1', 'X1_bin_6', 0.023166666666666665),
-              ('height(cm)_bin_1', 'X2_bin_0', 0.04016666666666667),
-              ('height(cm)_bin_1', 'X2_bin_9', 0.0285),
-              ('height(cm)_bin_2', 'X1_bin_0', 0.057833333333333334),
-              ('height(cm)_bin_2', 'X1_bin_6', 0.024666666666666667),
-              ('height(cm)_bin_2', 'X2_bin_0', 0.0465),
-              ('height(cm)_bin_2', 'X2_bin_9', 0.0285),
-              ('height(cm)_bin_3', 'X1_bin_0', 0.0595),
-              ('height(cm)_bin_3', 'X1_bin_6', 0.024333333333333332),
-              ('height(cm)_bin_3', 'X2_bin_0', 0.04816666666666667),
-              ('height(cm)_bin_3', 'X2_bin_9', 0.027166666666666665),
-              ('height(cm)_bin_4', 'X1_bin_0', 0.05583333333333333),
-              ('height(cm)_bin_4', 'X1_bin_6', 0.021166666666666667),
-              ('height(cm)_bin_4', 'X2_bin_0', 0.04566666666666667),
-              ('height(cm)_bin_4', 'X2_bin_9', 0.026),
-              ('height(cm)_bin_5', 'X1_bin_0', 0.057),
-              ('height(cm)_bin_5', 'X1_bin_6', 0.0235),
-              ('height(cm)_bin_5', 'X2_bin_0', 0.04666666666666667),
-              ('height(cm)_bin_5', 'X2_bin_9', 0.028),
-              ('height(cm)_bin_6', 'X1_bin_0', 0.057),
-              ('height(cm)_bin_6', 'X1_bin_6', 0.0215),
-              ('height(cm)_bin_6', 'X2_bin_0', 0.04516666666666667),
-              ('height(cm)_bin_6', 'X2_bin_9', 0.025666666666666667),
-              ('height(cm)_bin_7', 'X1_bin_0', 0.05266666666666667),
-              ('height(cm)_bin_7', 'X2_bin_0', 0.0415),
-              ('height(cm)_bin_7', 'X2_bin_9', 0.023333333333333334),
-              ('height(cm)_bin_8', 'X1_bin_0', 0.05733333333333333),
-              ('height(cm)_bin_8', 'X1_bin_6', 0.026166666666666668),
-              ('height(cm)_bin_8', 'X2_bin_0', 0.04583333333333333),
-              ('height(cm)_bin_8', 'X2_bin_9', 0.030666666666666665),
-              ('height(cm)_bin_9', 'X1_bin_0', 0.059666666666666666),
-              ('height(cm)_bin_9', 'X1_bin_6', 0.024166666666666666),
-              ('height(cm)_bin_9', 'X2_bin_0', 0.0465),
-              ('height(cm)_bin_9', 'X2_bin_7', 0.020166666666666666),
-              ('height(cm)_bin_9', 'X2_bin_9', 0.027833333333333335),
-              ('X1_bin_0', 'X2_bin_0', 0.37133333333333335),
-              ('X1_bin_0', 'X2_bin_7', 0.18616666666666667),
-              ('X1_bin_3', 'X2_bin_0', 0.0805),
-              ('X1_bin_6', 'X2_bin_9', 0.22783333333333333),
-              ('X1_bin_7', 'X2_bin_3', 0.028666666666666667),
-              ('X1_bin_8', 'X2_bin_9', 0.045),
-              ('X1_bin_9', 'X2_bin_3', 0.030666666666666665)],
- 'colid': 'pet_id',
- 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'],
- 'colnum_bin': ['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin'],
- 'colnum_onehot': ['length(m)_bin_0',
-                   'length(m)_bin_1',
-                   'length(m)_bin_2',
-                   'length(m)_bin_3',
-                   'length(m)_bin_4',
-                   'length(m)_bin_5',
-                   'length(m)_bin_6',
-                   'length(m)_bin_7',
-                   'length(m)_bin_8',
-                   'length(m)_bin_9',
-                   'height(cm)_bin_0',
-                   'height(cm)_bin_1',
-                   'height(cm)_bin_2',
-                   'height(cm)_bin_3',
-                   'height(cm)_bin_4',
-                   'height(cm)_bin_5',
-                   'height(cm)_bin_6',
-                   'height(cm)_bin_7',
-                   'height(cm)_bin_8',
-                   'height(cm)_bin_9',
-                   'X1_bin_0',
-                   'X1_bin_1',
-                   'X1_bin_2',
-                   'X1_bin_3',
-                   'X1_bin_4',
-                   'X1_bin_5',
-                   'X1_bin_6',
-                   'X1_bin_7',
-                   'X1_bin_8',
-                   'X1_bin_9',
-                   'X2_bin_0',
-                   'X2_bin_1',
-                   'X2_bin_2',
-                   'X2_bin_3',
-                   'X2_bin_4',
-                   'X2_bin_6',
-                   'X2_bin_7',
-                   'X2_bin_8',
-                   'X2_bin_9'],
- 'coly': 'pet_category'}
+cols_family_full {'colid': 'pet_id', 'coly': 'pet_category', 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'colnum_bin': ['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin'], 'colnum_onehot': ['length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9'], 'colcat': ['color_type', 'condition'], 'colcat_bin': ['color_type_int', 'condition_int'], 'colcat_onehot': ['color_type_int_0', 'color_type_int_1', 'color_type_int_2', 'color_type_int_3', 'color_type_int_4', 'color_type_int_5', 'color_type_int_6', 'color_type_int_7', 'color_type_int_8', 'color_type_int_9', 'color_type_int_10', 'color_type_int_11', 'color_type_int_12', 'color_type_int_13', 'color_type_int_14', 'color_type_int_15', 'color_type_int_16', 'color_type_int_17', 'color_type_int_18', 'color_type_int_19', 'color_type_int_20', 'color_type_int_21', 'color_type_int_22', 'color_type_int_23', 'color_type_int_24', 'color_type_int_25', 'color_type_int_26', 'color_type_int_27', 'color_type_int_28', 'color_type_int_29', 'color_type_int_30', 'color_type_int_31', 'color_type_int_32', 'color_type_int_33', 'color_type_int_34', 'color_type_int_35', 'color_type_int_36', 'color_type_int_37', 'color_type_int_38', 'color_type_int_39', 'color_type_int_40', 'color_type_int_41', 'color_type_int_42', 'color_type_int_43', 'color_type_int_44', 'color_type_int_45', 'color_type_int_46', 'color_type_int_47', 'color_type_int_48', 'color_type_int_49', 'color_type_int_50', 'color_type_int_51', 'color_type_int_52', 'condition_int_-1', 'condition_int_0', 'condition_int_1', 'condition_int_2'], 'colcross': ['color_type_int', 'condition_int', ('color_type_int_0', 'condition_int_0', 0.0295), ('color_type_int_0', 'condition_int_1', 0.025833333333333333), ('color_type_int_0', 'condition_int_2', 0.029), ('color_type_int_0', 'X1_bin_0', 0.035166666666666666), ('color_type_int_0', 'X1_bin_6', 0.023), ('color_type_int_0', 'X2_bin_0', 0.042333333333333334), ('color_type_int_0', 'X2_bin_9', 0.036833333333333336), ('color_type_int_1', 'condition_int_0', 0.028), ('color_type_int_1', 'condition_int_1', 0.050666666666666665), ('color_type_int_1', 'condition_int_2', 0.0415), ('color_type_int_1', 'X1_bin_0', 0.07883333333333334), ('color_type_int_1', 'X1_bin_6', 0.03216666666666667), ('color_type_int_1', 'X2_bin_0', 0.05366666666666667), ('color_type_int_1', 'X2_bin_7', 0.03166666666666667), ('color_type_int_1', 'X2_bin_9', 0.033666666666666664), ('color_type_int_2', 'condition_int_-1', 0.024666666666666667), ('color_type_int_2', 'condition_int_1', 0.0285), ('color_type_int_2', 'condition_int_2', 0.029333333333333333), ('color_type_int_2', 'X1_bin_0', 0.05466666666666667), ('color_type_int_2', 'X2_bin_0', 0.034666666666666665), ('color_type_int_2', 'X2_bin_3', 0.023166666666666665), ('color_type_int_2', 'X2_bin_7', 0.02266666666666667), ('color_type_int_3', 'condition_int_0', 0.05383333333333333), ('color_type_int_3', 'condition_int_1', 0.0985), ('color_type_int_3', 'condition_int_2', 0.07516666666666667), ('color_type_int_3', 'length(m)_bin_0', 0.023666666666666666), ('color_type_int_3', 'length(m)_bin_1', 0.02266666666666667), ('color_type_int_3', 'length(m)_bin_2', 0.0255), ('color_type_int_3', 'length(m)_bin_3', 0.02266666666666667), ('color_type_int_3', 'length(m)_bin_4', 0.027833333333333335), ('color_type_int_3', 'length(m)_bin_5', 0.023666666666666666), ('color_type_int_3', 'length(m)_bin_6', 0.025), ('color_type_int_3', 'length(m)_bin_7', 0.023), ('color_type_int_3', 'length(m)_bin_8', 0.027333333333333334), ('color_type_int_3', 'length(m)_bin_9', 0.022), ('color_type_int_3', 'height(cm)_bin_0', 0.026166666666666668), ('color_type_int_3', 'height(cm)_bin_1', 0.024666666666666667), ('color_type_int_3', 'height(cm)_bin_2', 0.024166666666666666), ('color_type_int_3', 'height(cm)_bin_3', 0.024166666666666666), ('color_type_int_3', 'height(cm)_bin_4', 0.0215), ('color_type_int_3', 'height(cm)_bin_5', 0.024333333333333332), ('color_type_int_3', 'height(cm)_bin_6', 0.0235), ('color_type_int_3', 'height(cm)_bin_7', 0.024166666666666666), ('color_type_int_3', 'height(cm)_bin_8', 0.024), ('color_type_int_3', 'height(cm)_bin_9', 0.02666666666666667), ('color_type_int_3', 'X1_bin_0', 0.1395), ('color_type_int_3', 'X1_bin_6', 0.058), ('color_type_int_3', 'X2_bin_0', 0.11133333333333334), ('color_type_int_3', 'X2_bin_7', 0.04533333333333334), ('color_type_int_3', 'X2_bin_9', 0.066), ('color_type_int_8', 'X1_bin_0', 0.027333333333333334), ('color_type_int_8', 'X2_bin_0', 0.0225), ('color_type_int_14', 'condition_int_1', 0.023833333333333335), ('color_type_int_14', 'X2_bin_0', 0.021333333333333333), ('color_type_int_16', 'condition_int_1', 0.0285), ('color_type_int_16', 'condition_int_2', 0.028), ('color_type_int_16', 'X1_bin_0', 0.0515), ('color_type_int_16', 'X2_bin_0', 0.035833333333333335), ('condition_int_-1', 'X1_bin_6', 0.024833333333333332), ('condition_int_-1', 'X1_bin_7', 0.027333333333333334), ('condition_int_-1', 'X2_bin_3', 0.03833333333333333), ('condition_int_-1', 'X2_bin_9', 0.0285), ('condition_int_0', 'length(m)_bin_0', 0.0235), ('condition_int_0', 'length(m)_bin_1', 0.020666666666666667), ('condition_int_0', 'length(m)_bin_2', 0.0245), ('condition_int_0', 'length(m)_bin_3', 0.022333333333333334), ('condition_int_0', 'length(m)_bin_4', 0.023833333333333335), ('condition_int_0', 'length(m)_bin_5', 0.02266666666666667), ('condition_int_0', 'length(m)_bin_6', 0.023666666666666666), ('condition_int_0', 'length(m)_bin_8', 0.026166666666666668), ('condition_int_0', 'length(m)_bin_9', 0.021), ('condition_int_0', 'height(cm)_bin_0', 0.0215), ('condition_int_0', 'height(cm)_bin_1', 0.022833333333333334), ('condition_int_0', 'height(cm)_bin_2', 0.025833333333333333), ('condition_int_0', 'height(cm)_bin_3', 0.023166666666666665), ('condition_int_0', 'height(cm)_bin_4', 0.021), ('condition_int_0', 'height(cm)_bin_5', 0.02266666666666667), ('condition_int_0', 'height(cm)_bin_6', 0.02266666666666667), ('condition_int_0', 'height(cm)_bin_8', 0.0225), ('condition_int_0', 'height(cm)_bin_9', 0.025166666666666667), ('condition_int_0', 'X1_bin_0', 0.07083333333333333), ('condition_int_0', 'X1_bin_6', 0.10633333333333334), ('condition_int_0', 'X1_bin_8', 0.025166666666666667), ('condition_int_0', 'X2_bin_0', 0.022), ('condition_int_0', 'X2_bin_7', 0.04716666666666667), ('condition_int_0', 'X2_bin_9', 0.13166666666666665), ('condition_int_1', 'length(m)_bin_0', 0.03283333333333333), ('condition_int_1', 'length(m)_bin_1', 0.035666666666666666), ('condition_int_1', 'length(m)_bin_2', 0.0365), ('condition_int_1', 'length(m)_bin_3', 0.036166666666666666), ('condition_int_1', 'length(m)_bin_4', 0.039), ('condition_int_1', 'length(m)_bin_5', 0.035833333333333335), ('condition_int_1', 'length(m)_bin_6', 0.04066666666666666), ('condition_int_1', 'length(m)_bin_7', 0.029833333333333333), ('condition_int_1', 'length(m)_bin_8', 0.042666666666666665), ('condition_int_1', 'length(m)_bin_9', 0.036333333333333336), ('condition_int_1', 'height(cm)_bin_0', 0.03883333333333333), ('condition_int_1', 'height(cm)_bin_1', 0.03666666666666667), ('condition_int_1', 'height(cm)_bin_2', 0.03716666666666667), ('condition_int_1', 'height(cm)_bin_3', 0.03816666666666667), ('condition_int_1', 'height(cm)_bin_4', 0.033666666666666664), ('condition_int_1', 'height(cm)_bin_5', 0.035166666666666666), ('condition_int_1', 'height(cm)_bin_6', 0.0355), ('condition_int_1', 'height(cm)_bin_7', 0.03266666666666666), ('condition_int_1', 'height(cm)_bin_8', 0.037), ('condition_int_1', 'height(cm)_bin_9', 0.04066666666666666), ('condition_int_1', 'X1_bin_0', 0.25833333333333336), ('condition_int_1', 'X1_bin_3', 0.03766666666666667), ('condition_int_1', 'X1_bin_6', 0.05416666666666667), ('condition_int_1', 'X2_bin_0', 0.21716666666666667), ('condition_int_1', 'X2_bin_7', 0.07916666666666666), ('condition_int_1', 'X2_bin_9', 0.06066666666666667), ('condition_int_2', 'length(m)_bin_0', 0.0325), ('condition_int_2', 'length(m)_bin_1', 0.034), ('condition_int_2', 'length(m)_bin_2', 0.03716666666666667), ('condition_int_2', 'length(m)_bin_3', 0.03283333333333333), ('condition_int_2', 'length(m)_bin_4', 0.035), ('condition_int_2', 'length(m)_bin_5', 0.029), ('condition_int_2', 'length(m)_bin_6', 0.0345), ('condition_int_2', 'length(m)_bin_7', 0.0305), ('condition_int_2', 'length(m)_bin_8', 0.036166666666666666), ('condition_int_2', 'length(m)_bin_9', 0.0305), ('condition_int_2', 'height(cm)_bin_0', 0.0345), ('condition_int_2', 'height(cm)_bin_1', 0.030333333333333334), ('condition_int_2', 'height(cm)_bin_2', 0.03233333333333333), ('condition_int_2', 'height(cm)_bin_3', 0.033166666666666664), ('condition_int_2', 'height(cm)_bin_4', 0.034833333333333334), ('condition_int_2', 'height(cm)_bin_5', 0.0355), ('condition_int_2', 'height(cm)_bin_6', 0.032), ('condition_int_2', 'height(cm)_bin_7', 0.031166666666666665), ('condition_int_2', 'height(cm)_bin_8', 0.036166666666666666), ('condition_int_2', 'height(cm)_bin_9', 0.03216666666666667), ('condition_int_2', 'X1_bin_0', 0.23316666666666666), ('condition_int_2', 'X1_bin_3', 0.041166666666666664), ('condition_int_2', 'X1_bin_6', 0.04583333333333333), ('condition_int_2', 'X2_bin_0', 0.215), ('condition_int_2', 'X2_bin_7', 0.058666666666666666), ('condition_int_2', 'X2_bin_9', 0.05216666666666667), ('length(m)_bin_0', 'X1_bin_0', 0.05333333333333334), ('length(m)_bin_0', 'X1_bin_6', 0.02266666666666667), ('length(m)_bin_0', 'X2_bin_0', 0.0435), ('length(m)_bin_0', 'X2_bin_9', 0.027166666666666665), ('length(m)_bin_1', 'X1_bin_0', 0.058), ('length(m)_bin_1', 'X1_bin_6', 0.02266666666666667), ('length(m)_bin_1', 'X2_bin_0', 0.0445), ('length(m)_bin_1', 'X2_bin_9', 0.027666666666666666), ('length(m)_bin_2', 'X1_bin_0', 0.0605), ('length(m)_bin_2', 'X1_bin_6', 0.0235), ('length(m)_bin_2', 'X2_bin_0', 0.04733333333333333), ('length(m)_bin_2', 'X2_bin_7', 0.02266666666666667), ('length(m)_bin_2', 'X2_bin_9', 0.02666666666666667), ('length(m)_bin_3', 'X1_bin_0', 0.05583333333333333), ('length(m)_bin_3', 'X1_bin_6', 0.024333333333333332), ('length(m)_bin_3', 'X2_bin_0', 0.043666666666666666), ('length(m)_bin_3', 'X2_bin_9', 0.029166666666666667), ('length(m)_bin_4', 'X1_bin_0', 0.057), ('length(m)_bin_4', 'X1_bin_6', 0.0255), ('length(m)_bin_4', 'X2_bin_0', 0.04833333333333333), ('length(m)_bin_4', 'X2_bin_9', 0.0295), ('length(m)_bin_5', 'X1_bin_0', 0.054), ('length(m)_bin_5', 'X1_bin_6', 0.023666666666666666), ('length(m)_bin_5', 'X2_bin_0', 0.04033333333333333), ('length(m)_bin_5', 'X2_bin_9', 0.026833333333333334), ('length(m)_bin_6', 'X1_bin_0', 0.06066666666666667), ('length(m)_bin_6', 'X1_bin_6', 0.022833333333333334), ('length(m)_bin_6', 'X2_bin_0', 0.050833333333333335), ('length(m)_bin_6', 'X2_bin_9', 0.027833333333333335), ('length(m)_bin_7', 'X1_bin_0', 0.04883333333333333), ('length(m)_bin_7', 'X2_bin_0', 0.039), ('length(m)_bin_7', 'X2_bin_9', 0.022833333333333334), ('length(m)_bin_8', 'X1_bin_0', 0.06516666666666666), ('length(m)_bin_8', 'X1_bin_6', 0.026333333333333334), ('length(m)_bin_8', 'X2_bin_0', 0.05516666666666667), ('length(m)_bin_8', 'X2_bin_9', 0.03183333333333333), ('length(m)_bin_9', 'X1_bin_0', 0.05533333333333333), ('length(m)_bin_9', 'X2_bin_0', 0.0425), ('length(m)_bin_9', 'X2_bin_9', 0.0235), ('height(cm)_bin_0', 'X1_bin_0', 0.058166666666666665), ('height(cm)_bin_0', 'X1_bin_6', 0.023), ('height(cm)_bin_0', 'X2_bin_0', 0.049), ('height(cm)_bin_0', 'X2_bin_9', 0.027333333333333334), ('height(cm)_bin_1', 'X1_bin_0', 0.05366666666666667), ('height(cm)_bin_1', 'X1_bin_6', 0.023166666666666665), ('height(cm)_bin_1', 'X2_bin_0', 0.04016666666666667), ('height(cm)_bin_1', 'X2_bin_9', 0.0285), ('height(cm)_bin_2', 'X1_bin_0', 0.057833333333333334), ('height(cm)_bin_2', 'X1_bin_6', 0.024666666666666667), ('height(cm)_bin_2', 'X2_bin_0', 0.0465), ('height(cm)_bin_2', 'X2_bin_9', 0.0285), ('height(cm)_bin_3', 'X1_bin_0', 0.0595), ('height(cm)_bin_3', 'X1_bin_6', 0.024333333333333332), ('height(cm)_bin_3', 'X2_bin_0', 0.04816666666666667), ('height(cm)_bin_3', 'X2_bin_9', 0.027166666666666665), ('height(cm)_bin_4', 'X1_bin_0', 0.05583333333333333), ('height(cm)_bin_4', 'X1_bin_6', 0.021166666666666667), ('height(cm)_bin_4', 'X2_bin_0', 0.04566666666666667), ('height(cm)_bin_4', 'X2_bin_9', 0.026), ('height(cm)_bin_5', 'X1_bin_0', 0.057), ('height(cm)_bin_5', 'X1_bin_6', 0.0235), ('height(cm)_bin_5', 'X2_bin_0', 0.04666666666666667), ('height(cm)_bin_5', 'X2_bin_9', 0.028), ('height(cm)_bin_6', 'X1_bin_0', 0.057), ('height(cm)_bin_6', 'X1_bin_6', 0.0215), ('height(cm)_bin_6', 'X2_bin_0', 0.04516666666666667), ('height(cm)_bin_6', 'X2_bin_9', 0.025666666666666667), ('height(cm)_bin_7', 'X1_bin_0', 0.05266666666666667), ('height(cm)_bin_7', 'X2_bin_0', 0.0415), ('height(cm)_bin_7', 'X2_bin_9', 0.023333333333333334), ('height(cm)_bin_8', 'X1_bin_0', 0.05733333333333333), ('height(cm)_bin_8', 'X1_bin_6', 0.026166666666666668), ('height(cm)_bin_8', 'X2_bin_0', 0.04583333333333333), ('height(cm)_bin_8', 'X2_bin_9', 0.030666666666666665), ('height(cm)_bin_9', 'X1_bin_0', 0.059666666666666666), ('height(cm)_bin_9', 'X1_bin_6', 0.024166666666666666), ('height(cm)_bin_9', 'X2_bin_0', 0.0465), ('height(cm)_bin_9', 'X2_bin_7', 0.020166666666666666), ('height(cm)_bin_9', 'X2_bin_9', 0.027833333333333335), ('X1_bin_0', 'X2_bin_0', 0.37133333333333335), ('X1_bin_0', 'X2_bin_7', 0.18616666666666667), ('X1_bin_3', 'X2_bin_0', 0.0805), ('X1_bin_6', 'X2_bin_9', 0.22783333333333333), ('X1_bin_7', 'X2_bin_3', 0.028666666666666667), ('X1_bin_8', 'X2_bin_9', 0.045), ('X1_bin_9', 'X2_bin_3', 0.030666666666666665)], 'colX': ['length(m)', 'height(cm)', 'X1', 'X2', 'color_type', 'condition', 'length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin', 'length(m)_bin_0', 'length(m)_bin_1', 'length(m)_bin_2', 'length(m)_bin_3', 'length(m)_bin_4', 'length(m)_bin_5', 'length(m)_bin_6', 'length(m)_bin_7', 'length(m)_bin_8', 'length(m)_bin_9', 'height(cm)_bin_0', 'height(cm)_bin_1', 'height(cm)_bin_2', 'height(cm)_bin_3', 'height(cm)_bin_4', 'height(cm)_bin_5', 'height(cm)_bin_6', 'height(cm)_bin_7', 'height(cm)_bin_8', 'height(cm)_bin_9', 'X1_bin_0', 'X1_bin_1', 'X1_bin_2', 'X1_bin_3', 'X1_bin_4', 'X1_bin_5', 'X1_bin_6', 'X1_bin_7', 'X1_bin_8', 'X1_bin_9', 'X2_bin_0', 'X2_bin_1', 'X2_bin_2', 'X2_bin_3', 'X2_bin_4', 'X2_bin_6', 'X2_bin_7', 'X2_bin_8', 'X2_bin_9', 'color_type_int', 'condition_int', 'color_type_int_0', 'color_type_int_1', 'color_type_int_2', 'color_type_int_3', 'color_type_int_4', 'color_type_int_5', 'color_type_int_6', 'color_type_int_7', 'color_type_int_8', 'color_type_int_9', 'color_type_int_10', 'color_type_int_11', 'color_type_int_12', 'color_type_int_13', 'color_type_int_14', 'color_type_int_15', 'color_type_int_16', 'color_type_int_17', 'color_type_int_18', 'color_type_int_19', 'color_type_int_20', 'color_type_int_21', 'color_type_int_22', 'color_type_int_23', 'color_type_int_24', 'color_type_int_25', 'color_type_int_26', 'color_type_int_27', 'color_type_int_28', 'color_type_int_29', 'color_type_int_30', 'color_type_int_31', 'color_type_int_32', 'color_type_int_33', 'color_type_int_34', 'color_type_int_35', 'color_type_int_36', 'color_type_int_37', 'color_type_int_38', 'color_type_int_39', 'color_type_int_40', 'color_type_int_41', 'color_type_int_42', 'color_type_int_43', 'color_type_int_44', 'color_type_int_45', 'color_type_int_46', 'color_type_int_47', 'color_type_int_48', 'color_type_int_49', 'color_type_int_50', 'color_type_int_51', 'color_type_int_52', 'condition_int_-1', 'condition_int_0', 'condition_int_1', 'condition_int_2', 'color_type_int_0-condition_int_0', 'color_type_int_0-condition_int_1', 'color_type_int_0-condition_int_2', 'color_type_int_0-X1_bin_0', 'color_type_int_0-X1_bin_6', 'color_type_int_0-X2_bin_0', 'color_type_int_0-X2_bin_9', 'color_type_int_1-condition_int_0', 'color_type_int_1-condition_int_1', 'color_type_int_1-condition_int_2', 'color_type_int_1-X1_bin_0', 'color_type_int_1-X1_bin_6', 'color_type_int_1-X2_bin_0', 'color_type_int_1-X2_bin_7', 'color_type_int_1-X2_bin_9', 'color_type_int_2-condition_int_-1', 'color_type_int_2-condition_int_1', 'color_type_int_2-condition_int_2', 'color_type_int_2-X1_bin_0', 'color_type_int_2-X2_bin_0', 'color_type_int_2-X2_bin_3', 'color_type_int_2-X2_bin_7', 'color_type_int_3-condition_int_0', 'color_type_int_3-condition_int_1', 'color_type_int_3-condition_int_2', 'color_type_int_3-length(m)_bin_0', 'color_type_int_3-length(m)_bin_1', 'color_type_int_3-length(m)_bin_2', 'color_type_int_3-length(m)_bin_3', 'color_type_int_3-length(m)_bin_4', 'color_type_int_3-length(m)_bin_5', 'color_type_int_3-length(m)_bin_6', 'color_type_int_3-length(m)_bin_7', 'color_type_int_3-length(m)_bin_8', 'color_type_int_3-length(m)_bin_9', 'color_type_int_3-height(cm)_bin_0', 'color_type_int_3-height(cm)_bin_1', 'color_type_int_3-height(cm)_bin_2', 'color_type_int_3-height(cm)_bin_3', 'color_type_int_3-height(cm)_bin_4', 'color_type_int_3-height(cm)_bin_5', 'color_type_int_3-height(cm)_bin_6', 'color_type_int_3-height(cm)_bin_7', 'color_type_int_3-height(cm)_bin_8', 'color_type_int_3-height(cm)_bin_9', 'color_type_int_3-X1_bin_0', 'color_type_int_3-X1_bin_6', 'color_type_int_3-X2_bin_0', 'color_type_int_3-X2_bin_7', 'color_type_int_3-X2_bin_9', 'color_type_int_8-X1_bin_0', 'color_type_int_8-X2_bin_0', 'color_type_int_14-condition_int_1', 'color_type_int_14-X2_bin_0', 'color_type_int_16-condition_int_1', 'color_type_int_16-condition_int_2', 'color_type_int_16-X1_bin_0', 'color_type_int_16-X2_bin_0', 'condition_int_-1-X1_bin_6', 'condition_int_-1-X1_bin_7', 'condition_int_-1-X2_bin_3', 'condition_int_-1-X2_bin_9', 'condition_int_0-length(m)_bin_0', 'condition_int_0-length(m)_bin_1', 'condition_int_0-length(m)_bin_2', 'condition_int_0-length(m)_bin_3', 'condition_int_0-length(m)_bin_4', 'condition_int_0-length(m)_bin_5', 'condition_int_0-length(m)_bin_6', 'condition_int_0-length(m)_bin_8', 'condition_int_0-length(m)_bin_9', 'condition_int_0-height(cm)_bin_0', 'condition_int_0-height(cm)_bin_1', 'condition_int_0-height(cm)_bin_2', 'condition_int_0-height(cm)_bin_3', 'condition_int_0-height(cm)_bin_4', 'condition_int_0-height(cm)_bin_5', 'condition_int_0-height(cm)_bin_6', 'condition_int_0-height(cm)_bin_8', 'condition_int_0-height(cm)_bin_9', 'condition_int_0-X1_bin_0', 'condition_int_0-X1_bin_6', 'condition_int_0-X1_bin_8', 'condition_int_0-X2_bin_0', 'condition_int_0-X2_bin_7', 'condition_int_0-X2_bin_9', 'condition_int_1-length(m)_bin_0', 'condition_int_1-length(m)_bin_1', 'condition_int_1-length(m)_bin_2', 'condition_int_1-length(m)_bin_3', 'condition_int_1-length(m)_bin_4', 'condition_int_1-length(m)_bin_5', 'condition_int_1-length(m)_bin_6', 'condition_int_1-length(m)_bin_7', 'condition_int_1-length(m)_bin_8', 'condition_int_1-length(m)_bin_9', 'condition_int_1-height(cm)_bin_0', 'condition_int_1-height(cm)_bin_1', 'condition_int_1-height(cm)_bin_2', 'condition_int_1-height(cm)_bin_3', 'condition_int_1-height(cm)_bin_4', 'condition_int_1-height(cm)_bin_5', 'condition_int_1-height(cm)_bin_6', 'condition_int_1-height(cm)_bin_7', 'condition_int_1-height(cm)_bin_8', 'condition_int_1-height(cm)_bin_9', 'condition_int_1-X1_bin_0', 'condition_int_1-X1_bin_3', 'condition_int_1-X1_bin_6', 'condition_int_1-X2_bin_0', 'condition_int_1-X2_bin_7', 'condition_int_1-X2_bin_9', 'condition_int_2-length(m)_bin_0', 'condition_int_2-length(m)_bin_1', 'condition_int_2-length(m)_bin_2', 'condition_int_2-length(m)_bin_3', 'condition_int_2-length(m)_bin_4', 'condition_int_2-length(m)_bin_5', 'condition_int_2-length(m)_bin_6', 'condition_int_2-length(m)_bin_7', 'condition_int_2-length(m)_bin_8', 'condition_int_2-length(m)_bin_9', 'condition_int_2-height(cm)_bin_0', 'condition_int_2-height(cm)_bin_1', 'condition_int_2-height(cm)_bin_2', 'condition_int_2-height(cm)_bin_3', 'condition_int_2-height(cm)_bin_4', 'condition_int_2-height(cm)_bin_5', 'condition_int_2-height(cm)_bin_6', 'condition_int_2-height(cm)_bin_7', 'condition_int_2-height(cm)_bin_8', 'condition_int_2-height(cm)_bin_9', 'condition_int_2-X1_bin_0', 'condition_int_2-X1_bin_3', 'condition_int_2-X1_bin_6', 'condition_int_2-X2_bin_0', 'condition_int_2-X2_bin_7', 'condition_int_2-X2_bin_9', 'length(m)_bin_0-X1_bin_0', 'length(m)_bin_0-X1_bin_6', 'length(m)_bin_0-X2_bin_0', 'length(m)_bin_0-X2_bin_9', 'length(m)_bin_1-X1_bin_0', 'length(m)_bin_1-X1_bin_6', 'length(m)_bin_1-X2_bin_0', 'length(m)_bin_1-X2_bin_9', 'length(m)_bin_2-X1_bin_0', 'length(m)_bin_2-X1_bin_6', 'length(m)_bin_2-X2_bin_0', 'length(m)_bin_2-X2_bin_7', 'length(m)_bin_2-X2_bin_9', 'length(m)_bin_3-X1_bin_0', 'length(m)_bin_3-X1_bin_6', 'length(m)_bin_3-X2_bin_0', 'length(m)_bin_3-X2_bin_9', 'length(m)_bin_4-X1_bin_0', 'length(m)_bin_4-X1_bin_6', 'length(m)_bin_4-X2_bin_0', 'length(m)_bin_4-X2_bin_9', 'length(m)_bin_5-X1_bin_0', 'length(m)_bin_5-X1_bin_6', 'length(m)_bin_5-X2_bin_0', 'length(m)_bin_5-X2_bin_9', 'length(m)_bin_6-X1_bin_0', 'length(m)_bin_6-X1_bin_6', 'length(m)_bin_6-X2_bin_0', 'length(m)_bin_6-X2_bin_9', 'length(m)_bin_7-X1_bin_0', 'length(m)_bin_7-X2_bin_0', 'length(m)_bin_7-X2_bin_9', 'length(m)_bin_8-X1_bin_0', 'length(m)_bin_8-X1_bin_6', 'length(m)_bin_8-X2_bin_0', 'length(m)_bin_8-X2_bin_9', 'length(m)_bin_9-X1_bin_0', 'length(m)_bin_9-X2_bin_0', 'length(m)_bin_9-X2_bin_9', 'height(cm)_bin_0-X1_bin_0', 'height(cm)_bin_0-X1_bin_6', 'height(cm)_bin_0-X2_bin_0', 'height(cm)_bin_0-X2_bin_9', 'height(cm)_bin_1-X1_bin_0', 'height(cm)_bin_1-X1_bin_6', 'height(cm)_bin_1-X2_bin_0', 'height(cm)_bin_1-X2_bin_9', 'height(cm)_bin_2-X1_bin_0', 'height(cm)_bin_2-X1_bin_6', 'height(cm)_bin_2-X2_bin_0', 'height(cm)_bin_2-X2_bin_9', 'height(cm)_bin_3-X1_bin_0', 'height(cm)_bin_3-X1_bin_6', 'height(cm)_bin_3-X2_bin_0', 'height(cm)_bin_3-X2_bin_9', 'height(cm)_bin_4-X1_bin_0', 'height(cm)_bin_4-X1_bin_6', 'height(cm)_bin_4-X2_bin_0', 'height(cm)_bin_4-X2_bin_9', 'height(cm)_bin_5-X1_bin_0', 'height(cm)_bin_5-X1_bin_6', 'height(cm)_bin_5-X2_bin_0', 'height(cm)_bin_5-X2_bin_9', 'height(cm)_bin_6-X1_bin_0', 'height(cm)_bin_6-X1_bin_6', 'height(cm)_bin_6-X2_bin_0', 'height(cm)_bin_6-X2_bin_9', 'height(cm)_bin_7-X1_bin_0', 'height(cm)_bin_7-X2_bin_0', 'height(cm)_bin_7-X2_bin_9', 'height(cm)_bin_8-X1_bin_0', 'height(cm)_bin_8-X1_bin_6', 'height(cm)_bin_8-X2_bin_0', 'height(cm)_bin_8-X2_bin_9', 'height(cm)_bin_9-X1_bin_0', 'height(cm)_bin_9-X1_bin_6', 'height(cm)_bin_9-X2_bin_0', 'height(cm)_bin_9-X2_bin_7', 'height(cm)_bin_9-X2_bin_9', 'X1_bin_0-X2_bin_0', 'X1_bin_0-X2_bin_7', 'X1_bin_3-X2_bin_0', 'X1_bin_6-X2_bin_9', 'X1_bin_7-X2_bin_3', 'X1_bin_8-X2_bin_9', 'X1_bin_9-X2_bin_3']}
   ('used columns', ['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin', 'color_type_int', 'condition_int'], 'pet_category') 
   ('######### Train model: ###########################################################',) 
-  ("{'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x000001E5098270D0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x000001E5098276A8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store/'}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext':",) 
+  ("{'model_pars': {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x00000226FD4980D0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x00000226FD4986A8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline/'}}, 'compute_pars': {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}, 'data_pars': {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': ",) 
   ('#### Data preparation #############################################################',) 
   ((6000, 333),) 
 ------------data_pars--------------------- {'n_sample': 6000, 'cols_input_type': {'coly': 'pet_category', 'colid': 'pet_id', 'colcat': ['color_type', 'condition'], 'colnum': ['length(m)', 'height(cm)', 'X1', 'X2'], 'coltext': [], 'coldate': [], 'colcross': ['condition', 'color_type', 'length(m)', 'height(cm)', 'X1', 'X2']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 5, 'ymin': -1}, 'coly': 'pet_category', 'cols_model': ['length(m)_bin', 'height(cm)_bin', 'X1_bin', 'X2_bin', 'color_type_int', 'condition_int']}
   ('dfX',             length(m)_bin  height(cm)_bin  ...  color_type_int  condition_int
 pet_id                                     ...                               
-ANSL_54430              8               5  ...               3              1
-ANSL_70161              1               4  ...               5              1
-ANSL_74255              3               0  ...               3              1
-ANSL_70239              3               0  ...              16              1
-ANSL_55777              1               5  ...              15              1
+ANSL_52171              9               2  ...               3              1
+ANSL_68352              1               8  ...               0              1
+ANSL_51472              4               3  ...               5             -1
+ANSL_72888              1               4  ...              15              1
+ANSL_61354              3               0  ...               5              1
 ...                   ...             ...  ...             ...            ...
-ANSL_58204              9               3  ...               1              0
-ANSL_64161              6               6  ...               6              2
-ANSL_70781              2               9  ...               1              1
-ANSL_70227              1               1  ...              32             -1
-ANSL_54999              0               5  ...              21             -1
+ANSL_65602              3               2  ...               0              0
+ANSL_57459              2               6  ...               4              1
+ANSL_65997              2               8  ...              16              2
+ANSL_61009              5               4  ...               1              1
+ANSL_66982              4               9  ...              13              2
 
 [6000 rows x 6 columns]) 
   ('dfy', pet_id
-ANSL_54430    2
-ANSL_70161    2
-ANSL_74255    2
-ANSL_70239    2
-ANSL_55777    2
+ANSL_52171    1
+ANSL_68352    1
+ANSL_51472    4
+ANSL_72888    2
+ANSL_61354    2
              ..
-ANSL_58204    2
-ANSL_64161    1
-ANSL_70781    2
-ANSL_70227    2
-ANSL_54999    1
+ANSL_65602    1
+ANSL_57459    2
+ANSL_65997    2
+ANSL_61009    2
+ANSL_66982    1
 Name: pet_category, Length: 6000, dtype: int64) 
   ('#### Model Instance ##########################################################',) 
   (<module 'models.model_sklearn' from 'D:\\_devs\\Python01\\gitdev\\dsa2\\source\\models\\model_sklearn.py'>,) 
@@ -1357,156 +740,156 @@ Name: pet_category, Length: 6000, dtype: int64)
                objective='multiclass')
 (3600, 6) LGBMClassifier(learning_rate=0.03, metric='multi_logloss', num_class=4,
                objective='multiclass')
-[1]	valid_0's multi_logloss: 0.812519
-[2]	valid_0's multi_logloss: 0.789676
-[3]	valid_0's multi_logloss: 0.768858
-[4]	valid_0's multi_logloss: 0.749716
-[5]	valid_0's multi_logloss: 0.732006
-[6]	valid_0's multi_logloss: 0.715333
-[7]	valid_0's multi_logloss: 0.699705
-[8]	valid_0's multi_logloss: 0.685104
-[9]	valid_0's multi_logloss: 0.671253
-[10]	valid_0's multi_logloss: 0.657912
-[11]	valid_0's multi_logloss: 0.645418
-[12]	valid_0's multi_logloss: 0.633521
-[13]	valid_0's multi_logloss: 0.622157
-[14]	valid_0's multi_logloss: 0.611352
-[15]	valid_0's multi_logloss: 0.601174
-[16]	valid_0's multi_logloss: 0.591311
-[17]	valid_0's multi_logloss: 0.581586
-[18]	valid_0's multi_logloss: 0.572369
-[19]	valid_0's multi_logloss: 0.563484
-[20]	valid_0's multi_logloss: 0.555076
-[21]	valid_0's multi_logloss: 0.547347
-[22]	valid_0's multi_logloss: 0.539846
-[23]	valid_0's multi_logloss: 0.532237
-[24]	valid_0's multi_logloss: 0.525022
-[25]	valid_0's multi_logloss: 0.518377
-[26]	valid_0's multi_logloss: 0.511933
-[27]	valid_0's multi_logloss: 0.505727
-[28]	valid_0's multi_logloss: 0.499923
-[29]	valid_0's multi_logloss: 0.494116
-[30]	valid_0's multi_logloss: 0.488446
-[31]	valid_0's multi_logloss: 0.48287
-[32]	valid_0's multi_logloss: 0.477476
-[33]	valid_0's multi_logloss: 0.472332
-[34]	valid_0's multi_logloss: 0.467286
-[35]	valid_0's multi_logloss: 0.462661
-[36]	valid_0's multi_logloss: 0.458156
-[37]	valid_0's multi_logloss: 0.453804
-[38]	valid_0's multi_logloss: 0.449295
-[39]	valid_0's multi_logloss: 0.444908
-[40]	valid_0's multi_logloss: 0.441322
-[41]	valid_0's multi_logloss: 0.437522
-[42]	valid_0's multi_logloss: 0.433499
-[43]	valid_0's multi_logloss: 0.429843
-[44]	valid_0's multi_logloss: 0.426347
-[45]	valid_0's multi_logloss: 0.422935
-[46]	valid_0's multi_logloss: 0.41983
-[47]	valid_0's multi_logloss: 0.416783
-[48]	valid_0's multi_logloss: 0.413582
-[49]	valid_0's multi_logloss: 0.410935
-[50]	valid_0's multi_logloss: 0.408154
-[51]	valid_0's multi_logloss: 0.404295
-[52]	valid_0's multi_logloss: 0.400912
-[53]	valid_0's multi_logloss: 0.397657
-[54]	valid_0's multi_logloss: 0.393536
-[55]	valid_0's multi_logloss: 0.389546
-[56]	valid_0's multi_logloss: 0.385719
-[57]	valid_0's multi_logloss: 0.383013
-[58]	valid_0's multi_logloss: 0.379388
-[59]	valid_0's multi_logloss: 0.37779
-[60]	valid_0's multi_logloss: 0.375309
-[61]	valid_0's multi_logloss: 0.372962
-[62]	valid_0's multi_logloss: 0.370649
-[63]	valid_0's multi_logloss: 0.368443
-[64]	valid_0's multi_logloss: 0.366318
-[65]	valid_0's multi_logloss: 0.364992
-[66]	valid_0's multi_logloss: 0.362919
-[67]	valid_0's multi_logloss: 0.361682
-[68]	valid_0's multi_logloss: 0.359639
-[69]	valid_0's multi_logloss: 0.356934
-[70]	valid_0's multi_logloss: 0.354946
-[71]	valid_0's multi_logloss: 0.35239
-[72]	valid_0's multi_logloss: 0.350562
-[73]	valid_0's multi_logloss: 0.348164
-[74]	valid_0's multi_logloss: 0.346466
-[75]	valid_0's multi_logloss: 0.34494
-[76]	valid_0's multi_logloss: 0.343365
-[77]	valid_0's multi_logloss: 0.341806
-[78]	valid_0's multi_logloss: 0.339532
-[79]	valid_0's multi_logloss: 0.337384
-[80]	valid_0's multi_logloss: 0.335326
-[81]	valid_0's multi_logloss: 0.333309
-[82]	valid_0's multi_logloss: 0.33153
-[83]	valid_0's multi_logloss: 0.330273
-[84]	valid_0's multi_logloss: 0.328954
-[85]	valid_0's multi_logloss: 0.327619
-[86]	valid_0's multi_logloss: 0.325827
-[87]	valid_0's multi_logloss: 0.324639
-[88]	valid_0's multi_logloss: 0.322895
-[89]	valid_0's multi_logloss: 0.321689
-[90]	valid_0's multi_logloss: 0.320083
-[91]	valid_0's multi_logloss: 0.318935
-[92]	valid_0's multi_logloss: 0.317838
-[93]	valid_0's multi_logloss: 0.316292
-[94]	valid_0's multi_logloss: 0.315216
-[95]	valid_0's multi_logloss: 0.313837
-[96]	valid_0's multi_logloss: 0.312818
-[97]	valid_0's multi_logloss: 0.311872
-[98]	valid_0's multi_logloss: 0.310629
-[99]	valid_0's multi_logloss: 0.309743
-[100]	valid_0's multi_logloss: 0.308849
+[1]	valid_0's multi_logloss: 0.841555
+[2]	valid_0's multi_logloss: 0.816004
+[3]	valid_0's multi_logloss: 0.79339
+[4]	valid_0's multi_logloss: 0.772824
+[5]	valid_0's multi_logloss: 0.754199
+[6]	valid_0's multi_logloss: 0.736934
+[7]	valid_0's multi_logloss: 0.720548
+[8]	valid_0's multi_logloss: 0.70513
+[9]	valid_0's multi_logloss: 0.690713
+[10]	valid_0's multi_logloss: 0.677122
+[11]	valid_0's multi_logloss: 0.664318
+[12]	valid_0's multi_logloss: 0.652922
+[13]	valid_0's multi_logloss: 0.642044
+[14]	valid_0's multi_logloss: 0.631929
+[15]	valid_0's multi_logloss: 0.622324
+[16]	valid_0's multi_logloss: 0.613112
+[17]	valid_0's multi_logloss: 0.604289
+[18]	valid_0's multi_logloss: 0.595759
+[19]	valid_0's multi_logloss: 0.587135
+[20]	valid_0's multi_logloss: 0.578553
+[21]	valid_0's multi_logloss: 0.569673
+[22]	valid_0's multi_logloss: 0.561016
+[23]	valid_0's multi_logloss: 0.553529
+[24]	valid_0's multi_logloss: 0.545573
+[25]	valid_0's multi_logloss: 0.537654
+[26]	valid_0's multi_logloss: 0.530079
+[27]	valid_0's multi_logloss: 0.522858
+[28]	valid_0's multi_logloss: 0.515861
+[29]	valid_0's multi_logloss: 0.5095
+[30]	valid_0's multi_logloss: 0.503077
+[31]	valid_0's multi_logloss: 0.496991
+[32]	valid_0's multi_logloss: 0.490938
+[33]	valid_0's multi_logloss: 0.485432
+[34]	valid_0's multi_logloss: 0.480016
+[35]	valid_0's multi_logloss: 0.474884
+[36]	valid_0's multi_logloss: 0.470037
+[37]	valid_0's multi_logloss: 0.465189
+[38]	valid_0's multi_logloss: 0.460871
+[39]	valid_0's multi_logloss: 0.456485
+[40]	valid_0's multi_logloss: 0.45222
+[41]	valid_0's multi_logloss: 0.4482
+[42]	valid_0's multi_logloss: 0.444267
+[43]	valid_0's multi_logloss: 0.440682
+[44]	valid_0's multi_logloss: 0.436978
+[45]	valid_0's multi_logloss: 0.433536
+[46]	valid_0's multi_logloss: 0.430134
+[47]	valid_0's multi_logloss: 0.426797
+[48]	valid_0's multi_logloss: 0.423554
+[49]	valid_0's multi_logloss: 0.420514
+[50]	valid_0's multi_logloss: 0.417491
+[51]	valid_0's multi_logloss: 0.414091
+[52]	valid_0's multi_logloss: 0.410876
+[53]	valid_0's multi_logloss: 0.407679
+[54]	valid_0's multi_logloss: 0.404727
+[55]	valid_0's multi_logloss: 0.401755
+[56]	valid_0's multi_logloss: 0.398917
+[57]	valid_0's multi_logloss: 0.396519
+[58]	valid_0's multi_logloss: 0.393923
+[59]	valid_0's multi_logloss: 0.391716
+[60]	valid_0's multi_logloss: 0.389574
+[61]	valid_0's multi_logloss: 0.387345
+[62]	valid_0's multi_logloss: 0.385361
+[63]	valid_0's multi_logloss: 0.383584
+[64]	valid_0's multi_logloss: 0.382468
+[65]	valid_0's multi_logloss: 0.380902
+[66]	valid_0's multi_logloss: 0.379478
+[67]	valid_0's multi_logloss: 0.378521
+[68]	valid_0's multi_logloss: 0.377077
+[69]	valid_0's multi_logloss: 0.37615
+[70]	valid_0's multi_logloss: 0.374771
+[71]	valid_0's multi_logloss: 0.37337
+[72]	valid_0's multi_logloss: 0.372048
+[73]	valid_0's multi_logloss: 0.370672
+[74]	valid_0's multi_logloss: 0.369359
+[75]	valid_0's multi_logloss: 0.368213
+[76]	valid_0's multi_logloss: 0.367068
+[77]	valid_0's multi_logloss: 0.366054
+[78]	valid_0's multi_logloss: 0.365004
+[79]	valid_0's multi_logloss: 0.363699
+[80]	valid_0's multi_logloss: 0.363063
+[81]	valid_0's multi_logloss: 0.362031
+[82]	valid_0's multi_logloss: 0.360959
+[83]	valid_0's multi_logloss: 0.360091
+[84]	valid_0's multi_logloss: 0.359103
+[85]	valid_0's multi_logloss: 0.358065
+[86]	valid_0's multi_logloss: 0.357188
+[87]	valid_0's multi_logloss: 0.355958
+[88]	valid_0's multi_logloss: 0.355128
+[89]	valid_0's multi_logloss: 0.354197
+[90]	valid_0's multi_logloss: 0.353422
+[91]	valid_0's multi_logloss: 0.352667
+[92]	valid_0's multi_logloss: 0.351814
+[93]	valid_0's multi_logloss: 0.351143
+[94]	valid_0's multi_logloss: 0.35015
+[95]	valid_0's multi_logloss: 0.349369
+[96]	valid_0's multi_logloss: 0.348821
+[97]	valid_0's multi_logloss: 0.347995
+[98]	valid_0's multi_logloss: 0.347364
+[99]	valid_0's multi_logloss: 0.346746
+[100]	valid_0's multi_logloss: 0.346133
   ('#### Metrics #################################################################',) 
-  (pet_id                                                     ANSL_54430  ...                                         ANSL_74255
-pet_category                                                        2  ...                                                  2
-length(m)                                                        0.84  ...                                               0.34
-height(cm)                                                      28.37  ...                                               6.38
-X1                                                                  0  ...                                                 13
+  (pet_id                                                     ANSL_52171  ...                                         ANSL_51472
+pet_category                                                        1  ...                                                  4
+length(m)                                                        0.94  ...                                               0.45
+height(cm)                                                      15.49  ...                                              22.25
+X1                                                                  7  ...                                                 13
 X2                                                                  1  ...                                                  9
 ...                                                               ...  ...                                                ...
 X1_bin_7-X2_bin_3                                                   0  ...                                                  0
 X1_bin_8-X2_bin_9                                                   0  ...                                                  0
 X1_bin_9-X2_bin_3                                                   0  ...                                                  0
-pet_category_pred                                                   2  ...                                                  2
-pet_category_proba  0.00128825770230455;0.338255068795528;0.648024...  ...  0.0010027344829486424;0.3711321479535791;0.619...
+pet_category_pred                                                   1  ...                                                  1
+pet_category_proba  0.0009328835967532505;0.6987886944064815;0.288...  ...  0.002964179331812875;0.5570048946827556;0.2033...
 
 [335 rows x 3 columns],) 
   ('Actual    : ', pet_id
-ANSL_54430    2
-ANSL_70161    2
-ANSL_74255    2
-ANSL_70239    2
-ANSL_55777    2
+ANSL_52171    1
+ANSL_68352    1
+ANSL_51472    4
+ANSL_72888    2
+ANSL_61354    2
              ..
-ANSL_58204    2
-ANSL_64161    1
-ANSL_70781    2
-ANSL_70227    2
-ANSL_54999    1
+ANSL_65602    1
+ANSL_57459    2
+ANSL_65997    2
+ANSL_61009    2
+ANSL_66982    1
 Name: pet_category, Length: 6000, dtype: int64) 
   ('Prediction: ', pet_id
-ANSL_54430    2
-ANSL_70161    2
-ANSL_74255    2
-ANSL_70239    2
-ANSL_55777    2
+ANSL_52171    1
+ANSL_68352    1
+ANSL_51472    1
+ANSL_72888    2
+ANSL_61354    2
              ..
-ANSL_58204    2
-ANSL_64161    1
-ANSL_70781    2
-ANSL_70227    1
-ANSL_54999    1
+ANSL_65602    1
+ANSL_57459    2
+ANSL_65997    2
+ANSL_61009    2
+ANSL_66982    1
 Name: pet_category_pred, Length: 6000, dtype: int64) 
   ({'metrics_test':       metric_name  metric_val  n_sample
-0   roc_auc_score    0.962383      1200
-1  accuracy_score    0.864167      1200},) 
+0   roc_auc_score    0.954163      1200
+1  accuracy_score    0.850833      1200},) 
   ('############ saving model, dfX, columns', 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/') 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model//colsX.pkl',) 
 
   ('D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model//coly.pkl',) 
-  ({'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x000001E5098270D0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x000001E5098276A8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store/'}}, {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}) 
-  ('############ check re-loaded', {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x000001E50B9C0620>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x000001E50B9C07B8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store/'}}) 
+  ({'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x00000226FD4980D0>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x00000226FD4986A8>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline/'}}, {'metric_list': ['roc_auc_score', 'accuracy_score'], 'probability': True}) 
+  ('############ check re-loaded', {'model_path': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//model/', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'multiclass', 'num_class': 4, 'metric': 'multi_logloss', 'learning_rate': 0.03, 'boosting_type': 'gbdt'}, 'post_process_fun': <function multi_lightgbm.<locals>.post_process_fun at 0x00000226FF6307B8>, 'pre_process_pars': {'y_norm_fun': <function multi_lightgbm.<locals>.pre_process_fun_multi at 0x00000226FF7E1378>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'], 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier//pipeline/'}}) 
   ('######### export #################################',) 
   ('######### finish #################################',) 
