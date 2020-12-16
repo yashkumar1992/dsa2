@@ -3,9 +3,10 @@
 """
 You can put hardcode here, specific to titatinic dataet
 All in one file config
-!  python titanic_classifier.py  train
-!  python titanic_classifier.py  check
-!  python titanic_classifier.py  predict
+  python titanic_classifier.py  train    > zlog/log_titanic_train.txt 2>&1
+  python titanic_classifier.py  predict  > zlog/log_titanic_predict.txt 2>&1
+
+
 """
 import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
@@ -330,7 +331,7 @@ def predict(config=None, nsample=None):
                             path_data   = m['path_data_test'],
                             path_output = m['path_output_pred'],
                             cols_group=mdict['data_pars']['cols_input_type'],
-                            n_sample    = nsample if nsample is not None else m['n_sample'])
+                            n_sample    = nsample if nsample is not None else m['n_sample']
 
                             )
 
