@@ -3,9 +3,10 @@
 """
 You can put hardcode here, specific to titatinic dataet
 All in one file config
-!  python titanic_classifier.py  train
-!  python titanic_classifier.py  check
-!  python titanic_classifier.py  predict
+  python titanic_classifier.py  train    > zlog/log_titanic_train.txt 2>&1
+  python titanic_classifier.py  predict  > zlog/log_titanic_predict.txt 2>&1
+
+
 """
 import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
@@ -39,7 +40,7 @@ def global_pars_update(model_dict,  data_name, config_name):
     model_dict['global_pars']['config_name'] = config_name
     global_pars = [  'model_name', 'path_config_model', 'path_model', 'path_data_train',
                    'path_data_test', 'path_output_pred', 'n_sample'
-            ]
+                  ]
     for t in global_pars:
       model_dict['global_pars'][t] = globals()[t]
     return model_dict
@@ -55,7 +56,7 @@ config_file     = "titanic_classifier.py"   ### name of file which contains data
 config_default  = 'titanic_lightgbm'   ### name of function which contains data configuration
 
 
-config_name  = 'titanic_lightgbm'   ### name of function which contains data configuration
+config_name  = 'titanic_lightgbm'   ### name  of function which contains data configuration
 n_sample     = 2000
 
 
@@ -66,9 +67,9 @@ n_sample     = 2000
 # data_name    = "titanic"     ### in data/input/
 
 cols_input_type_1 = {
-     "coly"   :   ["Survived"]
+     "coly"   :   "Survived"
     ,"colid"  :   "PassengerId"
-    ,"colcat" :   [  "Sex", "Embarked" ]
+    ,"colcat" :   ["Sex", "Embarked" ]
     ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
     ,"coltext" :  ["Name", "Ticket"]
     ,"coldate" :  []
@@ -117,8 +118,10 @@ def titanic_lightgbm(path_model_out="") :
         ### LightGBM API model   #######################################
         ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'binary',
-                               'learning_rate':0.03,'boosting_type':'gbdt'    ### Model hyperparameters
-
+                               'n_estimators':3000,
+                               'learning_rate':0.001,
+                               'boosting_type':'gbdt',     ### Model hyperparameters
+                                'early_stopping_rounds': 5
                               }
 
         ### After prediction  ##########################################
@@ -154,7 +157,9 @@ def titanic_lightgbm(path_model_out="") :
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
           #  'coldate',
           #  'coltext',
-          'cols_model_group': [ 'colnum', 'colcat_bin']
+          'cols_model_group': [ 'colnum_bin',
+                               'colcat_bin'
+                               ]
 
 
           ### Filter data rows   ##################################################################
@@ -173,7 +178,9 @@ def titanic_lightgbm(path_model_out="") :
 
 def titanic_lightgbm2(path_model_out="") :
     """
-       Contains all needed informations for Light GBM Classifier model, used for titanic classification task
+        python titanic_classifier.py preprocess --nsample 100  --config titanic_lightgbm2
+
+
     """
     data_name    = "titanic"     ### in data/input/
     model_name   = 'LGBMClassifier'
@@ -196,7 +203,9 @@ def titanic_lightgbm2(path_model_out="") :
         ### LightGBM API model   #######################################
         ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'binary',
-                               'learning_rate':0.03,'boosting_type':'gbdt'    ### Model hyperparameters
+                               'n_estimators':10,
+                               'learning_rate':0.01,
+                               'boosting_type':'gbdt'  ### Model hyperparameters
 
                               }
 
@@ -208,21 +217,28 @@ def titanic_lightgbm2(path_model_out="") :
         , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
 
 
-                ### Pipeline for data processing ########################
-                'pipe_list' : [ {  'uri' : 'source/preprocessors.py::pd_colnum_bin', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
-                  # {  'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars' : {   }, 'cols_family': 'colnum', 'type' : '' },
-                     # {  'uri' : 'source/preprocessors.py::pd_colcross', 'pars' : {   },   'cols_family': 'colcross',   'type' : 'cross' }
-                   ]
+    #### Default Pipeline Execution
+    'pipe_list' : [
+      {'uri' : 'source/preprocessors.py::pd_filter_rows',         'pars': {}, 'cols_family': 'colall',     'cols_out':'colall',        'type': 'filter' },
+      {'uri' : 'source/preprocessors.py::pd_coly',                'pars': {}, 'cols_family': 'coly',       'cols_out':'coly',          'type': 'coly' },
+
+      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',     'cols_out':'colnum_bin',    'type': '' },
+      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out':'colnum_onehot', 'type': '' },
+      {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',     'cols_out':'colcat_bin',    'type': ''},
+      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'cols_out':'colcat_onehot', 'type': ''},
+
+      {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'cols_out':'colcross_hot',  'type': 'cross' }
+    ],
+
 
                }
         },
 
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
-                      },
+                      ,'early_stopping_rounds':5},
 
       'data_pars': {
           'cols_input_type' : cols_input_type_1,
-
 
           ### family of columns for MODEL  ########################################################
           #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
@@ -306,14 +322,18 @@ def predict(config=None, nsample=None):
     config_name  =  config  if config is not None else config_default
     mdict        = globals()[config_name]()
     m            = mdict['global_pars']
+    print(mdict['data_pars']['cols_input_type'])
     print(m)
 
-    from source import run_inference
-    run_inference.run_predict(model_name,
+    from source import run_inference,run_inference2
+    run_inference2.run_predict(model_name,
                             path_model  = m['path_model'],
                             path_data   = m['path_data_test'],
                             path_output = m['path_output_pred'],
-                            n_sample    = nsample if nsample is not None else m['n_sample'])
+                            cols_group=mdict['data_pars']['cols_input_type'],
+                            n_sample    = nsample if nsample is not None else m['n_sample']
+
+                            )
 
 
 def run_all():
