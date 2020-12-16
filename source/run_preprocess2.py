@@ -172,12 +172,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            dfi, col_pars           = pipe_fun(df_, cols_list, pars= pars)
            # print('--------------col_pars-----------------',col_pars['cols_new'].items())
            ### colnum, colnum_bin into cols_family
-           for colname, colist in  col_pars['cols_new'].items() :
-              cols_family_full[cols_name] =  cols_family_full.get(colname, []) + colist
+           for colj, colist in  col_pars['cols_new'].items() :
+              cols_family_full[colj] =  cols_family_full.get(colj, []) + colist
 
-           ### Merge sub-family
-           dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi), axis=1) if cols_name in dfi_all else dfi
-           save_features(dfi, cols_name , path_features_store)  ### already saved
+              ### Merge sub-family
+              dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
+              save_features(dfi_all[colj], colj, path_features_store)
 
        else:
             # for cols_i in cols_list :
@@ -194,7 +194,6 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
               save_features(dfi_all[colj], colj, path_features_store)
 
        print('------------dfi_all---------------------', dfi_all)
-       # print('------------cols_family-----------------', cols_family)
 
 
     ######  Merge AlL int dfXy  ##################################################################
@@ -230,9 +229,9 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
     #### Pipeline Execution  ####################################################
     pipe_default = [
-      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',     'cols_out':'dfnum_bin',    'type': '' },
+      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum', 'cols_out':'dfnum_bin',    'type': '' },
       {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum', 'cols_out':'dfnum_onehot', 'type': '' },
-      {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',     'cols_out':'dfcat_bin',    'type': ''},
+      {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat', 'cols_out':'dfcat_bin',    'type': ''},
       {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat', 'cols_out':'dfcat_onehot', 'type': ''},
       {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'cols_out':'dfcross_hot',  'type': 'cross' }
     ]

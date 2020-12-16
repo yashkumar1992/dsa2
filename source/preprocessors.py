@@ -441,8 +441,8 @@ def pd_colcross(df, col, pars):
     col_pars = {}
     col_pars['colcross_pair'] = colcross_pair
     col_pars['cols_new'] = {
-     # 'colcat'     :  col ,    ###list
-     'colcat_bin' :  colcross_pair       ### list
+     # 'colcross_single'     :  col ,    ###list
+     'colcross_pair' :  colcross_pair       ### list
     }
 
     return dfcross_hot, col_pars
