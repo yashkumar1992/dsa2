@@ -33,10 +33,11 @@ def log(*s, n=0, m=1):
     ### Implement pseudo Logging
     print(sjump, sspace, s, sspace, flush=True)
 
-def logs(s):
+def logs(*s):
     if DEBUG_:
-        str_out_="".join(["*" if ((i__<3) or (i__>=3+len(s))) else s[i__-3] for i__ in range(40-len(s))])
-        print(str_out_, flush=True)
+        print(*s, flush=True)
+        #str_out_="".join(["*" if ((i__<3) or (i__>=3+len(s))) else s[i__-3] for i__ in range(40-len(s))])
+        #print(str_out_, flush=True)
 
 def log_pd(df, *s, n=0, m=1):
     sjump = "\n" * m

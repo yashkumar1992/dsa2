@@ -28,21 +28,17 @@ print(dir_data)
 
 def global_pars_update(model_dict,  data_name, config_name):
     global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-    model_name        = model_dict['model_pars']['config_model_name']
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-    n_sample          = model_dict['data_pars'].get('n_sample', 5000)
+    m                      = {}
+    model_name             = model_dict['model_pars']['config_model_name']
+    m['path_config_model'] = root + f"/{config_file}"
+    m['path_model']        = f'data/output/{data_name}/a01_{model_name}/'
+    m['path_data_train']   = f'data/input/{data_name}/train/'
+    m['path_data_test']    = f'data/input/{data_name}/test/'
+    m['path_output_pred']  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+    m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
 
-    model_dict[ 'global_pars'] = {}
+    model_dict[ 'global_pars'] = m
     model_dict['global_pars']['config_name'] = config_name
-    global_pars = [  'model_name', 'path_config_model', 'path_model', 'path_data_train',
-                   'path_data_test', 'path_output_pred', 'n_sample'
-                  ]
-    for t in global_pars:
-      model_dict['global_pars'][t] = globals()[t]
     return model_dict
 
 
@@ -132,15 +128,15 @@ def titanic_lightgbm(path_model_out="") :
         , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
 
 
-                ### Pipeline for data processing ########################
-                'pipe_list': [
-                    {'uri': 'source/preprocessors.py::pd_coly',                  'pars': {}, 'cols_family': 'coly',        'type': 'coly' },
-                    {'uri': 'source/preprocessors.py::pd_colnum_bin',            'pars': {}, 'cols_family': 'colnum',      'type': ''     },
-                    {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',   'pars': {}, 'cols_family': 'colnum_bin',  'type': ''     },
-                    {'uri': 'source/preprocessors.py::pd_colcat_bin',            'pars': {}, 'cols_family': 'colcat',      'type': ''     },
-                    {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',      'pars': {}, 'cols_family': 'colcat_bin',  'type': ''     },
-                    {'uri': 'source/preprocessors.py::pd_colcross',              'pars': {}, 'cols_family': 'colcross',    'type': 'cross'}
-                ],
+            ### Pipeline for data processing ########################
+            'pipe_list': [
+                {'uri': 'source/preprocessors.py::pd_coly',                  'pars': {}, 'cols_family': 'coly',        'type': 'coly' },
+                {'uri': 'source/preprocessors.py::pd_colnum_bin',            'pars': {}, 'cols_family': 'colnum',      'type': ''     },
+                {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',   'pars': {}, 'cols_family': 'colnum_bin',  'type': ''     },
+                {'uri': 'source/preprocessors.py::pd_colcat_bin',            'pars': {}, 'cols_family': 'colcat',      'type': ''     },
+                {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',      'pars': {}, 'cols_family': 'colcat_bin',  'type': ''     },
+                {'uri': 'source/preprocessors.py::pd_colcross',              'pars': {}, 'cols_family': 'colcross',    'type': 'cross'}
+            ],
                }
         },
 
@@ -151,7 +147,6 @@ def titanic_lightgbm(path_model_out="") :
 
           'cols_input_type' : cols_input_type_1,
 
-
           ### family of columns for MODEL  ########################################################
           #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
           ##  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
@@ -159,9 +154,8 @@ def titanic_lightgbm(path_model_out="") :
           #  'coldate',
           #  'coltext',
           'cols_model_group': [ 'colnum_bin',
-                               'colcat_bin'
+                                'colcat_bin'
                                ]
-
 
           ### Filter data rows   ##################################################################
          ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
@@ -278,3 +272,25 @@ if __name__ == "__main__":
     
 
 
+"""
+def global_pars_update2(model_dict,  data_name, config_name):
+    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
+
+    model_name        = model_dict['model_pars']['config_model_name']
+    path_config_model = root + f"/{config_file}"
+    path_model        = f'data/output/{data_name}/a01_{model_name}/'
+    path_data_train   = f'data/input/{data_name}/train/'
+    path_data_test    = f'data/input/{data_name}/test/'
+    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+    n_sample          = model_dict['data_pars'].get('n_sample', 5000)
+
+    model_dict[ 'global_pars'] = {}
+    model_dict['global_pars']['config_name'] = config_name
+    global_pars = [  'model_name', 'path_config_model', 'path_model', 'path_data_train',
+                   'path_data_test', 'path_output_pred', 'n_sample'
+                  ]
+    for t in global_pars:
+      model_dict['global_pars'][t] = globals()[t]
+    return model_dict
+
+"""
