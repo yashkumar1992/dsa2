@@ -123,7 +123,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
 
 
-    ##### Generate features ###################################################################
+    ##### Generate features ##########################################################################
     os.makedirs(path_pipeline_export, exist_ok=True)
     log(path_pipeline_export)
     dfi_all          = {} ### Dict of all features
@@ -197,7 +197,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         cols_family_all['colid']=colid
     cols_family_all['colX'] = colXy
     save(colXy,            f'{path_pipeline_export}/colsX.pkl' )
-    save(cols_family_all, f'{path_pipeline_export}/cols_family.pkl' )
+    save(cols_family_all,  f'{path_pipeline_export}/cols_family.pkl' )
 
 
     ###### Return values  #######################################################################
@@ -207,7 +207,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}, cols_group=None):
     """
-      at inference time
+      At inference time
     """
     from util_feature import load, load_function_uri, load_dataset
 
@@ -246,16 +246,19 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
         df, col_pars = pipe_fun(df, list(df.columns), pars=pipe_i.get('pars', {}))
 
 
-    #####  Processors  ######################################################################
+    #####  Processors  #############################################################################
     for pipe_i in pipe_list_X :
        log("###################", pipe_i, "#######################################################")
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
        cols_name   = pipe_i['cols_family']
        col_type    = pipe_i['type']
        pars        = pipe_i.get('pars', {})
-       pars['path_pipeline'] = path_pipeline   ### Storage of local data.
 
-       cols_list, df_  = (cols_group[cols_name],df[ cols_group[cols_name]]) if cols_name in cols_group else (cols_family_full[cols_name],dfi_all[cols_name])
+       ### Load data from disk : inference time
+       pars['path_pipeline'] = path_pipeline
+
+       cols_list  = cols_group[cols_name]       if cols_name in cols_group else  cols_family_full[cols_name]
+       df_        = df[ cols_group[cols_name]]  if cols_name in cols_group else  dfi_all[cols_name]
        logs(df, cols_list)
 
        if col_type == 'cross':
@@ -263,22 +266,15 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
            pars['dfcat_hot']       = dfi_all['colcat_onehot']
            pars['colid']           = colid
            pars['colcross_single'] = cols_group.get('colcross', [])
-           dfi, col_pars           = pipe_fun(df_, cols_list, pars= pars)
-           ### colnum, colnum_bin into cols_family
-           for colname, colist in  col_pars['cols_new'].items() :
-              cols_family_full[cols_name] =  cols_family_full.get(colname, []) + colist
 
-           ### Merge sub-family
-           dfi_all[cols_name] = pd.concat((dfi_all[cols_name], dfi), axis=1) if cols_name in dfi_all else dfi
 
-       else:
-           # for cols_i in cols_list :
-            dfi, col_pars = pipe_fun(df_, cols_list, pars= pars)
+       dfi, col_pars           = pipe_fun(df_, cols_list, pars= pars)
 
-            ### colnum, colnum_bin into cols_family_full
-            for colj, colist in  col_pars['cols_new'].items() :
-              cols_family_full[colj] =  cols_family_full.get(colj, []) + colist
-              dfi_all[colj] =  pd.concat((dfi_all[colj], dfi), axis=1)  if  colj in dfi_all else dfi
+       ### Concatenate colnum, colnum_bin into cols_family_all
+       for colj, colist in  col_pars['cols_new'].items() :
+          ### Merge sub-family
+          cols_family_full[colj] = cols_family_full.get(colj, []) + colist
+          dfi_all[colj]          = pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
 
 
     log("######  Merge AlL int dfXy  #############################################################")
