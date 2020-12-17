@@ -244,12 +244,9 @@ def pd_colnum_bin(df, col, pars):
     from util_feature import  pd_colnum_tocat
 
     path_pipeline = pars.get('path_pipeline', False)
-    if  path_pipeline:
-       colnum_binmap  = load(f'{path_pipeline}/colnum_binmap.pkl')
-    else :
-       colnum_binmap  = None
-
+    colnum_binmap  = load(f'{path_pipeline}/colnum_binmap.pkl') if  path_pipeline else None
     log(colnum_binmap)
+
     colnum = col
     log("### colnum Map numerics to Category bin  ###########################################")
     dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=colnum, colexclude=None, colbinmap=colnum_binmap,
@@ -277,8 +274,10 @@ def pd_colnum_bin(df, col, pars):
 
 def pd_colnum_binto_onehot(df, col=None, pars=None):
     assert isinstance(col, list) and isinstance(df, pd.DataFrame)
-    dfnum_bin     = df[col]
-    colnum_bin    = col
+
+    dfnum_bin = df[col]
+    colnum_bin = col
+
     path_pipeline = pars.get('path_pipeline', False)
     colnum_onehot = load(f'{path_pipeline}/colnum_onehot.pkl') if  path_pipeline else None
 
@@ -317,10 +316,7 @@ def pd_colcat_to_onehot(df, col=None, pars=None):
         return df[colnew], col_pars
 
     path_pipeline = pars.get('path_pipeline', False)
-    if  path_pipeline:
-       colcat_onehot = load(f'{path_pipeline}/colcat_onehot.pkl')
-    else :
-       colcat_onehot = None
+    colcat_onehot = load(f'{path_pipeline}/colcat_onehot.pkl') if  path_pipeline else None
 
     colcat = col
     log("#### colcat to onehot")
@@ -352,16 +348,13 @@ from util_feature import load
 def pd_colcat_bin(df, col=None, pars=None):
     # dfbum_bin = df[col]
     path_pipeline = pars.get('path_pipeline', False)
-    if  path_pipeline:
-       colcat_bin_map = load(f'{path_pipeline}/colcat_bin_map.pkl')
-    else :
-       colcat_bin_map = None
+    colcat_bin_map = load(f'{path_pipeline}/colcat_bin_map.pkl') if  path_pipeline else None
 
     colcat = col
     log("#### Colcat to integer encoding ")
     dfcat_bin, colcat_bin_map = util_feature.pd_colcat_toint(df[colcat], colname=colcat,
-                                                colcat_map=  colcat_bin_map ,
-                                                suffix="_int")
+                                                            colcat_map=  colcat_bin_map ,
+                                                            suffix="_int")
     colcat_bin = list(dfcat_bin.columns)
     ##### Colcat processing   ################################################################
     colcat_map = util_feature.pd_colcat_mapping(df, colcat)
