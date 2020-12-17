@@ -60,7 +60,6 @@ n_sample     = 2000
 ####################################################################################
 ##### Params########################################################################
 # data_name    = "titanic"     ### in data/input/
-
 cols_input_type_1 = {
      "coly"   :   "Survived"
     ,"colid"  :   "PassengerId"
@@ -70,18 +69,6 @@ cols_input_type_1 = {
     ,"coldate" :  []
     ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
 }
-
-
-### family of columns for MODEL  ####################################################
-""" 
-    'colid',
-    "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns                        
-    "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns                        
-    'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns            
-    'coldate',
-    'coltext',            
-    "coly"
-"""
 
 
 
@@ -116,7 +103,7 @@ def titanic_lightgbm(path_model_out="") :
                                'n_estimators':3000,
                                'learning_rate':0.001,
                                'boosting_type':'gbdt',     ### Model hyperparameters
-                                'early_stopping_rounds': 5
+                               'early_stopping_rounds': 5
                               }
 
         ### After prediction  ##########################################
@@ -127,7 +114,7 @@ def titanic_lightgbm(path_model_out="") :
         , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
 
 
-            ### Pipeline for data processing ########################
+        ### Pipeline for data processing ########################
         'pipe_list': [
             {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
             {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
@@ -143,7 +130,6 @@ def titanic_lightgbm(path_model_out="") :
                       },
 
       'data_pars': { 'n_sample' : n_sample,
-
           'cols_input_type' : cols_input_type_1,
 
           ### family of columns for MODEL  ########################################################
@@ -162,10 +148,9 @@ def titanic_lightgbm(path_model_out="") :
          }
       }
 
-    ##### Filling Global parameters    #############################################################
+    ##### Filling Global parameters    ############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
-
 
 
 #####################################################################################
@@ -176,7 +161,6 @@ def data_profile(path_data_train="", path_model="", n_sample= 5000):
                path_output = path_model + "/profile/",
                n_sample    = n_sample,
               )
-
 
 
 ###################################################################################
@@ -292,3 +276,4 @@ def global_pars_update2(model_dict,  data_name, config_name):
     return model_dict
 
 """
+
