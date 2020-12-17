@@ -125,13 +125,12 @@ def run_data_check(path_data, path_data_ref, path_model, path_output, sample_rat
     path_pipeline = root + path_model + "/pipeline/"
 
     os.makedirs(path_output, exist_ok=True)
-
     colid          = load(f'{path_pipeline}/colid.pkl')
 
-    df1 = load_dataset(path_data_ref,colid=colid)
+    df1                = load_dataset(path_data_ref,colid=colid)
     dfX1, cols_family1 = preprocess(df1, path_pipeline)
 
-    df2 = load_dataset(path_data,colid=colid)
+    df2                = load_dataset(path_data,colid=colid)
     dfX2, cols_family2 = preprocess(df2, path_pipeline)
 
     colsX       = cols_family1["colnum_bin"] + cols_family1["colcat_bin"]
