@@ -255,7 +255,7 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
        pars['path_pipeline'] = path_pipeline   ### Storage of local data.
 
        cols_list, df_  = (cols_group[cols_name],df[ cols_group[cols_name]]) if cols_name in cols_group else (cols_family_full[cols_name],dfi_all[cols_name])
-
+       logs(df, cols_list)
 
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
