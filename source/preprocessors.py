@@ -247,9 +247,9 @@ def pd_colnum_bin(df, col, pars):
     colnum_binmap  = load(f'{path_pipeline}/colnum_binmap.pkl') if  path_pipeline else None
     log(colnum_binmap)
 
-
+    colnum = col
     log("### colnum Map numerics to Category bin  ###########################################")
-    dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=col, colexclude=None, colbinmap=colnum_binmap,
+    dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=colnum, colexclude=None, colbinmap=colnum_binmap,
                                                bins=10, suffix="_bin", method="uniform",
                                                return_val="dataframe,param")
     log(colnum_binmap)
@@ -275,13 +275,16 @@ def pd_colnum_bin(df, col, pars):
 def pd_colnum_binto_onehot(df, col=None, pars=None):
     assert isinstance(col, list) and isinstance(df, pd.DataFrame)
 
+    dfnum_bin = df[col]
+    colnum_bin = col
+
     path_pipeline = pars.get('path_pipeline', False)
     colnum_onehot = load(f'{path_pipeline}/colnum_onehot.pkl') if  path_pipeline else None
 
 
     log("###### colnum bin to One Hot  #################################################")
     from util_feature import  pd_col_to_onehot
-    dfnum_hot, colnum_onehot = pd_col_to_onehot(df[col], colname=col,
+    dfnum_hot, colnum_onehot = pd_col_to_onehot(dfnum_bin[colnum_bin], colname=colnum_bin,
                                                 colonehot=colnum_onehot, return_val="dataframe,param")
     log(colnum_onehot)
 
@@ -299,6 +302,7 @@ def pd_colnum_binto_onehot(df, col=None, pars=None):
 
 
 def pd_colcat_to_onehot(df, col=None, pars=None):
+    dfbum_bin = df[col]
     if len(col)==1:
 
         colnew       = [col[0] + "_onehot"]
@@ -314,9 +318,9 @@ def pd_colcat_to_onehot(df, col=None, pars=None):
     path_pipeline = pars.get('path_pipeline', False)
     colcat_onehot = load(f'{path_pipeline}/colcat_onehot.pkl') if  path_pipeline else None
 
-
+    colcat = col
     log("#### colcat to onehot")
-    dfcat_hot, colcat_onehot = util_feature.pd_col_to_onehot(df[col], colname=col,
+    dfcat_hot, colcat_onehot = util_feature.pd_col_to_onehot(df[colcat], colname=colcat,
                                                 colonehot=colcat_onehot, return_val="dataframe,param")
     log(dfcat_hot[colcat_onehot].head(5))
 
@@ -324,7 +328,7 @@ def pd_colcat_to_onehot(df, col=None, pars=None):
         path_features_store = pars['path_features_store']
         save_features(dfcat_hot, 'colcat_onehot', path_features_store)
         save(colcat_onehot,  pars['path_pipeline_export'] + "/colcat_onehot.pkl" )
-        save(col,            pars['path_pipeline_export'] + "/colcat.pkl" )
+        save(colcat,         pars['path_pipeline_export'] + "/colcat.pkl" )
 
     col_pars = {}
     col_pars['colcat_onehot'] = colcat_onehot
@@ -342,18 +346,19 @@ def pd_colcat_to_onehot(df, col=None, pars=None):
 from util_feature import load
 
 def pd_colcat_bin(df, col=None, pars=None):
+    # dfbum_bin = df[col]
     path_pipeline = pars.get('path_pipeline', False)
     colcat_bin_map = load(f'{path_pipeline}/colcat_bin_map.pkl') if  path_pipeline else None
 
-
+    colcat = col
     log("#### Colcat to integer encoding ")
-    dfcat_bin, colcat_bin_map = util_feature.pd_colcat_toint(df[col], colname=col,
+    dfcat_bin, colcat_bin_map = util_feature.pd_colcat_toint(df[colcat], colname=colcat,
                                                             colcat_map=  colcat_bin_map ,
                                                             suffix="_int")
     colcat_bin = list(dfcat_bin.columns)
     ##### Colcat processing   ################################################################
-    colcat_map = util_feature.pd_colcat_mapping(df, col)
-    log(df[col].dtypes, colcat_map)
+    colcat_map = util_feature.pd_colcat_mapping(df, colcat)
+    log(df[colcat].dtypes, colcat_map)
 
 
     if 'path_features_store' in pars :
@@ -401,6 +406,7 @@ def pd_colcross(df, col, pars):
     dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
                                                            pct_threshold=0.02,  m_combination=2)
     log(dfcross_hot.head(2).T)
+    colcross_pair_onehot = list(dfcross_hot.columns)
 
     if 'path_features_store' in pars:
         save_features(dfcross_hot, 'colcross_onehot', pars['path_features_store'])
