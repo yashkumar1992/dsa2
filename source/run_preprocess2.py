@@ -158,14 +158,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
        cols_name   = pipe_i['cols_family']
        col_type    = pipe_i['type']
+
        pars        = pipe_i.get('pars', {})
        pars['path_features_store']  = path_features_store
        pars['path_pipeline_export'] = path_pipeline_export
-
-
-       cols_list   = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
-       df_         = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
-
 
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
@@ -173,7 +169,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            pars['colid']           = colid
            pars['colcross_single'] = cols_group.get('colcross', [])
 
-       dfi, col_pars           = pipe_fun(df_, cols_list, pars= pars)
+       cols_list     = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
+       df_           = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
+
+       dfi, col_pars = pipe_fun(df_, cols_list, pars= pars)
 
        ### Concatenate colnum, colnum_bin into cols_family_all
        for colj, colist in  col_pars['cols_new'].items() :
@@ -291,7 +290,6 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
 
     return dfXy, cols_family_full
-
 
 
 def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
