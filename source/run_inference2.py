@@ -29,14 +29,12 @@ def log(*s, n=0, m=1):
     sspace = "#" * n
     sjump = "\n" * m
     ### Implement Logging
-    print(sjump, sspace, s, sspace, flush=True)
+    print(sjump, sspace, *s, sspace, flush=True)
 
 
-from util_feature import load, load_function_uri
-from util_feature import load_dataset
+from util_feature import load, load_function_uri, load_dataset
 
 
-####################################################################################################
 ####################################################################################################
 def map_model(model_name):
     try :
@@ -55,14 +53,7 @@ def map_model(model_name):
 
 def predict(model_name, path_model, dfX, cols_family):
     """
-    if config_model_name in ['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
-        from models import model_sklearn as modelx
 
-    elif config_model_name == 'model_bayesian_pyro':
-        from models import model_bayesian_pyro as modelx
-
-    elif config_model_name == 'model_widedeep':
-        from models import model_widedeep as modelx
     """
     modelx = map_model(model_name)    
     modelx.reset()
