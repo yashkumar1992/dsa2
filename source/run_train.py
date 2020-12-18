@@ -97,28 +97,10 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     itrain = int(0.6 * len(dfX))
     ival   = int(0.8 * len(dfX))
     colid  = cols_family['colid']
-    print('------------data_pars---------------------', data_pars)
     colsX  = data_pars['cols_model']
     coly   = data_pars['coly']
     print('colsX',colsX)
-    rm=["name", "summary", "space", "description", "neighborhood_overview", "notes", "transit", "access", "interaction", "house_rules", "host_name", "host_about", "amenities"]
-    colsX = list(set(colsX) - set(rm))
 
-    for col in rm:
-        col1=col+'_svd_0'
-        col2=col+'_svd_1'
-        colsX.append(col1)
-        colsX.append(col2)
-    rm1=["last_review", "host_since", "first_review", "last_scraped"]
-    colsX = list(set(colsX) - set(rm1))
-    for col in rm1:
-        col1=col+'_year'
-        col2=col+'_month'
-        col3=col+'_day'
-        colsX.append(col1)
-        colsX.append(col2)
-        colsX.append(col3)
-    dfX.fillna(0)
     data_pars['data_type'] = 'ram'
     data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
                           'ytrain' : dfX[coly].iloc[:itrain],
@@ -128,7 +110,9 @@ def train(model_dict, dfX, cols_family, post_process_fun):
                           'Xval'   : dfX[colsX].iloc[ival:, :],
                           'yval'   : dfX[coly].iloc[ival:],
                           }
-    
+
+
+
     log("#### Model Instance ##########################################################")
     # from config_model import map_model    
     modelx = map_model(model_name)    
@@ -143,7 +127,10 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     stats               = {}
     ypred, ypred_proba  = modelx.predict(dfX[colsX], compute_pars=compute_pars)
     dfX[coly + '_pred'] = ypred  # y_norm(ypred, inverse=True)
-    dfX[coly]           = post_process_fun(dfX[coly].values)
+
+    dfX[coly]            = dfX[coly].apply(lambda  x : post_process_fun(x) )
+    dfX[coly + '_pred']  = dfX[coly + '_pred'].apply(lambda  x : post_process_fun(x) )
+
 
     if ypred_proba is None :
        ypred_proba_val = None
@@ -157,6 +144,9 @@ def train(model_dict, dfX, cols_family, post_process_fun):
         ypred_proba_val      = ypred_proba[ival:,:]
         dfX[coly + '_proba'] = np_conv_to_one_col(ypred_proba, ";")  ### merge into string "p1,p2,p3,p4"
         log(dfX.head(3).T)
+
+    log("Actual    : ",  dfX[coly ])
+    log("Prediction: ",  dfX[coly + '_pred'])
 
     metrics_test = metrics_eval(metric_list,
                                 ytrue       = dfX[coly].iloc[ival:],
@@ -242,15 +232,13 @@ def run_train(config_name, path_data, path_output, path_config_model="source/con
     log("######### Train model: ###########################################################")
     log(str(model_dict)[:1000])
     post_process_fun = model_dict['model_pars']['post_process_fun']
-
     dfXy, dfXytest   = train(model_dict, dfXy, cols, post_process_fun)
-
 
     log("######### export #################################", )
     os.makedirs(path_check_out, exist_ok=True)
-    colexport = [cols['coly'], cols['coly'] + "_pred"]
-    dfXy[colexport].to_csv(path_check_out + "/pred_check.csv")  # Only results
-    dfXy.to_parquet(path_check_out + "/df X.parquet")  # train input data generate parquet
+    colexport = [cols['colid'], cols['coly'], cols['coly'] + "_pred"]
+    dfXy[colexport].reset_index().to_csv(path_check_out + "/pred_check.csv")  # Only results
+    dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data generate parquet
     #dfXy.to_csv(path_check_out + "/dfX.csv")  # train input data generate csv
     dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data  generate parquet
     #dfXytest.to_csv(path_check_out + "/dfXtest.csv")  # Test input data  generate csv
@@ -306,4 +294,54 @@ def run_data_check(path_output, scoring):
 if __name__ == "__main__":
     import fire
     fire.Fire()
+
+
+"""
+
+  coltext ---> coltext-coli-svd
+  
+  coldate ---> coltext-coli
+
+
+
+    log("#### Data preparation #############################################################")
+    log(dfX.shape)
+    dfX    = dfX.sample(frac=1.0)
+    itrain = int(0.6 * len(dfX))
+    ival   = int(0.8 * len(dfX))
+    colid  = cols_family['colid']
+    colsX  = data_pars['cols_model']
+    coly   = data_pars['coly']
+    print('colsX',colsX)
+    rm=["name", "summary", "space", "description", "neighborhood_overview", "notes", "transit", "access", "interaction", "house_rules", "host_name", "host_about", "amenities"]
+    colsX = list(set(colsX) - set(rm))
+
+    for col in rm:
+        col1=col+'_svd_0'
+        col2=col+'_svd_1'
+        colsX.append(col1)
+        colsX.append(col2)
+    rm1=["last_review", "host_since", "first_review", "last_scraped"]
+    colsX = list(set(colsX) - set(rm1))
+    for col in rm1:
+        col1=col+'_year'
+        col2=col+'_month'
+        col3=col+'_day'
+        colsX.append(col1)
+        colsX.append(col2)
+        colsX.append(col3)
+    dfX.fillna(0)
+    data_pars['data_type'] = 'ram'
+    data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
+                          'ytrain' : dfX[coly].iloc[:itrain],
+                          'Xtest'  : dfX[colsX].iloc[itrain:ival, :],
+                          'ytest'  : dfX[coly].iloc[itrain:ival],
+
+                          'Xval'   : dfX[colsX].iloc[ival:, :],
+                          'yval'   : dfX[coly].iloc[ival:],
+                          }
+                          
+                          
+                          
+"""
 

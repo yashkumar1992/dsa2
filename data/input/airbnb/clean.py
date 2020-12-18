@@ -1,6 +1,6 @@
 import pandas as pd
 import random
-
+import numpy as np
 
 folder     = 'raw/'
 df         = pd.read_csv(folder+'listings_summary.zip', delimiter=',')
@@ -12,7 +12,10 @@ df_rev_sum = pd.read_csv(  folder+'reviews_summary.zip', delimiter=',')
 
 colid = "id"
 coly  = "price"
-
+colnum = [  "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
+# colcat = [ "cancellation_policy", "host_response_rate", "host_response_time" ]
+# coltext = ["house_rules", "neighborhood_overview", "notes", "street"  ]
+# coldate = [  "calendar_last_scraped", "first_review", "host_since" ]
 
 
 ########################################################################################################
@@ -26,14 +29,6 @@ print(df.head(2).T)
 
 
 itrain = int(len(df) * 0.8)
-df.iloc[:itrain, :][colsX].reset_index().to_parquet( "train/features.parquet", index=False)
-df.iloc[:itrain][coly].reset_index().to_parquet(  "train/target.parquet")
-
-
-
-df[colsX].reset_index().iloc[itrain:, :].to_parquet( "test/features.parquet", index=False)
-df[coly].reset_index().iloc[itrain:, :].to_parquet(  "test/target.parquet",  index=False)
-
 
 
 def clean_prices(df, colnum):
@@ -52,16 +47,27 @@ def clean_prices(df, colnum):
 
 
 
-
-"""
-colnum = [  "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
-colcat = [ "cancellation_policy", "host_response_rate", "host_response_time" ]
-coltext = ["house_rules", "neighborhood_overview", "notes", "street"  ]
-coldate = [  "calendar_last_scraped", "first_review", "host_since" ]
+df = clean_prices(df, [coly])
+df = clean_prices(df, colnum)
 
 
 
-"""
+df.iloc[:itrain, :][colsX].reset_index().to_parquet( "train/features.parquet", index=False)
+df.iloc[:itrain][coly].reset_index().to_parquet(  "train/target.parquet")
+
+
+
+df[colsX].reset_index().iloc[itrain:, :].to_parquet( "test/features.parquet", index=False)
+df[coly].reset_index().iloc[itrain:, :].to_parquet(  "test/target.parquet",  index=False)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -113,7 +119,7 @@ print("repo root", root)
 
 #### Add  source/  as folder to import   ###########################
 sys.path.append(  root + "/source/")
-from util_feature import  save, load_function_uri
+# from util_feature import  save, load_function_uri
 
 
 
@@ -132,6 +138,7 @@ def coltext_stopwords(text, stopwords=None, sep=" "):
     tokens = text.split(sep)
     tokens = [t.strip() for t in tokens if t.strip() not in stopwords]
     return " ".join(tokens)
+
 
 
 def clean_prices(df, colnum):
