@@ -15,6 +15,7 @@ All in one file config
 
 
 """
+
 import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
 
@@ -60,7 +61,8 @@ config_file     = "airbnb_regression.py"
 config_default  = 'airbnb_lightgbm'
 
 
-#####################################################################################
+
+####################################################################################
 ####### y normalization #############################################################   
 def y_norm(y, inverse=True, mode='boxcox'):
     ## Normalize the input/output
@@ -109,10 +111,9 @@ cols_input_type_2 = {
 	,"colcat"   : ["host_id", "host_location", "host_response_time","host_response_rate","host_is_superhost","host_neighbourhood","host_verifications","host_has_profile_pic","host_identity_verified","street","neighbourhood","neighbourhood_cleansed", "neighbourhood_group_cleansed","city","zipcode", "smart_location","is_location_exact","property_type","room_type", "accommodates","bathrooms","bedrooms", "beds","bed_type","guests_included","calendar_updated", "license","instant_bookable","cancellation_policy","require_guest_profile_picture","require_guest_phone_verification","scrape_id"]
 	,"colnum"   : ["host_listings_count","latitude", "longitude","square_feet","weekly_price","monthly_price", "security_deposit","cleaning_fee","extra_people", "minimum_nights","maximum_nights","availability_30","availability_60","availability_90","availability_365","number_of_reviews","review_scores_rating","review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication", "review_scores_location","review_scores_value","calculated_host_listings_count","reviews_per_month"]
 	,"coltext"  : ["name","summary", "space","description", "neighborhood_overview","notes","transit", "access","interaction", "house_rules","host_name","host_about","amenities"]
-	,"coldate"  : ["last_scraped","host_since","first_review","last_review"]
+	, "coldate" : ["last_scraped","host_since","first_review","last_review"]
 	,"colcross" : ["name","host_is_superhost","is_location_exact","monthly_price","review_scores_value","review_scores_rating","reviews_per_month"]
 }
-
 
 
 
@@ -135,6 +136,7 @@ def airbnb_lightgbm(path_model_out="") :
 
     #############################################################################
     model_dict = {'model_pars': {'config_name': model_name
+
         ,'model_path': path_model_out
         ,'model_pars': {'objective': 'huber',
 
@@ -151,6 +153,7 @@ def airbnb_lightgbm(path_model_out="") :
             # {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
             # {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
         ],
+
         }
     },
 
@@ -172,7 +175,6 @@ def airbnb_lightgbm(path_model_out="") :
                                 #,'coltext'
                               ]
 
-
          ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
 
          }}
@@ -180,11 +182,16 @@ def airbnb_lightgbm(path_model_out="") :
 
     ##### Filling Global parameters    ############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
+
     return model_dict
  
 
 
 
+
+####################################################################################################
+########## Init variable ###########################################################################
+globals()[config_name]()
 
 
 
