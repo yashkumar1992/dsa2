@@ -133,7 +133,7 @@ def pd_coltext(df, col, pars={}):
     pars_tdidf    = load(f'{path_pipeline}/coltext_tdidf.pkl') if  path_pipeline else None
     pars_svd      = load(f'{path_pipeline}/coltext_svd.pkl')   if  path_pipeline else None
     stopwords     = nlp_get_stopwords()
-    
+
 
     #### Process  ###############################################################
     dftext                              = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
