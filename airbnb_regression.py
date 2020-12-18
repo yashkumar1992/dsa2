@@ -56,7 +56,7 @@ def os_get_function_name():
 
 
 ####################################################################################
-config_file  = "airbnb_regression.py"
+config_file     = "airbnb_regression.py"
 config_default  = 'airbnb_lightgbm'
 
 
