@@ -128,7 +128,14 @@ def nlp_get_stopwords():
 
 def pd_coltext(df, col, pars={}):
     from utils import util_text, util_model
-    stopwords = pars['stopwords']
+
+    path_pipeline = pars.get('path_pipeline', False)
+    pars_tdidf    = load(f'{path_pipeline}/coltext_tdidf.pkl') if  path_pipeline else None
+    pars_svd      = load(f'{path_pipeline}/coltext_svd.pkl')   if  path_pipeline else None
+    stopwords     = nlp_get_stopwords()
+
+
+    #### Process  ###############################################################
     dftext                              = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
     coltext_freq, word_tokeep           = pd_coltext_wordfreq(df, col, stopwords, ntoken=100)  ## nb of words to keep
 
@@ -142,7 +149,24 @@ def pd_coltext(df, col, pars={}):
                                                    model_pretrain = None,
                                                    colprefix      = col + "_svd",
                                                    method         = "svd",  dimpca=2,  return_val="dataframe,param")
-    return dftext_svd_list
+
+    #############################################################################
+    if 'path_features_store' in pars:
+        save_features(dftext_svd_list, 'dftext_svd' + "-" + str(col), pars['path_features_store'])
+        save(svd_list,  pars['path_pipeline_export'] + "/colnum_binmap.pkl" )
+        save(word_tokeep_dict,     pars['path_pipeline_export'] + "/word_tokeep_dict.pkl" )
+
+
+    col_pars = {}
+    col_pars['cols_new'] = {
+     'coltext'          : col ,    ###list
+     'coltext_tdidf'    : word_tokeep_dict,       ### list
+     'coltext_svd'      : svd_list       ### list
+
+    }
+
+
+    return dftext_svd_list, svd_list
 
 
 

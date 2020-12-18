@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 """
 
- ! activate py36 && python source/run_inference.py  run_predict  --n_sample 1000  --config_model_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
+ ! activate py36 && python source/run_inference.py  run_predict  --n_sample 1000  --config_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
  
 
 """
@@ -29,14 +29,12 @@ def log(*s, n=0, m=1):
     sspace = "#" * n
     sjump = "\n" * m
     ### Implement Logging
-    print(sjump, sspace, s, sspace, flush=True)
+    print(sjump, sspace, *s, sspace, flush=True)
 
 
-from util_feature import load, load_function_uri
-from util_feature import load_dataset
+from util_feature import load, load_function_uri, load_dataset
 
 
-####################################################################################################
 ####################################################################################################
 def map_model(model_name):
     try :
@@ -55,14 +53,7 @@ def map_model(model_name):
 
 def predict(model_name, path_model, dfX, cols_family):
     """
-    if config_model_name in ['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
-        from models import model_sklearn as modelx
 
-    elif config_model_name == 'model_bayesian_pyro':
-        from models import model_bayesian_pyro as modelx
-
-    elif config_model_name == 'model_widedeep':
-        from models import model_widedeep as modelx
     """
     modelx = map_model(model_name)    
     modelx.reset()
@@ -134,13 +125,12 @@ def run_data_check(path_data, path_data_ref, path_model, path_output, sample_rat
     path_pipeline = root + path_model + "/pipeline/"
 
     os.makedirs(path_output, exist_ok=True)
-
     colid          = load(f'{path_pipeline}/colid.pkl')
 
-    df1 = load_dataset(path_data_ref,colid=colid)
+    df1                = load_dataset(path_data_ref,colid=colid)
     dfX1, cols_family1 = preprocess(df1, path_pipeline)
 
-    df2 = load_dataset(path_data,colid=colid)
+    df2                = load_dataset(path_data,colid=colid)
     dfX2, cols_family2 = preprocess(df2, path_pipeline)
 
     colsX       = cols_family1["colnum_bin"] + cols_family1["colcat_bin"]

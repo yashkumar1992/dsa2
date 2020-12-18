@@ -58,7 +58,7 @@ def salary_elasticnetcv(path_model_out):
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'config_model_name': 'ElasticNetCV'
+    model_dict = {'model_pars': {'config_name': 'ElasticNetCV'
         , 'model_path': path_model_out
         , 'model_pars': {}  # default ones
         , 'post_process_fun': post_process_fun 
@@ -88,7 +88,7 @@ def salary_lightgbm(path_model_out) :
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'config_model_name': 'LGBMRegressor'
+    model_dict = {'model_pars': {'config_name': 'LGBMRegressor'
         , 'model_path': path_model_out
         , 'model_pars': {'objective': 'huber', }  # default
         , 'post_process_fun': post_process_fun
@@ -122,7 +122,7 @@ def salary_lightgbm(path_model_out) :
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'config_model_name': 'LGBMRegressor'
+    model_dict = {'model_pars': {'config_name': 'LGBMRegressor'
         , 'model_path': path_model_out
         , 'model_pars': {'objective': 'huber', }  # default
         , 'post_process_fun': post_process_fun
@@ -150,7 +150,7 @@ def salary_bayesian_pyro(path_model_out) :
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'config_model_name': 'model_bayesian_pyro'
+    model_dict = {'model_pars': {'config_name': 'model_bayesian_pyro'
         , 'model_path': path_model_out
         , 'model_pars': {'input_width': 112, }  # default
         , 'post_process_fun': post_process_fun
@@ -183,7 +183,7 @@ def salary_glm( path_model_out) :
 
 
 
-    model_dict = {'model_pars': {'config_model_name': 'TweedieRegressor'  # Ridge
+    model_dict = {'model_pars': {'config_name': 'TweedieRegressor'  # Ridge
         , 'model_path': path_model_out
         , 'model_pars': {'power': 0, 'link': 'identity'}  # default ones
         , 'pre_process_pars': {'y_norm_fun' : pre_process_fun }
@@ -217,7 +217,7 @@ def titanic_lightgbm(path_model_out) :
         return  y.astype('int')
 
 
-    model_dict = {'model_pars': {'config_model_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
+    model_dict = {'model_pars': {'config_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
         , 'model_path': path_model_out
         , 'model_pars': {'objective': 'binary','learning_rate':0.03,'boosting_type':'gbdt' }  # default
         , 'post_process_fun': post_process_fun

@@ -1,6 +1,7 @@
 
 
 
+
 RMDIR /S /Q  data/output/titanic/ >nul 2>&1
 
 MKDIR  data\output\titanic  >nul 2>&1
