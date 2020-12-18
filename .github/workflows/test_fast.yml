@@ -81,8 +81,8 @@ jobs:
         ls .
         #pip install -r install/requirements_fake.txt
 
-    - name: Install repo
-      run: pip install -e . -r install/py36.txt  --no-deps
+    #- name: Install repo
+    #  run: pip install -e . -r install/py36.txt  --no-deps
 
 
 
@@ -93,12 +93,12 @@ jobs:
     - name: test_import
       run: |
            python -c "import run,os ; print(numpy); print(os)"
-           python -c "import tensorflow, torch ; print(tensorflow); print(torch)"
+           # python -c "import tensorflow, torch ; print(tensorflow); print(torch)"
 
 
     ########  Test running 
-    - name: titanic
-      run: python ztest/zrun_all.sh   # 2>&1 | tee   /home/runner/work/mlmodels/mlmodels_store/log_import/log_optim.py
+    - name: run_all
+      run: python ztest/run_all.sh   # 2>&1 | tee   /home/runner/work/mlmodels/mlmodels_store/log_import/log_optim.py
 
 
 
