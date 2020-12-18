@@ -10,3 +10,6 @@ featuretools-tsfresh-primitives==0.2.1
 featuretools-update-checker==1.0.2
 numba==0.48.0
 optuna==1.1.0
+fire
+pyarrow
+fastparquet

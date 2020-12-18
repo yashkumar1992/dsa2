@@ -101,7 +101,7 @@ cols_input_type_1 = {
 	,"colnum"   :  [ "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
 	,"coltext"  :  [ "house_rules", "neighborhood_overview", "notes", "street"  ]
 	,"coldate"  :  [ "calendar_last_scraped", "first_review", "host_since" ]
-	,"colcross" : [  ]
+	,"colcross" :  [ "review_scores_communication", "review_scores_location", "cancellation_policy", "host_response_rate"]
 }
 
 
@@ -114,7 +114,6 @@ cols_input_type_2 = {
 	, "coldate" : ["last_scraped","host_since","first_review","last_review"]
 	,"colcross" : ["name","host_is_superhost","is_location_exact","monthly_price","review_scores_value","review_scores_rating","reviews_per_month"]
 }
-
 
 
 ####################################################################################
@@ -147,11 +146,13 @@ def airbnb_lightgbm(path_model_out="") :
         ### Pipeline for data processing ########################
         'pipe_list': [
             {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
-            # {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
-            # {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
-            # {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
-            # {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-            # {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
+            {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_coltext',              'pars': {}, 'cols_family': 'coltext',    'cols_out': 'coltext',        'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_coldate',              'pars': {}, 'cols_family': 'coldate',    'cols_out': 'coldate',        'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
         ],
 
         }
@@ -170,8 +171,8 @@ def airbnb_lightgbm(path_model_out="") :
          #'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
          # 'coldate', #'coltext',
 
-         ,'cols_model_group': [  'colnum'
-                                #,'colcat_bin'
+         ,'cols_model_group': [  'colnum_bin'
+                                ,'colcat_bin'
                                 #,'coltext'
                               ]
 
@@ -191,7 +192,7 @@ def airbnb_lightgbm(path_model_out="") :
 
 ####################################################################################################
 ########## Init variable ###########################################################################
-globals()[config_name]()
+# globals()[config_name]()
 
 
 
@@ -211,7 +212,6 @@ def preprocess(config=None, nsample=None):
     config_name  = config  if config is not None else config_default
     mdict        = globals()[config_name]()
     m            = mdict['global_pars']
-    print(mdict)
 
     from source import run_preprocess2, run_preprocess
     run_preprocess2.run_preprocess(config_name=  config_name,
@@ -229,7 +229,6 @@ def train(config=None, nsample=None):
     config_name  = config  if config is not None else config_default
     mdict        = globals()[config_name]()
     m            = mdict['global_pars']
-    print(mdict)
 
     from source import run_train
     run_train.run_train(config_name=  config_name,
@@ -254,8 +253,6 @@ def predict(config=None, nsample=None):
     config_name  =  config  if config is not None else config_default
     mdict        = globals()[config_name]()
     m            = mdict['global_pars']
-    print(mdict['data_pars']['cols_input_type'])
-    print(m)
 
     from source import run_inference,run_inference2
     run_inference2.run_predict(config_name,
@@ -294,7 +291,28 @@ if __name__ == "__main__":
 
 
 
+"""
 
+  rm=["name", "summary", "space", "description", "neighborhood_overview", "notes", "transit", "access", "interaction", "house_rules", "host_name", "host_about", "amenities"]
+    colsX = list(set(colsX) - set(rm))
+
+    for col in rm:
+        col1=col+'_svd_0'
+        col2=col+'_svd_1'
+        colsX.append(col1)
+        colsX.append(col2)
+    rm1=["last_review", "host_since", "first_review", "last_scraped"]
+    colsX = list(set(colsX) - set(rm1))
+    for col in rm1:
+        col1=col+'_year'
+        col2=col+'_month'
+        col3=col+'_day'
+        colsX.append(col1)
+        colsX.append(col2)
+        colsX.append(col3)
+    dfX.fillna(0)
+
+"""
 
 
 
