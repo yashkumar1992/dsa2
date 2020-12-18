@@ -22,7 +22,7 @@ sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
 
-#### Debug state (Ture/False)
+#### Debuging state (Ture/False)
 DEBUG_=True
 
 ####################################################################################################
@@ -141,11 +141,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
         log("#####  coly  ###########################################################################")
         pipe_i       = pipe_list_y[ 0 ]
         pipe_fun     = load_function_uri(pipe_i['uri'])
-
+        logs("----------df----------\n", df)
         pars                         = pipe_i.get('pars', {})
         pars['path_features_store']  = path_features_store
         pars['path_pipeline_export'] = path_pipeline_export
         df, col_pars                 = pipe_fun(df, cols_group['coly'], pars=pars)   ### coly can remove rows
+        logs("----------df----------\n",df)
         dfi_all['coly']              = df[cols_group['coly'] ]
         cols_family_all['coly']      = cols_group['coly']
         save_features(df[cols_group['coly'] ], "coly", path_features_store)  ### already saved
@@ -166,7 +167,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        cols_list   = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
        df_         = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
 
-
+       logs(df_)
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
            pars['dfcat_hot']       = dfi_all['colcat_onehot']

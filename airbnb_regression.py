@@ -185,8 +185,16 @@ def airbnb_lightgbm(path_model_out="") :
         ,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
 
                     ### Pipeline for data processing.
-                    'pipe_list'  : ['filter', 'label',  'dfcat_bin', 'dftext'   ]
-
+                    'pipe_list'  : [
+                                {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
+                                {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+                                {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+                                {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+                                {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+                                {'uri': 'source/preprocessors.py::pd_coltext',              'pars': {}, 'cols_family': 'coltext',    'cols_out': 'coltext',        'type': ''             },
+                                {'uri': 'source/preprocessors.py::pd_coltext',              'pars': {}, 'cols_family': 'coldate',    'cols_out': 'coldate',        'type': ''             },
+                                {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
+                                    ]
         }
     },
 
@@ -244,9 +252,9 @@ path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess():
-    from source import run_preprocess
+    from source import run_preprocess,run_preprocess2
 
-    run_preprocess.run_preprocess(model_name      =  config_name,
+    run_preprocess2.run_preprocess(model_name      =  config_name,
                                 path_data         =  path_data_train,
                                 path_output       =  path_model,
                                 path_config_model =  path_config_model,

@@ -24,6 +24,8 @@ root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
 
 
+#### Debuging state (Ture/False)
+DEBUG_=True
 
 ####################################################################################################
 ####################################################################################################
@@ -32,6 +34,10 @@ def log(*s, n=0, m=1):
     sjump = "\n" * m
     ### Implement pseudo Logging
     print(sjump, sspace, s, sspace, flush=True)
+
+def logs(*s):
+    if DEBUG_:
+        print(*s, flush=True)
 
 
 def log_pd(df, *s, n=0, m=1):
@@ -148,10 +154,11 @@ def pd_coltext(df, col, pars={}):
 
 ##### Filtering / cleaning rows :   #########################################################
 def pd_filter_rows(df, col, pars):
-
+    import re
     coly = col
     filter_pars =  pars
     def isfloat(x):
+        x = re.sub("[!@,#$+%*:()'-]", "", x)
         try :
             a= float(x)
             return 1
@@ -185,10 +192,20 @@ def pd_label_clean(df, col, pars):
         save_features(df[coly], 'dfy', path_features_store)
     return df,coly
 
+def pd_colnum_clean(col_):
+    import re
+    try:
+        logs('-----------col_------------\n',col_)
+        ret=col_.apply(lambda x: re.sub("[!@,#$+%*:()'-]", "", str(x))).astype('float32')
+        # logs('-----------ret------------\n',ret)
+    except:
+        ret=col_
+    return ret
 
 def pd_coly(df, col, pars):
     ##### Filtering / cleaning rows :   #########################################################
     coly=col
+    df[coly] = pd_colnum_clean(df[coly])
     def isfloat(x):
         try :
             a= float(x)
@@ -197,8 +214,9 @@ def pd_coly(df, col, pars):
             return 0
     df['_isfloat'] = df[ coly ].apply(lambda x : isfloat(x) )
     df             = df[ df['_isfloat'] > 0 ]
+    df[coly] = df[coly].astype('float32')
     del df['_isfloat']
-
+    logs("----------df[coly]------------",df[coly])
     ymin, ymax = pars.get('ymin', -9999999999.0), pars.get('ymax', 999999999.0)
     df = df[df[coly] > ymin]
     df = df[df[coly] < ymax]
@@ -248,6 +266,10 @@ def pd_colnum_bin(df, col, pars):
     log(colnum_binmap)
 
     colnum = col
+
+    for colN in colnum:
+        df[colN] = pd_colnum_clean(df[colN])
+
     log("### colnum Map numerics to Category bin  ###########################################")
     dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=colnum, colexclude=None, colbinmap=colnum_binmap,
                                                bins=10, suffix="_bin", method="uniform",
