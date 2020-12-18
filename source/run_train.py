@@ -212,15 +212,15 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
 
     log("#### Preprocess  #################################################################")
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
-    filter_pars     = model_dict['data_pars']['filter_pars']
+    #filter_pars     = model_dict['data_pars']['filter_pars']
      
     if mode == "run_preprocess" :
         dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
-                                 preprocess_pars, filter_pars, path_features_store=path_features_store)
+                                 preprocess_pars,  path_features_store=path_features_store)
 
     elif mode == "load_preprocess" :  #### Load existing data
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
-                                 preprocess_pars, filter_pars, path_features_store=path_features_store)
+                                 preprocess_pars,  path_features_store=path_features_store)
 
     ### Actual column for label
     model_dict['data_pars']['coly'] = cols['coly']
