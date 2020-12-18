@@ -64,7 +64,7 @@ def cardif_lightgbm(path_model_out="") :
         ### Before the prediction is done
         return  y.astype('int')
 
-    model_dict = {'model_pars': {'config_model_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
+    model_dict = {'model_pars': {'config_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
         , 'model_path'       : path_model_out
         , 'model_pars'       : {'objective': 'binary','learning_rate':0.1,'boosting_type':'gbdt' }  # default
         , 'post_process_fun' : post_process_fun
@@ -130,10 +130,10 @@ def preprocess():
 def train():
     from source import run_train
 
-    run_train.run_train(config_model_name =  config_name,
+    run_train.run_train(config_name=  config_name,
                         path_data         =  path_data_train,
                         path_output       =  path_model,
-                        path_config_model =  path_config_model , n_sample = n_sample)
+                        path_config_model =  path_config_model, n_sample = n_sample)
 
 
 ###################################################################################
@@ -177,7 +177,7 @@ def check():
         print(lgb_featimpt_train)
     except :
         pass
-    #! python source/run_inference.py  run_predict  --config_model_name  LGBMRegressor  --n_sample 1000   --path_model /data/output/a01_lightgbm_huber/    --path_output /data/output/pred_a01_lightgbm_huber/    --path_data /data/input/train/
+    #! python source/run_inference.py  run_predict  --config_name  LGBMRegressor  --n_sample 1000   --path_model /data/output/a01_lightgbm_huber/    --path_output /data/output/pred_a01_lightgbm_huber/    --path_data /data/input/train/
 
 
 

@@ -240,8 +240,9 @@ def pd_coltext_tdidf(df, coltext, word_tokeep=None, word_minfreq=1, return_val="
     """
     from sklearn.feature_extraction.text import CountVectorizer
 
-    if not isinstance(coltext, str):
-        raise Exception("coltext should be string")
+    for coltext_ in coltext:
+        if not isinstance(coltext_, str):
+            raise Exception("coltext should be string")
 
     if word_tokeep is None:
         cv = CountVectorizer(

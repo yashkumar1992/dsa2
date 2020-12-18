@@ -27,8 +27,8 @@ jobs:
       
 
     ##### Log Start  ######################################################
-    - name: ssh_gen
-      uses: webfactory/ssh-agent@v0.2.0
+    #- name: ssh_gen
+    #  uses: webfactory/ssh-agent@v0.2.0
       #with:
       #  ssh-private-key: ${{ secrets.GIT_RSA }}
                 

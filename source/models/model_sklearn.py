@@ -58,7 +58,7 @@ class Model(object):
         if model_pars is None:
             self.model = None
         else:
-            model_class = globals()[model_pars["config_model_name"]]
+            model_class = globals()[model_pars["config_name"]]
             self.model = model_class(**model_pars['model_pars'])
             if VERBOSE: log(model_class, self.model)
 
@@ -71,7 +71,7 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     Xtrain, ytrain, Xtest, ytest = get_dataset(data_pars, task_type="train")
     if VERBOSE: log(Xtrain.shape, model.model)
 
-    if "LGBM" in model.model_pars['config_model_name']:
+    if "LGBM" in model.model_pars['config_name']:
         model.model.fit(Xtrain, ytrain, eval_set=[(Xtest, ytest)], **compute_pars.get("compute_pars", {}))
     else:
         model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
