@@ -27,18 +27,19 @@ print(dir_data)
 
 
 def global_pars_update(model_dict,  data_name, config_name):
-    # global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
     m                      = {}
     model_name             = model_dict['model_pars']['config_name']
     m['path_config_model'] = root + f"/{config_file}"
-    m['path_model']        = f'data/output/{data_name}/a01_{model_name}/'
+    m['config_name']       = config_name
+
     m['path_data_train']   = f'data/input/{data_name}/train/'
     m['path_data_test']    = f'data/input/{data_name}/test/'
-    m['path_output_pred']  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
+    m['path_model']        = f'data/output/{data_name}/{model_name}/'
+    m['path_output_pred']  = f'data/output/{data_name}/pred_{config_name}/'
     m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
 
     model_dict[ 'global_pars'] = m
-    model_dict['global_pars']['config_name'] = config_name
     return model_dict
 
 
@@ -146,24 +147,6 @@ def titanic_lightgbm(path_model_out="") :
     ##### Filling Global parameters    ############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
