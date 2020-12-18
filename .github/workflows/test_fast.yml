@@ -98,7 +98,7 @@ jobs:
 
     ########  Test running 
     - name: run_all
-      run: ztest/run_all.sh   # 2>&1 | tee   /home/runner/work/mlmodels/mlmodels_store/log_import/log_optim.py
+      run: chmod -R 777 . && ztest/run_all.sh   # 2>&1 | tee   /home/runner/work/mlmodels/mlmodels_store/log_import/log_optim.py
 
 
 
