@@ -2,12 +2,12 @@ os.getcwd D:\_devs\Python01\gitdev\dsa2
 D:\_devs\Python01\gitdev\dsa2
 D:/_devs/Python01/gitdev/dsa2/
 D:/_devs/Python01/gitdev/dsa2/data/
-{'model_pars': {'model_path': '', 'config_model_name': 'LGBMClassifier', 'model_pars': {'objective': 'binary', 'n_estimators': 3000, 'learning_rate': 0.001, 'boosting_type': 'gbdt', 'early_stopping_rounds': 5}, 'post_process_fun': <function titanic_lightgbm.<locals>.post_process_fun at 0x000001F835BE5488>, 'pre_process_pars': {'y_norm_fun': <function titanic_lightgbm.<locals>.pre_process_fun at 0x000001F835BE5510>, 'pipe_list': ['filter', 'label', 'dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot']}}, 'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score']}, 'data_pars': {'n_sample': 1000, 'cols_input_type': {'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 2, 'ymin': -1}}, 'global_pars': {'config_name': 'titanic_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//titanic_classifier.py', 'path_model': 'data/output/titanic/a01_LGBMClassifier/', 'path_data_train': 'data/input/titanic/train/', 'path_data_test': 'data/input/titanic/test/', 'path_output_pred': '/data/output/titanic/pred_a01_titanic_lightgbm/', 'n_sample': 1000}}
+{'model_pars': {'model_path': '', 'config_name': 'LGBMClassifier', 'model_pars': {'objective': 'binary', 'n_estimators': 3000, 'learning_rate': 0.001, 'boosting_type': 'gbdt', 'early_stopping_rounds': 5}, 'post_process_fun': <function titanic_lightgbm.<locals>.post_process_fun at 0x000001CB67ED41E0>, 'pre_process_pars': {'y_norm_fun': <function titanic_lightgbm.<locals>.pre_process_fun at 0x000001CB67ED4268>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}]}}, 'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score']}, 'data_pars': {'n_sample': 1000, 'cols_input_type': {'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 2, 'ymin': -1}}, 'global_pars': {'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//titanic_classifier.py', 'config_name': 'titanic_lightgbm', 'path_data_train': 'data/input/titanic/train/', 'path_data_test': 'data/input/titanic/test/', 'path_model': 'data/output/titanic/LGBMClassifier/', 'path_output_pred': 'data/output/titanic/pred_titanic_lightgbm/', 'n_sample': 1000}}
 D:/_devs/Python01/gitdev/dsa2/
 os.getcwd D:\_devs\Python01\gitdev\dsa2
 D:/_devs/Python01/gitdev/dsa2/
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier/',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier/',) 
 
   ('#### Model parameters Dynamic loading  ############################################',) 
 
@@ -18,13 +18,13 @@ D:/_devs/Python01/gitdev/dsa2/data/
 
   ('#### load input column family  ###################################################',) 
 
-  ({'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']},) 
-
   ('#### Preprocess  #################################################################',) 
 
   ({'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']},) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colid.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline/',) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colid.pkl',) 
 
   ('loading', 'PassengerId', 'D:/_devs/Python01/gitdev/dsa2/data/input/titanic/train//features*') 
 ['D:/_devs/Python01/gitdev/dsa2/data/input/titanic/train\\features.zip']
@@ -44,8 +44,6 @@ Sex                             male  ...                 male
 3            4         1
 4            5         0) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline/',) 
-
   ('#####  coly  ###########################################################################',) 
 
   ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
@@ -53,7 +51,7 @@ D:/_devs/Python01/gitdev/dsa2/
 
   ('y_norm_fun preprocess_pars',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//coly/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//features_store//coly/features.parquet',) 
 
   (             Survived
 PassengerId          
@@ -71,9 +69,9 @@ PassengerId
 
 [891 rows x 1 columns], ['Survived']) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//coly.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//coly.pkl',) 
 
-  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'dfnum_bin', 'type': ''}, '##########################################################') 
+  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, '##########################################################') 
 
   ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
 
@@ -82,68 +80,86 @@ PassengerId
   ('### colnum Map numerics to Category bin  ###########################################',) 
 Pclass
            Pclass               
-              min size mean  max
+              max  min size mean
 Pclass_bin                      
-0             1.0  216  1.0  1.0
-4             2.0  184  2.0  2.0
-9             3.0  491  3.0  3.0
+0             1.0  1.0  216  1.0
+4             2.0  2.0  184  2.0
+9             3.0  3.0  491  3.0
 Age
-           Age                           
-           min size       mean        max
+               Age                       
+               max    min size       mean
 Age_bin                                  
-0         0.42   54   3.355000   8.000000
-1         9.00   46  13.467391  16.000000
-2        17.00  193  20.778238  24.000000
-3        24.50  330  30.183939  32.200001
-4        32.50  118  36.177967  40.000000
-5        40.50   70  44.400002  48.000000
-6        49.00   45  51.944443  56.000000
-7        57.00   24  60.291668  64.000000
-8        65.00    9  68.166664  71.000000
-9        74.00    2  77.000000  80.000000
+0         8.000000   0.42   54   3.355000
+1        16.000000   9.00   46  13.467391
+2        24.000000  17.00  193  20.778238
+3        32.200001  24.50  330  30.183939
+4        40.000000  32.50  118  36.177967
+5        48.000000  40.50   70  44.400002
+6        56.000000  49.00   45  51.944443
+7        64.000000  57.00   24  60.291668
+8        71.000000  65.00    9  68.166664
+9        80.000000  74.00    2  77.000000
 SibSp
           SibSp               
-            min size mean  max
+            max  min size mean
 SibSp_bin                     
-0           0.0  608  0.0  0.0
-1           1.0  209  1.0  1.0
-2           2.0   28  2.0  2.0
-3           3.0   16  3.0  3.0
-4           4.0   18  4.0  4.0
-6           5.0    5  5.0  5.0
-9           8.0    7  8.0  8.0
+0           0.0  0.0  608  0.0
+1           1.0  1.0  209  1.0
+2           2.0  2.0   28  2.0
+3           3.0  3.0   16  3.0
+4           4.0  4.0   18  4.0
+6           5.0  5.0    5  5.0
+9           8.0  8.0    7  8.0
 Parch
           Parch               
-            min size mean  max
+            max  min size mean
 Parch_bin                     
-0           0.0  678  0.0  0.0
-1           1.0  118  1.0  1.0
-3           2.0   80  2.0  2.0
-4           3.0    5  3.0  3.0
-6           4.0    4  4.0  4.0
-8           5.0    5  5.0  5.0
-9           6.0    1  6.0  6.0
+0           0.0  0.0  678  0.0
+1           1.0  1.0  118  1.0
+3           2.0  2.0   80  2.0
+4           3.0  3.0    5  3.0
+6           4.0  4.0    4  4.0
+8           5.0  5.0    5  5.0
+9           6.0  6.0    1  6.0
 Fare
                 Fare                             
-                 min size        mean         max
+                 max         min size        mean
 Fare_bin                                         
-0           0.000000  732   15.595536   50.495800
-1          51.479198  106   69.483727   93.500000
-2         106.425003   31  128.930237  153.462494
-3         164.866699    2  164.866699  164.866699
-4         211.337494   11  224.766663  247.520798
-5         262.375000    6  262.791656  263.000000
-9         512.329224    3  512.329224  512.329224
+0          50.495800    0.000000  732   15.595536
+1          93.500000   51.479198  106   69.483727
+2         153.462494  106.425003   31  128.930237
+3         164.866699  164.866699    2  164.866699
+4         247.520798  211.337494   11  224.766663
+5         263.000000  262.375000    6  262.791656
+9         512.329224  512.329224    3  512.329224
 
   (OrderedDict([('Pclass', [0.9999, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4000000000000004, 2.6, 2.8, 3.0]), ('Age', [0.41989998688697816, 8.378000169992447, 16.336000353097916, 24.294000536203384, 32.25200071930885, 40.21000090241432, 48.16800108551979, 56.12600126862526, 64.08400145173073, 72.0420016348362, 80.00000181794167]), ('SibSp', [-0.0001, 0.8, 1.6, 2.4000000000000004, 3.2, 4.0, 4.800000000000001, 5.6000000000000005, 6.4, 7.2, 8.0]), ('Parch', [-0.0001, 0.6, 1.2, 1.7999999999999998, 2.4, 3.0, 3.5999999999999996, 4.2, 4.8, 5.3999999999999995, 6.0]), ('Fare', [-0.0001, 51.23292236328125, 102.4658447265625, 153.69876708984373, 204.931689453125, 256.16461181640625, 307.39753417968745, 358.6304565429687, 409.86337890625, 461.09630126953124, 512.3292236328125])]),) 
 
   (['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin'],) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colnum_binmap.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colnum_binmap.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colnum_bin.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colnum_bin.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colnum/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//features_store//colnum/features.parquet',) 
+
+  (             Pclass   Age  SibSp  ...  SibSp_bin  Parch_bin  Fare_bin
+PassengerId                       ...                                
+1                 3  22.0      1  ...          1          0         0
+2                 1  38.0      1  ...          1          0         1
+3                 3  26.0      0  ...          0          0         0
+4                 1  35.0      1  ...          1          0         1
+5                 3  35.0      0  ...          0          0         0
+...             ...   ...    ...  ...        ...        ...       ...
+887               2  27.0      0  ...          0          0         0
+888               1  19.0      0  ...          0          0         0
+889               3  21.2      1  ...          1          3         0
+890               1  26.0      0  ...          0          0         0
+891               3  32.0      0  ...          0          0         0
+
+[891 rows x 10 columns], ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin']) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//features_store//colnum_bin/features.parquet',) 
 
   (             Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
 PassengerId                                                     
@@ -161,66 +177,7 @@ PassengerId
 
 [891 rows x 5 columns], ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin']) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colnum_bin/features.parquet',) 
-
-  (             Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
-
-[891 rows x 5 columns], ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin']) 
-------------dfi_all--------------------- {'coly': PassengerId
-1      0
-2      1
-3      1
-4      1
-5      0
-      ..
-887    0
-888    1
-889    0
-890    1
-891    0
-Name: Survived, Length: 891, dtype: int64, 'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
-
-[891 rows x 5 columns], 'colnum_bin':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
-
-[891 rows x 5 columns]}
-
-  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'dfnum_onehot', 'type': ''}, '##########################################################') 
+  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, '##########################################################') 
 
   ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
 
@@ -233,9 +190,9 @@ Fare_bin 7 (891, 28)
 
   (['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9'],) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colnum_onehot.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colnum_onehot.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colnum_onehot/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//features_store//colnum_onehot/features.parquet',) 
 
   (             Pclass_bin_0  Pclass_bin_4  ...  Fare_bin_5  Fare_bin_9
 PassengerId                              ...                        
@@ -252,63 +209,8 @@ PassengerId                              ...
 891                     0             0  ...           0           0
 
 [891 rows x 34 columns], ['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9']) 
-------------dfi_all--------------------- {'coly': PassengerId
-1      0
-2      1
-3      1
-4      1
-5      0
-      ..
-887    0
-888    1
-889    0
-890    1
-891    0
-Name: Survived, Length: 891, dtype: int64, 'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
 
-[891 rows x 5 columns], 'colnum_bin':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
-
-[891 rows x 5 columns], 'colnum_onehot':              Pclass_bin_0  Pclass_bin_4  ...  Fare_bin_5  Fare_bin_9
-PassengerId                              ...                        
-1                       0             0  ...           0           0
-2                       1             0  ...           0           0
-3                       0             0  ...           0           0
-4                       1             0  ...           0           0
-5                       0             0  ...           0           0
-...                   ...           ...  ...         ...         ...
-887                     0             1  ...           0           0
-888                     1             0  ...           0           0
-889                     0             0  ...           0           0
-890                     1             0  ...           0           0
-891                     0             0  ...           0           0
-
-[891 rows x 34 columns]}
-
-  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'dfcat_bin', 'type': ''}, '##########################################################') 
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, '##########################################################') 
 
   ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
 
@@ -318,11 +220,29 @@ PassengerId                              ...
 Embarked    object
 dtype: object, {'cat_map': {'Sex': {'female': 0, 'male': 1}, 'Embarked': {'C': 0, 'Q': 1, 'S': 2}}, 'cat_map_inverse': {'Sex': {0: 'female', 1: 'male'}, 'Embarked': {0: 'C', 1: 'Q', 2: 'S'}}}) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcat_bin_map.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colcat_bin_map.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcat_bin.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colcat_bin.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colcat/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//features_store//colcat/features.parquet',) 
+
+  (                Sex Embarked  Sex_int  Embarked_int
+PassengerId                                        
+1              male        S        0             0
+2            female        C        1             1
+3            female        S        1             0
+4            female        S        1             0
+5              male        S        0             0
+...             ...      ...      ...           ...
+887            male        S        0             0
+888          female        S        1             0
+889          female        S        1             0
+890            male        C        0             1
+891            male        Q        0             2
+
+[891 rows x 4 columns], ['Sex', 'Embarked', 'Sex_int', 'Embarked_int']) 
+
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//features_store//colcat_bin/features.parquet',) 
 
   (             Sex_int  Embarked_int
 PassengerId                       
@@ -340,108 +260,7 @@ PassengerId
 
 [891 rows x 2 columns], ['Sex_int', 'Embarked_int']) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colcat_bin/features.parquet',) 
-
-  (             Sex_int  Embarked_int
-PassengerId                       
-1                  0             0
-2                  1             1
-3                  1             0
-4                  1             0
-5                  0             0
-...              ...           ...
-887                0             0
-888                1             0
-889                1             0
-890                0             1
-891                0             2
-
-[891 rows x 2 columns], ['Sex_int', 'Embarked_int']) 
-------------dfi_all--------------------- {'coly': PassengerId
-1      0
-2      1
-3      1
-4      1
-5      0
-      ..
-887    0
-888    1
-889    0
-890    1
-891    0
-Name: Survived, Length: 891, dtype: int64, 'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
-
-[891 rows x 5 columns], 'colnum_bin':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
-
-[891 rows x 5 columns], 'colnum_onehot':              Pclass_bin_0  Pclass_bin_4  ...  Fare_bin_5  Fare_bin_9
-PassengerId                              ...                        
-1                       0             0  ...           0           0
-2                       1             0  ...           0           0
-3                       0             0  ...           0           0
-4                       1             0  ...           0           0
-5                       0             0  ...           0           0
-...                   ...           ...  ...         ...         ...
-887                     0             1  ...           0           0
-888                     1             0  ...           0           0
-889                     0             0  ...           0           0
-890                     1             0  ...           0           0
-891                     0             0  ...           0           0
-
-[891 rows x 34 columns], 'colcat':              Sex_int  Embarked_int
-PassengerId                       
-1                  0             0
-2                  1             1
-3                  1             0
-4                  1             0
-5                  0             0
-...              ...           ...
-887                0             0
-888                1             0
-889                1             0
-890                0             1
-891                0             2
-
-[891 rows x 2 columns], 'colcat_bin':              Sex_int  Embarked_int
-PassengerId                       
-1                  0             0
-2                  1             1
-3                  1             0
-4                  1             0
-5                  0             0
-...              ...           ...
-887                0             0
-888                1             0
-889                1             0
-890                0             1
-891                0             2
-
-[891 rows x 2 columns]}
-
-  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'dfcat_onehot', 'type': ''}, '##########################################################') 
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, '##########################################################') 
 
   ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
 
@@ -457,12 +276,12 @@ PassengerId
 4                         1               0               0
 5                         1               0               0,) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcat_onehot.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colcat_onehot.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcat.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colcat.pkl',) 
 ok ------------
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colcat_onehot/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//features_store//colcat_onehot/features.parquet',) 
 
   (             Embarked_int_0  Embarked_int_1  Embarked_int_2
 PassengerId                                                
@@ -479,105 +298,8 @@ PassengerId
 891                       0               0               1
 
 [891 rows x 3 columns], ['Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2']) 
-------------dfi_all--------------------- {'coly': PassengerId
-1      0
-2      1
-3      1
-4      1
-5      0
-      ..
-887    0
-888    1
-889    0
-890    1
-891    0
-Name: Survived, Length: 891, dtype: int64, 'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
 
-[891 rows x 5 columns], 'colnum_bin':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
-
-[891 rows x 5 columns], 'colnum_onehot':              Pclass_bin_0  Pclass_bin_4  ...  Fare_bin_5  Fare_bin_9
-PassengerId                              ...                        
-1                       0             0  ...           0           0
-2                       1             0  ...           0           0
-3                       0             0  ...           0           0
-4                       1             0  ...           0           0
-5                       0             0  ...           0           0
-...                   ...           ...  ...         ...         ...
-887                     0             1  ...           0           0
-888                     1             0  ...           0           0
-889                     0             0  ...           0           0
-890                     1             0  ...           0           0
-891                     0             0  ...           0           0
-
-[891 rows x 34 columns], 'colcat':              Sex_int  Embarked_int
-PassengerId                       
-1                  0             0
-2                  1             1
-3                  1             0
-4                  1             0
-5                  0             0
-...              ...           ...
-887                0             0
-888                1             0
-889                1             0
-890                0             1
-891                0             2
-
-[891 rows x 2 columns], 'colcat_bin':              Sex_int  Embarked_int
-PassengerId                       
-1                  0             0
-2                  1             1
-3                  1             0
-4                  1             0
-5                  0             0
-...              ...           ...
-887                0             0
-888                1             0
-889                1             0
-890                0             1
-891                0             2
-
-[891 rows x 2 columns], 'colcat_onehot':              Embarked_int_0  Embarked_int_1  Embarked_int_2
-PassengerId                                                
-1                         1               0               0
-2                         0               1               0
-3                         1               0               0
-4                         1               0               0
-5                         1               0               0
-...                     ...             ...             ...
-887                       1               0               0
-888                       1               0               0
-889                       1               0               0
-890                       0               1               0
-891                       0               0               1
-
-[891 rows x 3 columns]}
-
-  ('###################', {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'dfcross_hot', 'type': 'cross'}, '##########################################################') 
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}, '##########################################################') 
 
   ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
 
@@ -598,11 +320,11 @@ Parch_bin_3-Fare_bin_0       0  0
 
 [117 rows x 2 columns],) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcross_single_onehot_select.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colcross_single_onehot_select.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colcross_pair.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colcross_pair.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//colcross_pair/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//features_store//colcross_pair/features.parquet',) 
 
   (             Embarked_int_0-Pclass_bin_0  ...  Parch_bin_3-Fare_bin_0
 PassengerId                               ...                        
@@ -619,119 +341,8 @@ PassengerId                               ...
 891                                    0  ...                       0
 
 [891 rows x 117 columns], ['Embarked_int_0-Pclass_bin_0', 'Embarked_int_0-Pclass_bin_4', 'Embarked_int_0-Pclass_bin_9', 'Embarked_int_0-Age_bin_0', 'Embarked_int_0-Age_bin_1', 'Embarked_int_0-Age_bin_2', 'Embarked_int_0-Age_bin_3', 'Embarked_int_0-Age_bin_4', 'Embarked_int_0-Age_bin_5', 'Embarked_int_0-Age_bin_6', 'Embarked_int_0-Age_bin_7', 'Embarked_int_0-SibSp_bin_0', 'Embarked_int_0-SibSp_bin_1', 'Embarked_int_0-SibSp_bin_2', 'Embarked_int_0-Parch_bin_0', 'Embarked_int_0-Parch_bin_1', 'Embarked_int_0-Parch_bin_3', 'Embarked_int_0-Fare_bin_0', 'Embarked_int_0-Fare_bin_1', 'Embarked_int_1-Pclass_bin_0', 'Embarked_int_1-Pclass_bin_9', 'Embarked_int_1-Age_bin_2', 'Embarked_int_1-Age_bin_3', 'Embarked_int_1-Age_bin_4', 'Embarked_int_1-SibSp_bin_0', 'Embarked_int_1-SibSp_bin_1', 'Embarked_int_1-Parch_bin_0', 'Embarked_int_1-Parch_bin_1', 'Embarked_int_1-Fare_bin_0', 'Embarked_int_1-Fare_bin_1', 'Embarked_int_2-Pclass_bin_9', 'Embarked_int_2-Age_bin_3', 'Embarked_int_2-SibSp_bin_0', 'Embarked_int_2-Parch_bin_0', 'Embarked_int_2-Fare_bin_0', 'Pclass_bin_0-Age_bin_2', 'Pclass_bin_0-Age_bin_3', 'Pclass_bin_0-Age_bin_4', 'Pclass_bin_0-Age_bin_5', 'Pclass_bin_0-Age_bin_6', 'Pclass_bin_0-SibSp_bin_0', 'Pclass_bin_0-SibSp_bin_1', 'Pclass_bin_0-Parch_bin_0', 'Pclass_bin_0-Parch_bin_1', 'Pclass_bin_0-Parch_bin_3', 'Pclass_bin_0-Fare_bin_0', 'Pclass_bin_0-Fare_bin_1', 'Pclass_bin_0-Fare_bin_2', 'Pclass_bin_4-Age_bin_2', 'Pclass_bin_4-Age_bin_3', 'Pclass_bin_4-Age_bin_4', 'Pclass_bin_4-SibSp_bin_0', 'Pclass_bin_4-SibSp_bin_1', 'Pclass_bin_4-Parch_bin_0', 'Pclass_bin_4-Parch_bin_1', 'Pclass_bin_4-Fare_bin_0', 'Pclass_bin_9-Age_bin_0', 'Pclass_bin_9-Age_bin_1', 'Pclass_bin_9-Age_bin_2', 'Pclass_bin_9-Age_bin_3', 'Pclass_bin_9-Age_bin_4', 'Pclass_bin_9-Age_bin_5', 'Pclass_bin_9-SibSp_bin_0', 'Pclass_bin_9-SibSp_bin_1', 'Pclass_bin_9-SibSp_bin_4', 'Pclass_bin_9-Parch_bin_0', 'Pclass_bin_9-Parch_bin_1', 'Pclass_bin_9-Parch_bin_3', 'Pclass_bin_9-Fare_bin_0', 'Age_bin_0-Parch_bin_1', 'Age_bin_0-Parch_bin_3', 'Age_bin_0-Fare_bin_0', 'Age_bin_1-SibSp_bin_0', 'Age_bin_1-Parch_bin_0', 'Age_bin_1-Fare_bin_0', 'Age_bin_2-SibSp_bin_0', 'Age_bin_2-SibSp_bin_1', 'Age_bin_2-Parch_bin_0', 'Age_bin_2-Parch_bin_1', 'Age_bin_2-Parch_bin_3', 'Age_bin_2-Fare_bin_0', 'Age_bin_2-Fare_bin_1', 'Age_bin_3-SibSp_bin_0', 'Age_bin_3-SibSp_bin_1', 'Age_bin_3-Parch_bin_0', 'Age_bin_3-Fare_bin_0', 'Age_bin_3-Fare_bin_1', 'Age_bin_4-SibSp_bin_0', 'Age_bin_4-SibSp_bin_1', 'Age_bin_4-Parch_bin_0', 'Age_bin_4-Fare_bin_0', 'Age_bin_5-SibSp_bin_0', 'Age_bin_5-SibSp_bin_1', 'Age_bin_5-Parch_bin_0', 'Age_bin_5-Fare_bin_0', 'Age_bin_6-SibSp_bin_0', 'Age_bin_6-Parch_bin_0', 'Age_bin_6-Fare_bin_0', 'Age_bin_7-SibSp_bin_0', 'Age_bin_7-Parch_bin_0', 'SibSp_bin_0-Parch_bin_0', 'SibSp_bin_0-Parch_bin_1', 'SibSp_bin_0-Parch_bin_3', 'SibSp_bin_0-Fare_bin_0', 'SibSp_bin_0-Fare_bin_1', 'SibSp_bin_1-Parch_bin_0', 'SibSp_bin_1-Parch_bin_1', 'SibSp_bin_1-Parch_bin_3', 'SibSp_bin_1-Fare_bin_0', 'SibSp_bin_1-Fare_bin_1', 'SibSp_bin_2-Fare_bin_0', 'SibSp_bin_4-Fare_bin_0', 'Parch_bin_0-Fare_bin_0', 'Parch_bin_0-Fare_bin_1', 'Parch_bin_1-Fare_bin_0', 'Parch_bin_1-Fare_bin_1', 'Parch_bin_3-Fare_bin_0']) 
-------------dfi_all--------------------- {'coly': PassengerId
-1      0
-2      1
-3      1
-4      1
-5      0
-      ..
-887    0
-888    1
-889    0
-890    1
-891    0
-Name: Survived, Length: 891, dtype: int64, 'colnum':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
 
-[891 rows x 5 columns], 'colnum_bin':              Pclass_bin  Age_bin  SibSp_bin  Parch_bin  Fare_bin
-PassengerId                                                     
-1                     9        2          1          0         0
-2                     0        4          1          0         1
-3                     9        3          0          0         0
-4                     0        4          1          0         1
-5                     9        4          0          0         0
-...                 ...      ...        ...        ...       ...
-887                   4        3          0          0         0
-888                   0        2          0          0         0
-889                   9        2          1          3         0
-890                   0        3          0          0         0
-891                   9        3          0          0         0
-
-[891 rows x 5 columns], 'colnum_onehot':              Pclass_bin_0  Pclass_bin_4  ...  Fare_bin_5  Fare_bin_9
-PassengerId                              ...                        
-1                       0             0  ...           0           0
-2                       1             0  ...           0           0
-3                       0             0  ...           0           0
-4                       1             0  ...           0           0
-5                       0             0  ...           0           0
-...                   ...           ...  ...         ...         ...
-887                     0             1  ...           0           0
-888                     1             0  ...           0           0
-889                     0             0  ...           0           0
-890                     1             0  ...           0           0
-891                     0             0  ...           0           0
-
-[891 rows x 34 columns], 'colcat':              Sex_int  Embarked_int
-PassengerId                       
-1                  0             0
-2                  1             1
-3                  1             0
-4                  1             0
-5                  0             0
-...              ...           ...
-887                0             0
-888                1             0
-889                1             0
-890                0             1
-891                0             2
-
-[891 rows x 2 columns], 'colcat_bin':              Sex_int  Embarked_int
-PassengerId                       
-1                  0             0
-2                  1             1
-3                  1             0
-4                  1             0
-5                  0             0
-...              ...           ...
-887                0             0
-888                1             0
-889                1             0
-890                0             1
-891                0             2
-
-[891 rows x 2 columns], 'colcat_onehot':              Embarked_int_0  Embarked_int_1  Embarked_int_2
-PassengerId                                                
-1                         1               0               0
-2                         0               1               0
-3                         1               0               0
-4                         1               0               0
-5                         1               0               0
-...                     ...             ...             ...
-887                       1               0               0
-888                       1               0               0
-889                       1               0               0
-890                       0               1               0
-891                       0               0               1
-
-[891 rows x 3 columns], 'colcross_pair':              Embarked_int_0-Pclass_bin_0  ...  Parch_bin_3-Fare_bin_0
-PassengerId                               ...                        
-1                                      0  ...                       0
-2                                      0  ...                       0
-3                                      0  ...                       0
-4                                      1  ...                       0
-5                                      0  ...                       0
-...                                  ...  ...                     ...
-887                                    0  ...                       0
-888                                    1  ...                       0
-889                                    0  ...                       1
-890                                    0  ...                       0
-891                                    0  ...                       0
-
-[891 rows x 117 columns]}
-
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//features_store//dfX/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//features_store//dfX/features.parquet',) 
 
   (             Survived  Pclass  ...  Parch_bin_1-Fare_bin_1  Parch_bin_3-Fare_bin_0
 PassengerId                    ...                                                
@@ -749,10 +360,9 @@ PassengerId                    ...
 
 [891 rows x 169 columns], ['Survived', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Sex', 'Embarked', 'Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin', 'Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9', 'Sex_int', 'Embarked_int', 'Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2', 'Embarked_int_0-Pclass_bin_0', 'Embarked_int_0-Pclass_bin_4', 'Embarked_int_0-Pclass_bin_9', 'Embarked_int_0-Age_bin_0', 'Embarked_int_0-Age_bin_1', 'Embarked_int_0-Age_bin_2', 'Embarked_int_0-Age_bin_3', 'Embarked_int_0-Age_bin_4', 'Embarked_int_0-Age_bin_5', 'Embarked_int_0-Age_bin_6', 'Embarked_int_0-Age_bin_7', 'Embarked_int_0-SibSp_bin_0', 'Embarked_int_0-SibSp_bin_1', 'Embarked_int_0-SibSp_bin_2', 'Embarked_int_0-Parch_bin_0', 'Embarked_int_0-Parch_bin_1', 'Embarked_int_0-Parch_bin_3', 'Embarked_int_0-Fare_bin_0', 'Embarked_int_0-Fare_bin_1', 'Embarked_int_1-Pclass_bin_0', 'Embarked_int_1-Pclass_bin_9', 'Embarked_int_1-Age_bin_2', 'Embarked_int_1-Age_bin_3', 'Embarked_int_1-Age_bin_4', 'Embarked_int_1-SibSp_bin_0', 'Embarked_int_1-SibSp_bin_1', 'Embarked_int_1-Parch_bin_0', 'Embarked_int_1-Parch_bin_1', 'Embarked_int_1-Fare_bin_0', 'Embarked_int_1-Fare_bin_1', 'Embarked_int_2-Pclass_bin_9', 'Embarked_int_2-Age_bin_3', 'Embarked_int_2-SibSp_bin_0', 'Embarked_int_2-Parch_bin_0', 'Embarked_int_2-Fare_bin_0', 'Pclass_bin_0-Age_bin_2', 'Pclass_bin_0-Age_bin_3', 'Pclass_bin_0-Age_bin_4', 'Pclass_bin_0-Age_bin_5', 'Pclass_bin_0-Age_bin_6', 'Pclass_bin_0-SibSp_bin_0', 'Pclass_bin_0-SibSp_bin_1', 'Pclass_bin_0-Parch_bin_0', 'Pclass_bin_0-Parch_bin_1', 'Pclass_bin_0-Parch_bin_3', 'Pclass_bin_0-Fare_bin_0', 'Pclass_bin_0-Fare_bin_1', 'Pclass_bin_0-Fare_bin_2', 'Pclass_bin_4-Age_bin_2', 'Pclass_bin_4-Age_bin_3', 'Pclass_bin_4-Age_bin_4', 'Pclass_bin_4-SibSp_bin_0', 'Pclass_bin_4-SibSp_bin_1', 'Pclass_bin_4-Parch_bin_0', 'Pclass_bin_4-Parch_bin_1', 'Pclass_bin_4-Fare_bin_0', 'Pclass_bin_9-Age_bin_0', 'Pclass_bin_9-Age_bin_1', 'Pclass_bin_9-Age_bin_2', 'Pclass_bin_9-Age_bin_3', 'Pclass_bin_9-Age_bin_4', 'Pclass_bin_9-Age_bin_5', 'Pclass_bin_9-SibSp_bin_0', 'Pclass_bin_9-SibSp_bin_1', 'Pclass_bin_9-SibSp_bin_4', 'Pclass_bin_9-Parch_bin_0', 'Pclass_bin_9-Parch_bin_1', 'Pclass_bin_9-Parch_bin_3', 'Pclass_bin_9-Fare_bin_0', 'Age_bin_0-Parch_bin_1', 'Age_bin_0-Parch_bin_3', 'Age_bin_0-Fare_bin_0', 'Age_bin_1-SibSp_bin_0', 'Age_bin_1-Parch_bin_0', 'Age_bin_1-Fare_bin_0', 'Age_bin_2-SibSp_bin_0', 'Age_bin_2-SibSp_bin_1', 'Age_bin_2-Parch_bin_0', 'Age_bin_2-Parch_bin_1', 'Age_bin_2-Parch_bin_3', 'Age_bin_2-Fare_bin_0', 'Age_bin_2-Fare_bin_1', 'Age_bin_3-SibSp_bin_0', 'Age_bin_3-SibSp_bin_1', 'Age_bin_3-Parch_bin_0', 'Age_bin_3-Fare_bin_0', 'Age_bin_3-Fare_bin_1', 'Age_bin_4-SibSp_bin_0', 'Age_bin_4-SibSp_bin_1', 'Age_bin_4-Parch_bin_0', 'Age_bin_4-Fare_bin_0', 'Age_bin_5-SibSp_bin_0', 'Age_bin_5-SibSp_bin_1', 'Age_bin_5-Parch_bin_0', 'Age_bin_5-Fare_bin_0', 'Age_bin_6-SibSp_bin_0', 'Age_bin_6-Parch_bin_0', 'Age_bin_6-Fare_bin_0', 'Age_bin_7-SibSp_bin_0', 'Age_bin_7-Parch_bin_0', 'SibSp_bin_0-Parch_bin_0', 'SibSp_bin_0-Parch_bin_1', 'SibSp_bin_0-Parch_bin_3', 'SibSp_bin_0-Fare_bin_0', 'SibSp_bin_0-Fare_bin_1', 'SibSp_bin_1-Parch_bin_0', 'SibSp_bin_1-Parch_bin_1', 'SibSp_bin_1-Parch_bin_3', 'SibSp_bin_1-Fare_bin_0', 'SibSp_bin_1-Fare_bin_1', 'SibSp_bin_2-Fare_bin_0', 'SibSp_bin_4-Fare_bin_0', 'Parch_bin_0-Fare_bin_0', 'Parch_bin_0-Fare_bin_1', 'Parch_bin_1-Fare_bin_0', 'Parch_bin_1-Fare_bin_1', 'Parch_bin_3-Fare_bin_0']) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//colsX.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//colsX.pkl',) 
 
-  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/a01_LGBMClassifier//pipeline//cols_family.pkl',) 
-cols_family_all {'colid': 'PassengerId', 'coly': 'Survived', 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'colnum_bin': ['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin'], 'colnum_onehot': ['Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9'], 'colcat': ['Sex', 'Embarked'], 'colcat_bin': ['Sex_int', 'Embarked_int'], 'colcat_onehot': ['Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2'], 'colcross_pair': [('Embarked_int_0', 'Pclass_bin_0', 0.1447811447811448), ('Embarked_int_0', 'Pclass_bin_4', 0.1840628507295174), ('Embarked_int_0', 'Pclass_bin_9', 0.3961840628507295), ('Embarked_int_0', 'Age_bin_0', 0.04713804713804714), ('Embarked_int_0', 'Age_bin_1', 0.03591470258136925), ('Embarked_int_0', 'Age_bin_2', 0.1717171717171717), ('Embarked_int_0', 'Age_bin_3', 0.23681257014590348), ('Embarked_int_0', 'Age_bin_4', 0.10549943883277217), ('Embarked_int_0', 'Age_bin_5', 0.06621773288439955), ('Embarked_int_0', 'Age_bin_6', 0.03479236812570146), ('Embarked_int_0', 'Age_bin_7', 0.020202020202020204), ('Embarked_int_0', 'SibSp_bin_0', 0.49382716049382713), ('Embarked_int_0', 'SibSp_bin_1', 0.1627384960718294), ('Embarked_int_0', 'SibSp_bin_2', 0.02132435465768799), ('Embarked_int_0', 'Parch_bin_0', 0.5454545454545454), ('Embarked_int_0', 'Parch_bin_1', 0.0920314253647587), ('Embarked_int_0', 'Parch_bin_3', 0.07295173961840629), ('Embarked_int_0', 'Fare_bin_0', 0.6172839506172839), ('Embarked_int_0', 'Fare_bin_1', 0.08080808080808081), ('Embarked_int_1', 'Pclass_bin_0', 0.09539842873176206), ('Embarked_int_1', 'Pclass_bin_9', 0.07407407407407407), ('Embarked_int_1', 'Age_bin_2', 0.038159371492704826), ('Embarked_int_1', 'Age_bin_3', 0.0707070707070707), ('Embarked_int_1', 'Age_bin_4', 0.02356902356902357), ('Embarked_int_1', 'SibSp_bin_0', 0.122334455667789), ('Embarked_int_1', 'SibSp_bin_1', 0.05948372615039282), ('Embarked_int_1', 'Parch_bin_0', 0.13804713804713806), ('Embarked_int_1', 'Parch_bin_1', 0.03367003367003367), ('Embarked_int_1', 'Fare_bin_0', 0.12008978675645342), ('Embarked_int_1', 'Fare_bin_1', 0.03591470258136925), ('Embarked_int_2', 'Pclass_bin_9', 0.08080808080808081), ('Embarked_int_2', 'Age_bin_3', 0.06285072951739619), ('Embarked_int_2', 'SibSp_bin_0', 0.06621773288439955), ('Embarked_int_2', 'Parch_bin_0', 0.07744107744107744), ('Embarked_int_2', 'Fare_bin_0', 0.08417508417508418), ('Pclass_bin_0', 'Age_bin_2', 0.03367003367003367), ('Pclass_bin_0', 'Age_bin_3', 0.06621773288439955), ('Pclass_bin_0', 'Age_bin_4', 0.04713804713804714), ('Pclass_bin_0', 'Age_bin_5', 0.030303030303030304), ('Pclass_bin_0', 'Age_bin_6', 0.030303030303030304), ('Pclass_bin_0', 'SibSp_bin_0', 0.1537598204264871), ('Pclass_bin_0', 'SibSp_bin_1', 0.07968574635241302), ('Pclass_bin_0', 'Parch_bin_0', 0.1829405162738496), ('Pclass_bin_0', 'Parch_bin_1', 0.03479236812570146), ('Pclass_bin_0', 'Parch_bin_3', 0.02356902356902357), ('Pclass_bin_0', 'Fare_bin_0', 0.08754208754208755), ('Pclass_bin_0', 'Fare_bin_1', 0.09539842873176206), ('Pclass_bin_0', 'Fare_bin_2', 0.03479236812570146), ('Pclass_bin_4', 'Age_bin_2', 0.04152637485970819), ('Pclass_bin_4', 'Age_bin_3', 0.06509539842873176), ('Pclass_bin_4', 'Age_bin_4', 0.038159371492704826), ('Pclass_bin_4', 'SibSp_bin_0', 0.13468013468013468), ('Pclass_bin_4', 'SibSp_bin_1', 0.06172839506172839), ('Pclass_bin_4', 'Parch_bin_0', 0.15039281705948374), ('Pclass_bin_4', 'Parch_bin_1', 0.03591470258136925), ('Pclass_bin_4', 'Fare_bin_0', 0.19865319865319866), ('Pclass_bin_9', 'Age_bin_0', 0.038159371492704826), ('Pclass_bin_9', 'Age_bin_1', 0.04040404040404041), ('Pclass_bin_9', 'Age_bin_2', 0.1414141414141414), ('Pclass_bin_9', 'Age_bin_3', 0.23905723905723905), ('Pclass_bin_9', 'Age_bin_4', 0.04713804713804714), ('Pclass_bin_9', 'Age_bin_5', 0.031425364758698095), ('Pclass_bin_9', 'SibSp_bin_0', 0.3939393939393939), ('Pclass_bin_9', 'SibSp_bin_1', 0.0931537598204265), ('Pclass_bin_9', 'SibSp_bin_4', 0.020202020202020204), ('Pclass_bin_9', 'Parch_bin_0', 0.4276094276094276), ('Pclass_bin_9', 'Parch_bin_1', 0.06172839506172839), ('Pclass_bin_9', 'Parch_bin_3', 0.04826038159371493), ('Pclass_bin_9', 'Fare_bin_0', 0.5353535353535354), ('Age_bin_0', 'Parch_bin_1', 0.037037037037037035), ('Age_bin_0', 'Parch_bin_3', 0.02244668911335578), ('Age_bin_0', 'Fare_bin_0', 0.05723905723905724), ('Age_bin_1', 'SibSp_bin_0', 0.02356902356902357), ('Age_bin_1', 'Parch_bin_0', 0.02356902356902357), ('Age_bin_1', 'Fare_bin_0', 0.04601571268237935), ('Age_bin_2', 'SibSp_bin_0', 0.15039281705948374), ('Age_bin_2', 'SibSp_bin_1', 0.038159371492704826), ('Age_bin_2', 'Parch_bin_0', 0.16161616161616163), ('Age_bin_2', 'Parch_bin_1', 0.024691358024691357), ('Age_bin_2', 'Parch_bin_3', 0.028058361391694726), ('Age_bin_2', 'Fare_bin_0', 0.1739618406285073), ('Age_bin_2', 'Fare_bin_1', 0.028058361391694726), ('Age_bin_3', 'SibSp_bin_0', 0.2884399551066218), ('Age_bin_3', 'SibSp_bin_1', 0.07407407407407407), ('Age_bin_3', 'Parch_bin_0', 0.34231200897867564), ('Age_bin_3', 'Fare_bin_0', 0.3265993265993266), ('Age_bin_3', 'Fare_bin_1', 0.031425364758698095), ('Age_bin_4', 'SibSp_bin_0', 0.08529741863075196), ('Age_bin_4', 'SibSp_bin_1', 0.04489337822671156), ('Age_bin_4', 'Parch_bin_0', 0.10101010101010101), ('Age_bin_4', 'Fare_bin_0', 0.09988776655443322), ('Age_bin_5', 'SibSp_bin_0', 0.05387205387205387), ('Age_bin_5', 'SibSp_bin_1', 0.02244668911335578), ('Age_bin_5', 'Parch_bin_0', 0.05948372615039282), ('Age_bin_5', 'Fare_bin_0', 0.06060606060606061), ('Age_bin_6', 'SibSp_bin_0', 0.03254769921436588), ('Age_bin_6', 'Parch_bin_0', 0.04040404040404041), ('Age_bin_6', 'Fare_bin_0', 0.029180695847362513), ('Age_bin_7', 'SibSp_bin_0', 0.02132435465768799), ('Age_bin_7', 'Parch_bin_0', 0.02132435465768799), ('SibSp_bin_0', 'Parch_bin_0', 0.6026936026936027), ('SibSp_bin_0', 'Parch_bin_1', 0.04264870931537598), ('SibSp_bin_0', 'Parch_bin_3', 0.03254769921436588), ('SibSp_bin_0', 'Fare_bin_0', 0.6049382716049383), ('SibSp_bin_0', 'Fare_bin_1', 0.04713804713804714), ('SibSp_bin_1', 'Parch_bin_0', 0.13804713804713806), ('SibSp_bin_1', 'Parch_bin_1', 0.06397306397306397), ('SibSp_bin_1', 'Parch_bin_3', 0.02132435465768799), ('SibSp_bin_1', 'Fare_bin_0', 0.1537598204264871), ('SibSp_bin_1', 'Fare_bin_1', 0.058361391694725026), ('SibSp_bin_2', 'Fare_bin_0', 0.02244668911335578), ('SibSp_bin_4', 'Fare_bin_0', 0.020202020202020204), ('Parch_bin_0', 'Fare_bin_0', 0.6475869809203143), ('Parch_bin_0', 'Fare_bin_1', 0.08529741863075196), ('Parch_bin_1', 'Fare_bin_0', 0.09988776655443322), ('Parch_bin_1', 'Fare_bin_1', 0.020202020202020204), ('Parch_bin_3', 'Fare_bin_0', 0.058361391694725026)], 'colX': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Sex', 'Embarked', 'Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin', 'Pclass_bin_0', 'Pclass_bin_4', 'Pclass_bin_9', 'Age_bin_0', 'Age_bin_1', 'Age_bin_2', 'Age_bin_3', 'Age_bin_4', 'Age_bin_5', 'Age_bin_6', 'Age_bin_7', 'Age_bin_8', 'Age_bin_9', 'SibSp_bin_0', 'SibSp_bin_1', 'SibSp_bin_2', 'SibSp_bin_3', 'SibSp_bin_4', 'SibSp_bin_6', 'SibSp_bin_9', 'Parch_bin_0', 'Parch_bin_1', 'Parch_bin_3', 'Parch_bin_4', 'Parch_bin_6', 'Parch_bin_8', 'Parch_bin_9', 'Fare_bin_0', 'Fare_bin_1', 'Fare_bin_2', 'Fare_bin_3', 'Fare_bin_4', 'Fare_bin_5', 'Fare_bin_9', 'Sex_int', 'Embarked_int', 'Embarked_int_0', 'Embarked_int_1', 'Embarked_int_2', 'Embarked_int_0-Pclass_bin_0', 'Embarked_int_0-Pclass_bin_4', 'Embarked_int_0-Pclass_bin_9', 'Embarked_int_0-Age_bin_0', 'Embarked_int_0-Age_bin_1', 'Embarked_int_0-Age_bin_2', 'Embarked_int_0-Age_bin_3', 'Embarked_int_0-Age_bin_4', 'Embarked_int_0-Age_bin_5', 'Embarked_int_0-Age_bin_6', 'Embarked_int_0-Age_bin_7', 'Embarked_int_0-SibSp_bin_0', 'Embarked_int_0-SibSp_bin_1', 'Embarked_int_0-SibSp_bin_2', 'Embarked_int_0-Parch_bin_0', 'Embarked_int_0-Parch_bin_1', 'Embarked_int_0-Parch_bin_3', 'Embarked_int_0-Fare_bin_0', 'Embarked_int_0-Fare_bin_1', 'Embarked_int_1-Pclass_bin_0', 'Embarked_int_1-Pclass_bin_9', 'Embarked_int_1-Age_bin_2', 'Embarked_int_1-Age_bin_3', 'Embarked_int_1-Age_bin_4', 'Embarked_int_1-SibSp_bin_0', 'Embarked_int_1-SibSp_bin_1', 'Embarked_int_1-Parch_bin_0', 'Embarked_int_1-Parch_bin_1', 'Embarked_int_1-Fare_bin_0', 'Embarked_int_1-Fare_bin_1', 'Embarked_int_2-Pclass_bin_9', 'Embarked_int_2-Age_bin_3', 'Embarked_int_2-SibSp_bin_0', 'Embarked_int_2-Parch_bin_0', 'Embarked_int_2-Fare_bin_0', 'Pclass_bin_0-Age_bin_2', 'Pclass_bin_0-Age_bin_3', 'Pclass_bin_0-Age_bin_4', 'Pclass_bin_0-Age_bin_5', 'Pclass_bin_0-Age_bin_6', 'Pclass_bin_0-SibSp_bin_0', 'Pclass_bin_0-SibSp_bin_1', 'Pclass_bin_0-Parch_bin_0', 'Pclass_bin_0-Parch_bin_1', 'Pclass_bin_0-Parch_bin_3', 'Pclass_bin_0-Fare_bin_0', 'Pclass_bin_0-Fare_bin_1', 'Pclass_bin_0-Fare_bin_2', 'Pclass_bin_4-Age_bin_2', 'Pclass_bin_4-Age_bin_3', 'Pclass_bin_4-Age_bin_4', 'Pclass_bin_4-SibSp_bin_0', 'Pclass_bin_4-SibSp_bin_1', 'Pclass_bin_4-Parch_bin_0', 'Pclass_bin_4-Parch_bin_1', 'Pclass_bin_4-Fare_bin_0', 'Pclass_bin_9-Age_bin_0', 'Pclass_bin_9-Age_bin_1', 'Pclass_bin_9-Age_bin_2', 'Pclass_bin_9-Age_bin_3', 'Pclass_bin_9-Age_bin_4', 'Pclass_bin_9-Age_bin_5', 'Pclass_bin_9-SibSp_bin_0', 'Pclass_bin_9-SibSp_bin_1', 'Pclass_bin_9-SibSp_bin_4', 'Pclass_bin_9-Parch_bin_0', 'Pclass_bin_9-Parch_bin_1', 'Pclass_bin_9-Parch_bin_3', 'Pclass_bin_9-Fare_bin_0', 'Age_bin_0-Parch_bin_1', 'Age_bin_0-Parch_bin_3', 'Age_bin_0-Fare_bin_0', 'Age_bin_1-SibSp_bin_0', 'Age_bin_1-Parch_bin_0', 'Age_bin_1-Fare_bin_0', 'Age_bin_2-SibSp_bin_0', 'Age_bin_2-SibSp_bin_1', 'Age_bin_2-Parch_bin_0', 'Age_bin_2-Parch_bin_1', 'Age_bin_2-Parch_bin_3', 'Age_bin_2-Fare_bin_0', 'Age_bin_2-Fare_bin_1', 'Age_bin_3-SibSp_bin_0', 'Age_bin_3-SibSp_bin_1', 'Age_bin_3-Parch_bin_0', 'Age_bin_3-Fare_bin_0', 'Age_bin_3-Fare_bin_1', 'Age_bin_4-SibSp_bin_0', 'Age_bin_4-SibSp_bin_1', 'Age_bin_4-Parch_bin_0', 'Age_bin_4-Fare_bin_0', 'Age_bin_5-SibSp_bin_0', 'Age_bin_5-SibSp_bin_1', 'Age_bin_5-Parch_bin_0', 'Age_bin_5-Fare_bin_0', 'Age_bin_6-SibSp_bin_0', 'Age_bin_6-Parch_bin_0', 'Age_bin_6-Fare_bin_0', 'Age_bin_7-SibSp_bin_0', 'Age_bin_7-Parch_bin_0', 'SibSp_bin_0-Parch_bin_0', 'SibSp_bin_0-Parch_bin_1', 'SibSp_bin_0-Parch_bin_3', 'SibSp_bin_0-Fare_bin_0', 'SibSp_bin_0-Fare_bin_1', 'SibSp_bin_1-Parch_bin_0', 'SibSp_bin_1-Parch_bin_1', 'SibSp_bin_1-Parch_bin_3', 'SibSp_bin_1-Fare_bin_0', 'SibSp_bin_1-Fare_bin_1', 'SibSp_bin_2-Fare_bin_0', 'SibSp_bin_4-Fare_bin_0', 'Parch_bin_0-Fare_bin_0', 'Parch_bin_0-Fare_bin_1', 'Parch_bin_1-Fare_bin_0', 'Parch_bin_1-Fare_bin_1', 'Parch_bin_3-Fare_bin_0']}
+  ('D:/_devs/Python01/gitdev/dsa2/data/output/titanic/LGBMClassifier//pipeline//cols_family.pkl',) 
 
   (['Pclass_bin', 'Age_bin', 'SibSp_bin', 'Parch_bin', 'Fare_bin', 'Sex_int', 'Embarked_int'], 'Survived') 
 
