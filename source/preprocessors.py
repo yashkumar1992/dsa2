@@ -86,9 +86,9 @@ def pd_coltext_clean( df, col, stopwords= None , pars=None):
     dftext = df
     log(dftext)
     log(col)
-    list1 = []
-    list1.append(col)
-
+    list1 = col
+    # list1 = []
+    # list1.append(col)
     # fromword = [ r"\b({w})\b".format(w=w)  for w in fromword    ]
     # print(fromword)
     for col_n in list1:
@@ -108,7 +108,8 @@ def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
     :return:
     """
     sep=" "
-    coltext_freq = df[col].apply(lambda x: pd.value_counts(x.split(sep))).sum(axis=0).reset_index()
+    logs('----col-----\n', col)
+    coltext_freq = df[col].apply(str).apply(lambda x: pd.value_counts(x.split(sep))).sum(axis=0).reset_index()
     coltext_freq.columns = ["word", "freq"]
     coltext_freq = coltext_freq.sort_values("freq", ascending=0)
     log(coltext_freq)
@@ -134,22 +135,49 @@ def nlp_get_stopwords():
 
 def pd_coltext(df, col, pars={}):
     from utils import util_text, util_model
-    stopwords = pars['stopwords']
+
+    path_pipeline = pars.get('path_pipeline', False)
+    pars_tdidf    = load(f'{path_pipeline}/coltext_tdidf.pkl') if  path_pipeline else None
+    pars_svd      = load(f'{path_pipeline}/coltext_svd.pkl')   if  path_pipeline else None
+    stopwords     = nlp_get_stopwords()
+
+
+    #### Process  ###############################################################
     dftext                              = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
-    coltext_freq, word_tokeep           = pd_coltext_wordfreq(df, col, stopwords, ntoken=100)  ## nb of words to keep
 
-    dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
-                                                            word_tokeep = word_tokeep ,
-                                                            return_val  = "dataframe,param"  )
-    log(word_tokeep_dict)
-    ###  Dimesnion reduction for Sparse Matrix
-    dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict,
-                                                   colname        = None,
-                                                   model_pretrain = None,
-                                                   colprefix      = col + "_svd",
-                                                   method         = "svd",  dimpca=2,  return_val="dataframe,param")
-    return dftext_svd_list
 
+    dftext_svd_list_all = None
+    dftext_tdidf_all    = None
+    for col_ in col:
+        coltext_freq, word_tokeep = pd_coltext_wordfreq(df, col_, stopwords, ntoken=100)  ## nb of words to keep
+        dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf(dftext, coltext=col_, word_minfreq=1,
+                                                                         word_tokeep=word_tokeep,
+                                                                         return_val="dataframe,param")
+        dftext_tdidf_all = pd.DataFrame(dftext_tdidf_dict) if dftext_tdidf_all is None else pd.concat((dftext_tdidf_all,pd.DataFrame(dftext_tdidf_dict)),axis=1)
+        log(word_tokeep_dict)
+        ###  Dimesnion reduction for Sparse Matrix
+        dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict,
+                                                       colname        = None,
+                                                       model_pretrain = None,
+                                                       colprefix      = col_ + "_svd",
+                                                       method         = "svd",  dimpca=2,  return_val="dataframe,param")
+        dftext_svd_list_all = dftext_svd_list if dftext_svd_list_all is None else pd.concat((dftext_svd_list_all,dftext_svd_list),axis=1)
+    #############################################################################
+    if 'path_features_store' in pars:
+        save_features(dftext_svd_list_all, 'dftext_svd' + "-" + str(col), pars['path_features_store'])
+        save(dftext_tdidf_all,     pars['path_pipeline_export'] + "/dftext_tdidf.pkl" )
+        save(word_tokeep_dict,     pars['path_pipeline_export'] + "/word_tokeep_dict.pkl" )
+
+
+    col_pars = {}
+    col_pars['cols_new'] = {
+     # 'coltext_tdidf'    : dftext_tdidf_all.columns.tolist(),       ### list
+     'coltext_svd'      : dftext_svd_list_all.columns.tolist()      ### list
+    }
+
+    dftext_svd_list_all.index=dftext.index
+    # return pd.concat((dftext_svd_list_all,dftext_svd_list_all),axis=1), col_pars
+    return dftext_svd_list_all, col_pars
 
 
 ##### Filtering / cleaning rows :   #########################################################
@@ -192,20 +220,10 @@ def pd_label_clean(df, col, pars):
         save_features(df[coly], 'dfy', path_features_store)
     return df,coly
 
-def pd_colnum_clean(col_):
-    import re
-    try:
-        logs('-----------col_------------\n',col_)
-        ret=col_.apply(lambda x: re.sub("[!@,#$+%*:()'-]", "", str(x))).astype('float32')
-        # logs('-----------ret------------\n',ret)
-    except:
-        ret=col_
-    return ret
-
 def pd_coly(df, col, pars):
+
     ##### Filtering / cleaning rows :   #########################################################
     coly=col
-    df[coly] = pd_colnum_clean(df[coly])
     def isfloat(x):
         try :
             a= float(x)
@@ -220,19 +238,20 @@ def pd_coly(df, col, pars):
     ymin, ymax = pars.get('ymin', -9999999999.0), pars.get('ymax', 999999999.0)
     df = df[df[coly] > ymin]
     df = df[df[coly] < ymax]
+
     ##### Label processing   ####################################################################
     y_norm_fun = None
     # Target coly processing, Normalization process  , customize by model
     log("y_norm_fun preprocess_pars")
     y_norm_fun = pars.get('y_norm_fun', None)
-
-
     if y_norm_fun is not None:
         df[coly] = df[coly].apply(lambda x: y_norm_fun(x))
         # save(y_norm_fun, f'{path_pipeline_export}/y_norm.pkl' )
-        if pars.get('path_features_store', None) is not None:
-            path_features_store = pars['path_features_store']
-            save_features(df[coly], 'dfy', path_features_store)
+
+    if pars.get('path_features_store', None) is not None:
+        path_features_store = pars['path_features_store']
+        save_features(df[coly], 'dfy', path_features_store)
+
     return df,col
 
 
@@ -266,9 +285,6 @@ def pd_colnum_bin(df, col, pars):
     log(colnum_binmap)
 
     colnum = col
-
-    for colN in colnum:
-        df[colN] = pd_colnum_clean(df[colN])
 
     log("### colnum Map numerics to Category bin  ###########################################")
     dfnum_bin, colnum_binmap = pd_colnum_tocat(df, colname=colnum, colexclude=None, colbinmap=colnum_binmap,
@@ -441,7 +457,6 @@ def pd_colcross(df, col, pars):
      # 'colcross_single'     :  col ,    ###list
      'colcross_pair' :  colcross_pair       ### list
     }
-
     return dfcross_hot, col_pars
 
 
@@ -454,13 +469,18 @@ def pd_coldate(df, col, pars):
     dfdate = None
     for coldate_i in coldate :
         dfdate_i =  util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
-        dfdate  = pd.concat((dfdate, dfdate_i))  if dfdate is not None else dfdate_i
+        dfdate  = pd.concat((dfdate, dfdate_i),axis=1)  if dfdate is not None else dfdate_i
         if pars.get('path_features_store', None) is not None:
             path_features_store = pars['path_features_store']
             save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
     if pars.get('path_features_store', None) is not None:
         save_features(dfdate, 'dfdate', path_features_store)
-    return dfdate, None
+    col_pars = {}
+    col_pars['cols_new'] = {
+        # 'colcross_single'     :  col ,    ###list
+        'dfdate': dfdate.columns.tolist()  ### list
+    }
+    return dfdate, col_pars
 
 
 

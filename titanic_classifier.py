@@ -27,18 +27,19 @@ print(dir_data)
 
 
 def global_pars_update(model_dict,  data_name, config_name):
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
     m                      = {}
-    model_name             = model_dict['model_pars']['config_model_name']
+    model_name             = model_dict['model_pars']['config_name']
     m['path_config_model'] = root + f"/{config_file}"
-    m['path_model']        = f'data/output/{data_name}/a01_{model_name}/'
+    m['config_name']       = config_name
+
     m['path_data_train']   = f'data/input/{data_name}/train/'
     m['path_data_test']    = f'data/input/{data_name}/test/'
-    m['path_output_pred']  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
+    m['path_model']        = f'data/output/{data_name}/{model_name}/'
+    m['path_output_pred']  = f'data/output/{data_name}/pred_{config_name}/'
     m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
 
     model_dict[ 'global_pars'] = m
-    model_dict['global_pars']['config_name'] = config_name
     return model_dict
 
 
@@ -51,9 +52,6 @@ def os_get_function_name():
 config_file     = "titanic_classifier.py"   ### name of file which contains data configuration
 config_default  = 'titanic_lightgbm'   ### name of function which contains data configuration
 
-
-config_name  = 'titanic_lightgbm'   ### name  of function which contains data configuration
-n_sample     = 2000
 
 
 
@@ -83,11 +81,9 @@ def titanic_lightgbm(path_model_out="") :
     model_name   = 'LGBMClassifier'
     n_sample     = 1000
 
-
     def post_process_fun(y):
         ### After prediction is done
         return  int(y)
-
 
     def pre_process_fun(y):
         ### Before the prediction is done
@@ -98,7 +94,7 @@ def titanic_lightgbm(path_model_out="") :
         'model_path'       : path_model_out
 
         ### LightGBM API model   #######################################
-        ,'config_model_name': model_name    ## ACTUAL Class name for model_sklearn.py
+        ,'config_name': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'binary',
                                'n_estimators':3000,
                                'learning_rate':0.001,
@@ -139,7 +135,10 @@ def titanic_lightgbm(path_model_out="") :
           #  'coldate',
           #  'coltext',
           'cols_model_group': [ 'colnum_bin',
-                                'colcat_bin'
+                                'colcat_bin',
+                                'coltext',
+                                'coldate',
+                                'colcross'
                               ]
 
           ### Filter data rows   ##################################################################
@@ -151,6 +150,17 @@ def titanic_lightgbm(path_model_out="") :
     ##### Filling Global parameters    ############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
+
+
+
+
+
+
+
+
+
+
+
 
 
 #####################################################################################
@@ -172,12 +182,12 @@ def preprocess(config=None, nsample=None):
     print(mdict)
 
     from source import run_preprocess2, run_preprocess
-    run_preprocess2.run_preprocess(model_name     =  config_name,
-                                path_data         =  m['path_data_train'],
-                                path_output       =  m['path_model'],
-                                path_config_model =  m['path_config_model'],
-                                n_sample          =  nsample if nsample is not None else m['n_sample'],
-                                mode              =  'run_preprocess')
+    run_preprocess2.run_preprocess(config_name=  config_name,
+                                   path_data         =  m['path_data_train'],
+                                   path_output       =  m['path_model'],
+                                   path_config_model =  m['path_config_model'],
+                                   n_sample          =  nsample if nsample is not None else m['n_sample'],
+                                   mode              =  'run_preprocess')
 
 
 ##################################################################################
@@ -190,11 +200,12 @@ def train(config=None, nsample=None):
     print(mdict)
 
     from source import run_train
-    run_train.run_train(config_model_name =  config_name,
+    run_train.run_train(config_name=  config_name,
                         path_data         =  m['path_data_train'],
                         path_output       =  m['path_model'],
-                        path_config_model =  m['path_config_model'] ,
-                        n_sample          =  nsample if nsample is not None else m['n_sample'])
+                        path_config_model =  m['path_config_model'],
+                        n_sample          =  nsample if nsample is not None else m['n_sample']
+                        )
 
 
 ###################################################################################
@@ -215,14 +226,14 @@ def predict(config=None, nsample=None):
     print(m)
 
     from source import run_inference,run_inference2
-    run_inference2.run_predict(model_name,
+    run_inference2.run_predict(config_name,
                             path_model  = m['path_model'],
                             path_data   = m['path_data_test'],
                             path_output = m['path_output_pred'],
                             cols_group  = mdict['data_pars']['cols_input_type'],
                             n_sample    = nsample if nsample is not None else m['n_sample']
-
                             )
+
 
 def run_all():
     data_profile()
@@ -252,28 +263,4 @@ if __name__ == "__main__":
     import fire
     fire.Fire()
     
-
-
-"""
-def global_pars_update2(model_dict,  data_name, config_name):
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-
-    model_name        = model_dict['model_pars']['config_model_name']
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-    n_sample          = model_dict['data_pars'].get('n_sample', 5000)
-
-    model_dict[ 'global_pars'] = {}
-    model_dict['global_pars']['config_name'] = config_name
-    global_pars = [  'model_name', 'path_config_model', 'path_model', 'path_data_train',
-                   'path_data_test', 'path_output_pred', 'n_sample'
-                  ]
-    for t in global_pars:
-      model_dict['global_pars'][t] = globals()[t]
-    return model_dict
-
-"""
 
