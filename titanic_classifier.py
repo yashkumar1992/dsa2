@@ -50,7 +50,7 @@ def os_get_function_name():
 
 ####################################################################################
 config_file     = "titanic_classifier.py"   ### name of file which contains data configuration
-config_default  = 'titanic_lightgbm'   ### name of function which contains data configuration
+config_default  = 'titanic_lightgbm'        ### name of function which contains data configuration
 
 
 
@@ -120,7 +120,7 @@ def titanic_lightgbm(path_model_out="") :
         , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
 
 
-        ### Pipeline for data processing ########################
+        ### Pipeline for data processing ##############################
         'pipe_list': [
             {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
             {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
