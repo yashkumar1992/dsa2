@@ -172,12 +172,12 @@ def preprocess(config=None, nsample=None):
     print(mdict)
 
     from source import run_preprocess2, run_preprocess
-    run_preprocess2.run_preprocess(model_name     =  config_name,
-                                path_data         =  m['path_data_train'],
-                                path_output       =  m['path_model'],
-                                path_config_model =  m['path_config_model'],
-                                n_sample          =  nsample if nsample is not None else m['n_sample'],
-                                mode              =  'run_preprocess')
+    run_preprocess2.run_preprocess(config_name=  config_name,
+                                   path_data         =  m['path_data_train'],
+                                   path_output       =  m['path_model'],
+                                   path_config_model =  m['path_config_model'],
+                                   n_sample          =  nsample if nsample is not None else m['n_sample'],
+                                   mode              =  'run_preprocess')
 
 
 ##################################################################################
@@ -256,11 +256,11 @@ if __name__ == "__main__":
 
 """
 def global_pars_update2(model_dict,  data_name, config_name):
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
+    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,config_name
 
-    model_name        = model_dict['model_pars']['config_model_name']
+    config_name        = model_dict['model_pars']['config_model_name']
     path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
+    path_model        = f'data/output/{data_name}/a01_{config_name}/'
     path_data_train   = f'data/input/{data_name}/train/'
     path_data_test    = f'data/input/{data_name}/test/'
     path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
@@ -268,7 +268,7 @@ def global_pars_update2(model_dict,  data_name, config_name):
 
     model_dict[ 'global_pars'] = {}
     model_dict['global_pars']['config_name'] = config_name
-    global_pars = [  'model_name', 'path_config_model', 'path_model', 'path_data_train',
+    global_pars = [  'config_name', 'path_config_model', 'path_model', 'path_data_train',
                    'path_data_test', 'path_output_pred', 'n_sample'
                   ]
     for t in global_pars:
