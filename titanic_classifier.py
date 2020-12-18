@@ -63,11 +63,21 @@ cols_input_type_1 = {
     ,"colid"  :   "PassengerId"
     ,"colcat" :   ["Sex", "Embarked" ]
     ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-    ,"coltext" :  ["Name", "Ticket"]
+    ,"coltext" :  []
     ,"coldate" :  []
     ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
 }
 
+
+cols_input_type_2 = {
+     "coly"   :   "Survived"
+    ,"colid"  :   "PassengerId"
+    ,"colcat" :   ["Sex", "Embarked" ]
+    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
+    ,"coltext" :  ["Name", "Ticket"]
+    ,"coldate" :  []
+    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+}
 
 
 
@@ -136,9 +146,9 @@ def titanic_lightgbm(path_model_out="") :
           #  'coltext',
           'cols_model_group': [ 'colnum_bin',
                                 'colcat_bin',
-                                'coltext',
-                                'coldate',
-                                'colcross'
+                                #'coltext',
+                                #'coldate',
+                                # 'colcross_pair'
                               ]
 
           ### Filter data rows   ##################################################################

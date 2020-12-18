@@ -291,7 +291,28 @@ if __name__ == "__main__":
 
 
 
+"""
 
+  rm=["name", "summary", "space", "description", "neighborhood_overview", "notes", "transit", "access", "interaction", "house_rules", "host_name", "host_about", "amenities"]
+    colsX = list(set(colsX) - set(rm))
+
+    for col in rm:
+        col1=col+'_svd_0'
+        col2=col+'_svd_1'
+        colsX.append(col1)
+        colsX.append(col2)
+    rm1=["last_review", "host_since", "first_review", "last_scraped"]
+    colsX = list(set(colsX) - set(rm1))
+    for col in rm1:
+        col1=col+'_year'
+        col2=col+'_month'
+        col3=col+'_day'
+        colsX.append(col1)
+        colsX.append(col2)
+        colsX.append(col3)
+    dfX.fillna(0)
+
+"""
 
 
 
