@@ -117,7 +117,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ##### Generate features ##########################################################################
     dfi_all          = {} ### Dict of all features
-    cols_family_all  = {'colid' : colid}
+    cols_family_all  = {'colid' : colid, 'colnum': colnum, 'colcat': colcat}
 
 
     if len(pipe_filter) > 0 :
@@ -143,6 +143,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     #####  Processors  ###############################################################################
+    dfi_all['colnum'] = df[colnum]
+    dfi_all['colcat'] = df[colcat]
+
+
     for pipe_i in pipe_list_X :
        log("###################", pipe_i, "##########################################################")
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun

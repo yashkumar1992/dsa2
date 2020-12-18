@@ -34,22 +34,19 @@ print(dir_data)
 
 
 def global_pars_update(model_dict,  data_name, config_name):
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-    model_name        = model_dict['model_pars']['config_name']
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-    n_sample          = model_dict['data_pars'].get('n_sample', 5000)
+    m                      = {}
+    model_name             = model_dict['model_pars']['config_name']
+    m['path_config_model'] = root + f"/{config_file}"
+    m['config_name']       = config_name
 
-    model_dict[ 'global_pars'] = {}
-    model_dict['global_pars']['config_name'] = config_name
-    global_pars = [  'config_name', 'path_config_model', 'path_model', 'path_data_train',
-                   'path_data_test', 'path_output_pred', 'n_sample'
-            ]
-    for t in global_pars:
-      model_dict['global_pars'][t] = globals()[t]
+    m['path_data_train']   = f'data/input/{data_name}/train/'
+    m['path_data_test']    = f'data/input/{data_name}/test/'
+
+    m['path_model']        = f'data/output/{data_name}/{model_name}/'
+    m['path_output_pred']  = f'data/output/{data_name}/pred_{config_name}/'
+    m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
+
+    model_dict[ 'global_pars'] = m
     return model_dict
 
 
@@ -58,14 +55,9 @@ def os_get_function_name():
     return sys._getframe(1).f_code.co_name
 
 
-
 ####################################################################################
 config_file  = "airbnb_regression.py"
-data_name    = "airbnb"   ###in data/
-
-
-config_name  = 'airbnb_lightgbm'
-n_sample     = 1000
+config_default  = 'airbnb_lightgbm'
 
 
 #####################################################################################
@@ -101,10 +93,12 @@ def y_norm(y, inverse=True, mode='boxcox'):
 ####################################################################################
 ##### Params########################################################################
 cols_input_type_1 = {
-	"colcat" :   [ "cancellation_policy", "host_response_rate", "host_response_time" ]
-	,"colnum" :   [ "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
-	,"coltext" :  [ "house_rules", "neighborhood_overview", "notes", "street"  ]
-	,"coldate" :  [ "calendar_last_scraped", "first_review", "host_since" ]
+	 "coly"     : "price"
+	,"colid"    : "id"
+	,"colcat"   :  [ "cancellation_policy", "host_response_rate", "host_response_time" ]
+	,"colnum"   :  [ "review_scores_communication", "review_scores_location", "review_scores_rating"         ]
+	,"coltext"  :  [ "house_rules", "neighborhood_overview", "notes", "street"  ]
+	,"coldate"  :  [ "calendar_last_scraped", "first_review", "host_since" ]
 	,"colcross" : [  ]
 }
 
@@ -120,40 +114,6 @@ cols_input_type_2 = {
 }
 
 
-###### Columns which can be used for the models 'cols_model_group'   ##############################
-"""
-'colid',
-"coly"
-
-"colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
-
-"colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
-
-'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
-'coldate',
-'coltext',
-
-
-
-### Initial mapping
-colall  ---> colid, coly, colnum, colcat
-
-
-### Transformation
-dfcat_bin    : colcat --> colcat_bin
-dfnum_bin    : colnum --> colnum_bin
-dfnum_onehot : colnum --> colnum_onehot
-
-
-### Merge to feed col_model_group
-col_model_group : colcatbin, colnum_bin, ...  
-
-
-
-
-
-"""
-
 
 
 ####################################################################################
@@ -161,11 +121,9 @@ def airbnb_lightgbm(path_model_out="") :
     """
 
     """
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-
-    config_name       = 'airbnb_lightgbm'
-    model_name        = 'LGBMRegressor'
-    n_sample          = 1000
+    data_name    = "airbnb"   ###in data/
+    model_name   = 'LGBMRegressor'
+    n_sample     = 1000
 
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='boxcox')
@@ -184,9 +142,15 @@ def airbnb_lightgbm(path_model_out="") :
         ,'post_process_fun': post_process_fun
         ,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
 
-                    ### Pipeline for data processing.
-                    'pipe_list'  : ['filter', 'label',  'dfcat_bin', 'dftext'   ]
-
+        ### Pipeline for data processing ########################
+        'pipe_list': [
+            {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
+            # {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+            # {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+            # {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+            # {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+            # {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
+        ],
         }
     },
 
@@ -195,12 +159,17 @@ def airbnb_lightgbm(path_model_out="") :
                     },
 
     'data_pars': {
-          'cols_input_type' : cols_input_type_2
+          'cols_input_type' : cols_input_type_1
 
+
+         #"colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+         #"colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+         #'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+         # 'coldate', #'coltext',
 
          ,'cols_model_group': [  'colnum'
-                                ,'colcat_bin'
-                                ,'coltext'
+                                #,'colcat_bin'
+                                #,'coltext'
                               ]
 
 
@@ -209,86 +178,95 @@ def airbnb_lightgbm(path_model_out="") :
          }}
 
 
-    ################################################################################################
-    ##### Filling Global parameters    #############################################################
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
-
-    model_dict[ 'global_pars'] = {}
-    global_pars = [ 'config_name', 'config_name', 'path_config_model', 'path_model', 'path_data_train',
-                    'path_data_test', 'path_output_pred', 'n_sample'
-                  ]
-    for t in global_pars:
-      model_dict['global_pars'][t] = globals()[t]
-
-
+    ##### Filling Global parameters    ############################################################
+    model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
  
 
 
-####################################################################################################
-########## Init variable ###########################################################################
-globals()[config_name]()
 
 
-path_config_model = root + f"/{config_file}"
-path_model        = f'data/output/{data_name}/a01_{model_name}/'
-path_data_train   = f'data/input/{data_name}/train/'
-path_data_test    = f'data/input/{data_name}/test/'
-path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+
+
+#####################################################################################
+########## Profile data #############################################################
+def data_profile(path_data_train="", path_model="", n_sample= 5000):
+   from source.run_feature_profile import run_profile
+   run_profile(path_data   = path_data_train,
+               path_output = path_model + "/profile/",
+               n_sample    = n_sample,
+              )
 
 
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess():
-    from source import run_preprocess
+def preprocess(config=None, nsample=None):
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(mdict)
 
-    run_preprocess.run_preprocess(model_name      =  config_name,
-                                path_data         =  path_data_train,
-                                path_output       =  path_model,
-                                path_config_model =  path_config_model,
-                                n_sample          =  n_sample,
-                                mode              =  'run_preprocess')
+    from source import run_preprocess2, run_preprocess
+    run_preprocess2.run_preprocess(config_name=  config_name,
+                                   path_data         =  m['path_data_train'],
+                                   path_output       =  m['path_model'],
+                                   path_config_model =  m['path_config_model'],
+                                   n_sample          =  nsample if nsample is not None else m['n_sample'],
+                                   mode              =  'run_preprocess')
 
-############################################################################
-########## Train ###########################################################
-def train():
+
+##################################################################################
+########## Train #################################################################
+def train(config=None, nsample=None):
+
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(mdict)
+
     from source import run_train
-
     run_train.run_train(config_name=  config_name,
-                        path_data         =  path_data_train,
-                        path_output       =  path_model,
-                        path_config_model =  path_config_model, n_sample = n_sample)
+                        path_data         =  m['path_data_train'],
+                        path_output       =  m['path_model'],
+                        path_config_model =  m['path_config_model'],
+                        n_sample          =  nsample if nsample is not None else m['n_sample']
+                        )
 
 
 ###################################################################################
-######### Check model #############################################################
+######### Check data ##############################################################
 def check():
-    pass
+   pass
 
 
 
 
+####################################################################################
+####### Inference ##################################################################
+def predict(config=None, nsample=None):
+    config_name  =  config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(mdict['data_pars']['cols_input_type'])
+    print(m)
 
-########################################################################################
-####### Inference ######################################################################
-def predict():
-    from source import run_inference
-    run_inference.run_predict(model_name,
-                            path_model  = path_model,
-                            path_data   = path_data_test,
-                            path_output = path_output_pred,
-                            n_sample    = n_sample)
+    from source import run_inference,run_inference2
+    run_inference2.run_predict(config_name,
+                            path_model  = m['path_model'],
+                            path_data   = m['path_data_test'],
+                            path_output = m['path_output_pred'],
+                            cols_group  = mdict['data_pars']['cols_input_type'],
+                            n_sample    = nsample if nsample is not None else m['n_sample']
+                            )
 
 
 def run_all():
+    data_profile()
     preprocess()
     train()
     check()
     predict()
+
 
 
 
