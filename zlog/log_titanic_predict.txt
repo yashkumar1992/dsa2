@@ -2,7 +2,7 @@ os.getcwd D:\_devs\Python01\gitdev\dsa2
 D:\_devs\Python01\gitdev\dsa2
 D:/_devs/Python01/gitdev/dsa2/
 D:/_devs/Python01/gitdev/dsa2/data/
-{'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']}
+{'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': [], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']}
 {'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//titanic_classifier.py', 'config_name': 'titanic_lightgbm', 'path_data_train': 'data/input/titanic/train/', 'path_data_test': 'data/input/titanic/test/', 'path_model': 'data/output/titanic/LGBMClassifier/', 'path_output_pred': 'data/output/titanic/pred_titanic_lightgbm/', 'n_sample': 1000}
 os.getcwd D:\_devs\Python01\gitdev\dsa2
 D:/_devs/Python01/gitdev/dsa2/
@@ -26,7 +26,7 @@ D:/_devs/Python01/gitdev/dsa2/
 
   ('########### Load column by column type ##################################',) 
 
-  ({'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': ['Name', 'Ticket'], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']},) 
+  ({'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': [], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']},) 
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'type': ''}, '#######################################################') 
 
@@ -53,61 +53,61 @@ PassengerId          ...
   ('### colnum Map numerics to Category bin  ###########################################',) 
 Pclass
            Pclass               
-              min size mean  max
+             size mean  max  min
 Pclass_bin                      
-0             1.0  107  1.0  1.0
-4             2.0   93  2.0  2.0
-9             3.0  218  3.0  3.0
+0             107  1.0  1.0  1.0
+4              93  2.0  2.0  2.0
+9             218  3.0  3.0  3.0
 Age
-           Age                       
-           min size       mean    max
+         Age                         
+        size       mean    max    min
 Age_bin                              
--1        0.17   88   0.250000   0.33
- 0        0.75   16   3.656250   8.00
- 1        9.00   16  12.625000  16.00
- 2       17.00   97  21.000000  24.00
- 3       25.00   81  28.148148  32.00
- 4       32.50   43  36.383720  40.00
- 5       40.50   38  44.460526  48.00
- 6       49.00   20  52.250000  55.00
- 7       57.00   17  60.617645  64.00
- 8       67.00    1  67.000000  67.00
- 9       76.00    1  76.000000  76.00
+-1        88   0.250000   0.33   0.17
+ 0        16   3.656250   8.00   0.75
+ 1        16  12.625000  16.00   9.00
+ 2        97  21.000000  24.00  17.00
+ 3        81  28.148148  32.00  25.00
+ 4        43  36.383720  40.00  32.50
+ 5        38  44.460526  48.00  40.50
+ 6        20  52.250000  55.00  49.00
+ 7        17  60.617645  64.00  57.00
+ 8         1  67.000000  67.00  67.00
+ 9         1  76.000000  76.00  76.00
 SibSp
           SibSp               
-            min size mean  max
+           size mean  max  min
 SibSp_bin                     
-0           0.0  283  0.0  0.0
-1           1.0  110  1.0  1.0
-2           2.0   14  2.0  2.0
-3           3.0    4  3.0  3.0
-4           4.0    4  4.0  4.0
-6           5.0    1  5.0  5.0
-9           8.0    2  8.0  8.0
+0           283  0.0  0.0  0.0
+1           110  1.0  1.0  1.0
+2            14  2.0  2.0  2.0
+3             4  3.0  3.0  3.0
+4             4  4.0  4.0  4.0
+6             1  5.0  5.0  5.0
+9             2  8.0  8.0  8.0
 Parch
           Parch               
-            min size mean  max
+           size mean  max  min
 Parch_bin                     
--1          9.0    2  9.0  9.0
- 0          0.0  324  0.0  0.0
- 1          1.0   52  1.0  1.0
- 3          2.0   33  2.0  2.0
- 4          3.0    3  3.0  3.0
- 6          4.0    2  4.0  4.0
- 8          5.0    1  5.0  5.0
- 9          6.0    1  6.0  6.0
+-1            2  9.0  9.0  9.0
+ 0          324  0.0  0.0  0.0
+ 1           52  1.0  1.0  1.0
+ 3           33  2.0  2.0  2.0
+ 4            3  3.0  3.0  3.0
+ 6            2  4.0  4.0  4.0
+ 8            1  5.0  5.0  5.0
+ 9            1  6.0  6.0  6.0
 Fare
-                Fare                             
-                 min size        mean         max
+         Fare                                    
+         size        mean         max         min
 Fare_bin                                         
--1               NaN    1         NaN         NaN
- 0          0.000000  338   15.439312   50.495800
- 1         51.479198   48   68.390717   93.500000
- 2        106.425003   11  134.330688  151.550003
- 3        164.866699    2  164.866699  164.866699
- 4        211.337494   10  219.772095  247.520798
- 5        262.375000    7  262.553558  263.000000
- 9        512.329224    1  512.329224  512.329224
+-1          1         NaN         NaN         NaN
+ 0        338   15.439312   50.495800    0.000000
+ 1         48   68.390717   93.500000   51.479198
+ 2         11  134.330688  151.550003  106.425003
+ 3          2  164.866699  164.866699  164.866699
+ 4         10  219.772095  247.520798  211.337494
+ 5          7  262.553558  263.000000  262.375000
+ 9          1  512.329224  512.329224  512.329224
 
   (OrderedDict([('Pclass', [0.9999, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4000000000000004, 2.6, 2.8, 3.0]), ('Age', [0.41989998688697816, 8.378000169992447, 16.336000353097916, 24.294000536203384, 32.25200071930885, 40.21000090241432, 48.16800108551979, 56.12600126862526, 64.08400145173073, 72.0420016348362, 80.00000181794167]), ('SibSp', [-0.0001, 0.8, 1.6, 2.4000000000000004, 3.2, 4.0, 4.800000000000001, 5.6000000000000005, 6.4, 7.2, 8.0]), ('Parch', [-0.0001, 0.6, 1.2, 1.7999999999999998, 2.4, 3.0, 3.5999999999999996, 4.2, 4.8, 5.3999999999999995, 6.0]), ('Fare', [-0.0001, 51.23292236328125, 102.4658447265625, 153.69876708984373, 204.931689453125, 256.16461181640625, 307.39753417968745, 358.6304565429687, 409.86337890625, 461.09630126953124, 512.3292236328125])]),) 
 
@@ -252,14 +252,14 @@ Parch_bin_3-Fare_bin_0         0    0
 
                Pclass  ... Survived_pred
 PassengerId          ...              
-892               3  ...             0
-893               3  ...             0
-894               2  ...             0
-895               3  ...             0
-896               3  ...             0
-897               3  ...             0
-898               3  ...             1
-899               2  ...             0
+892               3  ...           0.0
+893               3  ...           0.0
+894               2  ...           0.0
+895               3  ...           0.0
+896               3  ...           0.0
+897               3  ...           0.0
+898               3  ...           1.0
+899               2  ...           0.0
 
 [8 rows x 10 columns] 
 
