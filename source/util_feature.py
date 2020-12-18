@@ -124,7 +124,7 @@ def load_function_uri(uri_name="myfolder/myfile.py::myFunction"):
             #### import Absolute Path model_tf.1_lstm
             model_name   = Path(package).stem  # remove .py
             package_name = str(Path(package).parts[-2]) + "." + str(model_name)
-            #log(package_name, model_name)
+            #log(package_name, config_name)
             return  getattr(importlib.import_module(package_name), name)
 
         except Exception as e2:

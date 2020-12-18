@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 """
 
- ! activate py36 && python source/run_inference.py  run_predict  --n_sample 1000  --config_model_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
+ ! activate py36 && python source/run_inference.py  run_predict  --n_sample 1000  --config_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
  
 
 """
@@ -162,13 +162,13 @@ def map_model(model_name):
 
 def predict(model_name, path_model, dfX, cols_family):
     """
-    if config_model_name in ['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
+    if config_name in ['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
         from models import model_sklearn as modelx
 
-    elif config_model_name == 'model_bayesian_pyro':
+    elif config_name == 'model_bayesian_pyro':
         from models import model_bayesian_pyro as modelx
 
-    elif config_model_name == 'model_widedeep':
+    elif config_name == 'model_widedeep':
         from models import model_widedeep as modelx
     """
     modelx = map_model(model_name)    

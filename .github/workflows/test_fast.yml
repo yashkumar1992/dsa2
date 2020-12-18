@@ -27,15 +27,18 @@ jobs:
       
 
     ##### Log Start  ######################################################
-    - name: ssh_gen
-      uses: webfactory/ssh-agent@v0.2.0
-      with:
-        ssh-private-key: ${{ secrets.GIT_RSA }}
+
+    #- name: ssh_gen
+    #  uses: webfactory/ssh-agent@v0.2.0
+      #with:
+      #  ssh-private-key: ${{ secrets.GIT_RSA }}
                 
     - name: log_start
       run: |
-           cd /home/runner/work/mlmodels/  && git clone git@github.com:arita37/mlmodels_store.git  &&  ls && pwd
-           cd /home/runner/work/mlmodels/mlmodels/
+           ls .
+           # cd /home/runner/work/mlmodels/  && git clone git@github.com:arita37/mlmodels_store.git  &&  ls && pwd
+           # cd /home/runner/work/mlmodels/mlmodels/
+
     ########################################################################
                 
 
@@ -60,7 +63,8 @@ jobs:
       uses: actions/cache@v1
       with:
         path: /opt/hostedtoolcache/Python/
-        key: ${{ runner.os }}-pipenv-${{ hashFiles('**/install/requirements_fake.txt') }}
+        key: ${{ runner.os }}-pipenv-${{ hashFiles('**/install/py36.txt') }}
+
 
           
 
@@ -72,13 +76,18 @@ jobs:
     - name: Install repo requirements  1
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
       run: |
-           pip install -r install/requirements.txt
+
+           pip install -r   install/py36.txt
+
     - name: Install repo requirements   2
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
       run:  |
-        pip install -r install/requirements_fake.txt
-    - name: Install repo
-      run: pip install -e . -r install/requirements.txt  --no-deps
+        ls .
+        #pip install -r install/requirements_fake.txt
+
+    #- name: Install repo
+    #  run: pip install -e . -r install/py36.txt  --no-deps
+
 
 
 
@@ -88,22 +97,19 @@ jobs:
 
     - name: test_import
       run: |
-           python -c "import mlmodels,os ; print(mlmodels); print(os)"
-           python -c "import tensorflow, torch ; print(tensorflow); print(torch)"
-           ml_test --do test_import    2>&1 | tee  cd /home/runner/work/mlmodels/mlmodels_store/log_import/log_import.py
+           python -c "import run,os, numpy ; print(numpy); print(os)"
+           # python -c "import tensorflow, torch ; print(tensorflow); print(torch)"
+
+
     ########  Test running 
-    - name: ml_optim
-      run: ml_optim    2>&1 | tee  cd /home/runner/work/mlmodels/mlmodels_store/log_import/log_optim.py
-
-
-    - name: ml_models
-      run: ml_models   2>&1 | tee  cd /home/runner/work/mlmodels/mlmodels_store/log_import/log_models.py
+    - name: run_all
+      run: chmod -R 777 . && ztest/run_all.sh   # 2>&1 | tee   /home/runner/work/mlmodels/mlmodels_store/log_import/log_optim.py
 
 
 
+    #- name: ml_test_function
+    #  run: ml_test --do test_functions    2>&1 | tee  cd /home/runner/work/mlmodels/mlmodels_store/log_import/log_functions.py
 
-    - name: ml_test_function
-      run: ml_test --do test_functions    2>&1 | tee  cd /home/runner/work/mlmodels/mlmodels_store/log_import/log_functions.py
 
 
 
@@ -111,9 +117,11 @@ jobs:
     #  run: ml_test
       
         
-    - name: log_gitcommit
-      run: |
-           ml_test --do log_remote_push --name test_fast_linux
+
+    #- name: log_gitcommit
+    #  run: |
+    #       ml_test --do log_remote_push --name test_fast_linux
+
 # https://ianwhitestone.work/AWS-Serverless-Deployments-With-Github-Actions/
 #
 #
