@@ -45,7 +45,7 @@ def global_pars_update(model_dict,  data_name, config_name):
 
     model_dict[ 'global_pars'] = {}
     model_dict['global_pars']['config_name'] = config_name
-    global_pars = [  'model_name', 'path_config_model', 'path_model', 'path_data_train',
+    global_pars = [  'config_name', 'path_config_model', 'path_model', 'path_data_train',
                    'path_data_test', 'path_output_pred', 'n_sample'
             ]
     for t in global_pars:
@@ -218,7 +218,7 @@ def airbnb_lightgbm(path_model_out="") :
     path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
 
     model_dict[ 'global_pars'] = {}
-    global_pars = [ 'config_name', 'model_name', 'path_config_model', 'path_model', 'path_data_train',
+    global_pars = [ 'config_name', 'config_name', 'path_config_model', 'path_model', 'path_data_train',
                     'path_data_test', 'path_output_pred', 'n_sample'
                   ]
     for t in global_pars:

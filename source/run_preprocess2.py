@@ -6,11 +6,7 @@ cd analysis
 """
 import warnings
 warnings.filterwarnings('ignore')
-import sys
-import gc
-import os
-import pandas as pd
-import json, copy
+import sys, gc, os, sys, json, copy, pandas as pd
 
 
 ####################################################################################################
@@ -36,8 +32,7 @@ def log(*s, n=0, m=1):
 def logs(*s):
     if DEBUG_:
         print(*s, flush=True)
-        #str_out_="".join(["*" if ((i__<3) or (i__>=3+len(s))) else s[i__-3] for i__ in range(40-len(s))])
-        #print(str_out_, flush=True)
+
 
 def log_pd(df, *s, n=0, m=1):
     sjump = "\n" * m
@@ -45,15 +40,11 @@ def log_pd(df, *s, n=0, m=1):
     print(sjump,  df.head(n), flush=True)
 
 
-from util_feature import  save, load_function_uri
-
+from util_feature import  save, load_function_uri, load_dataset
 
 
 ####################################################################################################
 ####################################################################################################
-from util_feature import  load_dataset
-
-
 def save_features(df, name, path=None):
     """
     :param df:
@@ -85,7 +76,7 @@ def load_features(name, path):
 ####################################################################################################
 ####################################################################################################
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
-               preprocess_pars={}, filter_pars={}, path_features_store=None):
+               preprocess_pars={}, path_features_store=None):
     """
     :param path_train_X:
     :param path_train_y:
@@ -93,7 +84,6 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     :param cols_group:
     :param n_sample:
     :param preprocess_pars:
-    :param filter_pars:
     :param path_features_store:
     :return:
     """
@@ -103,6 +93,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     colid           = cols_group['colid']  # "jobId"
     colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
     colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
+    os.makedirs(path_pipeline_export, exist_ok=True)
+    log(path_pipeline_export)
     save(colid, f'{path_pipeline_export}/colid.pkl')
 
     ### Pipeline Execution ##########################################
@@ -116,16 +108,14 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
     ]
 
     pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
-    pipe_list_X    = [ task for task in pipe_list  if task.get('type', '')  not in ['coly', 'filter']  ]
-    pipe_list_y    = [ task for task in pipe_list  if task.get('type', '')   in ['coly']  ]
-    pipe_filter    = [ task for task in pipe_list  if task.get('type', '')   in ['filter']  ]
+    pipe_list_X  = [ task for task in pipe_list  if task.get('type', '')  not in ['coly', 'filter']  ]
+    pipe_list_y  = [ task for task in pipe_list  if task.get('type', '')   in ['coly']  ]
+    pipe_filter  = [ task for task in pipe_list  if task.get('type', '')   in ['filter']  ]
     ##### Load data ###########################################################################
     df = load_dataset(path_train_X, path_train_y, colid, n_sample= n_sample)
 
 
     ##### Generate features ##########################################################################
-    os.makedirs(path_pipeline_export, exist_ok=True)
-    log(path_pipeline_export)
     dfi_all          = {} ### Dict of all features
     cols_family_all  = {'colid' : colid}
 
@@ -220,8 +210,8 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
     ]
 
     pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
-    pipe_list_X    = [ task for task in pipe_list  if task.get('type', '')  not in ['coly', 'filter']  ]
-    pipe_filter    = [ task for task in pipe_list  if task.get('type', '')   in ['filter']  ]
+    pipe_list_X  = [ task for task in pipe_list  if task.get('type', '')  not in ['coly', 'filter']  ]
+    pipe_filter  = [ task for task in pipe_list  if task.get('type', '')   in ['filter']  ]
 
 
     log("########### Load column by column type ##################################")
@@ -236,7 +226,6 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
     ##### Generate features ########################################################################
     dfi_all          = {} ### Dict of all features
     cols_family_full = {'coly':coly}
-
 
     if len(pipe_filter) > 0 :
         log("#####  Filter  #######################################################################")
@@ -267,7 +256,7 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
            pars['colcross_single'] = cols_group.get('colcross', [])
 
 
-       dfi, col_pars           = pipe_fun(df_, cols_list, pars= pars)
+       dfi, col_pars             = pipe_fun(df_, cols_list, pars= pars)
 
        ### Concatenate colnum, colnum_bin into cols_family_all
        for colj, colist in  col_pars['cols_new'].items() :
@@ -293,7 +282,7 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
 
 def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
-               preprocess_pars={}, filter_pars={}, path_features_store=None):
+               preprocess_pars={},  path_features_store=None):
 
     from source.util_feature import load
 
@@ -313,8 +302,8 @@ def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", c
 
 ####################################################################################################
 ############CLI Command ############################################################################
-def run_preprocess(model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-              mode='run_preprocess', path_features_store=None):     #prefix "pre" added, in order to make if loop possible
+def run_preprocess(config_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
+                   mode='run_preprocess', path_features_store=None):     #prefix "pre" added, in order to make if loop possible
     """
       Configuration of the model is in config_model.py file
     """
@@ -328,12 +317,9 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
     path_train_y        = path_data   + "/target*"      ### Can be a list of zip or parquet files
     log(path_output)
 
-    # log("#### load input column family  ###################################################")
-    # cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
-    # log(cols_group)
 
     log("#### Model parameters Dynamic loading  ############################################")
-    model_dict_fun = load_function_uri(uri_name= path_config_model + "::" + model_name)
+    model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_name)
     model_dict     = model_dict_fun(path_model_out)   ### params
 
     log("#### load input column family  ###################################################")
@@ -345,21 +331,19 @@ def run_preprocess(model_name, path_data, path_output, path_config_model="source
 
     log("#### Preprocess  #################################################################")
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
-    filter_pars     = model_dict['data_pars']['filter_pars']
 
     if mode == "run_preprocess" :
         dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
-                                 preprocess_pars, filter_pars, path_features_store)
+                                 preprocess_pars,  path_features_store)
 
     elif mode == "load_preprocess" :
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
-                                 preprocess_pars, filter_pars, path_features_store)
+                                 preprocess_pars,  path_features_store)
     model_dict['data_pars']['coly'] = cols['coly']
 
     ### Generate actual column names from colum groups : colnum , colcat
     model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])
     log(  model_dict['data_pars']['cols_model'] , model_dict['data_pars']['coly'])
-
 
     log("######### finish #################################", )
 
