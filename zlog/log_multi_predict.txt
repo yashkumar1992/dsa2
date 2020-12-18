@@ -4,7 +4,7 @@ D:/_devs/Python01/gitdev/dsa2/
 D:\_devs\Python01\gitdev\dsa2
 D:/_devs/Python01/gitdev/dsa2/
 D:/_devs/Python01/gitdev/dsa2/data/
-{'config_name': 'multi_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multi_lightgbm/', 'n_sample': 6000}
+{'model_class': 'multi_lightgbm', 'model_name': 'LGBMClassifier', 'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//multi_classifier.py', 'path_model': 'data/output/multiclass/a01_LGBMClassifier/', 'path_data_train': 'data/input/multiclass/train/', 'path_data_test': 'data/input/multiclass/test/', 'path_output_pred': '/data/output/multiclass/pred_a01_multi_lightgbm/', 'n_sample': 6000}
 D:/_devs/Python01/gitdev/dsa2/
 
   ('D:/_devs/Python01/gitdev/dsa2/data/input/multiclass/test//features.zip', 'D:/_devs/Python01/gitdev/dsa2/data/output/multiclass/a01_LGBMClassifier/', 'D:/_devs/Python01/gitdev/dsa2//data/output/multiclass/pred_a01_multi_lightgbm/') 

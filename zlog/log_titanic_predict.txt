@@ -3,7 +3,7 @@ D:\_devs\Python01\gitdev\dsa2
 D:/_devs/Python01/gitdev/dsa2/
 D:/_devs/Python01/gitdev/dsa2/data/
 {'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': [], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']}
-{'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//titanic_classifier.py', 'config_name': 'titanic_lightgbm', 'path_data_train': 'data/input/titanic/train/', 'path_data_test': 'data/input/titanic/test/', 'path_model': 'data/output/titanic/LGBMClassifier/', 'path_output_pred': 'data/output/titanic/pred_titanic_lightgbm/', 'n_sample': 1000}
+{'path_config_model': 'D:/_devs/Python01/gitdev/dsa2//titanic_classifier.py', 'model_class': 'titanic_lightgbm', 'path_data_train': 'data/input/titanic/train/', 'path_data_test': 'data/input/titanic/test/', 'path_model': 'data/output/titanic/LGBMClassifier/', 'path_output_pred': 'data/output/titanic/pred_titanic_lightgbm/', 'n_sample': 1000}
 os.getcwd D:\_devs\Python01\gitdev\dsa2
 D:/_devs/Python01/gitdev/dsa2/
 D:/_devs/Python01/gitdev/dsa2/

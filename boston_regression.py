@@ -119,7 +119,7 @@ def boston_causal(path_model_out="") :
     model_dict = {'model_pars': {
           'model_path'       : path_model_out
 
-        , 'config_name': model_name
+        , 'model_class': model_name
         , 'model_pars'       : {
                 alpha=0.1,
                 beta=0.9,

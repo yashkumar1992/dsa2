@@ -28,14 +28,14 @@ print(dir_data)
 
 def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
-    model_name             = model_dict['model_pars']['config_name']
+    model_name             = model_dict['model_pars']['model_class']
     m['path_config_model'] = root + f"/{config_file}"
-    m['config_name']       = config_name
+    m['model_class']       = config_name
 
     m['path_data_train']   = f'data/input/{data_name}/train/'
     m['path_data_test']    = f'data/input/{data_name}/test/'
 
-    m['path_model']        = f'data/output/{data_name}/{model_name}/'
+    m['path_model']        = f'data/output/{data_name}/{config_name}/'
     m['path_output_pred']  = f'data/output/{data_name}/pred_{config_name}/'
     m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
 
@@ -88,7 +88,7 @@ def titanic_lightgbm(path_model_out="") :
        used for titanic classification task
     """
     data_name    = "titanic"     ### in data/input/
-    model_name   = 'LGBMClassifier'
+    model_class  = 'LGBMClassifier'
     n_sample     = 1000
 
     def post_process_fun(y):
@@ -104,13 +104,13 @@ def titanic_lightgbm(path_model_out="") :
         'model_path'       : path_model_out
 
         ### LightGBM API model   #######################################
-        ,'config_name': model_name    ## ACTUAL Class name for model_sklearn.py
-        ,'model_pars'       : {'objective': 'binary',
+        ,'model_class': model_class    ## ACTUAL Class name for model_sklearn.py
+        ,'model_pars' : {'objective': 'binary',
                                'n_estimators':3000,
                                'learning_rate':0.001,
                                'boosting_type':'gbdt',     ### Model hyperparameters
                                'early_stopping_rounds': 5
-                              }
+                        }
 
         ### After prediction  ##########################################
         , 'post_process_fun' : post_process_fun
