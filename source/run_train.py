@@ -3,9 +3,9 @@
 """
 cd analysis
 
-python source/run_train.py  run_train --config_model_name elasticnet  --path_data data/input/train/    --path_output data/output/a01_elasticnet/
+python source/run_train.py  run_train --config_name elasticnet  --path_data data/input/train/    --path_output data/output/a01_elasticnet/
 
-! activate py36 && python source/run_train.py  run_train   --n_sample 100  --config_model_name lightgbm  --path_model_config source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/
+! activate py36 && python source/run_train.py  run_train   --n_sample 100  --config_name lightgbm  --path_model_config source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/
 
 
 
@@ -88,7 +88,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     """
     model_pars, compute_pars = model_dict['model_pars'], model_dict['compute_pars']
     data_pars = model_dict['data_pars']
-    model_name, model_path = model_pars['config_model_name'], model_pars['model_path']
+    model_name, model_path = model_pars['config_name'], model_pars['model_path']
     metric_list = compute_pars['metric_list']
 
     log("#### Data preparation #############################################################")
@@ -174,11 +174,11 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 
 ####################################################################################################
 ############CLI Command ############################################################################
-def run_train(config_model_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-              run_preprocess=1,  mode="run_preprocess"):
+def run_train(config_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
+              run_preprocess=1, mode="run_preprocess"):
     """
       Configuration of the model is in config_model.py file
-    :param config_model_name:
+    :param config_name:
     :param path_data:
     :param path_output:
     :param path_config_model:
@@ -198,7 +198,7 @@ def run_train(config_model_name, path_data, path_output, path_config_model="sour
     log(path_output)
 
     log("#### Model Params Dynamic loading  ###############################################")
-    model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_model_name)
+    model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_name)
     model_dict     = model_dict_fun(path_model_out)   ### params
     log( model_dict )
 
