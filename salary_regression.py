@@ -29,7 +29,7 @@ print(dir_data)
 
 def global_pars_update(model_dict,  data_name, config_name):
     global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-    model_name        = model_dict['model_pars']['config_name']
+    model_name        = model_dict['model_pars']['model_class']
     path_config_model = root + f"/{config_file}"
     path_model        = f'data/output/{data_name}/a01_{model_name}/'
     path_data_train   = f'data/input/{data_name}/train/'
@@ -37,7 +37,7 @@ def global_pars_update(model_dict,  data_name, config_name):
     path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
 
     model_dict[ 'global_pars'] = {}
-    global_pars = [ 'config_name', 'config_name', 'path_config_model', 'path_model', 'path_data_train',
+    global_pars = [ 'model_class', 'model_class', 'path_config_model', 'path_model', 'path_data_train',
                    'path_data_test', 'path_output_pred', 'n_sample'
             ]
     for t in global_pars:
@@ -125,7 +125,7 @@ def salary_lightgbm(path_model_out="") :
 
 
     model_dict = {'model_pars':
-        {'config_name': model_name
+        {'model_class': model_name
         ,'model_path': path_model_out
         ,'model_pars': {'objective': 'huber',
 
@@ -170,7 +170,7 @@ def salary_elasticnetcv(path_model_out=""):
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'config_name': 'ElasticNetCV'
+    model_dict = {'model_pars': {'model_class': 'ElasticNetCV'
         , 'model_path': path_model_out
         , 'model_pars': {}  # default ones
         , 'post_process_fun': copy.deepcopy(post_process_fun)
@@ -210,7 +210,7 @@ def salary_bayesian_pyro(path_model_out="") :
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'config_name': 'model_bayesian_pyro'
+    model_dict = {'model_pars': {'model_class': 'model_bayesian_pyro'
         , 'model_path': path_model_out
         , 'model_pars': {'input_width': 112, }  # default
         , 'post_process_fun': post_process_fun
@@ -258,7 +258,7 @@ def salary_glm( path_model_out="") :
 
 
 
-    model_dict = {'model_pars': {'config_name': 'TweedieRegressor'  # Ridge
+    model_dict = {'model_pars': {'model_class': 'TweedieRegressor'  # Ridge
         , 'model_path': path_model_out
         , 'model_pars': {'power': 0, 'link': 'identity'}  # default ones
         , 'pre_process_pars': {'y_norm_fun' : pre_process_fun,

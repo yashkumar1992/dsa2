@@ -78,7 +78,7 @@ def preprocess(config_uri='titanic_classifier.py::titanic_lightgbm'):
     m = mdict['global_pars']
     log(mdict)
 
-    run_preprocess.run_preprocess(model_name       =  m['config_name'],
+    run_preprocess.run_preprocess(model_name       =  m['model_class'],
                                   path_data         =  m['path_data_train'], 
                                   path_output       =  m['path_model'], 
                                   path_config_model =  m['path_config_model'], 
@@ -93,7 +93,7 @@ def train(config_uri='titanic_classifier.py::titanic_lightgbm'):
     m = mdict['global_pars']
     log(mdict)
 
-    run_train.run_train(config_name=  m['config_name'],
+    run_train.run_train(config_name=  m['model_class'],
                         path_data         =  m['path_data_train'],
                         path_output       =  m['path_model'],
                         path_config_model =  m['path_config_model'],
@@ -124,7 +124,7 @@ def predict(config_uri='titanic_classifier.py::titanic_lightgbm'):
     m = mdict['global_pars']
     log(mdict)
 
-    run_inference.run_predict(model_name  = m['config_name'],
+    run_inference.run_predict(model_name  = m['model_class'],
                               path_model  = m['path_model'],
                               path_data   = m['path_data_test'],
                               path_output = m['path_output_pred'],
