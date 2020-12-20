@@ -88,7 +88,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     """
     model_pars, compute_pars = model_dict['model_pars'], model_dict['compute_pars']
     data_pars = model_dict['data_pars']
-    model_name, model_path = model_pars['config_name'], model_pars['model_path']
+    model_name, model_path = model_pars['model_class'], model_pars['model_path']
     metric_list = compute_pars['metric_list']
 
     log("#### Data preparation #############################################################")
@@ -99,8 +99,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     colid  = cols_family['colid']
     colsX  = data_pars['cols_model']
     coly   = data_pars['coly']
-    log("dfX", dfX[colsX] )
-    log("dfy", dfX[coly] )
+    print('colsX',colsX)
 
     data_pars['data_type'] = 'ram'
     data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],

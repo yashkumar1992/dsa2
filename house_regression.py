@@ -42,7 +42,7 @@ print(dir_data)
 
 def global_pars_update(model_dict,  data_name, config_name):
     global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-    model_name        = model_dict['model_pars']['config_name']
+    model_name        = model_dict['model_pars']['model_class']
     path_config_model = root + f"/{config_file}"
     path_model        = f'data/output/{data_name}/a01_{model_name}/'
     path_data_train   = f'data/input/{data_name}/train/'
@@ -50,7 +50,7 @@ def global_pars_update(model_dict,  data_name, config_name):
     path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
 
     model_dict[ 'global_pars'] = {}
-    global_pars = [ 'config_name', 'config_name', 'path_config_model', 'path_model', 'path_data_train',
+    global_pars = [ 'model_class', 'model_class', 'path_config_model', 'path_model', 'path_data_train',
                    'path_data_test', 'path_output_pred', 'n_sample'
             ]
     for t in global_pars:
@@ -161,7 +161,7 @@ def house_price_lightgbm(path_model_out="") :
 
     model_dict = {'model_pars': {  'model_path'       : path_model_out
 
-        , 'config_name': model_name   ### Actual Class Name
+        , 'model_class': model_name   ### Actual Class Name
         , 'model_pars'       : {}  # default ones of the model name
 
         , 'post_process_fun' : post_process_fun
@@ -212,7 +212,7 @@ def house_price_elasticnetcv(path_model_out=""):
         return y_norm(y, inverse=False, mode='norm')
 
 
-    model_dict = {'model_pars': {'config_name': 'ElasticNetCV'
+    model_dict = {'model_pars': {'model_class': 'ElasticNetCV'
         , 'model_path': path_model_out
 
 
