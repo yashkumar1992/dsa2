@@ -28,14 +28,14 @@ print(dir_data)
 
 def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
-    model_name             = model_dict['model_pars']['config_name']
+    model_name             = model_dict['model_pars']['model_class']
     m['path_config_model'] = root + f"/{config_file}"
-    m['config_name']       = config_name
+    m['model_class']       = config_name
 
     m['path_data_train']   = f'data/input/{data_name}/train/'
     m['path_data_test']    = f'data/input/{data_name}/test/'
 
-    m['path_model']        = f'data/output/{data_name}/{model_name}/'
+    m['path_model']        = f'data/output/{data_name}/{config_name}/'
     m['path_output_pred']  = f'data/output/{data_name}/pred_{config_name}/'
     m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
 
@@ -50,7 +50,7 @@ def os_get_function_name():
 
 ####################################################################################
 config_file     = "titanic_classifier.py"   ### name of file which contains data configuration
-config_default  = 'titanic_lightgbm'   ### name of function which contains data configuration
+config_default  = 'titanic_lightgbm'        ### name of function which contains data configuration
 
 
 
@@ -63,11 +63,21 @@ cols_input_type_1 = {
     ,"colid"  :   "PassengerId"
     ,"colcat" :   ["Sex", "Embarked" ]
     ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-    ,"coltext" :  ["Name", "Ticket"]
+    ,"coltext" :  []
     ,"coldate" :  []
     ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
 }
 
+
+cols_input_type_2 = {
+     "coly"   :   "Survived"
+    ,"colid"  :   "PassengerId"
+    ,"colcat" :   ["Sex", "Embarked" ]
+    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
+    ,"coltext" :  ["Name", "Ticket"]
+    ,"coldate" :  []
+    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+}
 
 
 
@@ -78,7 +88,7 @@ def titanic_lightgbm(path_model_out="") :
        used for titanic classification task
     """
     data_name    = "titanic"     ### in data/input/
-    model_name   = 'LGBMClassifier'
+    model_class  = 'LGBMClassifier'
     n_sample     = 1000
 
     def post_process_fun(y):
@@ -94,13 +104,13 @@ def titanic_lightgbm(path_model_out="") :
         'model_path'       : path_model_out
 
         ### LightGBM API model   #######################################
-        ,'config_name': model_name    ## ACTUAL Class name for model_sklearn.py
-        ,'model_pars'       : {'objective': 'binary',
+        ,'model_class': model_class    ## ACTUAL Class name for model_sklearn.py
+        ,'model_pars' : {'objective': 'binary',
                                'n_estimators':3000,
                                'learning_rate':0.001,
                                'boosting_type':'gbdt',     ### Model hyperparameters
                                'early_stopping_rounds': 5
-                              }
+                        }
 
         ### After prediction  ##########################################
         , 'post_process_fun' : post_process_fun
@@ -110,7 +120,7 @@ def titanic_lightgbm(path_model_out="") :
         , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
 
 
-        ### Pipeline for data processing ########################
+        ### Pipeline for data processing ##############################
         'pipe_list': [
             {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
             {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
@@ -136,9 +146,9 @@ def titanic_lightgbm(path_model_out="") :
           #  'coltext',
           'cols_model_group': [ 'colnum_bin',
                                 'colcat_bin',
-                                'coltext',
-                                'coldate',
-                                'colcross'
+                                #'coltext',
+                                #'coldate',
+                                # 'colcross_pair'
                               ]
 
           ### Filter data rows   ##################################################################

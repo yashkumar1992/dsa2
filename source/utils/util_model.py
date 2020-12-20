@@ -704,7 +704,7 @@ def sk_metrics_eval(clf, Xtest, ytest, cv=1, metrics=["f1_macro", "accuracy", "p
     metric_val = cross_val_score(clf, Xtest, ytest, scoring= metric, cv=3)
     for i, metric_val_i in enumerate(metric_val):
        entries.append((model_name, i, metric, metric_val_i ))
-  cv_df = pd.DataFrame(entries, columns=['config_name', 'fold_idx', "metric", 'metric_val'])
+  cv_df = pd.DataFrame(entries, columns=['model_class', 'fold_idx', "metric", 'metric_val'])
   return cv_df
 
 
