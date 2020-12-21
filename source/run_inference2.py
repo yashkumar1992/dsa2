@@ -63,7 +63,9 @@ def predict(model_name, path_model, dfX, cols_family):
     
 
     log("#### Load model  ############################################")
-    modelx.model = load(path_model + "/model/model.pkl")
+    print(path_model + "/model/model.pkl")
+    modelx.model = load(path_model + "/model//model.pkl")
+
     # stats = load(path_model + "/model/info.pkl")
     colsX       = load(path_model + "/model/colsX.pkl")   ## column name
     # coly  = load( path_model + "/model/coly.pkl"   )
@@ -81,21 +83,20 @@ def predict(model_name, path_model, dfX, cols_family):
 
 ####################################################################################################
 ############CLI Command ############################################################################
-def run_predict(model_name, path_model, path_data, path_output,cols_group, n_sample=-1):
+def run_predict(model_name, path_model, path_data, path_output,pars={}, n_sample=-1):
     path_output   = root + path_output
     path_data     = root + path_data + "/features.zip"#.zip
     path_model    = root + path_model
     path_pipeline = path_model + "/pipeline/"
     path_test_X   = path_data + "/features.zip"   #.zip #added path to testing features
     log(path_data, path_model, path_output)
-
     colid            = load(f'{path_pipeline}/colid.pkl')
 
     df               = load_dataset(path_data, path_data_y=None, colid=colid, n_sample=n_sample)
 
 
     from run_preprocess2 import preprocess_inference   as preprocess
-    dfX, cols_family = preprocess(df, path_pipeline, preprocess_pars={'cols_group':cols_group})
+    dfX, cols_family = preprocess(df, path_pipeline, preprocess_pars=pars)
     
     ypred, yproba    = predict(model_name, path_model, dfX, cols_family)
 

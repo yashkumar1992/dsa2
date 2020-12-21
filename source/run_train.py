@@ -165,6 +165,8 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 
     log(modelx.model.model_pars, modelx.model.compute_pars)
     a = load(model_path + "/model.pkl")
+    print('--------------')
+    print(model_path + "/model.pkl")
     log("############ check re-loaded", a.model_pars)
     
     return dfX.iloc[:ival, :].reset_index(), dfX.iloc[ival:, :].reset_index()
