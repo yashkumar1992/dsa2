@@ -134,55 +134,68 @@ def nlp_get_stopwords():
 
 
 def pd_coltext(df, col, pars={}):
+    """
+    df : Datframe
+    col : list of columns
+    pars : dict of pars
+    
+    """
     from utils import util_text, util_model
 
-    path_pipeline = pars.get('path_pipeline', False)
-    dftext_tdidf_all    = load(f'{path_pipeline}/dftext_tdidf.pkl') if  path_pipeline else None
+    path_pipeline  = pars.get('path_pipeline', None)
+    word_tokeep    = load(  path_pipeline + "/word_tokeep_dict.pkl" )  if path_pipeline is not None else None            
+    # dftext_tdidf_all = load(f'{path_pipeline}/dftext_tdidf.pkl') if  path_pipeline else None
     # dftext_svd_list_all      = load(f'{path_pipeline}/dftext_svd.pkl')   if  path_pipeline else None
-    stopwords     = nlp_get_stopwords()
 
 
-    #### Process  ###############################################################
-    dftext                              = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
-
-
+    #### Process  ####################################################################
+    stopwords     = nlp_get_stopwords()    
+    dftext        = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
     dftext_svd_list_all = None
-    # dftext_tdidf_all    = None
-    if type(path_pipeline)!=type('s'):
-        for col_ in col:
+    # dftext_tdidf_all    = None    
+          
+    for col_ in col:
             coltext_freq, word_tokeep = pd_coltext_wordfreq(df, col_, stopwords, ntoken=100)  ## nb of words to keep
             dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf(dftext, coltext=col_, word_minfreq=1,
                                                                              word_tokeep=word_tokeep,
                                                                              return_val="dataframe,param")
+       
             dftext_tdidf_all = pd.DataFrame(dftext_tdidf_dict) if dftext_tdidf_all is None else pd.concat((dftext_tdidf_all,pd.DataFrame(dftext_tdidf_dict)),axis=1)
             log(word_tokeep_dict)
+           
             ###  Dimesnion reduction for Sparse Matrix
             dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict,
                                                            colname        = None,
                                                            model_pretrain = None,
                                                            colprefix      = col_ + "_svd",
                                                            method         = "svd",  dimpca=2,  return_val="dataframe,param")
+            
             dftext_svd_list_all = dftext_svd_list if dftext_svd_list_all is None else pd.concat((dftext_svd_list_all,dftext_svd_list),axis=1)
-        #############################################################################
-        if 'path_features_store' in pars:
+    #################################################################################        
+
+    
+    ###### Save and Export ########################################################
+    if 'path_features_store' in pars:
             save_features(dftext_svd_list_all, 'dftext_svd' + "-" + str(col), pars['path_features_store'])
             save(dftext_svd_list_all,  pars['path_pipeline_export'] + "/dftext_svd.pkl")
             save(dftext_tdidf_all,     pars['path_pipeline_export'] + "/dftext_tdidf.pkl" )
             save(word_tokeep_dict,     pars['path_pipeline_export'] + "/word_tokeep_dict.pkl" )
-
-    else:
-
+     
     col_pars = {}
     col_pars['cols_new'] = {
      # 'coltext_tdidf'    : dftext_tdidf_all.columns.tolist(),       ### list
      'coltext_svd'      : dftext_svd_list_all.columns.tolist()      ### list
     }
 
-    dftext_svd_list_all.index=dftext.index
+    dftext_svd_list_all.index = dftext.index
     # return pd.concat((dftext_svd_list_all,dftext_svd_list_all),axis=1), col_pars
     return dftext_svd_list_all, col_pars
 
 
+   
+   
+   
+   
 ##### Filtering / cleaning rows :   #########################################################
 def pd_filter_rows(df, col, pars):
     import re
