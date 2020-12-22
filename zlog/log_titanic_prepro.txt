@@ -2,7 +2,7 @@ os.getcwd /home/soheil/Soheil/lin-python/S/multi
 /home/soheil/Soheil/lin-python/S/multi
 /home/soheil/Soheil/lin-python/S/multi/
 /home/soheil/Soheil/lin-python/S/multi/data/
-{'model_pars': {'model_path': '', 'model_class': 'LGBMClassifier', 'model_pars': {'objective': 'binary', 'n_estimators': 3000, 'learning_rate': 0.001, 'boosting_type': 'gbdt', 'early_stopping_rounds': 5}, 'post_process_fun': <function titanic_lightgbm.<locals>.post_process_fun at 0x7ff3b7efd430>, 'pre_process_pars': {'y_norm_fun': <function titanic_lightgbm.<locals>.pre_process_fun at 0x7ff3b7efd4c0>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}]}}, 'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score']}, 'data_pars': {'n_sample': 1000, 'cols_input_type': {'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': [], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 2, 'ymin': -1}}, 'global_pars': {'path_config_model': '/home/soheil/Soheil/lin-python/S/multi//titanic_classifier.py', 'model_class': 'titanic_lightgbm', 'path_data_train': 'data/input/titanic/train/', 'path_data_test': 'data/input/titanic/test/', 'path_model': 'data/output/titanic/titanic_lightgbm/', 'path_output_pred': 'data/output/titanic/pred_titanic_lightgbm/', 'n_sample': 1000}}
+{'model_pars': {'model_path': '', 'model_class': 'LGBMClassifier', 'model_pars': {'objective': 'binary', 'n_estimators': 3000, 'learning_rate': 0.001, 'boosting_type': 'gbdt', 'early_stopping_rounds': 5}, 'post_process_fun': <function titanic_lightgbm.<locals>.post_process_fun at 0x7f097b18f430>, 'pre_process_pars': {'y_norm_fun': <function titanic_lightgbm.<locals>.pre_process_fun at 0x7f097b18f4c0>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}]}}, 'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score']}, 'data_pars': {'n_sample': 1000, 'cols_input_type': {'coly': 'Survived', 'colid': 'PassengerId', 'colcat': ['Sex', 'Embarked'], 'colnum': ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare'], 'coltext': [], 'coldate': [], 'colcross': ['Name', 'Sex', 'Ticket', 'Embarked', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 2, 'ymin': -1}}, 'global_pars': {'path_config_model': '/home/soheil/Soheil/lin-python/S/multi//titanic_classifier.py', 'model_class': 'titanic_lightgbm', 'path_data_train': 'data/input/titanic/train/', 'path_data_test': 'data/input/titanic/test/', 'path_model': 'data/output/titanic/titanic_lightgbm/', 'path_output_pred': 'data/output/titanic/pred_titanic_lightgbm/', 'n_sample': 1000}}
 /home/soheil/Soheil/lin-python/S/multi/
 os.getcwd /home/soheil/Soheil/lin-python/S/multi
 /home/soheil/Soheil/lin-python/S/multi/
@@ -140,28 +140,28 @@ PassengerId
   ('### colnum Map numerics to Category bin  ###########################################',) 
 Pclass
            Pclass               
-             mean  max  min size
+              max  min mean size
 Pclass_bin                      
 0             1.0  1.0  1.0  216
 4             2.0  2.0  2.0  184
 9             3.0  3.0  3.0  491
 Age
                Age                       
-              mean        max    min size
+               max    min       mean size
 Age_bin                                  
-0         3.355000   8.000000   0.42   54
-1        13.467391  16.000000   9.00   46
-2        20.778238  24.000000  17.00  193
-3        30.183939  32.200001  24.50  330
-4        36.177967  40.000000  32.50  118
-5        44.400002  48.000000  40.50   70
-6        51.944443  56.000000  49.00   45
-7        60.291668  64.000000  57.00   24
-8        68.166664  71.000000  65.00    9
-9        77.000000  80.000000  74.00    2
+0         8.000000   0.42   3.355000   54
+1        16.000000   9.00  13.467391   46
+2        24.000000  17.00  20.778238  193
+3        32.200001  24.50  30.183939  330
+4        40.000000  32.50  36.177967  118
+5        48.000000  40.50  44.400002   70
+6        56.000000  49.00  51.944443   45
+7        64.000000  57.00  60.291668   24
+8        71.000000  65.00  68.166664    9
+9        80.000000  74.00  77.000000    2
 SibSp
           SibSp               
-           mean  max  min size
+            max  min mean size
 SibSp_bin                     
 0           0.0  0.0  0.0  608
 1           1.0  1.0  1.0  209
@@ -172,7 +172,7 @@ SibSp_bin
 9           8.0  8.0  8.0    7
 Parch
           Parch               
-           mean  max  min size
+            max  min mean size
 Parch_bin                     
 0           0.0  0.0  0.0  678
 1           1.0  1.0  1.0  118
@@ -183,14 +183,14 @@ Parch_bin
 9           6.0  6.0  6.0    1
 Fare
                 Fare                             
-                mean         max         min size
+                 max         min        mean size
 Fare_bin                                         
-0          15.595536   50.495800    0.000000  732
-1          69.483727   93.500000   51.479198  106
-2         128.930237  153.462494  106.425003   31
+0          50.495800    0.000000   15.595536  732
+1          93.500000   51.479198   69.483727  106
+2         153.462494  106.425003  128.930237   31
 3         164.866699  164.866699  164.866699    2
-4         224.766663  247.520798  211.337494   11
-5         262.791656  263.000000  262.375000    6
+4         247.520798  211.337494  224.766663   11
+5         263.000000  262.375000  262.791656    6
 9         512.329224  512.329224  512.329224    3
 
   (OrderedDict([('Pclass', [0.9999, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4000000000000004, 2.6, 2.8, 3.0]), ('Age', [0.41989998688697816, 8.37799998819828, 16.33599998950958, 24.293999990820886, 32.251999992132184, 40.20999999344349, 48.167999994754794, 56.12599999606609, 64.08399999737739, 72.0419999986887, 80.0]), ('SibSp', [-0.0001, 0.8, 1.6, 2.4000000000000004, 3.2, 4.0, 4.800000000000001, 5.6000000000000005, 6.4, 7.2, 8.0]), ('Parch', [-0.0001, 0.6, 1.2, 1.7999999999999998, 2.4, 3.0, 3.5999999999999996, 4.2, 4.8, 5.3999999999999995, 6.0]), ('Fare', [-0.0001, 51.23292236328125, 102.4658447265625, 153.69876708984373, 204.931689453125, 256.16461181640625, 307.39753417968745, 358.6304565429687, 409.86337890625, 461.09630126953124, 512.3292236328125])]),) 
