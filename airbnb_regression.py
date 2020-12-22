@@ -173,7 +173,7 @@ def airbnb_lightgbm(path_model_out="") :
 
          ,'cols_model_group': [  'colnum_bin'
                                 ,'colcat_bin'
-                                #,'coltext'
+                                ,'coltext_svd'
                               ]
 
          ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
