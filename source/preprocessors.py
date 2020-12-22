@@ -152,7 +152,7 @@ def pd_coltext(df, col, pars={}):
     stopwords     = nlp_get_stopwords()    
     dftext        = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
     dftext_svd_list_all = None
-    # dftext_tdidf_all    = None    
+    dftext_tdidf_all    = None
           
     for col_ in col:
             coltext_freq, word_tokeep = pd_coltext_wordfreq(df, col_, stopwords, ntoken=100)  ## nb of words to keep
