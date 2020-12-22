@@ -27,21 +27,20 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
-def global_pars_update(model_dict,  data_name, config_name):
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-    model_name        = model_dict['model_pars']['model_class']
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+def global_pars_update(model_dict,  data_name, model_class):
+    m                      = {}
+    model_name             = model_dict['model_pars']['model_class']
+    m['path_config_model'] = root + f"/{config_file}"
+    m['model_class']       = model_class
 
-    model_dict[ 'global_pars'] = {}
-    global_pars = [ 'model_class', 'model_class', 'path_config_model', 'path_model', 'path_data_train',
-                   'path_data_test', 'path_output_pred', 'n_sample'
-            ]
-    for t in global_pars:
-      model_dict['global_pars'][t] = globals()[t]
+    m['path_data_train']   = f'data/input/{data_name}/train/'
+    m['path_data_test']    = f'data/input/{data_name}/test/'
+
+    m['path_model']        = f'data/output/{data_name}/{model_class}/'
+    m['path_output_pred']  = f'data/output/{data_name}/pred_{model_class}/'
+    m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
+
+    model_dict[ 'global_pars'] = m
     return model_dict
 
 
@@ -126,8 +125,8 @@ def salary_lightgbm(path_model_out="") :
 
     model_dict = {'model_pars':
         {'model_class': model_name
-        ,'model_path': path_model_out
-        ,'model_pars': {'objective': 'huber',
+        ,'model_path':  path_model_out
+        ,'model_pars':  {'objective': 'huber',
 
 
         }  # default
@@ -160,7 +159,6 @@ def salary_lightgbm(path_model_out="") :
 
  
 def salary_elasticnetcv(path_model_out=""):
-
     global model_name
     model_name        = 'ElasticNetCV'
 
@@ -312,6 +310,12 @@ def preprocess(config=None, nsample=None):
                                 mode              =  'run_preprocess')
 
 
+
+    
+    
+    
+    
+    
 ##################################################################################
 ########## Train #################################################################
 def train(config=None, nsample=None):
@@ -328,12 +332,20 @@ def train(config=None, nsample=None):
                         n_sample          =  nsample if nsample is not None else n_sample)
 
 
+    
+    
+    
+
 ###################################################################################
 ######### Check data ##############################################################
 def check():
    pass
 
 
+  
+  
+  
+  
 ####################################################################################
 ####### Inference ##################################################################
 def predict(config=None, nsample=None):
