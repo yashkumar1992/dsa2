@@ -10,7 +10,7 @@ python titanic_classifier.py  predict  --nsample 1000   ;
 
 
 
-python multi_classifier.py  train    --nsample 5000     ;
+python multi_classifier.py  train    --nsample 10000     ;
 
 
 
