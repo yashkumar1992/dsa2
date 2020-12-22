@@ -79,7 +79,7 @@ def y_norm(y, inverse=True, mode='boxcox'):
                 return y1
 
     if mode == 'norm':
-        m0, width0 = 0.0, 350.0  ## Min, Max
+        m0, width0 = 0.0, 500000.0  ## Min, Max
         if inverse:
                 y1 = (y * width0 + m0)
                 return y1
@@ -126,11 +126,11 @@ def airbnb_lightgbm(path_model_out="") :
     n_sample     = 1000
 
     def post_process_fun(y):
-        return y_norm(y, inverse=True, mode='boxcox')
+        return y_norm(y, inverse=True, mode='norm')
 
 
     def pre_process_fun(y):
-        return y_norm(y, inverse=False, mode='boxcox')
+        return y_norm(y, inverse=False, mode='norm')
 
 
     #############################################################################
