@@ -228,7 +228,8 @@ def predict(config=None, nsample=None):
                             path_model  = m['path_model'],
                             path_data   = m['path_data_test'],
                             path_output = m['path_output_pred'],
-                            cols_group  = mdict['data_pars']['cols_input_type'],
+                            pars={'cols_group': mdict['data_pars']['cols_input_type'],
+                                  'pipe_list': mdict['model_pars']['pre_process_pars']['pipe_list']},
                             n_sample    = nsample if nsample is not None else m['n_sample'])
 
 
