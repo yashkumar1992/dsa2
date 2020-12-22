@@ -190,9 +190,8 @@ def salary_elasticnetcv(path_model_out=""):
     }}
 
 
-    ################################################################################################
-    ##### Filling Global parameters    #############################################################
-    model_dict        = global_pars_update(model_dict, model_name, data_name)
+    ##### Filling Global parameters    ############################################################
+    model_dict        = global_pars_update(model_dict, data_name, model_class=os_get_function_name() )
     return model_dict
 
 
@@ -237,8 +236,8 @@ def salary_bayesian_pyro(path_model_out="") :
            ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
                             }}
 
-    ##### Filling Global parameters    #############################################################
-    model_dict        = global_pars_update(model_dict, model_name, data_name)
+    ##### Filling Global parameters    ############################################################
+    model_dict        = global_pars_update(model_dict, data_name, os_get_function_name() )
     return model_dict
 
 
