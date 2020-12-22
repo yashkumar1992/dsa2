@@ -153,12 +153,17 @@ def pd_coltext(df, col, pars={}):
     dftext        = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
     dftext_svd_list_all = None
     dftext_tdidf_all    = None
+    ### Processing each of text columns to create a bag of word/to load the bag of word -> tf-idf -> svd
     for col_ in col:
+
             if path_pipeline is not None:
+                ### If it is in Inference step, use the saved bag of word for the column `col_`
                 word_tokeep = word_tokeep_dict_all[col_]
             else:
+                ### If it is not, create a bag of word
                 coltext_freq, word_tokeep = pd_coltext_wordfreq(df, col_, stopwords, ntoken=100)  ## nb of words to keep
-                word_tokeep_dict_all[col_] = word_tokeep
+                word_tokeep_dict_all[col_] = word_tokeep  ## save the bag of wrod for `col_` in a dict
+
             dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf(dftext, coltext=col_, word_minfreq=1,
                                                                              word_tokeep=word_tokeep,
                                                                              return_val="dataframe,param")
