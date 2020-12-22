@@ -143,7 +143,7 @@ def pd_coltext(df, col, pars={}):
     from utils import util_text, util_model
 
     path_pipeline  = pars.get('path_pipeline', None)
-    word_tokeep    = load(  path_pipeline + "/word_tokeep_dict.pkl" )  if path_pipeline is not None else None            
+    word_tokeep_dict_all    = load(  path_pipeline + "/word_tokeep_dict_all.pkl" )  if path_pipeline is not None else {}
     # dftext_tdidf_all = load(f'{path_pipeline}/dftext_tdidf.pkl') if  path_pipeline else None
     # dftext_svd_list_all      = load(f'{path_pipeline}/dftext_svd.pkl')   if  path_pipeline else None
 
@@ -153,9 +153,12 @@ def pd_coltext(df, col, pars={}):
     dftext        = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
     dftext_svd_list_all = None
     dftext_tdidf_all    = None
-          
     for col_ in col:
-            coltext_freq, word_tokeep = pd_coltext_wordfreq(df, col_, stopwords, ntoken=100)  ## nb of words to keep
+            if path_pipeline is not None:
+                word_tokeep = word_tokeep_dict_all[col_]
+            else:
+                coltext_freq, word_tokeep = pd_coltext_wordfreq(df, col_, stopwords, ntoken=100)  ## nb of words to keep
+                word_tokeep_dict_all[col_] = word_tokeep
             dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf(dftext, coltext=col_, word_minfreq=1,
                                                                              word_tokeep=word_tokeep,
                                                                              return_val="dataframe,param")
@@ -177,9 +180,9 @@ def pd_coltext(df, col, pars={}):
     ###### Save and Export ########################################################
     if 'path_features_store' in pars:
             save_features(dftext_svd_list_all, 'dftext_svd' + "-" + str(col), pars['path_features_store'])
-            save(dftext_svd_list_all,  pars['path_pipeline_export'] + "/dftext_svd.pkl")
-            save(dftext_tdidf_all,     pars['path_pipeline_export'] + "/dftext_tdidf.pkl" )
-            save(word_tokeep_dict,     pars['path_pipeline_export'] + "/word_tokeep_dict.pkl" )
+            # save(dftext_svd_list_all,  pars['path_pipeline_export'] + "/dftext_svd.pkl")
+            # save(dftext_tdidf_all,     pars['path_pipeline_export'] + "/dftext_tdidf.pkl" )
+            save(word_tokeep_dict_all,     pars['path_pipeline_export'] + "/word_tokeep_dict_all.pkl" )
      
     col_pars = {}
     col_pars['cols_new'] = {
@@ -479,16 +482,16 @@ def pd_coldate(df, col, pars):
     log("##### Coldate processing   #############################################################")
     from utils import util_date
     coldate = col
-    path_features_store = pars['path_features_store']
+    path_features_store = pars.get('path_features_store', None)
 
     dfdate = None
     for coldate_i in coldate :
         dfdate_i =  util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
         dfdate  = pd.concat((dfdate, dfdate_i),axis=1)  if dfdate is not None else dfdate_i
-        if pars.get('path_features_store', None) is not None:
+        if path_features_store is not None:
             path_features_store = pars['path_features_store']
             save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
-    if pars.get('path_features_store', None) is not None:
+    if path_features_store is not None:
         save_features(dfdate, 'dfdate', path_features_store)
     col_pars = {}
     col_pars['cols_new'] = {
