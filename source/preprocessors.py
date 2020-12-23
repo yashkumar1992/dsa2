@@ -318,7 +318,8 @@ def pd_colnum_bin(df, col, pars):
     log(colnum_bin)
 
     if 'path_features_store' in pars:
-        save_features(dfnum_bin, 'colnum_bin' + "-" + str(col), pars['path_features_store'])
+        scol = "_".join(col[:5])
+        save_features(dfnum_bin, 'colnum_bin' + "-" + scol, pars['path_features_store'])
         save(colnum_binmap,  pars['path_pipeline_export'] + "/colnum_binmap.pkl" )
         save(colnum_bin,     pars['path_pipeline_export'] + "/colnum_bin.pkl" )
 
