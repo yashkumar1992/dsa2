@@ -106,34 +106,40 @@ main:
     *Preprocessing as follow    in  source/run_preprocess.py
          Raw Columns   --->  Feature columns family
 
-        "colnum"    --> "colnum_bin" --> "colnum_onehot"
-            |--------------------------> "colnum_onehot"
+        "colnum"    --> "colnum_bin" --> "colnum_onehot" ---------------> 
+            |--------------------------> "colnum_onehot" ---------------> 
             
-        "colcat"    --> "colcat_bin" --> "colcat_onehot"
-            |--------------------------> "colcat_onehot"
-
+        "colcat"    --> "colcat_bin" --> "colcat_onehot" ---------------> 
+            |--------------------------> "colcat_onehot" ---------------> 
+            
+        "coltext"   -(bag of words)-> "dftext_tfidf" --> "dftext_svd" --> 
+                                             |--------------------------> 
+                                             
+                                             
      Default pipeline options are considered in 
 
      pipe_default = [ 'filter','label','dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'] :
 
 
 
-    'filter':     Input:  ymin and ymax values  and does filtering of dataset (coly).
-    'label' :     Input:  y_norm_fun value from model dictionary
-                   applies normalization function on coly
+    'filter'       :: Input:  ymin and ymax values  and does filtering of dataset (coly).
+    'label'        :: Input:  y_norm_fun value from model dictionary
+                             applies normalization function on coly
 
 
-    'dfnum_bin' : Input:  a dataframe with selected numerical columns, creates categorical bins, returns dataframe with new columns (dfnum_bin)
-    'dfnum_hot' : Input:  a dataframe dfnum_bin, returns one hot matrix as dataframe dfnum_hot
+    'dfnum_bin'    :: Input:  a dataframe with selected numerical columns, creates categorical bins, returns dataframe with new columns (dfnum_bin)
+    'dfnum_hot'    :: Input:  a dataframe dfnum_bin, returns one hot matrix as dataframe dfnum_hot
 
 
-    'dfcat_bin' : Input:  a dataframe with categorical columns, returns dataframe dfcat_bin with numerical values
-    'dfcat_hot' : Input:  a dataframe with categorical columns, returns one hot matrix as dataframe dfcat_hot
+    'dfcat_bin'    :: Input:  a dataframe with categorical columns, returns dataframe dfcat_bin with numerical values
+    'dfcat_hot'    :: Input:  a dataframe with categorical columns, returns one hot matrix as dataframe dfcat_hot
 
 
-    'dfcross_hot' : Input:  a data frame of numerical and categorical one hot encoded columns with defined cross columns, returns dataframe df_cross_hot
+    'dfcross_hot'  :: Input:  a data frame of numerical and categorical one hot encoded columns with defined cross columns, returns dataframe df_cross_hot
 
-    
+------
+    'dftext_tfidf' :: Input:  a data frame of text data, returns tf-idf matrix
+    'dftext_svd'   :: Input:  a tf-idf matrix, returns the dimension reduced matrix
 
 ### Command line usage advanced
     cd dsa2
