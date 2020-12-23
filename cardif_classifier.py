@@ -1,22 +1,20 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to titatinic dataet
 All in one file config
-  python titanic_classifier.py  train    > zlog/log_titanic_train.txt 2>&1
-  python titanic_classifier.py  predict  > zlog/log_titanic_predict.txt 2>&1
-
-
+  python cardif_classifier.py  preprocess
+  python cardif_classifier.py  train
+  python cardif_classifier.py  predict
 """
-import warnings, copy, os, sys
+import warnings, copy
 warnings.filterwarnings('ignore')
+import os, sys
 
-###################################################################################
+############################################################################
 from source import util_feature
 
 
-####################################################################################
-###### Path ########################################################################
+###### Path ################################################################
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
@@ -49,51 +47,48 @@ def os_get_function_name():
 
 
 ####################################################################################
-config_file     = "titanic_classifier.py"   ### name of file which contains data configuration
-config_default  = 'titanic_lightgbm'        ### name of function which contains data configuration
+config_file    = "cardif_classifier.py"
+config_default = 'cardif_lightgbm'
 
 
-
-
-####################################################################################
-##### Params########################################################################
-# data_name    = "titanic"     ### in data/input/
 cols_input_type_1 = {
-     "coly"   :   "Survived"
-    ,"colid"  :   "PassengerId"
-    ,"colcat" :   ["Sex", "Embarked" ]
-    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-    ,"coltext" :  []
-    ,"coldate" :  []
-    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+         "coly"   :   "target"
+        ,"colid"  :   "ID"
+        ,"colcat" :   ["v3","v30", "v31", "v47", "v52", "v56", "v66", "v71", "v74", "v75", "v79", "v91", "v107", "v110", "v112", "v113", "v125"]
+        ,"colnum" :   ["v1", "v2", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16", "v17", "v18", "v19", "v20", "v21", "v23", "v25", "v26", "v27", "v28", "v29", "v32", "v33", "v34", "v35", "v36", "v37", "v38", "v39", "v40", "v41", "v42", "v43", "v44", "v45", "v46", "v48", "v49", "v50", "v51", "v53", "v54", "v55", "v57", "v58", "v59", "v60", "v61", "v62", "v63", "v64", "v65", "v67", "v68", "v69", "v70", "v72", "v73", "v76", "v77", "v78", "v80", "v81", "v82", "v83", "v84", "v85", "v86", "v87", "v88", "v89", "v90", "v92", "v93", "v94", "v95", "v96", "v97", "v98", "v99", "v100", "v101", "v102", "v103", "v104", "v105", "v106", "v108", "v109", "v111", "v114", "v115", "v116", "v117", "v118", "v119", "v120", "v121", "v122", "v123", "v124", "v126", "v127", "v128", "v129", "v130", "v131"]
+        ,"coltext" :  []
+        ,"coldate" :  []
+        ,"colcross" : ["v3"]
 }
 
 
 cols_input_type_2 = {
-     "coly"   :   "Survived"
-    ,"colid"  :   "PassengerId"
-    ,"colcat" :   ["Sex", "Embarked" ]
-    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-    ,"coltext" :  ["Name", "Ticket"]
-    ,"coldate" :  []
-    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+         "coly"   :   "target"
+        ,"colid"  :   "ID"
+        ,"colcat" :   ["v3","v30", "v31", "v47", "v52", ]
+        ,"colnum" :   ["v1", "v2", "v4", "v5",    "v108", "v109", "v111", "v114", "v115", "v116", "v117", "v118",  ]
+        ,"coltext" :  []
+        ,"coldate" :  []
+        ,"colcross" : ["v3", "v30"]
 }
 
 
 
 ####################################################################################
-def titanic_lightgbm(path_model_out="") :
+##### Params #######################################################################
+def cardif_lightgbm(path_model_out="") :
     """
-       Contains all needed informations for Light GBM Classifier model,
-       used for titanic classification task
+       cardiff
     """
-    data_name    = "titanic"         ### in data/input/
-    model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
-    n_sample     = 1000
+    data_name    = "cardif"
+    model_class  = 'LGBMClassifier'
+    n_sample     = 5000
+
 
     def post_process_fun(y):
         ### After prediction is done
         return  int(y)
+
 
     def pre_process_fun(y):
         ### Before the prediction is done
@@ -106,9 +101,9 @@ def titanic_lightgbm(path_model_out="") :
         ### LightGBM API model   #######################################
         ,'model_class': model_class
         ,'model_pars' : {'objective': 'binary',
-                               'n_estimators':3000,
-                               'learning_rate':0.001,
-                               'boosting_type':'gbdt',     ### Model hyperparameters
+                               'n_estimators':       100,
+                               'learning_rate':      0.01,
+                               'boosting_type':      'gbdt',     ### Model hyperparameters
                                'early_stopping_rounds': 5
                         }
 
@@ -136,7 +131,7 @@ def titanic_lightgbm(path_model_out="") :
                       },
 
       'data_pars': { 'n_sample' : n_sample,
-          'cols_input_type' : cols_input_type_1,
+          'cols_input_type' : cols_input_type_2,
 
           ### family of columns for MODEL  ########################################################
           #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
@@ -144,7 +139,7 @@ def titanic_lightgbm(path_model_out="") :
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
           #  'coldate',
           #  'coltext',
-          'cols_model_group': [ 'colnum_bin',
+          'cols_model_group': [ 'colnum',
                                 'colcat_bin',
                                 # 'coltext',
                                 # 'coldate',
@@ -160,13 +155,6 @@ def titanic_lightgbm(path_model_out="") :
     ##### Filling Global parameters    ############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
-
-
-
-
-
-
-
 
 
 
@@ -255,22 +243,15 @@ def run_all():
 
 
 
-
 ###########################################################################################################
 ###########################################################################################################
 """
-python  titanic_classifier.py  data_profile
-python  titanic_classifier.py  preprocess  --nsample 100
-python  titanic_classifier.py  train       --nsample 200
-python  titanic_classifier.py  check
-python  titanic_classifier.py  predict
-python  titanic_classifier.py  run_all
-
-
+python  cardif_classifier.py  preprocess
+python  cardif_classifier.py  train
+python  cardif_classifier.py  check
+python  cardif_classifier.py  predict
+python  cardif_classifier.py  run_all
 """
 if __name__ == "__main__":
-
     import fire
     fire.Fire()
-    
-
