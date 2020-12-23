@@ -1,16 +1,11 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to titatinic dataet
-All in one file config
+
 
   python airbnb_regression.py  preprocess
-
-  python airbnb_regression.py  train    > zlog/log-airbnb.txt 2>&1
-  python airbnb_regression.py  check    > zlog/log-airbnb.txt 2>&1
-  python airbnb_regression.py  predict  > zlog/log-airbnb.txt 2>&1
-
-
+  python airbnb_regression.py  train
+  python airbnb_regression.py  predict
 
 
 
@@ -34,17 +29,17 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
-def global_pars_update(model_dict,  data_name, model_class):
+def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
     model_name             = model_dict['model_pars']['model_class']
     m['path_config_model'] = root + f"/{config_file}"
-    m['model_class']       = model_class
+    m['config_name']       = config_name
 
     m['path_data_train']   = f'data/input/{data_name}/train/'
     m['path_data_test']    = f'data/input/{data_name}/test/'
 
-    m['path_model']        = f'data/output/{data_name}/{model_name}/'
-    m['path_output_pred']  = f'data/output/{data_name}/pred_{model_class}/'
+    m['path_model']        = f'data/output/{data_name}/{config_name}/'
+    m['path_output_pred']  = f'data/output/{data_name}/pred_{config_name}/'
     m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
 
     model_dict[ 'global_pars'] = m
@@ -182,17 +177,10 @@ def airbnb_lightgbm(path_model_out="") :
 
 
     ##### Filling Global parameters    ############################################################
-    model_dict        = global_pars_update(model_dict, data_name, model_class=os_get_function_name() )
+    model_dict        = global_pars_update(model_dict, data_name, os_get_function_name() )
 
     return model_dict
  
-
-
-
-####################################################################################################
-########## Init variable ###########################################################################
-# globals()[model_class]()
-
 
 
 #####################################################################################
