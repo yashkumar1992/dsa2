@@ -158,9 +158,10 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 
     log("############ saving model, dfX, columns", model_path)
     os.makedirs(model_path, exist_ok=True)
-    modelx.save(model_path, stats)
     save(colsX, model_path + "/colsX.pkl")
     save(coly,  model_path + "/coly.pkl")
+
+    modelx.save(model_path, stats)
 
 
     log(modelx.model.model_pars, modelx.model.compute_pars)

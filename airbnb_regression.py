@@ -1,16 +1,11 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to titatinic dataet
-All in one file config
+
 
   python airbnb_regression.py  preprocess
-
-  python airbnb_regression.py  train    > zlog/log-airbnb.txt 2>&1
-  python airbnb_regression.py  check    > zlog/log-airbnb.txt 2>&1
-  python airbnb_regression.py  predict  > zlog/log-airbnb.txt 2>&1
-
-
+  python airbnb_regression.py  train
+  python airbnb_regression.py  predict
 
 
 
