@@ -170,13 +170,13 @@ def preprocess(config=None, nsample=None):
     m            = mdict['global_pars']
     print(mdict)
 
-    from source import run_preprocess2, run_preprocess
-    run_preprocess2.run_preprocess(config_name=  config_name,
-                                   path_data         =  m['path_data_train'],
-                                   path_output       =  m['path_model'],
-                                   path_config_model =  m['path_config_model'],
-                                   n_sample          =  nsample if nsample is not None else m['n_sample'],
-                                   mode              =  'run_preprocess')
+    from source import run_preprocess, run_preprocess_old
+    run_preprocess.run_preprocess(config_name=  config_name,
+                                  path_data         =  m['path_data_train'],
+                                  path_output       =  m['path_model'],
+                                  path_config_model =  m['path_config_model'],
+                                  n_sample          =  nsample if nsample is not None else m['n_sample'],
+                                  mode              =  'run_preprocess')
 
 
 ##################################################################################
@@ -214,14 +214,14 @@ def predict(config=None, nsample=None):
     print(mdict['data_pars']['cols_input_type'])
     print(m)
 
-    from source import run_inference,run_inference2
-    run_inference2.run_predict(config_name,
-                            path_model  = m['path_model'],
-                            path_data   = m['path_data_test'],
-                            path_output = m['path_output_pred'],
-                            cols_group  = mdict['data_pars']['cols_input_type'],
-                            n_sample    = nsample if nsample is not None else m['n_sample']
-                            )
+    from source import run_inference,run_inference
+    run_inference.run_predict(config_name,
+                              path_model  = m['path_model'],
+                              path_data   = m['path_data_test'],
+                              path_output = m['path_output_pred'],
+                              cols_group  = mdict['data_pars']['cols_input_type'],
+                              n_sample    = nsample if nsample is not None else m['n_sample']
+                              )
 
 
 def run_all():

@@ -52,7 +52,6 @@ from util_feature import  save, load_function_uri
 
 ####################################################################################################
 ####################################################################################################
-from util_feature import  load_dataset
 import util_feature
 
 
@@ -142,31 +141,35 @@ def pd_coltext(df, col, pars={}):
     """
     from utils import util_text, util_model
 
-    path_pipeline  = pars.get('path_pipeline', None)
-    word_tokeep_dict_all    = load(  path_pipeline + "/word_tokeep_dict_all.pkl" )  if path_pipeline is not None else {}
+    #### Load pars ###################################################################
+    path_pipeline        = pars.get('path_pipeline', None)
+    word_tokeep_dict_all = load(  path_pipeline + "/word_tokeep_dict_all.pkl" )  if path_pipeline is not None else {}
     # dftext_tdidf_all = load(f'{path_pipeline}/dftext_tdidf.pkl') if  path_pipeline else None
     # dftext_svd_list_all      = load(f'{path_pipeline}/dftext_svd.pkl')   if  path_pipeline else None
-
+    dimpca       = pars.get('dimpca', 2)
+    word_minfreq = pars.get('word_minfreq', 3)
 
     #### Process  ####################################################################
-    stopwords     = nlp_get_stopwords()    
-    dftext        = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
+    stopwords           = nlp_get_stopwords()
+    dftext              = pd_coltext_clean(df, col, stopwords= stopwords , pars=pars)
     dftext_svd_list_all = None
     dftext_tdidf_all    = None
+
     ### Processing each of text columns to create a bag of word/to load the bag of word -> tf-idf -> svd
     for col_ in col:
 
             if path_pipeline is not None:
                 ### If it is in Inference step, use the saved bag of word for the column `col_`
                 word_tokeep = word_tokeep_dict_all[col_]
+
             else:
                 ### If it is not, create a bag of word
                 coltext_freq, word_tokeep = pd_coltext_wordfreq(df, col_, stopwords, ntoken=100)  ## nb of words to keep
                 word_tokeep_dict_all[col_] = word_tokeep  ## save the bag of wrod for `col_` in a dict
 
-            dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf(dftext, coltext=col_, word_minfreq=1,
-                                                                             word_tokeep=word_tokeep,
-                                                                             return_val="dataframe,param")
+            dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf(dftext, coltext=col_, word_minfreq= word_minfreq,
+                                                                             word_tokeep = word_tokeep,
+                                                                             return_val  = "dataframe,param")
        
             dftext_tdidf_all = pd.DataFrame(dftext_tdidf_dict) if dftext_tdidf_all is None else pd.concat((dftext_tdidf_all,pd.DataFrame(dftext_tdidf_dict)),axis=1)
             log(word_tokeep_dict)
@@ -176,13 +179,12 @@ def pd_coltext(df, col, pars={}):
                                                            colname        = None,
                                                            model_pretrain = None,
                                                            colprefix      = col_ + "_svd",
-                                                           method         = "svd",  dimpca=2,  return_val="dataframe,param")
+                                                           method         = "svd",  dimpca=dimpca,  return_val="dataframe,param")
             
             dftext_svd_list_all = dftext_svd_list if dftext_svd_list_all is None else pd.concat((dftext_svd_list_all,dftext_svd_list),axis=1)
     #################################################################################        
 
-    
-    ###### Save and Export ########################################################
+    ###### Save and Export ##########################################################
     if 'path_features_store' in pars:
             save_features(dftext_svd_list_all, 'dftext_svd' + "-" + str(col), pars['path_features_store'])
             # save(dftext_svd_list_all,  pars['path_pipeline_export'] + "/dftext_svd.pkl")
@@ -200,9 +202,6 @@ def pd_coltext(df, col, pars={}):
     return dftext_svd_list_all, col_pars
 
 
-   
-   
-   
    
 ##### Filtering / cleaning rows :   #########################################################
 def pd_filter_rows(df, col, pars):
