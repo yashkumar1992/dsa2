@@ -14,7 +14,7 @@ python multi_classifier.py  train    --nsample 10000     ;
 
 
 ### Details
-python salary_regression.py  train   --nsample 10000
+# python salary_regression.py  train   --nsample 10000
 
 
 
