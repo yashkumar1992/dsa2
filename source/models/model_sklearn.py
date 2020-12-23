@@ -31,6 +31,36 @@ from sklearn.cluster import *
 from sklearn.tree import *
 from lightgbm import LGBMModel, LGBMRegressor, LGBMClassifier
 
+
+try :
+ pyod.models.abod 
+	pyod.models.auto_encoder 
+	pyod.models.cblof 
+	pyod.models.cof 
+	pyod.models.combination 
+	pyod.models.copod 
+	pyod.models.feature_bagging 
+	pyod.models.hbos 
+	pyod.models.iforest 
+	pyod.models.knn 
+	pyod.models.lmdd 
+	pyod.models.loda 
+	pyod.models.lof 
+	pyod.models.loci 
+	pyod.models.lscp 
+	pyod.models.mad 
+	pyod.models.mcd 
+	pyod.models.mo_gaal 
+	pyod.models.ocsvm 
+	pyod.models.pca 
+	pyod.models.sod 
+	pyod.models.so_gaal 
+	pyod.models.sos 
+	pyod.models.vae 
+	pyod.models.xgbod 
+except :
+ print("cannot import pyod")
+ 
 ####################################################################################################
 VERBOSE = True
 
