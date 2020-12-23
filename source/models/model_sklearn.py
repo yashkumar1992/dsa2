@@ -33,33 +33,33 @@ from lightgbm import LGBMModel, LGBMRegressor, LGBMClassifier
 
 
 try :
-        pyod.models.abod 
-	pyod.models.auto_encoder 
-	pyod.models.cblof 
-	pyod.models.cof 
-	pyod.models.combination 
-	pyod.models.copod 
-	pyod.models.feature_bagging 
-	pyod.models.hbos 
-	pyod.models.iforest 
-	pyod.models.knn 
-	pyod.models.lmdd 
-	pyod.models.loda 
-	pyod.models.lof 
-	pyod.models.loci 
-	pyod.models.lscp 
-	pyod.models.mad 
-	pyod.models.mcd 
-	pyod.models.mo_gaal 
-	pyod.models.ocsvm 
-	pyod.models.pca 
-	pyod.models.sod 
-	pyod.models.so_gaal 
-	pyod.models.sos 
-	pyod.models.vae 
-	pyod.models.xgbod 
+    from pyod.models.abod  import *
+    from pyod.models.auto_encoder import *
+    from pyod.models.cblof import *
+    from pyod.models.cof import *
+    from pyod.models.combination import *
+    from pyod.models.copod import *
+    from pyod.models.feature_bagging import *
+    from pyod.models.hbos import *
+    from pyod.models.iforest import *
+    from pyod.models.knn import *
+    from pyod.models.lmdd import *
+    from pyod.models.loda import *
+    from pyod.models.lof import *
+    from pyod.models.loci import *
+    from pyod.models.lscp import *
+    from pyod.models.mad import *
+    from pyod.models.mcd import *
+    from pyod.models.mo_gaal import *
+    from pyod.models.ocsvm import *
+    from pyod.models.pca import *
+    from pyod.models.sod import *
+    from pyod.models.so_gaal import *
+    from pyod.models.sos import *
+    from pyod.models.vae import *
+    from pyod.models.xgbod import *
 except :
- print("cannot import pyod")
+    print("cannot import pyod")
  
 ####################################################################################################
 VERBOSE = True
