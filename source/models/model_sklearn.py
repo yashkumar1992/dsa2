@@ -33,7 +33,7 @@ from lightgbm import LGBMModel, LGBMRegressor, LGBMClassifier
 
 
 try :
- pyod.models.abod 
+        pyod.models.abod 
 	pyod.models.auto_encoder 
 	pyod.models.cblof 
 	pyod.models.cof 
