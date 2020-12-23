@@ -3,20 +3,14 @@
 """
 You can put hardcode here, specific to titatinic dataet
 All in one file config
-!  python boston_regression.py  train
-!  python boston_regression.py  check
-!  python boston_regression.py  predict
+  python boston_regression.py  train
+  python boston_regression.py  check
+  python boston_regression.py  predict
 
 
-# 'pipe_list'  :
-    'filter',
-    'label',
-    'dfnum_bin'
-    'dfnum_hot'
-    'dfcat_bin'
-    'dfcat_hot'
-    'dfcross_hot'
+https://causalnex.readthedocs.io/en/stable/causalnex.structure.DAGRegressor.html
 
+https://www.splunk.com/en_us/blog/platform/causal-inference-determining-influence-in-messy-data.html
 
 
 
@@ -24,13 +18,14 @@ All in one file config
 import warnings
 warnings.filterwarnings('ignore')
 import os, sys, pandas as pd, copy, pdb
-############################################################################
+#####################################################################################
 from source import util_feature
 
 
 
-####################################################################################################
-###### Path ########################################################################################
+
+####################################################################################
+###### Path ########################################################################
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
@@ -40,28 +35,40 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
+def global_pars_update(model_dict,  data_name, config_name):
+    m                      = {}
+    model_name             = model_dict['model_pars']['model_class']
+    m['path_config_model'] = root + f"/{config_file}"
+    m['config_name']       = config_name
+
+    m['path_data_train']   = f'data/input/{data_name}/train/'
+    m['path_data_test']    = f'data/input/{data_name}/test/'
+
+    m['path_model']        = f'data/output/{data_name}/{config_name}/'
+    m['path_output_pred']  = f'data/output/{data_name}/pred_{config_name}/'
+    m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
+
+    model_dict[ 'global_pars'] = m
+    return model_dict
+
+
+def os_get_function_name():
+    import sys
+    return sys._getframe(1).f_code.co_name
 
 
 ####################################################################################
-config_file  = "boston_regression.py"
-data_name    = "boston_price"
-
-
-config_name  = 'boston_lightgbm'
-n_sample     = 1000
-tag_job      = 'aa1'  ## to have a unique tag for the run
-
-
+config_file    = "boston_regression.py"
+config_default = 'boston_lightgbm'
 
 
 cols_input_type_1 = {
-     "coly"   : "SalePrice"
-    ,"colid"  : "Id"
-
-    ,"colcat" : [  ]
-    ,"colnum" : [ ]
+     "coly"     : "SalePrice"
+    ,"colid"    : "Id"
+    ,"colcat"   : []
+    ,"colnum"   : []
     ,"coltext"  : []
-    ,"coldate" : []   # ["YearBuilt", "YearRemodAdd", "GarageYrBlt"]
+    ,"coldate"  : []   # ["YearBuilt", "YearRemodAdd", "GarageYrBlt"]
     ,"colcross" : []
 
 },
@@ -101,12 +108,14 @@ def y_norm(y, inverse=True, mode='boxcox'):
 
 ####################################################################################
 ##### Params########################################################################
-def boston_causal(path_model_out="") :
+def boston_lightgbm(path_model_out="") :
     """
+        Huber Loss includes L1  regurarlization
+        We test different features combinaison, default params is optimal
     """
-    global path_config_model, path_model, path_data_train, path_data_test, path_output_pred, n_sample,model_name
-
-    model_name        = 'DAGRegressor'
+    data_name         = "boston"
+    model_name        = 'LGBMRegressor'
+    n_sample          = 10**5
 
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='boxcox')
@@ -115,58 +124,132 @@ def boston_causal(path_model_out="") :
         return y_norm(y, inverse=False, mode='boxcox')
 
 
-    ###############################################################
-    model_dict = {'model_pars': {
-          'model_path'       : path_model_out
-
-        , 'model_class': model_name
-        , 'model_pars'       : {
-                alpha=0.1,
-                beta=0.9,
-                fit_intercept=True,
-                hidden_layer_units=None,
-                dependent_target=True,
-                enforce_dag=True,
+    model_dict = {'model_pars':
+        {'model_class': model_name
+        ,'model_path':  path_model_out
+        ,'model_pars':  {'objective': 'huber',
 
 
-        }  # default ones of the model name
+        }  # default
+        ,'post_process_fun': copy.deepcopy( post_process_fun)
+        ,'pre_process_pars': {'y_norm_fun' :  copy.deepcopy(pre_process_fun) ,
 
-        , 'post_process_fun' : post_process_fun
-        , 'pre_process_pars' : {'y_norm_fun' : copy.deepcopy(pre_process_fun),
+        ### Pipeline for data processing ##############################
+        'pipe_list': [
+            {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
+            {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
+        ],
+               }
+        },
 
-            ### Pipeline for data processing.
-            # 'pipe_list'  : [ 'filter', 'label', 'dfnum_bin', 'dfnum_hot',  'dfcat_bin', 'dfcat_hot', 'dfcross_hot', ]
-           'pipe_list'  : [ 'filter', 'label',   'dfcat_bin' ]
 
-           }
-                                                         },
+
     'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
                                       'explained_variance_score', 'r2_score', 'median_absolute_error']
                                     },
+
     'data_pars': {
-        'cols_input_type' : cols_input_type_1,
+            'cols_input_type' : cols_input_type_1
 
-        # 'cols_model_group': [ 'colnum_onehot', 'colcat_onehot', 'colcross_onehot' ]
-        'cols_model_group': [ 'colnum', 'colcat_bin' ]
+            # cols['cols_model'] = cols["colnum"] + cols["colcat_bin"]  # + cols[ "colcross_onehot"]
+            ,'cols_model_group': [ 'colnum', 'colcat_bin']
 
+           ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
 
-     ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
-
-
-     ### Keep them emtpy   ########
-     ,'cols_model': []
-     ,'coly': []
     }}
 
-
-    path_config_model = root + f"/{config_file}"
-    path_model        = f'data/output/{data_name}/a01_{model_name}/'
-    path_data_train   = f'data/input/{data_name}/train/'
-    path_data_test    = f'data/input/{data_name}/test/'
-    path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
+    ################################################################################################
+    ##### Filling Global parameters    #############################################################
+    model_dict        = global_pars_update(model_dict, data_name, os_get_function_name() )
+    return model_dict
 
 
 
+
+
+def boston_causalnex(path_model_out="") :
+    """
+       Contains all needed informations for Light GBM Classifier model,
+       used for titanic classification task
+    """
+    data_name    = "boston"         ### in data/input/
+    model_class  = 'DAGRegressor'  ### ACTUAL Class name for model_sklearn.py
+    n_sample     = 1000
+
+    def post_process_fun(y):
+        ### After prediction is done
+        return  int(y)
+
+    def pre_process_fun(y):
+        ### Before the prediction is done
+        return  int(y)
+
+
+    model_dict = {'model_pars': {
+        'model_path'       : path_model_out
+
+        ### LightGBM API model   #######################################
+        ,'model_class': model_class
+        ,'model_pars' : {
+                'alpha' : 0.1,
+                'beta' : 0.9,
+                'fit_intercept' :True,
+                'hidden_layer_units': None,
+                'dependent_target' : True,
+                'enforce_dag' :True
+        }
+
+        ### After prediction  ##########################################
+        , 'post_process_fun' : post_process_fun
+
+
+        ### Before training  ##########################################
+        , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
+
+
+        ### Pipeline for data processing ##############################
+        'pipe_list': [
+            {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
+            {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
+        ],
+               }
+        },
+
+      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
+                      },
+
+      'data_pars': { 'n_sample' : n_sample,
+          'cols_input_type' : cols_input_type_1,
+
+          ### family of columns for MODEL  ########################################################
+          #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+          #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+          #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+          #  'coldate',
+          #  'coltext',
+          'cols_model_group': [ 'colnum_bin',
+                                'colcat_bin',
+                                # 'coltext',
+                                # 'coldate',
+                                # 'colcross_pair'
+                              ]
+
+          ### Filter data rows   ##################################################################
+         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
+
+         }
+      }
+
+    ##### Filling Global parameters    ############################################################
+    model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
 
 

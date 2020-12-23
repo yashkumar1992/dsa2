@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 """
 
- ! activate py36 && python source/run_inference.py  run_predict  --n_sample 1000  --config_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
+activate py36 && python source/run_inference.py  run_predict  --n_sample 1000  --config_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
  
 
 """
@@ -15,7 +15,7 @@ import importlib
 
 #### Add path for python import
 sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
-import util_feature
+# import util_feature
 
 
 #### Root folder analysis
@@ -32,9 +32,8 @@ def log(*s, n=0, m=1):
     print(sjump, sspace, *s, sspace, flush=True)
 
 
+
 from util_feature import load, load_function_uri, load_dataset
-
-
 ####################################################################################################
 def map_model(model_name):
     try :
@@ -138,9 +137,10 @@ def run_data_check(path_data, path_data_ref, path_model, path_output, sample_rat
     dfX1        = dfX1[colsX]
     dfX2        = dfX2[colsX]
 
+    from util_feature import pd_stat_dataset_shift
     nsample     = int(min(len(dfX1), len(dfX2)) * sample_ratio)
-    metrics_psi = util_feature.pd_stat_dataset_shift(dfX2, dfX1,
-                                                     colsX, nsample=nsample, buckets=7, axis=0)
+    metrics_psi = pd_stat_dataset_shift(dfX2, dfX1,
+                                        colsX, nsample=nsample, buckets=7, axis=0)
     metrics_psi.to_csv(f"{path_output}/prediction_features_metrics.csv")
     log(metrics_psi)
 
