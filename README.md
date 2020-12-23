@@ -13,7 +13,7 @@ main:
 
 ### Install
 
-     pip install pyro-ppl lightgbm pandas scikit-learn scipy matplotlib
+     pip install  pyarrow pandas pyro-ppl lightgbm pandas scikit-learn scipy matplotlib
 
 
 
