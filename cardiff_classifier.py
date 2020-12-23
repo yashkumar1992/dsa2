@@ -64,7 +64,7 @@ def cardif_lightgbm(path_model_out="") :
         ### Before the prediction is done
         return  y.astype('int')
 
-    model_dict = {'model_pars': {'config_name': 'LGBMClassifier'    ## Class name for model_sklearn.py
+    model_dict = {'model_pars': {'model_class': 'LGBMClassifier'    ## Class name for model_sklearn.py
         , 'model_path'       : path_model_out
         , 'model_pars'       : {'objective': 'binary','learning_rate':0.1,'boosting_type':'gbdt' }  # default
         , 'post_process_fun' : post_process_fun

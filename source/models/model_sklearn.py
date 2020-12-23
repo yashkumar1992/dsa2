@@ -31,6 +31,36 @@ from sklearn.cluster import *
 from sklearn.tree import *
 from lightgbm import LGBMModel, LGBMRegressor, LGBMClassifier
 
+
+try :
+        pyod.models.abod 
+	pyod.models.auto_encoder 
+	pyod.models.cblof 
+	pyod.models.cof 
+	pyod.models.combination 
+	pyod.models.copod 
+	pyod.models.feature_bagging 
+	pyod.models.hbos 
+	pyod.models.iforest 
+	pyod.models.knn 
+	pyod.models.lmdd 
+	pyod.models.loda 
+	pyod.models.lof 
+	pyod.models.loci 
+	pyod.models.lscp 
+	pyod.models.mad 
+	pyod.models.mcd 
+	pyod.models.mo_gaal 
+	pyod.models.ocsvm 
+	pyod.models.pca 
+	pyod.models.sod 
+	pyod.models.so_gaal 
+	pyod.models.sos 
+	pyod.models.vae 
+	pyod.models.xgbod 
+except :
+ print("cannot import pyod")
+ 
 ####################################################################################################
 VERBOSE = True
 
@@ -58,7 +88,7 @@ class Model(object):
         if model_pars is None:
             self.model = None
         else:
-            model_class = globals()[model_pars["config_name"]]
+            model_class = globals()[model_pars['model_class']]
             self.model = model_class(**model_pars['model_pars'])
             if VERBOSE: log(model_class, self.model)
 
@@ -71,7 +101,7 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     Xtrain, ytrain, Xtest, ytest = get_dataset(data_pars, task_type="train")
     if VERBOSE: log(Xtrain.shape, model.model)
 
-    if "LGBM" in model.model_pars['config_name']:
+    if "LGBM" in model.model_pars['model_class']:
         model.model.fit(Xtrain, ytrain, eval_set=[(Xtest, ytest)], **compute_pars.get("compute_pars", {}))
     else:
         model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
