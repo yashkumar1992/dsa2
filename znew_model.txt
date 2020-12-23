@@ -1,5 +1,14 @@
 
 
+### Features hashing
+
+https://booking.ai/dont-be-tricked-by-the-hashing-trick-192a6aae3087
+https://github.com/cemoody/flexi_hash_embedding
+
+
+
+
+
 Probability Trees
 https://github.com/ireis/PRF
 
