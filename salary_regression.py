@@ -300,13 +300,13 @@ def preprocess(config=None, nsample=None):
     mdict        = globals()[config_name]()
     print(mdict)
 
-    from source import run_preprocess, run_preprocess2
-    run_preprocess.run_preprocess(model_name      =  config_name,
-                                path_data         =  path_data_train,
-                                path_output       =  path_model,
-                                path_config_model =  path_config_model,
-                                n_sample          =  nsample if nsample is not None else n_sample,
-                                mode              =  'run_preprocess')
+    from source import run_preprocess_old, run_preprocess
+    run_preprocess_old.run_preprocess(model_name      =  config_name,
+                                      path_data         =  path_data_train,
+                                      path_output       =  path_model,
+                                      path_config_model =  path_config_model,
+                                      n_sample          =  nsample if nsample is not None else n_sample,
+                                      mode              =  'run_preprocess')
 
 
 
@@ -352,13 +352,13 @@ def predict(config=None, nsample=None):
     mdict        = globals()[config_name]()
     print(mdict)
 
-    from source import run_inference, run_inference2
-    run_inference2.run_predict(model_name,
-                            path_model  = path_model,
-                            path_data   = path_data_test,
-                            path_output = path_output_pred,
-                            cols_group  = mdict['data_pars']['cols_input_type'],
-                            n_sample    = nsample if nsample is not None else n_sample)
+    from source import run_inference, run_inference
+    run_inference.run_predict(model_name,
+                              path_model  = path_model,
+                              path_data   = path_data_test,
+                              path_output = path_output_pred,
+                              cols_group  = mdict['data_pars']['cols_input_type'],
+                              n_sample    = nsample if nsample is not None else n_sample)
 
 
 def run_all():

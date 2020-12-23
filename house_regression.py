@@ -268,13 +268,13 @@ def data_profile():
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess():
-    from source import run_preprocess
-    run_preprocess.run_preprocess(model_name =  config_name,
-                                path_data         =  path_data_train,
-                                path_output       =  path_model,
-                                path_config_model =  path_config_model,
-                                n_sample          =  n_sample,
-                                mode              =  'run_preprocess')
+    from source import run_preprocess_old
+    run_preprocess_old.run_preprocess(model_name =  config_name,
+                                      path_data         =  path_data_train,
+                                      path_output       =  path_model,
+                                      path_config_model =  path_config_model,
+                                      n_sample          =  n_sample,
+                                      mode              =  'run_preprocess')
 
 
 ############################################################################

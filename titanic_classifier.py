@@ -87,8 +87,8 @@ def titanic_lightgbm(path_model_out="") :
        Contains all needed informations for Light GBM Classifier model,
        used for titanic classification task
     """
-    data_name    = "titanic"     ### in data/input/
-    model_class  = 'LGBMClassifier'
+    data_name    = "titanic"         ### in data/input/
+    model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
     n_sample     = 1000
 
     def post_process_fun(y):
@@ -104,7 +104,7 @@ def titanic_lightgbm(path_model_out="") :
         'model_path'       : path_model_out
 
         ### LightGBM API model   #######################################
-        ,'model_class': model_class    ## ACTUAL Class name for model_sklearn.py
+        ,'model_class': model_class
         ,'model_pars' : {'objective': 'binary',
                                'n_estimators':3000,
                                'learning_rate':0.001,
@@ -146,8 +146,8 @@ def titanic_lightgbm(path_model_out="") :
           #  'coltext',
           'cols_model_group': [ 'colnum_bin',
                                 'colcat_bin',
-                                #'coltext',
-                                #'coldate',
+                                # 'coltext',
+                                # 'coldate',
                                 # 'colcross_pair'
                               ]
 
@@ -191,13 +191,13 @@ def preprocess(config=None, nsample=None):
     m            = mdict['global_pars']
     print(mdict)
 
-    from source import run_preprocess2, run_preprocess
-    run_preprocess2.run_preprocess(config_name=  model_class,
-                                   path_data         =  m['path_data_train'],
-                                   path_output       =  m['path_model'],
-                                   path_config_model =  m['path_config_model'],
-                                   n_sample          =  nsample if nsample is not None else m['n_sample'],
-                                   mode              =  'run_preprocess')
+    from source import run_preprocess, run_preprocess_old
+    run_preprocess.run_preprocess(config_name=  model_class,
+                                  path_data         =  m['path_data_train'],
+                                  path_output       =  m['path_model'],
+                                  path_config_model =  m['path_config_model'],
+                                  n_sample          =  nsample if nsample is not None else m['n_sample'],
+                                  mode              =  'run_preprocess')
 
 
 ##################################################################################
@@ -234,15 +234,15 @@ def predict(config=None, nsample=None):
     m            = mdict['global_pars']
 
 
-    from source import run_inference,run_inference2
-    run_inference2.run_predict(model_class,
-                            path_model  = m['path_model'],
-                            path_data   = m['path_data_test'],
-                            path_output = m['path_output_pred'],
-                            pars={'cols_group': mdict['data_pars']['cols_input_type'],
+    from source import run_inference,run_inference
+    run_inference.run_predict(model_class,
+                              path_model  = m['path_model'],
+                              path_data   = m['path_data_test'],
+                              path_output = m['path_output_pred'],
+                              pars={'cols_group': mdict['data_pars']['cols_input_type'],
                                   'pipe_list': mdict['model_pars']['pre_process_pars']['pipe_list']},
-                            n_sample    = nsample if nsample is not None else m['n_sample']
-                            )
+                              n_sample    = nsample if nsample is not None else m['n_sample']
+                              )
 
 
 def run_all():
