@@ -34,9 +34,9 @@ print(dir_data)
 
 def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
-    model_name             = model_dict['model_pars']['config_name']
+    model_name             = model_dict['model_pars']['model_class']
     m['path_config_model'] = root + f"/{config_file}"
-    m['config_name']       = config_name
+    m['model_class']       = config_name
 
     m['path_data_train']   = f'data/input/{data_name}/train/'
     m['path_data_test']    = f'data/input/{data_name}/test/'
@@ -104,7 +104,7 @@ def multi_lightgbm(path_model_out="") :
         'model_path'       : path_model_out
 
         ### LightGBM API model  ########################################
-        ,'config_name': model_name    ## ACTUAL Class name for model_sklearn.py
+        ,'model_class': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'multiclass','num_class':4,'metric':'multi_logloss',
                                 'learning_rate':0.03,'boosting_type':'gbdt'
 
@@ -228,7 +228,8 @@ def predict(config=None, nsample=None):
                             path_model  = m['path_model'],
                             path_data   = m['path_data_test'],
                             path_output = m['path_output_pred'],
-                            cols_group  = mdict['data_pars']['cols_input_type'],
+                            pars={'cols_group': mdict['data_pars']['cols_input_type'],
+                                  'pipe_list': mdict['model_pars']['pre_process_pars']['pipe_list']},
                             n_sample    = nsample if nsample is not None else m['n_sample'])
 
 

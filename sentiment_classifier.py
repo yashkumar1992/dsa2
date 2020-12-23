@@ -35,9 +35,9 @@ print(dir_data)
 
 def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
-    model_name             = model_dict['model_pars']['config_name']
+    model_name             = model_dict['model_pars']['model_class']
     m['path_config_model'] = root + f"/{config_file}"
-    m['config_name']       = config_name
+    m['model_class']       = config_name
 
     m['path_data_train']   = f'data/input/{data_name}/train/'
     m['path_data_test']    = f'data/input/{data_name}/test/'
@@ -98,7 +98,7 @@ def sentiment_lightgbm(path_model_out="") :
 
 
     #############################################################################
-    model_dict = {'model_pars': {'config_name': model_name
+    model_dict = {'model_pars': {'model_class': model_name
         ,'model_path': path_model_out
         ,'model_pars': {'objective': 'huber',
 
@@ -269,7 +269,7 @@ def sentiment_elasticnetcv(path_model_out=""):
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'config_name': 'ElasticNetCV'
+    model_dict = {'model_pars': {'model_class': 'ElasticNetCV'
         , 'model_path': path_model_out
         , 'model_pars': {}  # default ones
         , 'post_process_fun': post_process_fun
@@ -308,7 +308,7 @@ def sentiment_bayesian_pyro(path_model_out="") :
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'config_name': 'model_bayesian_pyro'
+    model_dict = {'model_pars': {'model_class': 'model_bayesian_pyro'
         , 'model_path': path_model_out
         , 'model_pars': {'input_width': 112, }  # default
         , 'post_process_fun': post_process_fun

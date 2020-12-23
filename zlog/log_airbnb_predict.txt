@@ -1,0 +1,256 @@
+os.getcwd /home/soheil/Soheil/lin-python/S/multi
+/home/soheil/Soheil/lin-python/S/multi
+/home/soheil/Soheil/lin-python/S/multi/
+/home/soheil/Soheil/lin-python/S/multi/data/
+os.getcwd /home/soheil/Soheil/lin-python/S/multi
+/home/soheil/Soheil/lin-python/S/multi/
+/home/soheil/Soheil/lin-python/S/multi/
+
+  /home/soheil/Soheil/lin-python/S/multi/data/input/airbnb/test//features.zip /home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor/ /home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/pred_airbnb_lightgbm/ 
+
+  ('loading', 'id', '/home/soheil/Soheil/lin-python/S/multi/data/input/airbnb/test//features.zip') 
+['/home/soheil/Soheil/lin-python/S/multi/data/input/airbnb/test/features.parquet']
+
+  ('dfX_raw',                                                0   ...                                   90
+id                                         316366  ...                               200125
+listing_url   https://www.airbnb.com/rooms/316366  ...  https://www.airbnb.com/rooms/200125
+scrape_id                          20181107122246  ...                       20181107122246
+last_scraped                           2018-11-07  ...                           2018-11-07
+
+[4 rows x 91 columns]) 
+
+  ('dfy not loaded', None, TypeError('expected str, bytes or os.PathLike object, not NoneType')) 
+/home/soheil/Soheil/lin-python/S/multi/
+
+  ('########### Load column by column type ##################################',) 
+
+  ({'coly': 'price', 'colid': 'id', 'colcat': ['cancellation_policy', 'host_response_rate', 'host_response_time'], 'colnum': ['review_scores_communication', 'review_scores_location', 'review_scores_rating'], 'coltext': ['house_rules', 'neighborhood_overview', 'notes', 'street'], 'coldate': ['calendar_last_scraped', 'first_review', 'host_since'], 'colcross': ['review_scores_communication', 'review_scores_location', 'cancellation_policy', 'host_response_rate']},) 
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'type': ''}, '#######################################################') 
+
+  ('/home/soheil/Soheil/lin-python/S/multi',) 
+/home/soheil/Soheil/lin-python/S/multi/
+                                listing_url  ...  reviews_per_month
+id                                           ...                   
+316366  https://www.airbnb.com/rooms/316366  ...               0.14
+321308  https://www.airbnb.com/rooms/321308  ...               0.59
+174391  https://www.airbnb.com/rooms/174391  ...               0.03
+196285  https://www.airbnb.com/rooms/196285  ...               1.06
+367634  https://www.airbnb.com/rooms/367634  ...               0.15
+...                                     ...  ...                ...
+260095  https://www.airbnb.com/rooms/260095  ...               0.67
+265416  https://www.airbnb.com/rooms/265416  ...               0.73
+245809  https://www.airbnb.com/rooms/245809  ...               0.42
+345373  https://www.airbnb.com/rooms/345373  ...               0.10
+200125  https://www.airbnb.com/rooms/200125  ...                NaN
+
+[91 rows x 94 columns] ['review_scores_communication', 'review_scores_location', 'review_scores_rating']
+
+  (OrderedDict([('review_scores_communication', [1.9999, 2.8, 3.6, 4.4, 5.2, 6.0, 6.800000000000001, 7.6000000000000005, 8.4, 9.2, 10.0]), ('review_scores_location', [5.9999, 6.4, 6.8, 7.2, 7.6, 8.0, 8.4, 8.8, 9.2, 9.6, 10.0]), ('review_scores_rating', [72.9999, 75.7, 78.4, 81.1, 83.8, 86.5, 89.2, 91.9, 94.6, 97.3, 100.0])]),) 
+
+  ('### colnum Map numerics to Category bin  ###########################################',) 
+review_scores_communication
+                                review_scores_communication                 
+                                                        max  mean size   min
+review_scores_communication_bin                                             
+-1                                                      NaN   NaN    4   NaN
+ 7                                                      8.0   8.0    4   8.0
+ 8                                                      9.0   9.0   19   9.0
+ 9                                                     10.0  10.0   64  10.0
+review_scores_location
+                           review_scores_location                 
+                                              max  mean size   min
+review_scores_location_bin                                        
+-1                                            NaN   NaN    4   NaN
+ 4                                            8.0   8.0    5   8.0
+ 7                                            9.0   9.0   38   9.0
+ 9                                           10.0  10.0   44  10.0
+review_scores_rating
+                         review_scores_rating                      
+                                          max       mean size   min
+review_scores_rating_bin                                           
+-1                                        NaN        NaN    4   NaN
+ 2                                       80.0  79.666664    3  79.0
+ 3                                       83.0  82.800003    5  82.0
+ 4                                       85.0  85.000000    4  85.0
+ 5                                       89.0  88.250000    4  87.0
+ 6                                       91.0  90.250000    8  90.0
+ 7                                       94.0  92.947365   19  92.0
+ 8                                       97.0  96.038460   26  95.0
+ 9                                      100.0  98.722221   18  98.0
+
+  (OrderedDict([('review_scores_communication', [1.9999, 2.8, 3.6, 4.4, 5.2, 6.0, 6.800000000000001, 7.6000000000000005, 8.4, 9.2, 10.0]), ('review_scores_location', [5.9999, 6.4, 6.8, 7.2, 7.6, 8.0, 8.4, 8.8, 9.2, 9.6, 10.0]), ('review_scores_rating', [72.9999, 75.7, 78.4, 81.1, 83.8, 86.5, 89.2, 91.9, 94.6, 97.3, 100.0])]),) 
+
+  (['review_scores_communication_bin', 'review_scores_location_bin', 'review_scores_rating_bin'],) 
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'type': ''}, '#######################################################') 
+
+  ('/home/soheil/Soheil/lin-python/S/multi',) 
+                                listing_url  ...  reviews_per_month
+id                                           ...                   
+316366  https://www.airbnb.com/rooms/316366  ...               0.14
+321308  https://www.airbnb.com/rooms/321308  ...               0.59
+174391  https://www.airbnb.com/rooms/174391  ...               0.03
+196285  https://www.airbnb.com/rooms/196285  ...               1.06
+367634  https://www.airbnb.com/rooms/367634  ...               0.15
+...                                     ...  ...                ...
+260095  https://www.airbnb.com/rooms/260095  ...               0.67
+265416  https://www.airbnb.com/rooms/265416  ...               0.73
+245809  https://www.airbnb.com/rooms/245809  ...               0.42
+345373  https://www.airbnb.com/rooms/345373  ...               0.10
+200125  https://www.airbnb.com/rooms/200125  ...                NaN
+
+[91 rows x 94 columns] ['review_scores_communication_bin', 'review_scores_location_bin', 'review_scores_rating_bin']
+
+  ('###### colnum bin to One Hot  #################################################',) 
+review_scores_communication_bin 4 (91, 3)
+review_scores_location_bin 4 (91, 6)
+review_scores_rating_bin 9 (91, 9)
+review_scores_communication_bin_0 added
+review_scores_communication_bin_2 added
+review_scores_communication_bin_4 added
+review_scores_communication_bin_6 added
+review_scores_location_bin_0 added
+review_scores_location_bin_2 added
+review_scores_rating_bin_0 added
+review_scores_rating_bin_1 added
+
+  (['review_scores_communication_bin_-1', 'review_scores_communication_bin_0', 'review_scores_communication_bin_2', 'review_scores_communication_bin_4', 'review_scores_communication_bin_6', 'review_scores_communication_bin_7', 'review_scores_communication_bin_8', 'review_scores_communication_bin_9', 'review_scores_location_bin_-1', 'review_scores_location_bin_0', 'review_scores_location_bin_2', 'review_scores_location_bin_4', 'review_scores_location_bin_7', 'review_scores_location_bin_9', 'review_scores_rating_bin_-1', 'review_scores_rating_bin_0', 'review_scores_rating_bin_1', 'review_scores_rating_bin_2', 'review_scores_rating_bin_3', 'review_scores_rating_bin_4', 'review_scores_rating_bin_5', 'review_scores_rating_bin_6', 'review_scores_rating_bin_7', 'review_scores_rating_bin_8', 'review_scores_rating_bin_9'],) 
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'type': ''}, '#######################################################') 
+
+  ('/home/soheil/Soheil/lin-python/S/multi',) 
+                                listing_url  ...  reviews_per_month
+id                                           ...                   
+316366  https://www.airbnb.com/rooms/316366  ...               0.14
+321308  https://www.airbnb.com/rooms/321308  ...               0.59
+174391  https://www.airbnb.com/rooms/174391  ...               0.03
+196285  https://www.airbnb.com/rooms/196285  ...               1.06
+367634  https://www.airbnb.com/rooms/367634  ...               0.15
+...                                     ...  ...                ...
+260095  https://www.airbnb.com/rooms/260095  ...               0.67
+265416  https://www.airbnb.com/rooms/265416  ...               0.73
+245809  https://www.airbnb.com/rooms/245809  ...               0.42
+345373  https://www.airbnb.com/rooms/345373  ...               0.10
+200125  https://www.airbnb.com/rooms/200125  ...                NaN
+
+[91 rows x 94 columns] ['cancellation_policy', 'host_response_rate', 'host_response_time']
+
+  ('#### Colcat to integer encoding ',) 
+cancellation_policy cancellation_policy_int
+host_response_rate host_response_rate_int
+host_response_time host_response_time_int
+
+  (cancellation_policy    object
+host_response_rate     object
+host_response_time     object
+dtype: object, {'cat_map': {'cancellation_policy': {'flexible': 0, 'moderate': 1, 'strict_14_with_grace_period': 2}, 'host_response_rate': {'100%': 0, '67%': 1, '70%': 2, '75%': 3, '78%': 4, '86%': 5, '90%': 6, '96%': 7}, 'host_response_time': {'within a day': 0, 'within a few hours': 1, 'within an hour': 2}}, 'cat_map_inverse': {'cancellation_policy': {0: 'flexible', 1: 'moderate', 2: 'strict_14_with_grace_period'}, 'host_response_rate': {0: '100%', 1: '67%', 2: '70%', 3: '75%', 4: '78%', 5: '86%', 6: '90%', 7: '96%'}, 'host_response_time': {0: 'within a day', 1: 'within a few hours', 2: 'within an hour'}}}) 
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'type': ''}, '#######################################################') 
+
+  ('/home/soheil/Soheil/lin-python/S/multi',) 
+                                listing_url  ...  reviews_per_month
+id                                           ...                   
+316366  https://www.airbnb.com/rooms/316366  ...               0.14
+321308  https://www.airbnb.com/rooms/321308  ...               0.59
+174391  https://www.airbnb.com/rooms/174391  ...               0.03
+196285  https://www.airbnb.com/rooms/196285  ...               1.06
+367634  https://www.airbnb.com/rooms/367634  ...               0.15
+...                                     ...  ...                ...
+260095  https://www.airbnb.com/rooms/260095  ...               0.67
+265416  https://www.airbnb.com/rooms/265416  ...               0.73
+245809  https://www.airbnb.com/rooms/245809  ...               0.42
+345373  https://www.airbnb.com/rooms/345373  ...               0.10
+200125  https://www.airbnb.com/rooms/200125  ...                NaN
+
+[91 rows x 94 columns] ['cancellation_policy_int', 'host_response_rate_int', 'host_response_time_int']
+
+  ('#### colcat to onehot',) 
+cancellation_policy_int 3 (91, 3)
+host_response_rate_int 7 (91, 5)
+host_response_time_int 4 (91, 10)
+host_response_rate_int_-1 added
+host_response_rate_int_0 added
+host_response_rate_int_1 added
+host_response_rate_int_2 added
+host_response_rate_int_3 added
+host_response_rate_int_4 added
+host_response_rate_int_5 added
+host_response_rate_int_6 added
+host_response_rate_int_7 added
+host_response_rate_int_8 added
+host_response_rate_int_9 added
+host_response_rate_int_10 added
+host_response_rate_int_11 added
+host_response_rate_int_12 added
+host_response_rate_int_13 added
+host_response_rate_int_14 added
+host_response_rate_int_15 added
+host_response_rate_int_16 added
+host_response_rate_int_17 added
+host_response_rate_int_18 added
+host_response_time_int_-1 added
+host_response_time_int_0 added
+host_response_time_int_1 added
+host_response_time_int_2 added
+host_response_time_int_3 added
+
+  (        cancellation_policy_int_0  ...  host_response_time_int_3
+id                                 ...                          
+316366                          1  ...                         0
+321308                          1  ...                         0
+174391                          0  ...                         0
+196285                          0  ...                         0
+367634                          1  ...                         0
+
+[5 rows x 28 columns],) 
+ok ------------
+
+  ('###################', {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'type': 'cross'}, '#######################################################') 
+
+  ('/home/soheil/Soheil/lin-python/S/multi',) 
+                                listing_url  ...  reviews_per_month
+id                                           ...                   
+316366  https://www.airbnb.com/rooms/316366  ...               0.14
+321308  https://www.airbnb.com/rooms/321308  ...               0.59
+174391  https://www.airbnb.com/rooms/174391  ...               0.03
+196285  https://www.airbnb.com/rooms/196285  ...               1.06
+367634  https://www.airbnb.com/rooms/367634  ...               0.15
+...                                     ...  ...                ...
+260095  https://www.airbnb.com/rooms/260095  ...               0.67
+265416  https://www.airbnb.com/rooms/265416  ...               0.73
+245809  https://www.airbnb.com/rooms/245809  ...               0.42
+345373  https://www.airbnb.com/rooms/345373  ...               0.10
+200125  https://www.airbnb.com/rooms/200125  ...                NaN
+
+[91 rows x 94 columns] ['review_scores_communication', 'review_scores_location', 'cancellation_policy', 'host_response_rate']
+
+  ('#####  Cross Features From OneHot Features   ######################################',) 
+
+  (Empty DataFrame
+Columns: [316366, 321308]
+Index: [],) 
+
+  ('######  Merge AlL int dfXy  #############################################################',) 
+
+  <module 'models.model_sklearn' from '/home/soheil/Soheil/lin-python/S/multi/source/models/model_sklearn.py'> /home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor/ 
+
+  #### Load model  ############################################ 
+Traceback (most recent call last):
+  File "airbnb_regression.py", line 288, in <module>
+    fire.Fire()
+  File "/home/soheil/.local/lib/python3.8/site-packages/fire/core.py", line 138, in Fire
+    component_trace = _Fire(component, args, parsed_flag_args, context, name)
+  File "/home/soheil/.local/lib/python3.8/site-packages/fire/core.py", line 463, in _Fire
+    component, remaining_args = _CallAndUpdateTrace(
+  File "/home/soheil/.local/lib/python3.8/site-packages/fire/core.py", line 672, in _CallAndUpdateTrace
+    component = fn(*varargs, **kwargs)
+  File "airbnb_regression.py", line 258, in predict
+    run_inference2.run_predict(config_name,
+  File "/home/soheil/Soheil/lin-python/S/multi/source/run_inference2.py", line 100, in run_predict
+    ypred, yproba    = predict(model_name, path_model, dfX, cols_family)
+  File "/home/soheil/Soheil/lin-python/S/multi/source/run_inference2.py", line 66, in predict
+    modelx.model = load(path_model + "/model/model.pkl")
+  File "/home/soheil/Soheil/lin-python/S/multi/source/util_feature.py", line 50, in load
+    return pickle.load(open(f'{file_name}', mode='rb'))
+ModuleNotFoundError: No module named 'multi'

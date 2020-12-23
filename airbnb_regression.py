@@ -34,17 +34,17 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
-def global_pars_update(model_dict,  data_name, config_name):
+def global_pars_update(model_dict,  data_name, model_class):
     m                      = {}
-    model_name             = model_dict['model_pars']['config_name']
+    model_name             = model_dict['model_pars']['model_class']
     m['path_config_model'] = root + f"/{config_file}"
-    m['config_name']       = config_name
+    m['model_class']       = model_class
 
     m['path_data_train']   = f'data/input/{data_name}/train/'
     m['path_data_test']    = f'data/input/{data_name}/test/'
 
     m['path_model']        = f'data/output/{data_name}/{model_name}/'
-    m['path_output_pred']  = f'data/output/{data_name}/pred_{config_name}/'
+    m['path_output_pred']  = f'data/output/{data_name}/pred_{model_class}/'
     m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
 
     model_dict[ 'global_pars'] = m
@@ -79,7 +79,7 @@ def y_norm(y, inverse=True, mode='boxcox'):
                 return y1
 
     if mode == 'norm':
-        m0, width0 = 0.0, 350.0  ## Min, Max
+        m0, width0 = 0.0, 500000.0  ## Min, Max
         if inverse:
                 y1 = (y * width0 + m0)
                 return y1
@@ -126,15 +126,15 @@ def airbnb_lightgbm(path_model_out="") :
     n_sample     = 1000
 
     def post_process_fun(y):
-        return y_norm(y, inverse=True, mode='boxcox')
+        return y_norm(y, inverse=True, mode='norm')
 
 
     def pre_process_fun(y):
-        return y_norm(y, inverse=False, mode='boxcox')
+        return y_norm(y, inverse=False, mode='norm')
 
 
     #############################################################################
-    model_dict = {'model_pars': {'config_name': model_name
+    model_dict = {'model_pars': {'model_class': model_name
 
         ,'model_path': path_model_out
         ,'model_pars': {'objective': 'huber',
@@ -173,7 +173,7 @@ def airbnb_lightgbm(path_model_out="") :
 
          ,'cols_model_group': [  'colnum_bin'
                                 ,'colcat_bin'
-                                #,'coltext'
+                                ,'coltext_svd'
                               ]
 
          ,'filter_pars': { 'ymax' : 100000.0 ,'ymin' : 0.0 }   ### Filter data
@@ -182,7 +182,7 @@ def airbnb_lightgbm(path_model_out="") :
 
 
     ##### Filling Global parameters    ############################################################
-    model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
+    model_dict        = global_pars_update(model_dict, data_name, model_class=os_get_function_name() )
 
     return model_dict
  
@@ -192,7 +192,7 @@ def airbnb_lightgbm(path_model_out="") :
 
 ####################################################################################################
 ########## Init variable ###########################################################################
-# globals()[config_name]()
+# globals()[model_class]()
 
 
 
@@ -209,12 +209,12 @@ def data_profile(path_data_train="", path_model="", n_sample= 5000):
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess(config=None, nsample=None):
-    config_name  = config  if config is not None else config_default
-    mdict        = globals()[config_name]()
+    model_class  = config  if config is not None else config_default
+    mdict        = globals()[model_class]()
     m            = mdict['global_pars']
 
     from source import run_preprocess2, run_preprocess
-    run_preprocess2.run_preprocess(config_name=  config_name,
+    run_preprocess2.run_preprocess(config_name=  model_class,
                                    path_data         =  m['path_data_train'],
                                    path_output       =  m['path_model'],
                                    path_config_model =  m['path_config_model'],
@@ -226,12 +226,12 @@ def preprocess(config=None, nsample=None):
 ########## Train #################################################################
 def train(config=None, nsample=None):
 
-    config_name  = config  if config is not None else config_default
-    mdict        = globals()[config_name]()
+    model_class  = config  if config is not None else config_default
+    mdict        = globals()[model_class]()
     m            = mdict['global_pars']
 
     from source import run_train
-    run_train.run_train(config_name=  config_name,
+    run_train.run_train(config_name=  model_class,
                         path_data         =  m['path_data_train'],
                         path_output       =  m['path_model'],
                         path_config_model =  m['path_config_model'],
@@ -250,16 +250,18 @@ def check():
 ####################################################################################
 ####### Inference ##################################################################
 def predict(config=None, nsample=None):
-    config_name  =  config  if config is not None else config_default
-    mdict        = globals()[config_name]()
+    model_class  =  config  if config is not None else config_default
+    mdict        = globals()[model_class]()
     m            = mdict['global_pars']
-
+    print('ssss')
+    print(mdict)
     from source import run_inference,run_inference2
-    run_inference2.run_predict(config_name,
+    run_inference2.run_predict(model_class,
                             path_model  = m['path_model'],
                             path_data   = m['path_data_test'],
                             path_output = m['path_output_pred'],
-                            cols_group  = mdict['data_pars']['cols_input_type'],
+                            pars  ={'cols_group':mdict['data_pars']['cols_input_type'],
+                                          'pipe_list':mdict['model_pars']['pre_process_pars']['pipe_list']},
                             n_sample    = nsample if nsample is not None else m['n_sample']
                             )
 
@@ -330,7 +332,7 @@ def airbnb_elasticnetcv(path_model_out=""):
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'config_name': 'ElasticNetCV'
+    model_dict = {'model_pars': {'model_class': 'ElasticNetCV'
         , 'model_path': path_model_out
         , 'model_pars': {}  # default ones
         , 'post_process_fun': post_process_fun
@@ -369,7 +371,7 @@ def airbnb_bayesian_pyro(path_model_out="") :
     def pre_process_fun(y):
         return y_norm(y, inverse=False, mode='boxcox')
 
-    model_dict = {'model_pars': {'config_name': 'model_bayesian_pyro'
+    model_dict = {'model_pars': {'model_class': 'model_bayesian_pyro'
         , 'model_path': path_model_out
         , 'model_pars': {'input_width': 112, }  # default
         , 'post_process_fun': post_process_fun

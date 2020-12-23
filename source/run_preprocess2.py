@@ -221,7 +221,6 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
       {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'type': ''      },
       {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'type': 'cross' }
     ]
-
     pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
     pipe_list_X  = [ task for task in pipe_list  if task.get('type', '')  not in ['coly', 'filter']  ]
     pipe_filter  = [ task for task in pipe_list  if task.get('type', '')   in ['filter']  ]
