@@ -150,7 +150,7 @@ def airbnb_lightgbm(path_model_out="") :
             {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_coltext',              'pars': {}, 'cols_family': 'coltext',    'cols_out': 'coltext',        'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_coltext',              'pars': {}, 'cols_family': 'coltext',    'cols_out': 'coltext_svd',    'type': ''             },
             {'uri': 'source/preprocessors.py::pd_coldate',              'pars': {}, 'cols_family': 'coldate',    'cols_out': 'coldate',        'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
         ],
