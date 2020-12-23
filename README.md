@@ -120,28 +120,32 @@ main:
                                              
      Default pipeline options are considered in 
 
-     pipe_default = [ 'filter','label','dfnum_bin', 'dfnum_hot', 'dfcat_bin', 'dfcat_hot', 'dfcross_hot'] :
+     pipe_default= [
+            {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
+            {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
+                   ]
 
 
-
-    'filter'       :: Input:  ymin and ymax values  and does filtering of dataset (coly).
-    'label'        :: Input:  y_norm_fun value from model dictionary
-                             applies normalization function on coly
+    {'uri': 'python file address::the function for column processing', 'pars': any parameters to pass to function, 'cols_family': column family name, 'cols_out': *optional, 'type': 'coly' or 'cross'}
 
 
-    'dfnum_bin'    :: Input:  a dataframe with selected numerical columns, creates categorical bins, returns dataframe with new columns (dfnum_bin)
-    'dfnum_hot'    :: Input:  a dataframe dfnum_bin, returns one hot matrix as dataframe dfnum_hot
+    '::pd_coly'                => Input:  the target dataframe, returns filtered and labeled dataframe
 
 
-    'dfcat_bin'    :: Input:  a dataframe with categorical columns, returns dataframe dfcat_bin with numerical values
-    'dfcat_hot'    :: Input:  a dataframe with categorical columns, returns one hot matrix as dataframe dfcat_hot
+    '::pd_colnum_bin'          => Input:  a dataframe with selected numerical columns, creates categorical bins, returns dataframe with new columns (colnum_bin)
+    '::pd_colnum_binto_onehot' => Input:  a dataframe dfnum_bin, returns one hot matrix as dataframe colnum_onehot
 
 
-    'dfcross_hot'  :: Input:  a data frame of numerical and categorical one hot encoded columns with defined cross columns, returns dataframe df_cross_hot
+    '::pd_colcat_bin'          => Input:  a dataframe with categorical columns, returns dataframe colcat_bin with numerical values
+    '::pd_colcat_to_onehot'    => Input:  a dataframe with categorical columns, returns one hot matrix as dataframe colcat_onehot
 
-------
-    'dftext_tfidf' :: Input:  a data frame of text data, returns tf-idf matrix
-    'dftext_svd'   :: Input:  a tf-idf matrix, returns the dimension reduced matrix
+
+    '::pd_colcross'            => Input:  a dataframe of numerical and categorical one hot encoded columns with defined cross columns, returns dataframe colcross_pair_onehot
+
 
 ### Command line usage advanced
     cd dsa2

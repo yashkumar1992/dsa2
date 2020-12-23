@@ -73,17 +73,17 @@ def data_profile(config_uri='titanic_classifier.py::titanic_lightgbm'):
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess(config_uri='titanic_classifier.py::titanic_lightgbm'):
-    from source import run_preprocess
+    from source import run_preprocess_old
     mdict = get_global_pars( root + config_uri)
     m = mdict['global_pars']
     log(mdict)
 
-    run_preprocess.run_preprocess(model_name       =  m['model_class'],
-                                  path_data         =  m['path_data_train'], 
-                                  path_output       =  m['path_model'], 
-                                  path_config_model =  m['path_config_model'], 
-                                  n_sample          =  m['n_sample'],
-                                  mode              =  'run_preprocess')
+    run_preprocess_old.run_preprocess(model_name       =  m['model_class'],
+                                      path_data         =  m['path_data_train'],
+                                      path_output       =  m['path_model'],
+                                      path_config_model =  m['path_config_model'],
+                                      n_sample          =  m['n_sample'],
+                                      mode              =  'run_preprocess')
 
 ############################################################################
 ########## Train ###########################################################

@@ -56,13 +56,13 @@ def os_get_function_name():
     return sys._getframe(1).f_code.co_name
 
 
-####################################################################################
+######################################################################################
 config_file     = "airbnb_regression.py"
 config_default  = 'airbnb_lightgbm'
 
 
 
-####################################################################################
+#####################################################################################
 ####### y normalization #############################################################   
 def y_norm(y, inverse=True, mode='boxcox'):
     ## Normalize the input/output
@@ -79,7 +79,7 @@ def y_norm(y, inverse=True, mode='boxcox'):
                 return y1
 
     if mode == 'norm':
-        m0, width0 = 0.0, 500000.0  ## Min, Max
+        m0, width0 = 0.0, 0.01  ## Min, Max
         if inverse:
                 y1 = (y * width0 + m0)
                 return y1
@@ -123,7 +123,7 @@ def airbnb_lightgbm(path_model_out="") :
     """
     data_name    = "airbnb"   ###in data/
     model_name   = 'LGBMRegressor'
-    n_sample     = 1000
+
 
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='norm')
@@ -150,7 +150,7 @@ def airbnb_lightgbm(path_model_out="") :
             {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_coltext',              'pars': {}, 'cols_family': 'coltext',    'cols_out': 'coltext',        'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_coltext',              'pars': {}, 'cols_family': 'coltext',    'cols_out': 'coltext_svd',    'type': ''             },
             {'uri': 'source/preprocessors.py::pd_coldate',              'pars': {}, 'cols_family': 'coldate',    'cols_out': 'coldate',        'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
         ],
@@ -169,9 +169,9 @@ def airbnb_lightgbm(path_model_out="") :
          #"colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
          #"colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
          #'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
-         # 'coldate', #'coltext',
+         # 'coldate', #'coltext', 'coltext_svd'
 
-         ,'cols_model_group': [  'colnum_bin'
+         ,'cols_model_group': [  'colnum'
                                 ,'colcat_bin'
                                 ,'coltext_svd'
                               ]
@@ -186,7 +186,6 @@ def airbnb_lightgbm(path_model_out="") :
 
     return model_dict
  
-
 
 
 
@@ -213,13 +212,13 @@ def preprocess(config=None, nsample=None):
     mdict        = globals()[model_class]()
     m            = mdict['global_pars']
 
-    from source import run_preprocess2, run_preprocess
-    run_preprocess2.run_preprocess(config_name=  model_class,
-                                   path_data         =  m['path_data_train'],
-                                   path_output       =  m['path_model'],
-                                   path_config_model =  m['path_config_model'],
-                                   n_sample          =  nsample if nsample is not None else m['n_sample'],
-                                   mode              =  'run_preprocess')
+    from source import run_preprocess, run_preprocess_old
+    run_preprocess.run_preprocess(config_name=  model_class,
+                                  path_data         =  m['path_data_train'],
+                                  path_output       =  m['path_model'],
+                                  path_config_model =  m['path_config_model'],
+                                  n_sample          =  nsample if nsample is not None else m['n_sample'],
+                                  mode              =  'run_preprocess')
 
 
 ##################################################################################
@@ -255,15 +254,15 @@ def predict(config=None, nsample=None):
     m            = mdict['global_pars']
     print('ssss')
     print(mdict)
-    from source import run_inference,run_inference2
-    run_inference2.run_predict(model_class,
-                            path_model  = m['path_model'],
-                            path_data   = m['path_data_test'],
-                            path_output = m['path_output_pred'],
-                            pars  ={'cols_group':mdict['data_pars']['cols_input_type'],
+    from source import run_inference,run_inference
+    run_inference.run_predict(model_class,
+                              path_model  = m['path_model'],
+                              path_data   = m['path_data_test'],
+                              path_output = m['path_output_pred'],
+                              pars  ={'cols_group':mdict['data_pars']['cols_input_type'],
                                           'pipe_list':mdict['model_pars']['pre_process_pars']['pipe_list']},
-                            n_sample    = nsample if nsample is not None else m['n_sample']
-                            )
+                              n_sample    = nsample if nsample is not None else m['n_sample']
+                              )
 
 
 def run_all():
