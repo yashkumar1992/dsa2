@@ -176,32 +176,42 @@ def train(model_dict, dfX, cols_family, post_process_fun):
 ####################################################################################################
 ############CLI Command ############################################################################
 def run_train(config_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-              run_preprocess=1, mode="run_preprocess"):
+              run_preprocess=1, mode="run_preprocess", model_dict=None):
     """
       Configuration of the model is in config_model.py file
     :param config_name:
-    :param path_data:
-    :param path_output:
     :param path_config_model:
     :param n_sample:
-    :param run_preprocess:
-    :param mode:
     :return:
     """
-    path_output       = root + path_output
-    path_data         = root + path_data
-    path_pipeline_out = path_output   + "/pipeline/"
-    path_model_out    = path_output   + "/model/"
-    path_check_out    = path_output   + "/check/"
-    path_train_X      = path_data     + "/features.zip"#.zip
-    path_train_y      = path_data     + "/target.zip"#.zip
-    path_features_store = path_output + '/features_store/'  #path_data replaced with path_output, because preprocessed files are stored there
+    if model_dict is None :
+       log("#### Model Params Dynamic loading  ###############################################")
+       model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_name)
+       model_dict     = model_dict_fun(path_model_out)   ### params
+    log( model_dict )
+        
+    m = model_dict['global_pars']
+    path_data         = m['path_data']
+    path_train_X      = m.get('path_train_X', path_data + "/features.zip") #.zip
+    path_train_y      = m.get('path_train_y', path_data + "/target.zip" )  #.zip
+
+    path_output         = m['path_output']    
+    path_model_out      = m.get('path_model_out',      path_output   + "/model/" )  
+    path_pipeline_out   = m.get('path_pipeline_out',   path_output   + "/pipeline/" )
+    path_check_out      = m.get('path_check_out',      path_output   + "/check/" )
+    path_features_store = m.get('path_features_store', path_output + '/features_store/' )  #path_data replaced with path_output, because preprocessed files are stored there
+    
+    
+    #path_output       = path_output
+    #path_data         = path_data
+    #path_pipeline_out = path_output   + "/pipeline/"
+    #path_model_out    = path_output   + "/model/"
+    #path_check_out    = path_output   + "/check/"
+    #path_train_X      = path_data     + "/features.zip"#.zip
+    #path_train_y      = path_data     + "/target.zip"#.zip
+    #path_features_store = path_output + '/features_store/'  #path_data replaced with path_output, because preprocessed files are stored there
     log(path_output)
 
-    log("#### Model Params Dynamic loading  ###############################################")
-    model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_name)
-    model_dict     = model_dict_fun(path_model_out)   ### params
-    log( model_dict )
 
     log("#### load input column family  ###################################################")
     try :
