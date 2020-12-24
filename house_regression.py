@@ -50,7 +50,7 @@ def global_pars_update(model_dict,  data_name, config_name):
     path_output_pred  = f'/data/output/{data_name}/pred_a01_{config_name}/'
 
     model_dict[ 'global_pars'] = {}
-    global_pars = [ 'model_class', 'model_class', 'path_config_model', 'path_model', 'path_data_train',
+    global_pars = [ 'model_class', 'model_class', 'config_path', 'path_model', 'path_data_train',
                    'path_data_test', 'path_output_pred', 'n_sample'
             ]
     for t in global_pars:
@@ -282,9 +282,9 @@ def preprocess():
 def train():
     from source import run_train
     run_train.run_train(config_name=  config_name,
-                        path_data         =  path_data_train,
+                        path_data_train=  path_data_train,
                         path_output       =  path_model,
-                        path_config_model =  path_config_model, n_sample = n_sample)
+                        config_path=  path_config_model, n_sample = n_sample)
 
 
 ###################################################################################
