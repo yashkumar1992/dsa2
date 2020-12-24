@@ -187,7 +187,7 @@ def run_train(config_name, path_data, path_output, path_config_model="source/con
     if model_dict is None :
        log("#### Model Params Dynamic loading  ###############################################")
        model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_name)
-       model_dict     = model_dict_fun(path_model_out)   ### params
+       model_dict     = model_dict_fun()   ### params
     log( model_dict )
         
     m = model_dict['global_pars']
