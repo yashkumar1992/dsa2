@@ -191,7 +191,7 @@ def run_train(config_name, path_data, path_output, path_config_model="source/con
     log( model_dict )
         
     m = model_dict['global_pars']
-    path_data         = m['path_data']
+    path_data         = m['path_data_train']
     path_train_X      = m.get('path_train_X', path_data + "/features.zip") #.zip
     path_train_y      = m.get('path_train_y', path_data + "/target.zip" )  #.zip
 
