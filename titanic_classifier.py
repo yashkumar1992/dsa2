@@ -32,6 +32,7 @@ def global_pars_update(model_dict,  data_name, config_name):
     m['path_config_model'] = root + f"/{config_file}"
     m['config_name']       = config_name
 
+    m['path_data']         = f'data/input/{data_name}/'
     m['path_data_train']   = f'data/input/{data_name}/train/'
     m['path_data_test']    = f'data/input/{data_name}/test/'
 
