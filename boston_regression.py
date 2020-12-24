@@ -38,7 +38,7 @@ print(dir_data)
 def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
     model_name             = model_dict['model_pars']['model_class']
-    m['path_config_model'] = root + f"/{config_file}"
+    m['config_path'] = root + f"/{config_file}"
     m['config_name']       = config_name
 
     m['path_data_train']   = f'data/input/{data_name}/train/'

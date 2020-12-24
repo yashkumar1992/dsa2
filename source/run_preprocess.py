@@ -73,6 +73,15 @@ def load_features(name, path):
         return None
 
 
+def model_dict_load(model_dict, config_path, config_name, verbose=True):
+    if model_dict is None :
+       log("#### Model Params Dynamic loading  ###############################################")
+       model_dict_fun = load_function_uri(uri_name=config_path + "::" + config_name)
+       model_dict     = model_dict_fun()   ### params
+    if verbose : log( model_dict )
+    return model_dict
+
+
 ####################################################################################################
 ####################################################################################################
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
@@ -309,27 +318,27 @@ def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", c
     return  dfXy, cols_family
 
 
+
 ####################################################################################################
 ############CLI Command ############################################################################
-def run_preprocess(config_name, path_data, path_output, path_config_model="source/config_model.py", n_sample=5000,
-                   mode='run_preprocess', path_features_store=None):     #prefix "pre" added, in order to make if loop possible
+def run_preprocess(config_name, config_path, n_sample=5000,
+                   mode='run_preprocess', model_dict=None):     #prefix "pre" added, in order to make if loop possible
     """
       Configuration of the model is in config_model.py file
     """
-    path_output         = root + path_output
-    path_data           = root + path_data
-    path_features_store = path_output + "/features_store/"
-    path_pipeline_out   = path_output + "/pipeline/"
-    path_model_out      = path_output + "/model/"
-    path_check_out      = path_output + "/check/"
-    path_train_X        = path_data   + "/features*"    ### Can be a list of zip or parquet files
-    path_train_y        = path_data   + "/target*"      ### Can be a list of zip or parquet files
+    model_dict = model_dict_load(model_dict, config_path, config_name, verbose=True)
+
+    m = model_dict['global_pars']
+    path_data         = m['path_data_preprocess']
+    path_train_X      = m.get('path_data_prepro_X', path_data + "/features.zip") # ### Can be a list of zip or parquet files
+    path_train_y      = m.get('path_data_prepro_y', path_data + "/target.zip")   # ### Can be a list of zip or parquet files
+
+    path_output         = m['path_train_output']
+    path_pipeline       = m.get('path_pipeline',       path_output + "/pipeline/" )
+    path_features_store = m.get('path_features_store', path_output + '/features_store/' )  #path_data_train replaced with path_output, because preprocessed files are stored there
+    path_check_out      = m.get('path_check_out',      path_output + "/check/" )
     log(path_output)
 
-
-    log("#### Model parameters Dynamic loading  ############################################")
-    model_dict_fun = load_function_uri(uri_name=path_config_model + "::" + config_name)
-    model_dict     = model_dict_fun(path_model_out)   ### params
 
     log("#### load input column family  ###################################################")
     try :
@@ -342,11 +351,11 @@ def run_preprocess(config_name, path_data, path_output, path_config_model="sourc
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
 
     if mode == "run_preprocess" :
-        dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
+        dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline, cols_group, n_sample,
                                  preprocess_pars,  path_features_store)
 
     elif mode == "load_preprocess" :
-        dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline_out, cols_group, n_sample,
+        dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline, cols_group, n_sample,
                                  preprocess_pars,  path_features_store)
     model_dict['data_pars']['coly'] = cols['coly']
 
