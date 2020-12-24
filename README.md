@@ -12,9 +12,8 @@ main:
 
 
 ### Install
-
-     pip install pyro-ppl lightgbm pandas scikit-learn scipy matplotlib
-
+    
+     pip install -r requirements.txt
 
 
 
@@ -33,14 +32,13 @@ main:
     python  titanic_classifier.py  train
     python  titanic_classifier.py  check
     python  titanic_classifier.py  predict
-    python  titanic_classifier.py  run_all
+
 
 
 ### data/input  : Input data format
 
     data/input/titanic/raw/  : the raw files
     data/input/titanic/raw2/ : the raw files  split manually
-
 
     data/input/titanic/train/ :   features.zip ,  target.zip, cols_group.json  names are FIXED
              features.zip or features.parquet  :  csv file of the inputs
