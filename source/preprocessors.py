@@ -505,6 +505,28 @@ def pd_coldate(df, col, pars):
     }
     return dfdate, col_pars
 
+def pd_coltext_universal_google(df, col, pars={}): 
+    import pandas as pd
+    import numpy as np
+    import tensorflow as tf
+    import tensorflow_hub as hub
+    import tensorflow_text
+    from tqdm import tqdm #progress bar
+    # df : dataframe
+    # col : list of text colnum names
+    text = col[0]
+    # Universal sentence encoding from Tensorflow
+    use = hub.load("https://tfhub.dev/google/universal-sentence-encoder-multilingual-large/3") 
+    # Universal sentence encoding from Tensorflow
+    X_train = [] 
+    for r in (df[text]):
+            if pd.isnull(r)==True :
+                r=""
+            emb = use(r)
+            review_emb = tf.reshape(emb, [-1]).numpy()
+            X_train.append(review_emb)
+    X_train = pd.DataFrame(X_train)
+    return X_train 
 
 
 
