@@ -36,7 +36,8 @@ def global_pars_update(model_dict,  data_name, config_name):
     m['path_data_train']   = f'data/input/{data_name}/train/'
     m['path_data_test']    = f'data/input/{data_name}/test/'
 
-    m['path_model']        = f'data/output/{data_name}/{config_name}/'
+    m['path_output']       = f'data/output/{data_name}/{config_name}/'    
+    m['path_model']        = f'data/output/{data_name}/{config_name}/model/'
     m['path_output_pred']  = f'data/output/{data_name}/pred_{config_name}/'
     m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
 
