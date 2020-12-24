@@ -36,7 +36,7 @@ print(dir_data)
 def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
     model_name             = model_dict['model_pars']['model_class']
-    m['path_config_model'] = root + f"/{config_file}"
+    m['config_path'] = root + f"/{config_file}"
     m['model_class']       = config_name
 
     m['path_data_train']   = f'data/input/{data_name}/train/'
@@ -174,7 +174,7 @@ def preprocess(config=None, nsample=None):
     run_preprocess.run_preprocess(config_name=  config_name,
                                   path_data         =  m['path_data_train'],
                                   path_output       =  m['path_model'],
-                                  path_config_model =  m['path_config_model'],
+                                  path_config_model =  m['config_path'],
                                   n_sample          =  nsample if nsample is not None else m['n_sample'],
                                   mode              =  'run_preprocess')
 
@@ -190,9 +190,9 @@ def train(config=None, nsample=None):
 
     from source import run_train
     run_train.run_train(config_name=  config_name,
-                        path_data         =  m['path_data_train'],
+                        path_data_train=  m['path_data_train'],
                         path_output       =  m['path_model'],
-                        path_config_model =  m['path_config_model'],
+                        config_path=  m['config_path'],
                         n_sample          =  nsample if nsample is not None else m['n_sample']
                         )
 

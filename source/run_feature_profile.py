@@ -2,7 +2,7 @@
 """
 
 
-python run_feature_profile.py run_profile  --path_data data/input/titanic/train/ --path_output data/out/titanic/profile
+python run_feature_profile.py run_profile  --path_data_train data/input/titanic/train/ --path_output data/out/titanic/profile
 
 
 

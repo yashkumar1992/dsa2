@@ -30,7 +30,7 @@ print(dir_data)
 def global_pars_update(model_dict,  data_name, model_class):
     m                      = {}
     model_name             = model_dict['model_pars']['model_class']
-    m['path_config_model'] = root + f"/{config_file}"
+    m['config_path'] = root + f"/{config_file}"
     m['model_class']       = model_class
 
     m['path_data_train']   = f'data/input/{data_name}/train/'
@@ -363,9 +363,9 @@ def train(config=None, nsample=None):
 
     from source import run_train
     run_train.run_train(config_name=  config_name,
-                        path_data         =  path_data_train,
+                        path_data_train=  path_data_train,
                         path_output       =  path_model,
-                        path_config_model =  path_config_model,
+                        config_path=  path_config_model,
                         n_sample          =  nsample if nsample is not None else n_sample)
 
 
