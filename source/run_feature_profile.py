@@ -1,20 +1,13 @@
 # -*- coding: utf-8 -*- 
 """
 
-
-python run_feature_profile.py run_profile  --path_data_train data/input/titanic/train/ --path_output data/out/titanic/profile
-
+python adfraud.py  data_profile  --path_data_train data/input/adfraud/raw/test_10m.zip
 
 
 """
-import gc
-import os
-import logging
+import gc, os, logging
 from datetime import datetime
-import warnings
-import numpy as np
-import pandas as pd
-
+import warnings, numpy as np, pandas as pd
 import pandas_profiling as pp
 import sys, json
 
@@ -44,43 +37,61 @@ def run_profile(path_data=None,  path_output="data/out/ztmp/", n_sample=5000):
       Use folder , filename are fixed.
 
     """
-    path_output = root + path_output
-    path_data   = root + path_data
+    path_output = path_output
     os.makedirs(path_output, exist_ok=True)
     log(path_output)
 
-    path_train_X   = path_data   + "/features.zip"
-    path_train_y   = path_data   + "/target.zip"
+    if ".zip" in path_data  or "gz" in path_data :
+        path_train_X   = path_data
+        path_train_y   = ""
+    else :
+        path_train_X   = path_data   + "/features.zip"
+        path_train_y   = path_data   + "/target.zip"
 
-    log("#### load input column family  ###################################################")
-    cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
-    log(cols_group)
 
 
-    ##### column names for feature generation ###############################################
-    log(cols_group)
-    coly            = cols_group['coly']  # 'salary'
-    colid           = cols_group['colid']  # "jobId"
-    colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
-    colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
-    
-    colcross_single = cols_group.get('colcross', [])   ### List of single columns
-    #coltext        = cols_group.get('coltext', [])
-    coltext         = cols_group['coltext']
-    coldate         = cols_group.get('coldate', [])
-    colall          = colnum + colcat + coltext + coldate
-    log(colall)
+    try :
+        log("#### load input column family  ###################################################")
+        cols_group = json.load(open(path_data + "/cols_group.json", mode='r'))
+        log(cols_group)
 
-    #coly = 'Survived'
-    #colid = "PassengerId"
-    #colcat = [ 'Sex', 'Embarked']
-    #colnum = ['Pclass', 'Age','SibSp', 'Parch','Fare']
-    #coltext = ['Name','Ticket']
-    #coldate = []
 
-    #### Pandas Profiling for features in train  ######################
+        ##### column names for feature generation ###############################################
+        log(cols_group)
+        coly            = cols_group['coly']  # 'salary'
+        colid           = cols_group['colid']  # "jobId"
+        colcat          = cols_group['colcat']  # [ 'companyId', 'jobType', 'degree', 'major', 'industry' ]
+        colnum          = cols_group['colnum']  # ['yearsExperience', 'milesFromMetropolis']
+
+        colcross_single = cols_group.get('colcross', [])   ### List of single columns
+        #coltext        = cols_group.get('coltext', [])
+        coltext         = cols_group['coltext']
+        coldate         = cols_group.get('coldate', [])
+        colall          = colnum + colcat + coltext + coldate
+        log(colall)
+
+    except :
+        log("######## Generating cols_json   ############################")
+        df     = pd.read_csv( path_train_X )
+        colall = list( df.columns)
+        dtype = df.dtypes
+
+        with open( path_output + "cols_group.json" , mode='w')  as fp :
+            js    = {
+               'colnum'  :  [] ,
+               'colcat'  :  [] ,
+               'coltext' :  [] ,
+               'coldate' :  [] ,
+               'colall'  :  colall
+            }
+            json.dump( js, fp)
+            fp.write(str(dtype))
+        log( path_output + "cols_group.json"  )
+        return None
+
+
+    #### Pandas Profiling for features in train  ###############################
     df = pd.read_csv( path_train_X ) # path + f"/new_data/Titanic_Features.csv")
-
     try :
         dfy = pd.read_csv(path_train_y)  # + f"/new_data/Titanic_Labels.csv")
         df  = pd.merge(df, dfy, on =colid,  how="left")
@@ -91,11 +102,13 @@ def run_profile(path_data=None,  path_output="data/out/ztmp/", n_sample=5000):
     for x in colcat:
        df[x] = df[x].factorize()[0]
 
+
     profile = df.profile_report(title='Profile data')
     profile.to_file(output_file=path_output + "/00_features_report.html")
     log( path_output + "/00_features_report.html")
-
     log("######### finish #################################", )
+
+
 
 
 if __name__ == "__main__":
