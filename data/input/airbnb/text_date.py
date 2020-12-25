@@ -51,152 +51,6 @@ colall = colnum + colcat + coltext + coldate
 
 
 
-### Remoe common words
-import json
-import string
-punctuations = string.punctuation
-
-
-stopwords = json.load(open("stopwords_en.json") )["word"]
-stopwords = [ t for t in string.punctuation ] + stopwords
-stopwords = [ "", " ", ",", ".", "-", "*", '€', "+", "/" ] + stopwords
-stopwords =list(set( stopwords ))
-stopwords.sort()
-print( stopwords )
-
-
-stopwords = set(stopwords)
-
-
-
-#### NA to ""
-df[coltext] =  df[coltext].fillna("")
-print( df[coltext].isnull().sum() )
-
-
-# In[371]:
-
-
-
-dftext = util_text.pd_coltext_clean( df[coltext], coltext, stopwords= stopwords ) 
-        
-dftext.head(6)
-
-
-
-### Word Token List
-coltext_freq = {}
-for col in coltext :
-     coltext_freq[col] =  util_text.pd_coltext_wordfreq(dftext, col) 
-    
-coltext_freq
-
-
-
-
-
-# In[374]:
-
-
-print(coltext_freq["house_rules"].values[:10])
-
-
-# In[396]:
-
-
-ntoken=100
-dftext_tdidf_dict, word_tokeep_dict = {}, {}
-    
-for col in coltext:
-   word_tokeep = coltext_freq[col]["word"].values[:ntoken]
-   word_tokeep = [  t for t in word_tokeep if t not in stopwords   ]
- 
-   dftext_tdidf_dict[col], word_tokeep_dict[col] = util_text.pd_coltext_tdidf( dftext, coltext= col,  word_minfreq= 1,
-                                                        word_tokeep= word_tokeep ,
-                                                        return_val= "dataframe,param"  )
-dftext_tdidf_dict, word_tokeep_dict
-
-
-
-
-###  Dimesnion reduction for Sparse Matrix
-dftext_svd_list, svd_list  = {},{}
-for col in  coltext :
-    dftext_svd_list[col], svd_list[col] = util_model.pd_dim_reduction(dftext_tdidf_dict[col], 
-                                               colname=None,
-                                               model_pretrain=None,                       
-                                               colprefix= col + "_svd",
-                                               method="svd", 
-                                                           dimpca=2, 
-                                                           return_val="dataframe,param")
-
-
-
-dftext_svd_list, svd_list  
-    
-
-
-
-## To pipeline
-#  Save each feature processing into "Reproductible pipeline".
-#  For Scalability, for repreoduction process
-
-######### Pipeline ONE
-col = 'house_rules'
-
-
-pipe_preprocess_coltext01 =[ 
-           ( util_text.pd_coltext_clean , {"colname": [col], "stopwords"  : stopwords },  )        
-
-          ,( util_text.pd_coltext_tdidf, { "coltext": col,  "word_minfreq" : 1,
-                                          "word_tokeep" :  word_tokeep_dict[col],
-                                          "return_val": "dataframe"  } , "convert to TD-IDF vector")
-    
-
-          ,( util_model.pd_dim_reduction, { "colname": None, 
-                                          "model_pretrain" : svd_list[col],
-                                          "colprefix": col + "_svd",
-                                          "method": "svd", "dimpca" :2, 
-                                          "return_val": "dataframe"  } , "Dimension reduction")        
-]
-
-### Check pipeline
-print( col, word_tokeep )
-util_feature.pd_pipeline_apply( df[[col ]].iloc[:10,:], pipe_preprocess_coltext01).iloc[:10, :]  
-
-
-
-######### Pipeline TWO
-ntoken= 100
-col =  'neighborhood_overview'
-pipe_preprocess_coltext02 =[ 
-           ( util_text.pd_coltext_clean , {"colname": [col], "stopwords"  : stopwords },  )        
-
-          ,( util_text.pd_coltext_tdidf, { "coltext": col,  "word_minfreq" : 1,
-                                          "word_tokeep" :  word_tokeep_dict[col],
-                                          "return_val": "dataframe"  } , "convert to TD-IDF vector")
-    
-
-          ,( util_model.pd_dim_reduction, { "colname": None, 
-                                          "model_pretrain" : svd_list[col],
-                                          "colprefix": col + "_svd",
-                                          "method": "svd", "dimpca" :2, 
-                                          "return_val": "dataframe"  } , "Dimension reduction")        
-]
-
-### Check pipeline
-print( col, word_tokeep )
-util_feature.pd_pipeline_apply( df[[ col ]].iloc[:10, :], pipe_preprocess_coltext02).iloc[:10]  
-
-
-
-# In[338]:
-
-
-dftext[coltext]
-
-
-
 
 ###################################################################################################
 ###################################################################################################
@@ -211,16 +65,11 @@ from datetime import datetime
 pd_datestring_split( df , col, fmt="auto" ).head(5)
 
 
-df[coldate].iloc[ :10 , :]
-
-
 dfdate_list, coldate_list  = {},{}
 for col in  coldate :
     dfdate_list[col] = pd_datestring_split( df , col, fmt="auto", "return_val": "split" )
     coldate_list[col] =  [   t for t in  dfdate_list[col].columns if t not in  [col, col +"_dt"]      ]
     
-
-dfdate_list, coldate_list
 
 
 ######### Pipeline ##########################################

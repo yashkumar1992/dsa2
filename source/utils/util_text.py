@@ -23,20 +23,14 @@ feature_extraction.text.TfidfVectorizer([ÿ])  Convert a collection of raw docum
 
 
 """
-import copy
-import json
-import math
-import os
-import re
-import string
+import os, sys, math, json, copy,re ,string
 from collections import Counter, OrderedDict
-
 import numpy as np
 import pandas as pd
 import scipy as sci
-
 import nltk
 import sklearn as sk
+
 ########### Local Import #####################################################################
 from nltk.corpus import stopwords
 # Stemming and Lemmatizing
@@ -53,7 +47,12 @@ from sklearn.pipeline import Pipeline
 # import gensim
 
 
-# from bin.column_encoder import MinHashEncoder
+
+#### Add path for python import
+path1 = os.path.dirname(os.path.dirname(os.path.abspath(__file__))).replace("\\", "/") + "/"
+print(path1)
+sys.path.append( path1)
+from source.bin.column_encoder import MinHashEncoder
 
 
 print("os.getcwd", os.getcwd())
@@ -178,9 +177,7 @@ def pd_coltext_encoder(df):
     pass
 
 
-def pd_coltext_countvect(
-    df, coltext, word_tokeep=None, word_minfreq=1, return_val="dataframe,param"
-):
+def pd_coltext_countvect(df, coltext, word_tokeep=None, word_minfreq=1, return_val="dataframe,param"):
     """
     Function that adds count of a given column for words in a text corpus.
     Arguments:
@@ -277,9 +274,8 @@ def pd_coltext_tdidf(df, coltext, word_tokeep=None, word_minfreq=1, return_val="
         return df_vector
 
 
-def pd_coltext_minhash(
-    dfref, colname, n_component=2, model_pretrain_dict=None, return_val="dataframe,param"
-):
+def pd_coltext_minhash(dfref, colname, n_component=2, model_pretrain_dict=None,
+                       return_val="dataframe,param"):
     """
     dfhash, colcat_hash_param = pd_colcat_minhash(df, colcat, n_component=[2] * len(colcat),
                                               return_val="dataframe,param")
@@ -289,6 +285,8 @@ def pd_coltext_minhash(
     :param return_val:
     :return:
     """
+    from source.bin.column_encoder import MinHashEncoder
+
     df = dfref[colname]
     model_pretrain_dict = {} if model_pretrain_dict is None else model_pretrain_dict
     enc_dict = {}
@@ -341,15 +339,8 @@ def pd_coltext_hashing(df, coltext, n_features=20):
     return df_vector
 
 
-def pd_coltext_tdidf_multi(
-    df,
-    coltext,
-    coltext_freq,
-    ntoken=100,
-    word_tokeep_dict=None,
-    stopwords=None,
-    return_val="dataframe,param",
-):
+def pd_coltext_tdidf_multi(df, coltext, coltext_freq, ntoken=100, word_tokeep_dict=None, stopwords=None,
+                           return_val="dataframe,param",):
     dftext_tdidf = {}
     word_tokeep_dict_new = {}
     for col in coltext:
