@@ -527,14 +527,14 @@ def pd_coltext_universal_google(df, col, pars={}):
     dfall  = None
     for coli in col[:1] :
         X = []
-        for r in (df[col]):
+        for r in (df[coli]):
             if pd.isnull(r)==True :
                 r=""
             emb = use(r)
             review_emb = tf.reshape(emb, [-1]).numpy()
             X.append(review_emb)
 
-        dfi   = pd.DataFrame(X, columns= [ coli + "_" + str(i) for i in X.shape[1]   ])
+        dfi   = pd.DataFrame(X, columns= [ coli + "_" + str(i) for i in range(X.shape[1])   ])
         dfall = pd.concat((dfall, dfi))  if dfall is not None else dfi
     return dfall
 
