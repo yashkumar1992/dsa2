@@ -471,27 +471,62 @@ def pd_colcross(df, col, pars):
     return dfcross_hot, col_pars
 
 
+
 def pd_coldate(df, col, pars):
     log("##### Coldate processing   #############################################################")
     from utils import util_date
     coldate = col
-    path_features_store = pars.get('path_features_store', None)
-
-    dfdate = None
+    dfdate  = None
     for coldate_i in coldate :
         dfdate_i =  util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
-        dfdate  = pd.concat((dfdate, dfdate_i),axis=1)  if dfdate is not None else dfdate_i
-        if path_features_store is not None:
-            path_features_store = pars['path_features_store']
-            save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
-    if path_features_store is not None:
-        save_features(dfdate, 'dfdate', path_features_store)
+        dfdate   = pd.concat((dfdate, dfdate_i),axis=1)  if dfdate is not None else dfdate_i
+        # if 'path_features_store' in pars :
+        #    path_features_store = pars['path_features_store']
+        #    #save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
+
+    if 'path_features_store' in pars :
+        save_features(dfdate, 'dfdate', pars['path_features_store'])
+
     col_pars = {}
     col_pars['cols_new'] = {
         # 'colcross_single'     :  col ,    ###list
-        'dfdate': dfdate.columns.tolist()  ### list
+        'dfdate': list(dfdate.columns)  ### list
     }
     return dfdate, col_pars
+
+
+def pd_colcat_minhash(df, col, pars):
+    """
+       MinHash Algo for category
+       https://booking.ai/dont-be-tricked-by-the-hashing-trick-192a6aae3087
+
+    """
+    path_pipeline  = pars.get('path_pipeline_export', None)
+    colcat         = col
+
+    log("#### Colcat to Hash encoding #############################################")
+    from utils import util_text
+    pars_default =  {'n_component' : [4, 2], 'model_pretrain_dict' : None,}
+    pars_minhash = load(f'{path_pipeline}/colcat_minhash_pars.pkl') if  path_pipeline else pars_default
+    dfcat_bin, col_hash_model= util_text.pd_coltext_minhash(df[colcat], colcat,
+                                                            return_val="dataframe,param", **pars_minhash )
+    colcat_minhash = list(dfcat_bin.columns)
+    log(col_hash_model)
+    ###################################################################################
+    if 'path_features_store' in pars :
+       save_features(dfcat_bin, 'dfcat_minhash', pars['path_features_store'])
+       save(col_hash_model,  pars['path_pipeline_export'] + "/colcat_minhash_model.pkl" )
+       save(colcat_minhash,  pars['path_pipeline_export'] + "/colcat_minhash.pkl" )
+
+    col_pars = {}
+    col_pars['col_hash_model'] = col_hash_model
+    col_pars['cols_new'] = {
+     'colcat'     :  col ,               ### list
+     'colcat_minhahs' :  colcat_minhash  ### list
+    }
+    return dfcat_bin, col_pars
+
+
 
 
 def pd_coltext_universal_google(df, col, pars={}):
