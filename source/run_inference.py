@@ -96,16 +96,17 @@ def run_predict(config_name, config_path, n_sample=-1,
     model_dict = model_dict_load(model_dict, config_path, config_name, verbose=True)
     m          = model_dict['global_pars']
 
-    model_name       = model_dict['model_pars']['model_class']
-    path_output      = m['path_pred_output'] if path_output is None else path_output
+    model_class      = model_dict['model_pars']['model_class']
     path_data        = m['path_pred_data']   if path_data   is None else path_data
-
+    path_pipeline    = m['path_pred_pipeline']    #   path_output + "/pipeline/" )
     path_model       = m['path_pred_model']
-    path_pipeline    = m['path_pipeline']    #   path_output + "/pipeline/" )
+
+    path_output      = m['path_pred_output'] if path_output is None else path_output
     log(path_data, path_model, path_output)
 
     pars = {'cols_group': model_dict['data_pars']['cols_input_type'],
             'pipe_list' : model_dict['model_pars']['pre_process_pars']['pipe_list']}
+
 
     ##########################################################################################
     colid            = load(f'{path_pipeline}/colid.pkl')
@@ -113,7 +114,7 @@ def run_predict(config_name, config_path, n_sample=-1,
 
     from run_preprocess import preprocess_inference   as preprocess
     dfX, cols_family = preprocess(df, path_pipeline, preprocess_pars=pars)
-    ypred, yproba    = predict(model_name, path_model, dfX, cols_family)
+    ypred, yproba    = predict(model_class, path_model, dfX, cols_family)
 
 
     log("############ Saving prediction  ###################################################" )

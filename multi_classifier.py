@@ -6,8 +6,6 @@ https://www.kaggle.com/tapioca/multiclass-lightgbm
 https://medium.com/@nitin9809/lightgbm-binary-classification-multi-class-classification-regression-using-python-4f22032b36a2
 
 
-
-All in one file config
   python multi_classifier.py  train
   python multi_classifier.py  check
   python multi_classifier.py  predict
@@ -17,12 +15,13 @@ All in one file config
 import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
 
-###################################################################################
-from source import run_train
-
-
 ####################################################################################
 ###### Path ########################################################################
+from source import run_train
+config_file  = os.path.basename(__file__)
+## config_file     = "multi_classifier.py"
+
+
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
@@ -31,16 +30,20 @@ dir_data  = os.path.abspath( root + "/data/" ) + "/"
 dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
+def os_get_function_name():
+    import sys
+    return sys._getframe(1).f_code.co_name
+
 
 def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
     m['config_path']       = root + f"/{config_file}"
     m['config_name']       = config_name
 
-    ##### Preoprocess
+    ##### run_Preoprocess ONLY
     m['path_data_preprocess'] = root + f'/data/input/{data_name}/train/'
 
-    ##### Train
+    ##### run_Train  ONLY
     m['path_data_train']   = root + f'/data/input/{data_name}/train/'
     m['path_data_test']    = root + f'/data/input/{data_name}/test/'
     #m['path_data_val']    = root + f'/data/input/{data_name}/test/'
@@ -49,10 +52,13 @@ def global_pars_update(model_dict,  data_name, config_name):
     m['path_features_store']  = root + f'/data/output/{data_name}/{config_name}/features_store/'
     m['path_pipeline']        = root + f'/data/output/{data_name}/{config_name}/pipeline/'
 
+
     ##### Prediction
     m['path_pred_data']    = root + f'/data/input/{data_name}/test/'
+    m['path_pred_pipeline']= root + f'/data/output/{data_name}/{config_name}/pipeline/'
     m['path_pred_model']   = root + f'/data/output/{data_name}/{config_name}/model/'
     m['path_pred_output']  = root + f'/data/output/{data_name}/pred_{config_name}/'
+
 
     #####  Generic
     m['n_sample']             = model_dict['data_pars'].get('n_sample', 5000)
@@ -61,14 +67,8 @@ def global_pars_update(model_dict,  data_name, config_name):
     return model_dict
 
 
-def os_get_function_name():
-    import sys
-    return sys._getframe(1).f_code.co_name
-
-
 
 ####################################################################################
-config_file     = "multi_classifier.py"
 config_default  = 'multi_lightgbm'
 
 
@@ -90,8 +90,8 @@ cols_input_type_1 = {  "coly"   :   coly
                    }
 
 
-####################################################################################
-##### Params########################################################################
+#####################################################################################
+##### Params ########################################################################
 def multi_lightgbm(path_model_out="") :
     """
        multiclass
@@ -153,7 +153,6 @@ def multi_lightgbm(path_model_out="") :
           #  'coldate',
           #  'coltext',
           'cols_model_group': [ 'colnum_bin','colcat_bin']
-
 
           ### Filter data rows   #####################################
          ,'filter_pars': { 'ymax' : 5 ,'ymin' : -1 }
@@ -264,4 +263,8 @@ python  multi_classifier.py  run_all
 if __name__ == "__main__":
     import fire
     fire.Fire()
-    
+
+
+
+
+
