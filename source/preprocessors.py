@@ -549,27 +549,3 @@ if __name__ == "__main__":
     fire.Fire()
 
 
-
-
-
-"""
-def pd_coltext(df, col, pars):
-    log("##### Coltext processing   ###############################################################")
-    path_features_store = pars['path_features_store']
-    coltext = col
-
-    stopwords = nlp_get_stopwords()
-    pars      = {'n_token' : 100 , 'stopwords': stopwords}
-    dftext    = None
-    for coltext_i in coltext :
-        ##### Run the text processor on each column text  #############################
-        dftext_i = pipe_text( df[[coltext_i ]], coltext_i, pars )
-        dftext   = pd.concat((dftext, dftext_i))  if dftext is not None else dftext_i
-        save_features(dftext_i, 'dftext_' + coltext_i, path_features_store)
-
-    log(dftext.head(6))
-    save_features(dftext, 'dftext', path_features_store)
-"""
-
-
-
