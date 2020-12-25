@@ -2,24 +2,21 @@
 # -*- coding: utf-8 -*-
 """
 
-
   python airbnb_regression.py  preprocess
   python airbnb_regression.py  train
   python airbnb_regression.py  predict
 
 
-
 """
-
 import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
-
-###################################################################################
-from source import util_feature
 
 
 ####################################################################################
 ###### Path ########################################################################
+from source import util_feature
+config_file  = os.path.basename(__file__)
+
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
@@ -29,15 +26,20 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
+def os_get_function_name():
+    import sys
+    return sys._getframe(1).f_code.co_name
+
+
 def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
     m['config_path']       = root + f"/{config_file}"
     m['config_name']       = config_name
 
-    ##### Preoprocess
+    ##### run_Preoprocess ONLY
     m['path_data_preprocess'] = root + f'/data/input/{data_name}/train/'
 
-    ##### Train
+    ##### run_Train  ONLY
     m['path_data_train']   = root + f'/data/input/{data_name}/train/'
     m['path_data_test']    = root + f'/data/input/{data_name}/test/'
     #m['path_data_val']    = root + f'/data/input/{data_name}/test/'
@@ -46,12 +48,11 @@ def global_pars_update(model_dict,  data_name, config_name):
     m['path_features_store']  = root + f'/data/output/{data_name}/{config_name}/features_store/'
     m['path_pipeline']        = root + f'/data/output/{data_name}/{config_name}/pipeline/'
 
-
     ##### Prediction
     m['path_pred_data']    = root + f'/data/input/{data_name}/test/'
+    m['path_pred_pipeline']= root + f'/data/output/{data_name}/{config_name}/pipeline/'
     m['path_pred_model']   = root + f'/data/output/{data_name}/{config_name}/model/'
     m['path_pred_output']  = root + f'/data/output/{data_name}/pred_{config_name}/'
-
 
     #####  Generic
     m['n_sample']             = model_dict['data_pars'].get('n_sample', 5000)
@@ -60,13 +61,8 @@ def global_pars_update(model_dict,  data_name, config_name):
     return model_dict
 
 
-def os_get_function_name():
-    import sys
-    return sys._getframe(1).f_code.co_name
-
-
 ######################################################################################
-config_file     = "airbnb_regression.py"
+## config_file     = "airbnb_regression.py"
 config_default  = 'airbnb_lightgbm'
 
 
@@ -174,10 +170,9 @@ def airbnb_lightgbm(path_model_out="") :
     'data_pars': {
           'cols_input_type' : cols_input_type_1
 
-
-         #"colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
-         #"colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
-         #'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+         # "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+         # "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+         # 'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
          # 'coldate', #'coltext', 'coltext_svd'
 
          ,'cols_model_group': [  'colnum'
@@ -195,9 +190,6 @@ def airbnb_lightgbm(path_model_out="") :
 
     return model_dict
  
-
-
-
 
 
 #####################################################################################
@@ -250,7 +242,6 @@ def check():
 
 
 
-
 ####################################################################################
 ####### Inference ##################################################################
 def predict(config=None, nsample=None):
@@ -279,9 +270,6 @@ def run_all():
     predict()
 
 
-
-
-
 ###########################################################################################################
 ###########################################################################################################
 """
@@ -294,34 +282,6 @@ python  airbnb_regression.py  run_all
 if __name__ == "__main__":
         import fire
         fire.Fire()
-
-
-
-
-
-"""
-
-  rm=["name", "summary", "space", "description", "neighborhood_overview", "notes", "transit", "access", "interaction", "house_rules", "host_name", "host_about", "amenities"]
-    colsX = list(set(colsX) - set(rm))
-
-    for col in rm:
-        col1=col+'_svd_0'
-        col2=col+'_svd_1'
-        colsX.append(col1)
-        colsX.append(col2)
-    rm1=["last_review", "host_since", "first_review", "last_scraped"]
-    colsX = list(set(colsX) - set(rm1))
-    for col in rm1:
-        col1=col+'_year'
-        col2=col+'_month'
-        col3=col+'_day'
-        colsX.append(col1)
-        colsX.append(col2)
-        colsX.append(col3)
-    dfX.fillna(0)
-
-"""
-
 
 
 
