@@ -1,32 +1,33 @@
-os.getcwd /home/soheil/Soheil/lin-python/S/multi
-/home/soheil/Soheil/lin-python/S/multi
-/home/soheil/Soheil/lin-python/S/multi/
-/home/soheil/Soheil/lin-python/S/multi/data/
-/home/soheil/Soheil/lin-python/S/multi/
-os.getcwd /home/soheil/Soheil/lin-python/S/multi
-/home/soheil/Soheil/lin-python/S/multi/
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor/',) 
+os.getcwd D:\_devs\Python01\gitdev\dsa2
+D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:/_devs/Python01/gitdev/dsa2/data/
+{'model_pars': {'model_class': 'LGBMRegressor', 'model_path': '', 'model_pars': {'objective': 'huber'}, 'post_process_fun': <function airbnb_lightgbm.<locals>.post_process_fun at 0x00000255E6B6D400>, 'pre_process_pars': {'y_norm_fun': <function airbnb_lightgbm.<locals>.pre_process_fun at 0x00000255E6B6D488>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coltext', 'pars': {}, 'cols_family': 'coltext', 'cols_out': 'coltext_svd', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coldate', 'pars': {}, 'cols_family': 'coldate', 'cols_out': 'coldate', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}]}}, 'compute_pars': {'metric_list': ['root_mean_squared_error', 'mean_absolute_error', 'explained_variance_score', 'r2_score', 'median_absolute_error']}, 'data_pars': {'cols_input_type': {'coly': 'price', 'colid': 'id', 'colcat': ['cancellation_policy', 'host_response_rate', 'host_response_time'], 'colnum': ['review_scores_communication', 'review_scores_location', 'review_scores_rating'], 'coltext': ['house_rules', 'neighborhood_overview', 'notes', 'street'], 'coldate': ['calendar_last_scraped', 'first_review', 'host_since'], 'colcross': ['review_scores_communication', 'review_scores_location', 'cancellation_policy', 'host_response_rate']}, 'cols_model_group': ['colnum', 'colcat_bin', 'coltext_svd'], 'filter_pars': {'ymax': 100000.0, 'ymin': 0.0}}, 'global_pars': {'config_path': 'D:/_devs/Python01/gitdev/dsa2//airbnb_regression.py', 'config_name': 'airbnb_lightgbm', 'path_data_preprocess': 'D:/_devs/Python01/gitdev/dsa2//data/input/airbnb/train/', 'path_data_train': 'D:/_devs/Python01/gitdev/dsa2//data/input/airbnb/train/', 'path_data_test': 'D:/_devs/Python01/gitdev/dsa2//data/input/airbnb/test/', 'path_train_output': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/', 'path_train_model': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/model/', 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/', 'path_pred_data': 'D:/_devs/Python01/gitdev/dsa2//data/input/airbnb/test/', 'path_pred_pipeline': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/', 'path_pred_model': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/model/', 'path_pred_output': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/pred_airbnb_lightgbm/', 'n_sample': 5000}}
+D:/_devs/Python01/gitdev/dsa2/
+os.getcwd D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
   ('#### Model Params Dynamic loading  ###############################################',) 
 
-  ('/home/soheil/Soheil/lin-python/S',) 
-/home/soheil/Soheil/lin-python/S/multi
-/home/soheil/Soheil/lin-python/S/multi/
-/home/soheil/Soheil/lin-python/S/multi/data/
-  ({'model_pars': {'config_name': 'LGBMRegressor', 'model_path': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//model/', 'model_pars': {'objective': 'huber'}, 'post_process_fun': <function airbnb_lightgbm.<locals>.post_process_fun at 0x7f5bc51929d0>, 'pre_process_pars': {'y_norm_fun': <function airbnb_lightgbm.<locals>.pre_process_fun at 0x7f5bc51384c0>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coltext', 'pars': {}, 'cols_family': 'coltext', 'cols_out': 'coltext', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coldate', 'pars': {}, 'cols_family': 'coldate', 'cols_out': 'coldate', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}]}}, 'compute_pars': {'metric_list': ['root_mean_squared_error', 'mean_absolute_error', 'explained_variance_score', 'r2_score', 'median_absolute_error']}, 'data_pars': {'cols_input_type': {'coly': 'price', 'colid': 'id', 'colcat': ['cancellation_policy', 'host_response_rate', 'host_response_time'], 'colnum': ['review_scores_communication', 'review_scores_location', 'review_scores_rating'], 'coltext': ['house_rules', 'neighborhood_overview', 'notes', 'street'], 'coldate': ['calendar_last_scraped', 'first_review', 'host_since'], 'colcross': ['review_scores_communication', 'review_scores_location', 'cancellation_policy', 'host_response_rate']}, 'cols_model_group': ['colnum_bin', 'colcat_bin'], 'filter_pars': {'ymax': 100000.0, 'ymin': 0.0}}, 'global_pars': {'path_config_model': '/home/soheil/Soheil/lin-python/S/multi//airbnb_regression.py', 'config_name': 'airbnb_lightgbm', 'path_data_train': 'data/input/airbnb/train/', 'path_data_test': 'data/input/airbnb/test/', 'path_model': 'data/output/airbnb/LGBMRegressor/', 'path_output_pred': 'data/output/airbnb/pred_airbnb_lightgbm/', 'n_sample': 5000}},) 
-  ('#### load input column family  ###################################################',) 
+  ('D:\\_devs\\Python01\\gitdev',) 
+D:\_devs\Python01\gitdev\dsa2
+D:/_devs/Python01/gitdev/dsa2/
+D:/_devs/Python01/gitdev/dsa2/data/
+  ({'model_pars': {'model_class': 'LGBMRegressor', 'model_path': '', 'model_pars': {'objective': 'huber'}, 'post_process_fun': <function airbnb_lightgbm.<locals>.post_process_fun at 0x00000255E6B6D598>, 'pre_process_pars': {'y_norm_fun': <function airbnb_lightgbm.<locals>.pre_process_fun at 0x00000255E6B90B70>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coltext', 'pars': {}, 'cols_family': 'coltext', 'cols_out': 'coltext_svd', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coldate', 'pars': {}, 'cols_family': 'coldate', 'cols_out': 'coldate', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}]}}, 'compute_pars': {'metric_list': ['root_mean_squared_error', 'mean_absolute_error', 'explained_variance_score', 'r2_score', 'median_absolute_error']}, 'data_pars': {'cols_input_type': {'coly': 'price', 'colid': 'id', 'colcat': ['cancellation_policy', 'host_response_rate', 'host_response_time'], 'colnum': ['review_scores_communication', 'review_scores_location', 'review_scores_rating'], 'coltext': ['house_rules', 'neighborhood_overview', 'notes', 'street'], 'coldate': ['calendar_last_scraped', 'first_review', 'host_since'], 'colcross': ['review_scores_communication', 'review_scores_location', 'cancellation_policy', 'host_response_rate']}, 'cols_model_group': ['colnum', 'colcat_bin', 'coltext_svd'], 'filter_pars': {'ymax': 100000.0, 'ymin': 0.0}}, 'global_pars': {'config_path': 'D:/_devs/Python01/gitdev/dsa2//airbnb_regression.py', 'config_name': 'airbnb_lightgbm', 'path_data_preprocess': 'D:/_devs/Python01/gitdev/dsa2//data/input/airbnb/train/', 'path_data_train': 'D:/_devs/Python01/gitdev/dsa2//data/input/airbnb/train/', 'path_data_test': 'D:/_devs/Python01/gitdev/dsa2//data/input/airbnb/test/', 'path_train_output': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/', 'path_train_model': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/model/', 'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/', 'path_pred_data': 'D:/_devs/Python01/gitdev/dsa2//data/input/airbnb/test/', 'path_pred_pipeline': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/', 'path_pred_model': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/model/', 'path_pred_output': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/pred_airbnb_lightgbm/', 'n_sample': 5000}},) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/',) 
+  ('#### load input column family  ####################################################',) 
   ({'coly': 'price', 'colid': 'id', 'colcat': ['cancellation_policy', 'host_response_rate', 'host_response_time'], 'colnum': ['review_scores_communication', 'review_scores_location', 'review_scores_rating'], 'coltext': ['house_rules', 'neighborhood_overview', 'notes', 'street'], 'coldate': ['calendar_last_scraped', 'first_review', 'host_since'], 'colcross': ['review_scores_communication', 'review_scores_location', 'cancellation_policy', 'host_response_rate']},) 
   ('#### Preprocess  #################################################################',) 
 
   ({'coly': 'price', 'colid': 'id', 'colcat': ['cancellation_policy', 'host_response_rate', 'host_response_time'], 'colnum': ['review_scores_communication', 'review_scores_location', 'review_scores_rating'], 'coltext': ['house_rules', 'neighborhood_overview', 'notes', 'street'], 'coldate': ['calendar_last_scraped', 'first_review', 'host_since'], 'colcross': ['review_scores_communication', 'review_scores_location', 'cancellation_policy', 'host_response_rate']},) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colid.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colid.pkl',) 
 
-  ('loading', 'id', '/home/soheil/Soheil/lin-python/S/multi/data/input/airbnb/train//features.zip') 
-['/home/soheil/Soheil/lin-python/S/multi/data/input/airbnb/train/features.parquet']
+  ('loading', 'id', 'D:/_devs/Python01/gitdev/dsa2//data/input/airbnb/train//features.zip') 
+['D:/_devs/Python01/gitdev/dsa2//data/input/airbnb/train\\features.parquet']
 
-  ('dfX_raw',                                              0    ...                                  361
+  ('dfX_raw',                                                0  ...                                  361
 id                                         21869  ...                               265408
 listing_url   https://www.airbnb.com/rooms/21869  ...  https://www.airbnb.com/rooms/265408
 scrape_id                         20181107122246  ...                       20181107122246
@@ -43,8 +44,8 @@ last_scraped                          2018-11-07  ...                           
 
   ('#####  coly  ###########################################################################',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi',) 
-/home/soheil/Soheil/lin-python/S/multi/
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
+D:/_devs/Python01/gitdev/dsa2/
 ----------df----------
                                  listing_url  ...  price
 id                                           ...       
@@ -93,7 +94,7 @@ id                                           ...
 
 [362 rows x 95 columns]
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//coly/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//coly/features.parquet',) 
 
   (        price
 id           
@@ -111,11 +112,11 @@ id
 
 [362 rows x 1 columns], ['price']) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//coly.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//coly.pkl',) 
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, '##########################################################') 
 
-  ('/home/soheil/Soheil/lin-python/S/multi',) 
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
         review_scores_communication  ...  review_scores_rating
 id                                   ...                      
 21869                           9.0  ...                  95.0
@@ -137,7 +138,7 @@ id                                   ...
   ('### colnum Map numerics to Category bin  ###########################################',) 
 review_scores_communication
                                 review_scores_communication                 
-                                                       mean size   max   min
+                                                        min size   max  mean
 review_scores_communication_bin                                             
 -1                                                      NaN   15   NaN   NaN
  0                                                      2.0    1   2.0   2.0
@@ -149,7 +150,7 @@ review_scores_communication_bin
  9                                                     10.0  242  10.0  10.0
 review_scores_location
                            review_scores_location                 
-                                             mean size   max   min
+                                              min size   max  mean
 review_scores_location_bin                                        
 -1                                            NaN   15   NaN   NaN
  0                                            6.0    2   6.0   6.0
@@ -158,30 +159,30 @@ review_scores_location_bin
  7                                            9.0  125   9.0   9.0
  9                                           10.0  206  10.0  10.0
 review_scores_rating
-                         review_scores_rating                  
-                                         mean size    max   min
-review_scores_rating_bin                                       
--1                                        NaN   15    NaN   NaN
- 0                                  74.000000    2   75.0  73.0
- 1                                  76.500000    2   77.0  76.0
- 2                                  80.111115    9   81.0  80.0
- 3                                  82.800003    5   83.0  82.0
- 4                                  84.818184   11   86.0  84.0
- 5                                  88.142860   35   89.0  87.0
- 6                                  90.518517   27   91.0  90.0
- 7                                  93.204819   83   94.0  92.0
- 8                                  96.116280   86   97.0  95.0
- 9                                  99.160919   87  100.0  98.0
+                         review_scores_rating                       
+                                          min size    max       mean
+review_scores_rating_bin                                            
+-1                                        NaN   15    NaN        NaN
+ 0                                       73.0    2   75.0  74.000000
+ 1                                       76.0    2   77.0  76.500000
+ 2                                       80.0    9   81.0  80.111115
+ 3                                       82.0    5   83.0  82.800003
+ 4                                       84.0   11   86.0  84.818184
+ 5                                       87.0   35   89.0  88.142860
+ 6                                       90.0   27   91.0  90.518517
+ 7                                       92.0   83   94.0  93.204819
+ 8                                       95.0   86   97.0  96.116280
+ 9                                       98.0   87  100.0  99.160919
 
   (OrderedDict([('review_scores_communication', [1.9999, 2.8, 3.6, 4.4, 5.2, 6.0, 6.800000000000001, 7.6000000000000005, 8.4, 9.2, 10.0]), ('review_scores_location', [5.9999, 6.4, 6.8, 7.2, 7.6, 8.0, 8.4, 8.8, 9.2, 9.6, 10.0]), ('review_scores_rating', [72.9999, 75.7, 78.4, 81.1, 83.8, 86.5, 89.2, 91.9, 94.6, 97.3, 100.0])]),) 
 
   (['review_scores_communication_bin', 'review_scores_location_bin', 'review_scores_rating_bin'],) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colnum_binmap.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colnum_binmap.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colnum_bin.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colnum_bin.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//colnum/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//colnum/features.parquet',) 
 
   (        review_scores_communication  ...  review_scores_rating_bin
 id                                   ...                          
@@ -199,7 +200,7 @@ id                                   ...
 
 [362 rows x 6 columns], ['review_scores_communication', 'review_scores_location', 'review_scores_rating', 'review_scores_communication_bin', 'review_scores_location_bin', 'review_scores_rating_bin']) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//colnum_bin/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//colnum_bin/features.parquet',) 
 
   (        review_scores_communication_bin  ...  review_scores_rating_bin
 id                                       ...                          
@@ -219,7 +220,7 @@ id                                       ...
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, '##########################################################') 
 
-  ('/home/soheil/Soheil/lin-python/S/multi',) 
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
         review_scores_communication_bin  ...  review_scores_rating_bin
 id                                       ...                          
 21869                                 8  ...                         8
@@ -243,9 +244,9 @@ review_scores_rating_bin 11 (362, 15)
 
   (['review_scores_communication_bin_-1', 'review_scores_communication_bin_0', 'review_scores_communication_bin_2', 'review_scores_communication_bin_4', 'review_scores_communication_bin_6', 'review_scores_communication_bin_7', 'review_scores_communication_bin_8', 'review_scores_communication_bin_9', 'review_scores_location_bin_-1', 'review_scores_location_bin_0', 'review_scores_location_bin_2', 'review_scores_location_bin_4', 'review_scores_location_bin_7', 'review_scores_location_bin_9', 'review_scores_rating_bin_-1', 'review_scores_rating_bin_0', 'review_scores_rating_bin_1', 'review_scores_rating_bin_2', 'review_scores_rating_bin_3', 'review_scores_rating_bin_4', 'review_scores_rating_bin_5', 'review_scores_rating_bin_6', 'review_scores_rating_bin_7', 'review_scores_rating_bin_8', 'review_scores_rating_bin_9'],) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colnum_onehot.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colnum_onehot.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//colnum_onehot/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//colnum_onehot/features.parquet',) 
 
   (        review_scores_communication_bin_-1  ...  review_scores_rating_bin_9
 id                                          ...                            
@@ -265,7 +266,7 @@ id                                          ...
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, '##########################################################') 
 
-  ('/home/soheil/Soheil/lin-python/S/multi',) 
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
                 cancellation_policy host_response_rate  host_response_time
 id                                                                        
 21869   strict_14_with_grace_period               100%  within a few hours
@@ -289,11 +290,11 @@ host_response_rate     object
 host_response_time     object
 dtype: object, {'cat_map': {'cancellation_policy': {'flexible': 0, 'moderate': 1, 'strict_14_with_grace_period': 2}, 'host_response_rate': {'0%': 0, '100%': 1, '20%': 2, '30%': 3, '43%': 4, '50%': 5, '60%': 6, '64%': 7, '67%': 8, '68%': 9, '74%': 10, '75%': 11, '80%': 12, '86%': 13, '88%': 14, '90%': 15, '95%': 16, '96%': 17, '97%': 18}, 'host_response_time': {'a few days or more': 0, 'within a day': 1, 'within a few hours': 2, 'within an hour': 3}}, 'cat_map_inverse': {'cancellation_policy': {0: 'flexible', 1: 'moderate', 2: 'strict_14_with_grace_period'}, 'host_response_rate': {0: '0%', 1: '100%', 2: '20%', 3: '30%', 4: '43%', 5: '50%', 6: '60%', 7: '64%', 8: '67%', 9: '68%', 10: '74%', 11: '75%', 12: '80%', 13: '86%', 14: '88%', 15: '90%', 16: '95%', 17: '96%', 18: '97%'}, 'host_response_time': {0: 'a few days or more', 1: 'within a day', 2: 'within a few hours', 3: 'within an hour'}}}) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colcat_bin_map.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colcat_bin_map.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colcat_bin.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colcat_bin.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//colcat/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//colcat/features.parquet',) 
 
   (                cancellation_policy  ... host_response_time_int
 id                                   ...                       
@@ -311,7 +312,7 @@ id                                   ...
 
 [362 rows x 6 columns], ['cancellation_policy', 'host_response_rate', 'host_response_time', 'cancellation_policy_int', 'host_response_rate_int', 'host_response_time_int']) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//colcat_bin/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//colcat_bin/features.parquet',) 
 
   (        cancellation_policy_int  host_response_rate_int  host_response_time_int
 id                                                                             
@@ -331,7 +332,7 @@ id
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, '##########################################################') 
 
-  ('/home/soheil/Soheil/lin-python/S/multi',) 
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
         cancellation_policy_int  host_response_rate_int  host_response_time_int
 id                                                                             
 21869                         0                       0                       0
@@ -363,12 +364,12 @@ id                                 ...
 
 [5 rows x 28 columns],) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colcat_onehot.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colcat_onehot.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colcat.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colcat.pkl',) 
 ok ------------
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//colcat_onehot/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//colcat_onehot/features.parquet',) 
 
   (        cancellation_policy_int_0  ...  host_response_time_int_3
 id                                 ...                          
@@ -386,9 +387,9 @@ id                                 ...
 
 [362 rows x 28 columns], ['cancellation_policy_int_0', 'cancellation_policy_int_1', 'cancellation_policy_int_2', 'host_response_rate_int_-1', 'host_response_rate_int_0', 'host_response_rate_int_1', 'host_response_rate_int_2', 'host_response_rate_int_3', 'host_response_rate_int_4', 'host_response_rate_int_5', 'host_response_rate_int_6', 'host_response_rate_int_7', 'host_response_rate_int_8', 'host_response_rate_int_9', 'host_response_rate_int_10', 'host_response_rate_int_11', 'host_response_rate_int_12', 'host_response_rate_int_13', 'host_response_rate_int_14', 'host_response_rate_int_15', 'host_response_rate_int_16', 'host_response_rate_int_17', 'host_response_rate_int_18', 'host_response_time_int_-1', 'host_response_time_int_0', 'host_response_time_int_1', 'host_response_time_int_2', 'host_response_time_int_3']) 
 
-  ('###################', {'uri': 'source/preprocessors.py::pd_coltext', 'pars': {}, 'cols_family': 'coltext', 'cols_out': 'coltext', 'type': ''}, '##########################################################') 
+  ('###################', {'uri': 'source/preprocessors.py::pd_coltext', 'pars': {}, 'cols_family': 'coltext', 'cols_out': 'coltext_svd', 'type': ''}, '##########################################################') 
 
-  ('/home/soheil/Soheil/lin-python/S/multi',) 
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
                                               house_rules  ...                   street
 id                                                         ...                         
 21869   1. No noise after 10 pm PLEASE. 2. Please do n...  ...  Berlin, Berlin, Germany
@@ -404,14 +405,14 @@ id                                                         ...
 265408                                               None  ...  Berlin, Berlin, Germany
 
 [362 rows x 4 columns]
-os.getcwd /home/soheil/Soheil/lin-python/S/multi
+os.getcwd D:\_devs\Python01\gitdev\dsa2
 evolutionary_search None No module named 'evolutionary_search'
-imported <module 'lightgbm' from '/home/soheil/.local/lib/python3.8/site-packages/lightgbm/__init__.py'>
-kmodes None No module named 'kmodes'
-catboost None No module named 'catboost'
-tpot None No module named 'tpot'
-os.getcwd /home/soheil/Soheil/lin-python/S/multi
-['', ' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', 'a', 'about', 'above', 'after', 'again', 'against', 'ain', 'all', 'am', 'an', 'and', 'any', 'are', 'aren', "aren't", 'as', 'at', 'be', 'because', 'been', 'before', 'being', 'below', 'between', 'both', 'but', 'by', 'can', 'couldn', "couldn't", 'd', 'did', 'didn', "didn't", 'do', 'does', 'doesn', "doesn't", 'doing', 'don', "don't", 'down', 'during', 'each', 'few', 'for', 'from', 'further', 'had', 'hadn', "hadn't", 'has', 'hasn', "hasn't", 'have', 'haven', "haven't", 'having', 'he', 'her', 'here', 'hers', 'herself', 'him', 'himself', 'his', 'how', 'i', 'if', 'in', 'into', 'is', 'isn', "isn't", 'it', "it's", 'its', 'itself', 'just', 'll', 'm', 'ma', 'me', 'mightn', "mightn't", 'more', 'most', 'mustn', "mustn't", 'my', 'myself', 'needn', "needn't", 'no', 'nor', 'not', 'now', 'o', 'of', 'off', 'on', 'once', 'only', 'or', 'other', 'our', 'ours', 'ourselves', 'out', 'over', 'own', 're', 's', 'same', 'shan', "shan't", 'she', "she's", 'should', "should've", 'shouldn', "shouldn't", 'so', 'some', 'such', 't', 'than', 'that', "that'll", 'the', 'their', 'theirs', 'them', 'themselves', 'then', 'there', 'these', 'they', 'this', 'those', 'through', 'to', 'too', 'under', 'until', 'up', 've', 'very', 'was', 'wasn', "wasn't", 'we', 'were', 'weren', "weren't", 'what', 'when', 'where', 'which', 'while', 'who', 'whom', 'why', 'will', 'with', 'won', "won't", 'wouldn', "wouldn't", 'y', 'you', "you'd", "you'll", "you're", "you've", 'your', 'yours', 'yourself', 'yourselves', '{', '|', '}', '~', 'â‚¬']
+imported <module 'lightgbm' from 'D:\\_devs\\Python01\\ana3\\envs\\py36\\lib\\site-packages\\lightgbm\\__init__.py'>
+imported <module 'kmodes' from 'D:\\_devs\\Python01\\ana3\\envs\\py36\\lib\\site-packages\\kmodes\\__init__.py'>
+imported <module 'catboost' from 'D:\\_devs\\Python01\\ana3\\envs\\py36\\lib\\site-packages\\catboost\\__init__.py'>
+imported <module 'tpot' from 'D:\\_devs\\Python01\\ana3\\envs\\py36\\lib\\site-packages\\tpot\\__init__.py'>
+os.getcwd D:\_devs\Python01\gitdev\dsa2
+['', ' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', 'a', 'about', 'above', 'after', 'again', 'against', 'ain', 'all', 'am', 'an', 'and', 'any', 'are', 'aren', "aren't", 'as', 'at', 'be', 'because', 'been', 'before', 'being', 'below', 'between', 'both', 'but', 'by', 'can', 'couldn', "couldn't", 'd', 'did', 'didn', "didn't", 'do', 'does', 'doesn', "doesn't", 'doing', 'don', "don't", 'down', 'during', 'each', 'few', 'for', 'from', 'further', 'had', 'hadn', "hadn't", 'has', 'hasn', "hasn't", 'have', 'haven', "haven't", 'having', 'he', 'her', 'here', 'hers', 'herself', 'him', 'himself', 'his', 'how', 'i', 'if', 'in', 'into', 'is', 'isn', "isn't", 'it', "it's", 'its', 'itself', 'just', 'll', 'm', 'ma', 'me', 'mightn', "mightn't", 'more', 'most', 'mustn', "mustn't", 'my', 'myself', 'needn', "needn't", 'no', 'nor', 'not', 'now', 'o', 'of', 'off', 'on', 'once', 'only', 'or', 'other', 'our', 'ours', 'ourselves', 'out', 'over', 'own', 're', 's', 'same', 'shan', "shan't", 'she', "she's", 'should', "should've", 'shouldn', "shouldn't", 'so', 'some', 'such', 't', 'than', 'that', "that'll", 'the', 'their', 'theirs', 'them', 'themselves', 'then', 'there', 'these', 'they', 'this', 'those', 'through', 'to', 'too', 'under', 'until', 'up', 've', 'very', 'was', 'wasn', "wasn't", 'we', 'were', 'weren', "weren't", 'what', 'when', 'where', 'which', 'while', 'who', 'whom', 'why', 'will', 'with', 'won', "won't", 'wouldn', "wouldn't", 'y', 'you', "you'd", "you'll", "you're", "you've", 'your', 'yours', 'yourself', 'yourselves', '{', '|', '}', '~', '€']
 
   (                                              house_rules  ...                   street
 id                                                         ...                         
@@ -434,94 +435,92 @@ id                                                         ...
  house_rules
 
   (                 word   freq
-1                 the  771.0
+3                 the  771.0
 74                     372.0
-3                 and  355.0
-55                 in  337.0
-64                 to  302.0
+2                 and  355.0
+50                 in  337.0
+35                 to  302.0
 ...               ...    ...
-2340           er/sie    1.0
-2341            hÃ¤tte    1.0
-2342  Mitbewohner/in,    1.0
-2343   Ã¼berschreitet.    1.0
+2341  Mitbewohner/in,    1.0
+2342            werde    1.0
+2343           er/sie    1.0
+2344           Nächte    1.0
 4605         minimum.    1.0
 
 [4606 rows x 2 columns],) 
 
-  ({'please': 27, 'und': 37, 'none': 25, 'apartment': 1, 'no': 24, 'die': 8, 'der': 7, 'the': 35, 'ist': 17, 'use': 38, 'fÃ¼r': 11, 'zu': 43, 'sie': 31, 'smoking': 32, 'bitte': 3, 'auf': 2, 'allowed': 0, 'nicht': 23, 'illegal': 15, 'we': 40, 'wohnung': 41, 'leave': 19, 'von': 39, 'guests': 12, 'house': 13, 'shoes': 29, 'you': 42, 'take': 34, 'make': 21, 'sich': 30, 'keine': 18, 'das': 5, 'uhr': 36, 'respect': 28, 'if': 14, 'flat': 10, 'nach': 22, 'like': 20, 'parties': 26, 'stay': 33, 'dem': 6, 'clean': 4, 'im': 16, 'es': 9},) 
+  ({'please': 27, 'und': 38, 'none': 25, 'no': 24, 'apartment': 1, 'die': 8, 'der': 7, 'the': 36, 'ist': 17, 'use': 39, 'für': 11, 'zu': 44, 'sie': 32, 'smoking': 33, 'bitte': 3, 'nicht': 23, 'auf': 2, 'allowed': 0, 'we': 41, 'wohnung': 42, 'illegal': 15, 'leave': 19, 'von': 40, 'guests': 12, 'house': 13, 'shoes': 30, 'you': 43, 'take': 35, 'make': 21, 'keine': 18, 'sich': 31, 'das': 5, 'flat': 10, 'uhr': 37, 'if': 14, 'respect': 28, 'like': 20, 'nach': 22, 'parties': 26, 'dem': 6, 'clean': 4, 'stay': 34, 'es': 9, 'im': 16, 'room': 29},) 
 ----col-----
  neighborhood_overview
 
   (               word   freq
-2               the  596.0
-39              and  390.0
-17               of  289.0
+13              the  596.0
+38              and  390.0
+4                of  289.0
 0                is  266.0
-93               in  242.0
+82               in  242.0
 ...             ...    ...
-1698  characterized    1.0
-1699         music!    1.0
-1700         listen    1.0
-1703          stand    1.0
-3450          can't    1.0
+1698         music!    1.0
+1699      recommend    1.0
+1700  characterized    1.0
+1703          vinyl    1.0
+3450       bridges)    1.0
 
 [3451 rows x 2 columns],) 
 
-  ({'none': 35, 'the': 49, 'und': 51, 'berlin': 6, 'der': 15, 'apartment': 1, 'area': 2, 'in': 23, 'ist': 24, 'restaurants': 42, 'many': 27, 'prenzlauer': 39, 'minutes': 30, 'mit': 31, 'street': 48, 'bars': 4, 'also': 0, 'die': 16, 'one': 36, 'famous': 19, 'walking': 53, 'shops': 44, 'around': 3, 'within': 55, 'market': 28, 'located': 26, 'walk': 52, 'sind': 46, 'nice': 34, 'dem': 13, 'zu': 56, 'well': 54, 'quiet': 41, 'there': 50, 'berg': 5, 'cafes': 8, 'find': 20, 'im': 22, 'meters': 29, 'ein': 18, 'central': 10, 'neighborhood': 32, 'de': 12, 'neukÃ¶lln': 33, 'it': 25, 'sich': 45, 'district': 17, 'public': 40, 'small': 47, 'close': 11, 'den': 14, 'best': 7, 'cafÃ©s': 9, 'right': 43, 'friedrichshain': 21, 'popular': 38, 'part': 37},) 
+  ({'none': 34, 'the': 49, 'und': 51, 'berlin': 6, 'der': 15, 'apartment': 1, 'area': 2, 'in': 22, 'ist': 23, 'restaurants': 41, 'many': 26, 'mit': 30, 'prenzlauer': 38, 'minutes': 29, 'street': 47, 'also': 0, 'bars': 4, 'die': 16, 'one': 35, 'shops': 43, 'famous': 19, 'walking': 53, 'around': 3, 'within': 55, 'market': 27, 'walk': 52, 'located': 25, 'sind': 45, 'dem': 13, 'nice': 33, 'well': 54, 'quiet': 40, 'zu': 56, 'there': 50, 'berg': 5, 'cafes': 8, 'im': 21, 'find': 20, 'ein': 18, 'meters': 28, 'central': 10, 'sich': 44, 'neighborhood': 31, 'it': 24, 'neukölln': 32, 'de': 12, 'small': 46, 'close': 11, 'public': 39, 'district': 17, 'den': 14, 'right': 42, 'cafés': 9, 'best': 7, 'streets': 48, 'popular': 37, 'part': 36},) 
 ----col-----
  notes
 
-  (             word   freq
-20            the  235.0
-0            None  192.0
-70             to  142.0
-18             in  120.0
-1             and  113.0
-...           ...    ...
-1219  grandmother    1.0
-1216      wollen,    1.0
-1215         mich    1.0
-1213     sprechen    1.0
-2342     SpÃ¤teste    1.0
+  (              word   freq
+13             the  235.0
+0             None  192.0
+70              to  142.0
+26              in  120.0
+1              and  113.0
+...            ...    ...
+1139         Hinzu    1.0
+1138    berufliche    1.0
+1137  Umsatzsteuer    1.0
+1136    frühzeitig    1.0
+2342      Späteste    1.0
 
 [2343 rows x 2 columns],) 
 
-  ({'none': 28, 'berlin': 7, 'der': 11, 'und': 44, 'the': 39, 'die': 12, 'apartment': 4, 'von': 47, 'please': 32, 'eine': 13, 'arrival': 5, 'city': 10, 'sie': 34, 'free': 17, 'if': 21, 'for': 16, 'bis': 8, 'tax': 38, 'ist': 24, 'upon': 45, 'need': 26, 'this': 41, 'nicht': 27, 'paid': 29, 'sind': 36, 'uhr': 43, 'we': 48, 'stays': 37, 'im': 22, 'price': 33, 'must': 25, 'pay': 31, 'use': 46, 'fee': 15, 'airbnb': 2, 'hidden': 20, 'business': 9, 'extra': 14, 'guests': 19, '2014': 1, 'fÃ¼r': 18, 'parking': 30, 'also': 3, 'bei': 6, 'there': 40, '15': 0, 'two': 42, 'in': 23, 'since': 35},) 
+  ({'none': 27, 'berlin': 7, 'der': 11, 'und': 44, 'the': 39, 'die': 12, 'apartment': 4, 'von': 47, 'eine': 13, 'please': 32, 'arrival': 5, 'sie': 34, 'city': 10, 'free': 17, 'bis': 8, 'if': 21, 'for': 16, 'tax': 38, 'ist': 23, 'need': 25, 'upon': 45, 'this': 41, 'nicht': 26, 'paid': 29, 'we': 48, 'im': 22, 'stays': 37, 'sind': 36, 'uhr': 43, 'must': 24, 'price': 33, 'pay': 31, 'fee': 15, 'use': 46, 'airbnb': 2, 'hidden': 20, 'für': 18, 'parking': 30, '2014': 1, 'extra': 14, 'business': 9, 'guests': 19, 'number': 28, 'also': 3, 'since': 35, 'there': 40, 'two': 42, '15': 0, 'bei': 6},) 
 ----col-----
  street
 
   (          word   freq
 0      Berlin,  721.0
 1      Germany  362.0
-2  SchÃ¶neberg,    1.0,) 
+2  Schöneberg,    1.0,) 
 
-  ({'berlin': 0, 'germany': 1, 'schÃ¶neberg': 2},) 
+  ({'berlin': 0, 'germany': 1, 'schöneberg': 2},) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//dftext_tdidf.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//word_tokeep_dict_all.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//word_tokeep_dict.pkl',) 
-
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//coltext_svd/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//coltext_svd/features.parquet',) 
 
   (        house_rules_svd_0  house_rules_svd_1  ...  street_svd_0  street_svd_1
 id                                            ...                            
-21869            0.646953          -0.088864  ...      0.999997      -0.00235
-151249           0.115356          -0.016971  ...      0.999997      -0.00235
-29279            0.476018          -0.044887  ...      0.999997      -0.00235
+21869            0.645356          -0.089615  ...      0.999997      -0.00235
+151249           0.115496          -0.018125  ...      0.999997      -0.00235
+29279            0.473019          -0.044449  ...      0.999997      -0.00235
 38296            0.000000           0.000000  ...      0.999997      -0.00235
 342637           0.000000           0.000000  ...      0.999997      -0.00235
 ...                   ...                ...  ...           ...           ...
 242927           0.000000           0.000000  ...      0.999997      -0.00235
 229075           0.000000           0.000000  ...      0.999997      -0.00235
-189288           0.098217           0.796411  ...      0.999997      -0.00235
-265955           0.661971          -0.095415  ...      0.999997      -0.00235
+189288           0.099456           0.796835  ...      0.999997      -0.00235
+265955           0.662207          -0.096909  ...      0.999997      -0.00235
 265408           0.000000           0.000000  ...      0.999997      -0.00235
 
 [362 rows x 8 columns], ['house_rules_svd_0', 'house_rules_svd_1', 'neighborhood_overview_svd_0', 'neighborhood_overview_svd_1', 'notes_svd_0', 'notes_svd_1', 'street_svd_0', 'street_svd_1']) 
 
   ('###################', {'uri': 'source/preprocessors.py::pd_coldate', 'pars': {}, 'cols_family': 'coldate', 'cols_out': 'coldate', 'type': ''}, '##########################################################') 
 
-  ('/home/soheil/Soheil/lin-python/S/multi',) 
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
        calendar_last_scraped first_review  host_since
 id                                                   
 21869             2018-11-07   2010-09-23  2009-12-20
@@ -540,7 +539,7 @@ id
 
   ('##### Coldate processing   #############################################################',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//dfdate/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//dfdate/features.parquet',) 
 
   (       calendar_last_scraped  ... host_since_day
 id                            ...               
@@ -560,7 +559,7 @@ id                            ...
 
   ('###################', {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}, '##########################################################') 
 
-  ('/home/soheil/Soheil/lin-python/S/multi',) 
+  ('D:\\_devs\\Python01\\gitdev\\dsa2',) 
         review_scores_communication  ...  host_response_rate
 id                                   ...                    
 21869                           9.0  ...                100%
@@ -614,11 +613,11 @@ review_scores_communication_bin_8-review_scores...       0       1
 review_scores_communication_bin_9-review_scores...       0       0
 review_scores_communication_bin_9-review_scores...       0       0,) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colcross_single_onehot_select.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colcross_single_onehot_select.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colcross_pair.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colcross_pair.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//colcross_pair/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//colcross_pair/features.parquet',) 
 
   (        cancellation_policy_int_0-host_response_rate_int_-1  ...  review_scores_communication_bin_9-review_scores_location_bin_9
 id                                                           ...                                                                
@@ -636,7 +635,7 @@ id                                                           ...
 
 [362 rows x 33 columns], ['cancellation_policy_int_0-host_response_rate_int_-1', 'cancellation_policy_int_0-host_response_rate_int_0', 'cancellation_policy_int_0-review_scores_communication_bin_8', 'cancellation_policy_int_0-review_scores_communication_bin_9', 'cancellation_policy_int_0-review_scores_location_bin_7', 'cancellation_policy_int_0-review_scores_location_bin_9', 'cancellation_policy_int_1-host_response_rate_int_-1', 'cancellation_policy_int_1-host_response_rate_int_0', 'cancellation_policy_int_1-review_scores_communication_bin_8', 'cancellation_policy_int_1-review_scores_communication_bin_9', 'cancellation_policy_int_1-review_scores_location_bin_7', 'cancellation_policy_int_1-review_scores_location_bin_9', 'cancellation_policy_int_2-host_response_rate_int_-1', 'cancellation_policy_int_2-host_response_rate_int_0', 'cancellation_policy_int_2-review_scores_communication_bin_8', 'cancellation_policy_int_2-review_scores_communication_bin_9', 'cancellation_policy_int_2-review_scores_location_bin_7', 'cancellation_policy_int_2-review_scores_location_bin_9', 'host_response_rate_int_-1-review_scores_communication_bin_-1', 'host_response_rate_int_-1-review_scores_communication_bin_8', 'host_response_rate_int_-1-review_scores_communication_bin_9', 'host_response_rate_int_-1-review_scores_location_bin_-1', 'host_response_rate_int_-1-review_scores_location_bin_7', 'host_response_rate_int_-1-review_scores_location_bin_9', 'host_response_rate_int_0-review_scores_communication_bin_8', 'host_response_rate_int_0-review_scores_communication_bin_9', 'host_response_rate_int_0-review_scores_location_bin_7', 'host_response_rate_int_0-review_scores_location_bin_9', 'review_scores_communication_bin_-1-review_scores_location_bin_-1', 'review_scores_communication_bin_8-review_scores_location_bin_7', 'review_scores_communication_bin_8-review_scores_location_bin_9', 'review_scores_communication_bin_9-review_scores_location_bin_7', 'review_scores_communication_bin_9-review_scores_location_bin_9']) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store//dfX/features.parquet',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store//dfX/features.parquet',) 
 
   (        price  ...  review_scores_communication_bin_9-review_scores_location_bin_9
 id             ...                                                                
@@ -654,185 +653,160 @@ id             ...
 
 [362 rows x 122 columns], ['price', 'review_scores_communication', 'review_scores_location', 'review_scores_rating', 'cancellation_policy', 'host_response_rate', 'host_response_time', 'review_scores_communication_bin', 'review_scores_location_bin', 'review_scores_rating_bin', 'review_scores_communication_bin_-1', 'review_scores_communication_bin_0', 'review_scores_communication_bin_2', 'review_scores_communication_bin_4', 'review_scores_communication_bin_6', 'review_scores_communication_bin_7', 'review_scores_communication_bin_8', 'review_scores_communication_bin_9', 'review_scores_location_bin_-1', 'review_scores_location_bin_0', 'review_scores_location_bin_2', 'review_scores_location_bin_4', 'review_scores_location_bin_7', 'review_scores_location_bin_9', 'review_scores_rating_bin_-1', 'review_scores_rating_bin_0', 'review_scores_rating_bin_1', 'review_scores_rating_bin_2', 'review_scores_rating_bin_3', 'review_scores_rating_bin_4', 'review_scores_rating_bin_5', 'review_scores_rating_bin_6', 'review_scores_rating_bin_7', 'review_scores_rating_bin_8', 'review_scores_rating_bin_9', 'cancellation_policy_int', 'host_response_rate_int', 'host_response_time_int', 'cancellation_policy_int_0', 'cancellation_policy_int_1', 'cancellation_policy_int_2', 'host_response_rate_int_-1', 'host_response_rate_int_0', 'host_response_rate_int_1', 'host_response_rate_int_2', 'host_response_rate_int_3', 'host_response_rate_int_4', 'host_response_rate_int_5', 'host_response_rate_int_6', 'host_response_rate_int_7', 'host_response_rate_int_8', 'host_response_rate_int_9', 'host_response_rate_int_10', 'host_response_rate_int_11', 'host_response_rate_int_12', 'host_response_rate_int_13', 'host_response_rate_int_14', 'host_response_rate_int_15', 'host_response_rate_int_16', 'host_response_rate_int_17', 'host_response_rate_int_18', 'host_response_time_int_-1', 'host_response_time_int_0', 'host_response_time_int_1', 'host_response_time_int_2', 'host_response_time_int_3', 'house_rules_svd_0', 'house_rules_svd_1', 'neighborhood_overview_svd_0', 'neighborhood_overview_svd_1', 'notes_svd_0', 'notes_svd_1', 'street_svd_0', 'street_svd_1', 'calendar_last_scraped', 'calendar_last_scraped_dt', 'calendar_last_scraped_year', 'calendar_last_scraped_month', 'calendar_last_scraped_day', 'first_review', 'first_review_dt', 'first_review_year', 'first_review_month', 'first_review_day', 'host_since', 'host_since_dt', 'host_since_year', 'host_since_month', 'host_since_day', 'cancellation_policy_int_0-host_response_rate_int_-1', 'cancellation_policy_int_0-host_response_rate_int_0', 'cancellation_policy_int_0-review_scores_communication_bin_8', 'cancellation_policy_int_0-review_scores_communication_bin_9', 'cancellation_policy_int_0-review_scores_location_bin_7', 'cancellation_policy_int_0-review_scores_location_bin_9', 'cancellation_policy_int_1-host_response_rate_int_-1', 'cancellation_policy_int_1-host_response_rate_int_0', 'cancellation_policy_int_1-review_scores_communication_bin_8', 'cancellation_policy_int_1-review_scores_communication_bin_9', 'cancellation_policy_int_1-review_scores_location_bin_7', 'cancellation_policy_int_1-review_scores_location_bin_9', 'cancellation_policy_int_2-host_response_rate_int_-1', 'cancellation_policy_int_2-host_response_rate_int_0', 'cancellation_policy_int_2-review_scores_communication_bin_8', 'cancellation_policy_int_2-review_scores_communication_bin_9', 'cancellation_policy_int_2-review_scores_location_bin_7', 'cancellation_policy_int_2-review_scores_location_bin_9', 'host_response_rate_int_-1-review_scores_communication_bin_-1', 'host_response_rate_int_-1-review_scores_communication_bin_8', 'host_response_rate_int_-1-review_scores_communication_bin_9', 'host_response_rate_int_-1-review_scores_location_bin_-1', 'host_response_rate_int_-1-review_scores_location_bin_7', 'host_response_rate_int_-1-review_scores_location_bin_9', 'host_response_rate_int_0-review_scores_communication_bin_8', 'host_response_rate_int_0-review_scores_communication_bin_9', 'host_response_rate_int_0-review_scores_location_bin_7', 'host_response_rate_int_0-review_scores_location_bin_9', 'review_scores_communication_bin_-1-review_scores_location_bin_-1', 'review_scores_communication_bin_8-review_scores_location_bin_7', 'review_scores_communication_bin_8-review_scores_location_bin_9', 'review_scores_communication_bin_9-review_scores_location_bin_7', 'review_scores_communication_bin_9-review_scores_location_bin_9']) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//colsX.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//colsX.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline//cols_family.pkl',) 
-  ('used columns', ['review_scores_communication_bin', 'review_scores_location_bin', 'review_scores_rating_bin', 'cancellation_policy_int', 'host_response_rate_int', 'host_response_time_int'], 'price') 
-  ('######### Train model: ###########################################################',) 
-  ("{'model_pars': {'config_name': 'LGBMRegressor', 'model_path': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//model/', 'model_pars': {'objective': 'huber'}, 'post_process_fun': <function airbnb_lightgbm.<locals>.post_process_fun at 0x7f5bc51929d0>, 'pre_process_pars': {'y_norm_fun': <function airbnb_lightgbm.<locals>.pre_process_fun at 0x7f5bc51384c0>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegre",) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline//cols_family.pkl',) 
+  ('used columns', ['review_scores_communication', 'review_scores_location', 'review_scores_rating', 'review_scores_communication', 'review_scores_location', 'review_scores_rating', 'cancellation_policy_int', 'host_response_rate_int', 'host_response_time_int', 'house_rules_svd_0', 'house_rules_svd_1', 'neighborhood_overview_svd_0', 'neighborhood_overview_svd_1', 'notes_svd_0', 'notes_svd_1', 'street_svd_0', 'street_svd_1'], 'price') 
+  ('##### Train model: #############################################################',) 
+  ("{'model_pars': {'model_class': 'LGBMRegressor', 'model_path': '', 'model_pars': {'objective': 'huber'}, 'post_process_fun': <function airbnb_lightgbm.<locals>.post_process_fun at 0x00000255E6B6D598>, 'pre_process_pars': {'y_norm_fun': <function airbnb_lightgbm.<locals>.pre_process_fun at 0x00000255E6B90B70>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/",) 
   ('#### Data preparation #############################################################',) 
   ((362, 122),) 
-  ('dfX',         review_scores_communication_bin  ...  host_response_time_int
-id                                       ...                        
-23834                                 8  ...                       1
-206454                                9  ...                       3
-205296                               -1  ...                       2
-7071                                  9  ...                       3
-279315                                9  ...                      -1
-...                                 ...  ...                     ...
-201224                                9  ...                       3
-276044                                9  ...                       1
-125349                                9  ...                       3
-464324                                9  ...                       0
-265955                                9  ...                       3
-
-[362 rows x 6 columns]) 
-  ('dfy', id
-23834      65.0
-206454     70.0
-205296    100.0
-7071       42.0
-279315     40.0
-          ...  
-201224     88.0
-276044     50.0
-125349     70.0
-464324     44.0
-265955     55.0
-Name: price, Length: 362, dtype: float32) 
+colsX ['review_scores_communication', 'review_scores_location', 'review_scores_rating', 'review_scores_communication', 'review_scores_location', 'review_scores_rating', 'cancellation_policy_int', 'host_response_rate_int', 'host_response_time_int', 'house_rules_svd_0', 'house_rules_svd_1', 'neighborhood_overview_svd_0', 'neighborhood_overview_svd_1', 'notes_svd_0', 'notes_svd_1', 'street_svd_0', 'street_svd_1']
   ('#### Model Instance ##########################################################',) 
-  (<module 'models.model_sklearn' from '/home/soheil/Soheil/lin-python/S/multi/source/models/model_sklearn.py'>,) 
+cannot import pyod
+  (<module 'models.model_sklearn' from 'D:\\_devs\\Python01\\gitdev\\dsa2\\source\\models\\model_sklearn.py'>,) 
 <class 'lightgbm.sklearn.LGBMRegressor'> LGBMRegressor(objective='huber')
-(217, 6) LGBMRegressor(objective='huber')
-[1]	valid_0's huber: 27.4666
-[2]	valid_0's huber: 27.4631
-[3]	valid_0's huber: 27.4597
-[4]	valid_0's huber: 27.4563
-[5]	valid_0's huber: 27.4529
-[6]	valid_0's huber: 27.4495
-[7]	valid_0's huber: 27.446
-[8]	valid_0's huber: 27.4427
-[9]	valid_0's huber: 27.4393
-[10]	valid_0's huber: 27.4359
-[11]	valid_0's huber: 27.4326
-[12]	valid_0's huber: 27.4292
-[13]	valid_0's huber: 27.4259
-[14]	valid_0's huber: 27.4226
-[15]	valid_0's huber: 27.4193
-[16]	valid_0's huber: 27.416
-[17]	valid_0's huber: 27.4127
-[18]	valid_0's huber: 27.4094
-[19]	valid_0's huber: 27.4061
-[20]	valid_0's huber: 27.4029
-[21]	valid_0's huber: 27.3996
-[22]	valid_0's huber: 27.3964
-[23]	valid_0's huber: 27.3932
-[24]	valid_0's huber: 27.3909
-[25]	valid_0's huber: 27.3887
-[26]	valid_0's huber: 27.3865
-[27]	valid_0's huber: 27.3842
-[28]	valid_0's huber: 27.382
-[29]	valid_0's huber: 27.3798
-[30]	valid_0's huber: 27.3771
-[31]	valid_0's huber: 27.3744
-[32]	valid_0's huber: 27.3717
-[33]	valid_0's huber: 27.369
-[34]	valid_0's huber: 27.3663
-[35]	valid_0's huber: 27.3636
-[36]	valid_0's huber: 27.3609
-[37]	valid_0's huber: 27.3583
-[38]	valid_0's huber: 27.3556
-[39]	valid_0's huber: 27.353
-[40]	valid_0's huber: 27.3504
-[41]	valid_0's huber: 27.3478
-[42]	valid_0's huber: 27.3453
-[43]	valid_0's huber: 27.3428
-[44]	valid_0's huber: 27.3404
-[45]	valid_0's huber: 27.3382
-[46]	valid_0's huber: 27.336
-[47]	valid_0's huber: 27.3338
-[48]	valid_0's huber: 27.3318
-[49]	valid_0's huber: 27.3298
-[50]	valid_0's huber: 27.3279
-[51]	valid_0's huber: 27.3261
-[52]	valid_0's huber: 27.3243
-[53]	valid_0's huber: 27.3226
-[54]	valid_0's huber: 27.321
-[55]	valid_0's huber: 27.3204
-[56]	valid_0's huber: 27.3198
-[57]	valid_0's huber: 27.3193
-[58]	valid_0's huber: 27.3188
-[59]	valid_0's huber: 27.3184
-[60]	valid_0's huber: 27.3181
-[61]	valid_0's huber: 27.3179
-[62]	valid_0's huber: 27.3177
-[63]	valid_0's huber: 27.3176
-[64]	valid_0's huber: 27.3175
-[65]	valid_0's huber: 27.3175
-[66]	valid_0's huber: 27.3177
-[67]	valid_0's huber: 27.3179
-[68]	valid_0's huber: 27.3182
-[69]	valid_0's huber: 27.3186
-[70]	valid_0's huber: 27.3191
-[71]	valid_0's huber: 27.3195
-[72]	valid_0's huber: 27.3202
-[73]	valid_0's huber: 27.3207
-[74]	valid_0's huber: 27.3212
-[75]	valid_0's huber: 27.3219
-[76]	valid_0's huber: 27.3225
-[77]	valid_0's huber: 27.3232
-[78]	valid_0's huber: 27.3239
-[79]	valid_0's huber: 27.3246
-[80]	valid_0's huber: 27.3253
-[81]	valid_0's huber: 27.3261
-[82]	valid_0's huber: 27.3269
-[83]	valid_0's huber: 27.3276
-[84]	valid_0's huber: 27.3284
-[85]	valid_0's huber: 27.3292
-[86]	valid_0's huber: 27.3301
-[87]	valid_0's huber: 27.331
-[88]	valid_0's huber: 27.3318
-[89]	valid_0's huber: 27.3328
-[90]	valid_0's huber: 27.3337
-[91]	valid_0's huber: 27.3347
-[92]	valid_0's huber: 27.3357
-[93]	valid_0's huber: 27.3356
-[94]	valid_0's huber: 27.3349
-[95]	valid_0's huber: 27.3361
-[96]	valid_0's huber: 27.3357
-[97]	valid_0's huber: 27.3354
-[98]	valid_0's huber: 27.335
-[99]	valid_0's huber: 27.3347
-[100]	valid_0's huber: 27.3344
+(217, 17) LGBMRegressor(objective='huber')
+[1]	valid_0's huber: 23.8893
+[2]	valid_0's huber: 23.8758
+[3]	valid_0's huber: 23.8623
+[4]	valid_0's huber: 23.8489
+[5]	valid_0's huber: 23.8356
+[6]	valid_0's huber: 23.8225
+[7]	valid_0's huber: 23.8095
+[8]	valid_0's huber: 23.7966
+[9]	valid_0's huber: 23.7839
+[10]	valid_0's huber: 23.7714
+[11]	valid_0's huber: 23.759
+[12]	valid_0's huber: 23.7468
+[13]	valid_0's huber: 23.7352
+[14]	valid_0's huber: 23.7237
+[15]	valid_0's huber: 23.7125
+[16]	valid_0's huber: 23.7013
+[17]	valid_0's huber: 23.6903
+[18]	valid_0's huber: 23.679
+[19]	valid_0's huber: 23.6679
+[20]	valid_0's huber: 23.6569
+[21]	valid_0's huber: 23.646
+[22]	valid_0's huber: 23.6353
+[23]	valid_0's huber: 23.6247
+[24]	valid_0's huber: 23.6143
+[25]	valid_0's huber: 23.604
+[26]	valid_0's huber: 23.5939
+[27]	valid_0's huber: 23.5857
+[28]	valid_0's huber: 23.5792
+[29]	valid_0's huber: 23.5693
+[30]	valid_0's huber: 23.5629
+[31]	valid_0's huber: 23.555
+[32]	valid_0's huber: 23.5486
+[33]	valid_0's huber: 23.5409
+[34]	valid_0's huber: 23.5345
+[35]	valid_0's huber: 23.5257
+[36]	valid_0's huber: 23.5195
+[37]	valid_0's huber: 23.5119
+[38]	valid_0's huber: 23.5057
+[39]	valid_0's huber: 23.4971
+[40]	valid_0's huber: 23.491
+[41]	valid_0's huber: 23.4826
+[42]	valid_0's huber: 23.4766
+[43]	valid_0's huber: 23.4692
+[44]	valid_0's huber: 23.4632
+[45]	valid_0's huber: 23.4559
+[46]	valid_0's huber: 23.4499
+[47]	valid_0's huber: 23.4426
+[48]	valid_0's huber: 23.4367
+[49]	valid_0's huber: 23.4295
+[50]	valid_0's huber: 23.4236
+[51]	valid_0's huber: 23.4177
+[52]	valid_0's huber: 23.4104
+[53]	valid_0's huber: 23.4042
+[54]	valid_0's huber: 23.397
+[55]	valid_0's huber: 23.3908
+[56]	valid_0's huber: 23.3817
+[57]	valid_0's huber: 23.3775
+[58]	valid_0's huber: 23.3714
+[59]	valid_0's huber: 23.3641
+[60]	valid_0's huber: 23.3581
+[61]	valid_0's huber: 23.3508
+[62]	valid_0's huber: 23.3466
+[63]	valid_0's huber: 23.3394
+[64]	valid_0's huber: 23.3351
+[65]	valid_0's huber: 23.3279
+[66]	valid_0's huber: 23.3237
+[67]	valid_0's huber: 23.3165
+[68]	valid_0's huber: 23.3122
+[69]	valid_0's huber: 23.3051
+[70]	valid_0's huber: 23.299
+[71]	valid_0's huber: 23.2948
+[72]	valid_0's huber: 23.2876
+[73]	valid_0's huber: 23.2833
+[74]	valid_0's huber: 23.2762
+[75]	valid_0's huber: 23.272
+[76]	valid_0's huber: 23.2648
+[77]	valid_0's huber: 23.2606
+[78]	valid_0's huber: 23.2535
+[79]	valid_0's huber: 23.2494
+[80]	valid_0's huber: 23.2423
+[81]	valid_0's huber: 23.2381
+[82]	valid_0's huber: 23.2311
+[83]	valid_0's huber: 23.2269
+[84]	valid_0's huber: 23.2199
+[85]	valid_0's huber: 23.2159
+[86]	valid_0's huber: 23.2092
+[87]	valid_0's huber: 23.2036
+[88]	valid_0's huber: 23.1971
+[89]	valid_0's huber: 23.1937
+[90]	valid_0's huber: 23.1875
+[91]	valid_0's huber: 23.1843
+[92]	valid_0's huber: 23.1784
+[93]	valid_0's huber: 23.1739
+[94]	valid_0's huber: 23.1667
+[95]	valid_0's huber: 23.1625
+[96]	valid_0's huber: 23.1576
+[97]	valid_0's huber: 23.1535
+[98]	valid_0's huber: 23.1479
+[99]	valid_0's huber: 23.1413
+[100]	valid_0's huber: 23.1376
   ('#### Metrics #################################################################',) 
   ('Actual    : ', id
-23834     258333.098158
-206454    291426.631285
-205296    520598.432657
-7071      126978.152103
-279315    117293.569832
-              ...      
-201224    422854.557964
-276044    168602.529214
-125349    291426.631285
-464324    136956.233778
-265955    196870.903976
+257658    0.49
+185960    0.29
+420114    1.00
+344856    0.60
+63468     0.52
+          ... 
+192103    0.75
+87549     0.48
+128827    0.59
+83183     0.53
+57792     0.49
 Name: price, Length: 362, dtype: float64) 
   ('Prediction: ', id
-23834     255297.081270
-206454    252457.543307
-205296    279973.957921
-7071      252457.543307
-279315    239060.599034
-              ...      
-201224    254348.893736
-276044    261435.164640
-125349    254348.893736
-464324    270092.307928
-265955    259194.618906
+257658    0.657372
+185960    0.662503
+420114    0.695147
+344856    0.678468
+63468     0.661863
+            ...   
+192103    0.708309
+87549     0.712387
+128827    0.708676
+83183     0.687261
+57792     0.689076
 Name: price_pred, Length: 362, dtype: float64) 
-  ({'metrics_test':                 metric_name     metric_val  n_sample
-0   root_mean_squared_error  449888.150344        73
-1       mean_absolute_error  227938.193455        73
-2  explained_variance_score       0.001640        73
-3                  r2_score      -0.019046        73
-4     median_absolute_error  136311.887704        73},) 
-  ('############ saving model, dfX, columns', '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//model/') 
+  ({'metrics_test':                 metric_name  metric_val  n_sample
+0   root_mean_squared_error    0.435622        73
+1       mean_absolute_error    0.277542        73
+2  explained_variance_score    0.050657        73
+3                  r2_score    0.050629        73
+4     median_absolute_error    0.198267        73},) 
+  ('############ saving model, dfX, columns',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/model/',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//model//colsX.pkl',) 
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/model//colsX.pkl',) 
 
-  ('/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//model//coly.pkl',) 
-  ({'config_name': 'LGBMRegressor', 'model_path': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//model/', 'model_pars': {'objective': 'huber'}, 'post_process_fun': <function airbnb_lightgbm.<locals>.post_process_fun at 0x7f5bc51929d0>, 'pre_process_pars': {'y_norm_fun': <function airbnb_lightgbm.<locals>.pre_process_fun at 0x7f5bc51384c0>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coltext', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'coltext', 'cols_out': 'coltext', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coldate', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'coldate', 'cols_out': 'coldate', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/', 'dfnum_hot':         review_scores_communication_bin_-1  ...  review_scores_rating_bin_9
+  ('D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/model//coly.pkl',) 
+  ({'model_class': 'LGBMRegressor', 'model_path': '', 'model_pars': {'objective': 'huber'}, 'post_process_fun': <function airbnb_lightgbm.<locals>.post_process_fun at 0x00000255E6B6D598>, 'pre_process_pars': {'y_norm_fun': <function airbnb_lightgbm.<locals>.pre_process_fun at 0x00000255E6B90B70>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coltext', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'coltext', 'cols_out': 'coltext_svd', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coldate', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'coldate', 'cols_out': 'coldate', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/', 'dfnum_hot':         review_scores_communication_bin_-1  ...  review_scores_rating_bin_9
 id                                          ...                            
 21869                                    0  ...                           0
 151249                                   0  ...                           0
@@ -861,7 +835,9 @@ id                                 ...
 265408                          0  ...                         0
 
 [362 rows x 28 columns], 'colid': 'id', 'colcross_single': ['review_scores_communication', 'review_scores_location', 'cancellation_policy', 'host_response_rate']}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}]}}, {'metric_list': ['root_mean_squared_error', 'mean_absolute_error', 'explained_variance_score', 'r2_score', 'median_absolute_error']}) 
-  ('############ check re-loaded', {'config_name': 'LGBMRegressor', 'model_path': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//model/', 'model_pars': {'objective': 'huber'}, 'post_process_fun': <function airbnb_lightgbm.<locals>.post_process_fun at 0x7f5b5d117b80>, 'pre_process_pars': {'y_norm_fun': <function airbnb_lightgbm.<locals>.pre_process_fun at 0x7f5b5d117a60>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coltext', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'coltext', 'cols_out': 'coltext', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coldate', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/'}, 'cols_family': 'coldate', 'cols_out': 'coldate', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {'path_features_store': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//features_store/', 'path_pipeline_export': '/home/soheil/Soheil/lin-python/S/multi/data/output/airbnb/LGBMRegressor//pipeline/', 'dfnum_hot':         review_scores_communication_bin_-1  ...  review_scores_rating_bin_9
+--------------
+D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/model//model.pkl
+  ('############ check re-loaded', {'model_class': 'LGBMRegressor', 'model_path': '', 'model_pars': {'objective': 'huber'}, 'post_process_fun': <function airbnb_lightgbm.<locals>.post_process_fun at 0x00000255E76D36A8>, 'pre_process_pars': {'y_norm_fun': <function airbnb_lightgbm.<locals>.pre_process_fun at 0x00000255E76D39D8>, 'pipe_list': [{'uri': 'source/preprocessors.py::pd_coly', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'}, {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coltext', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'coltext', 'cols_out': 'coltext_svd', 'type': ''}, {'uri': 'source/preprocessors.py::pd_coldate', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/'}, 'cols_family': 'coldate', 'cols_out': 'coldate', 'type': ''}, {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {'path_features_store': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/features_store/', 'path_pipeline_export': 'D:/_devs/Python01/gitdev/dsa2//data/output/airbnb/airbnb_lightgbm/pipeline/', 'dfnum_hot':         review_scores_communication_bin_-1  ...  review_scores_rating_bin_9
 id                                          ...                            
 21869                                    0  ...                           0
 151249                                   0  ...                           0
@@ -890,5 +866,5 @@ id                                 ...
 265408                          0  ...                         0
 
 [362 rows x 28 columns], 'colid': 'id', 'colcross_single': ['review_scores_communication', 'review_scores_location', 'cancellation_policy', 'host_response_rate']}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}]}}) 
-  ('######### export #################################',) 
+  ('###### Export ##################################################################',) 
   ('######### finish #################################',) 
