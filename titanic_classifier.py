@@ -70,6 +70,21 @@ config_default  = 'titanic_lightgbm'        ### name of function which contains 
 
 
 
+"""
+def os_get_current_file(ffile):
+    d, f =   os.path,dirname(ffile) ,  os.path.basename(ffile)
+    return d,f
+    
+print(__file__)
+
+print( os_get_current_file(__file__))
+print("\nas import")
+import titanic_classifier
+sys.exit(0)
+"""
+
+
+
 ####################################################################################
 ##### Params########################################################################
 # data_name    = "titanic"     ### in data/input/

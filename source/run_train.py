@@ -5,23 +5,12 @@ cd analysis
 
 python source/run_train.py  run_train --config_name elasticnet  --path_data_train data/input/train/    --path_output data/output/a01_elasticnet/
 
-! activate py36 && python source/run_train.py  run_train   --n_sample 100  --config_name lightgbm  --path_model_config source/config_model.py  --path_output /data/output/a01_test/     --path_data_train /data/input/train/
-
-
-
-
-
-
-
+activate py36 && python source/run_train.py  run_train   --n_sample 100  --config_name lightgbm  --path_model_config source/config_model.py  --path_output /data/output/a01_test/     --path_data_train /data/input/train/
 
 """
 import warnings
 warnings.filterwarnings('ignore')
-import sys
-import os
-import json
-import importlib
-
+import sys, os, json, importlib
 
 ####################################################################################################
 #### Add path for python import
@@ -62,11 +51,12 @@ def model_dict_load(model_dict, config_path, config_name, verbose=True):
 
 from run_preprocess import  preprocess, preprocess_load
 
+
+
 ####################################################################################################
 ##### train    #####################################################################################
 def map_model(model_name):
     """
-
     :param model_name:
     :return:
     """
@@ -117,8 +107,6 @@ def train(model_dict, dfX, cols_family, post_process_fun):
                           'Xval'   : dfX[colsX].iloc[ival:, :],
                           'yval'   : dfX[coly].iloc[ival:],
                           }
-
-
 
     log("#### Model Instance ##########################################################")
     # from config_model import map_model    
