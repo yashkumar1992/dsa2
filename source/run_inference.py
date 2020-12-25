@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 """
-
 activate py36 && python source/run_inference.py  run_predict  --n_sample 1000  --config_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data_train /data/input/train/
- 
 
 """
 import warnings
@@ -45,27 +43,26 @@ def map_model(model_name):
     try :
        ##  'models.model_bayesian_pyro'   'model_widedeep'
        mod    = f'models.{model_name}'
-       modelx = importlib.import_module(mod) 
-       
+       modelx = importlib.import_module(mod)
+
     except :
         ### Al SKLEARN API
         #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
        mod    = 'models.model_sklearn'
-       modelx = importlib.import_module(mod) 
-    
+       modelx = importlib.import_module(mod)
+
     return modelx
 
 
 def predict(model_name, path_model, dfX, cols_family):
     """
-
     """
-    modelx = map_model(model_name)    
+    modelx = map_model(model_name)
     modelx.reset()
-    log(modelx, path_model)    
+    log(modelx, path_model)
     #log(os.getcwd())
-    sys.path.append( root)    #### Needed due to import source error    
-    
+    sys.path.append( root)    #### Needed due to import source error
+
 
     log("#### Load model  ############################################")
     print(path_model + "/model/model.pkl")
