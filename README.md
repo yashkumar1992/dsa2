@@ -12,7 +12,7 @@ main:
 
 
 ### Install 
-     pip install -r requirements.txt
+     pip install -r zrequirements.txt
 
 
 
