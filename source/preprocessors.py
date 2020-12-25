@@ -126,7 +126,7 @@ def pd_coltext(df, col, pars={}):
     df : Datframe
     col : list of columns
     pars : dict of pars
-    
+
     """
     from utils import util_text, util_model
 
@@ -159,19 +159,19 @@ def pd_coltext(df, col, pars={}):
             dftext_tdidf_dict, word_tokeep_dict = util_text.pd_coltext_tdidf(dftext, coltext=col_, word_minfreq= word_minfreq,
                                                                              word_tokeep = word_tokeep,
                                                                              return_val  = "dataframe,param")
-       
+
             dftext_tdidf_all = pd.DataFrame(dftext_tdidf_dict) if dftext_tdidf_all is None else pd.concat((dftext_tdidf_all,pd.DataFrame(dftext_tdidf_dict)),axis=1)
             log(word_tokeep_dict)
-           
+
             ###  Dimesnion reduction for Sparse Matrix
             dftext_svd_list, svd_list = util_model.pd_dim_reduction(dftext_tdidf_dict,
                                                            colname        = None,
                                                            model_pretrain = None,
                                                            colprefix      = col_ + "_svd",
                                                            method         = "svd",  dimpca=dimpca,  return_val="dataframe,param")
-            
+
             dftext_svd_list_all = dftext_svd_list if dftext_svd_list_all is None else pd.concat((dftext_svd_list_all,dftext_svd_list),axis=1)
-    #################################################################################        
+    #################################################################################
 
     ###### Save and Export ##########################################################
     if 'path_features_store' in pars:
@@ -179,7 +179,7 @@ def pd_coltext(df, col, pars={}):
             # save(dftext_svd_list_all,  pars['path_pipeline_export'] + "/dftext_svd.pkl")
             # save(dftext_tdidf_all,     pars['path_pipeline_export'] + "/dftext_tdidf.pkl" )
             save(word_tokeep_dict_all,     pars['path_pipeline_export'] + "/word_tokeep_dict_all.pkl" )
-     
+
     col_pars = {}
     col_pars['cols_new'] = {
      # 'coltext_tdidf'    : dftext_tdidf_all.columns.tolist(),       ### list
@@ -191,7 +191,7 @@ def pd_coltext(df, col, pars={}):
     return dftext_svd_list_all, col_pars
 
 
-   
+
 ##### Filtering / cleaning rows :   #########################################################
 def pd_filter_rows(df, col, pars):
     import re

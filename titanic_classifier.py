@@ -104,7 +104,6 @@ def titanic_lightgbm(path_model_out="") :
     model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
     n_sample     = 1000
 
-
     def post_process_fun(y):
         ### After prediction is done
         return  int(y)
@@ -148,8 +147,7 @@ def titanic_lightgbm(path_model_out="") :
 
       'data_pars': { 'n_sample' : n_sample,
           'cols_input_type' : cols_input_type_1,
-
-          ### family of columns for MODEL  ########################################################
+          ### family of columns for MODEL  #########################################################
           #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
           #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
@@ -165,6 +163,69 @@ def titanic_lightgbm(path_model_out="") :
           ### Filter data rows   ##################################################################
          ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
 
+         }
+      }
+
+    ##### Filling Global parameters    ############################################################
+    model_dict        = global_pars_update(model_dict, data_name, config_name )
+    return model_dict
+
+
+
+
+
+####################################################################################
+def titanic_lightgbm2(path_model_out="") :
+    """
+       Contains all needed informations for Light GBM Classifier model,
+       used for titanic classification task
+    """
+    config_name  = os_get_function_name()
+    data_name    = "titanic"         ### in data/input/
+    model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
+    n_sample     = 1000
+
+    def post_process_fun(y):
+        ### After prediction is done
+        return  int(y)
+
+    def pre_process_fun(y):
+        ### Before the prediction is done
+        return  int(y)
+
+    model_dict = {'model_pars': {
+        ### LightGBM API model   #######################################
+         'model_class': model_class
+        ,'model_pars' : {'objective': 'binary',
+                           'n_estimators':50,
+                           'learning_rate':0.001,
+                           'boosting_type':'gbdt',     ### Model hyperparameters
+                           'early_stopping_rounds': 5
+                        }
+
+        ### After prediction  ##########################################
+        , 'post_process_fun' : post_process_fun
+
+        ### Before training  ##########################################
+        , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
+
+
+        ### Pipeline for data processing ##############################
+        'pipe_list': [
+            {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
+            {'uri': 'source/preprocessors.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
+        ],
+               }
+        },
+
+      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']                   },
+      'data_pars'   : { 'n_sample' : n_sample,
+          'cols_input_type' : cols_input_type_1,
+          'cols_model_group': [ 'colnum',
+                                'colcat_bin',
+                              ]
+          ### Filter data rows   ##################################################################
+         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
          }
       }
 
