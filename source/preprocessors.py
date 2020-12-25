@@ -6,13 +6,7 @@ cd analysis
 """
 import warnings
 warnings.filterwarnings('ignore')
-import sys
-import gc
-import os
-import pandas as pd
-import json, copy
-
-
+import sys, gc, os, pandas as pd, json, copy
 
 ####################################################################################################
 #### Add path for python import
@@ -46,9 +40,7 @@ def log_pd(df, *s, n=0, m=1):
     print(sjump,  df.head(n), flush=True)
 
 
-from util_feature import  save, load_function_uri
-
-
+from util_feature import  save, load_function_uri, load
 
 ####################################################################################################
 ####################################################################################################
@@ -243,6 +235,7 @@ def pd_label_clean(df, col, pars):
         save_features(df[coly], 'dfy', path_features_store)
     return df,coly
 
+
 def pd_coly(df, col, pars):
     ##### Filtering / cleaning rows :   #########################################################
     coly=col
@@ -362,6 +355,7 @@ def pd_colnum_binto_onehot(df, col=None, pars=None):
     return dfnum_hot, col_pars
 
 
+
 def pd_colcat_to_onehot(df, col=None, pars=None):
     dfbum_bin = df[col]
     if len(col)==1:
@@ -402,9 +396,6 @@ def pd_colcat_to_onehot(df, col=None, pars=None):
     return dfcat_hot, col_pars
 
 
-
-
-from util_feature import load
 
 def pd_colcat_bin(df, col=None, pars=None):
     # dfbum_bin = df[col]
@@ -510,6 +501,18 @@ def pd_coltext_universal_google(df, col, pars={}):
     """
        Text ---> Vectors
     from source.preprocessors import  pd_coltext_universal_google
+    https://tfhub.dev/google/universal-sentence-encoder-multilingual/3
+
+    #@title Setup Environment
+#latest Tensorflow that supports sentencepiece is 1.13.1
+!pip uninstall --quiet --yes tensorflow
+!pip install --quiet tensorflow-gpu==1.13.1
+!pip install --quiet tensorflow-hub
+!pip install --quiet bokeh
+pip install --quiet tf-sentencepiece, simpleneighbors
+!pip install --quiet simpleneighbors
+!pip install --quiet tqdm
+
 
     # df : dataframe
     # col : list of text colnum names
@@ -520,7 +523,7 @@ def pd_coltext_universal_google(df, col, pars={}):
     import tensorflow_text
     #from tqdm import tqdm #progress bar
 
-    uri_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual-large/3"
+    uri_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual/1"
     # Universal sentence encoding from Tensorflow
     use = hub.load( pars.get("url_model", uri_default )  )
 
@@ -546,57 +549,6 @@ if __name__ == "__main__":
     fire.Fire()
 
 
-
-
-"""
-
-  coltext ---> coltext-coli-svd
-  
-  coldate ---> coltext-coli
-
-
-
-    log("#### Data preparation #############################################################")
-    log(dfX.shape)
-    dfX    = dfX.sample(frac=1.0)
-    itrain = int(0.6 * len(dfX))
-    ival   = int(0.8 * len(dfX))
-    colid  = cols_family['colid']
-    colsX  = data_pars['cols_model']
-    coly   = data_pars['coly']
-    print('colsX',colsX)
-    rm=["name", "summary", "space", "description", "neighborhood_overview", "notes", "transit", "access", "interaction", "house_rules", "host_name", "host_about", "amenities"]
-    colsX = list(set(colsX) - set(rm))
-
-    for col in rm:
-        col1=col+'_svd_0'
-        col2=col+'_svd_1'
-        colsX.append(col1)
-        colsX.append(col2)
-    rm1=["last_review", "host_since", "first_review", "last_scraped"]
-    colsX = list(set(colsX) - set(rm1))
-    for col in rm1:
-        col1=col+'_year'
-        col2=col+'_month'
-        col3=col+'_day'
-        colsX.append(col1)
-        colsX.append(col2)
-        colsX.append(col3)
-    dfX.fillna(0)
-    data_pars['data_type'] = 'ram'
-    data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
-                          'ytrain' : dfX[coly].iloc[:itrain],
-                          'Xtest'  : dfX[colsX].iloc[itrain:ival, :],
-                          'ytest'  : dfX[coly].iloc[itrain:ival],
-
-                          'Xval'   : dfX[colsX].iloc[ival:, :],
-                          'yval'   : dfX[coly].iloc[ival:],
-                          }
-                          
-                          
-
-
-"""
 
 
 

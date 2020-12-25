@@ -15,6 +15,8 @@ warnings.filterwarnings('ignore')
 from source import util_feature
 
 
+
+
 ####################################################################################
 ###### Path ########################################################################
 print( os.getcwd())
@@ -24,6 +26,9 @@ print(root)
 dir_data  = os.path.abspath( root + "/data/" ) + "/"
 dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
+
+config_file , _  = os.path.basename(__file__)
+# config_file      = "titanic_classifier.py"   ### name of file which contains data configuration
 
 
 def global_pars_update(model_dict,  data_name, config_name):
@@ -62,31 +67,17 @@ def os_get_function_name():
     import sys
     return sys._getframe(1).f_code.co_name
 
-
-####################################################################################
-config_file     = "titanic_classifier.py"   ### name of file which contains data configuration
-config_default  = 'titanic_lightgbm'        ### name of function which contains data configuration
-
-
-
-
-"""
 def os_get_current_file(ffile):
-    d, f =   os.path,dirname(ffile) ,  os.path.basename(ffile)
-    return d,f
-    
-print(__file__)
-
-print( os_get_current_file(__file__))
-print("\nas import")
-import titanic_classifier
-sys.exit(0)
-"""
-
+    d, f =   None,  os.path.basename(ffile)
+    return f,d
 
 
 ####################################################################################
 ##### Params########################################################################
+config_default   = 'titanic_lightgbm'          ### name of function which contains data configuration
+
+
+
 # data_name    = "titanic"     ### in data/input/
 cols_input_type_1 = {
      "coly"   :   "Survived"
@@ -195,14 +186,6 @@ def titanic_lightgbm(path_model_out="") :
 
 
 
-
-
-
-
-
-
-
-
 #####################################################################################
 ########## Profile data #############################################################
 def data_profile(path_data_train="", path_model="", n_sample= 5000):
@@ -280,8 +263,6 @@ def run_all():
     train()
     check()
     predict()
-
-
 
 
 
