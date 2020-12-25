@@ -1,7 +1,6 @@
 
 
 
-
 RMDIR /S /Q  data/output/airbnb/ >nul 2>&1
 
 MKDIR  data\output\airbnb  >nul 2>&1
