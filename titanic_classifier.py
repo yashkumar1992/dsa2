@@ -11,12 +11,15 @@ All in one file config
 import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
 
-###################################################################################
-from source import util_feature
+
 
 
 ####################################################################################
 ###### Path ########################################################################
+from source import util_feature
+config_file  = os.path.basename(__file__)
+# config_file      = "titanic_classifier.py"   ### name of file which contains data configuration
+
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
@@ -25,17 +28,19 @@ dir_data  = os.path.abspath( root + "/data/" ) + "/"
 dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
+def os_get_function_name():
+    import sys
+    return sys._getframe(1).f_code.co_name
 
 def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
     m['config_path']       = root + f"/{config_file}"
     m['config_name']       = config_name
 
-    ##### Preoprocess
+    ##### run_Preoprocess ONLY
     m['path_data_preprocess'] = root + f'/data/input/{data_name}/train/'
 
-
-    ##### Train
+    ##### run_Train  ONLY
     m['path_data_train']   = root + f'/data/input/{data_name}/train/'
     m['path_data_test']    = root + f'/data/input/{data_name}/test/'
     #m['path_data_val']    = root + f'/data/input/{data_name}/test/'
@@ -47,6 +52,7 @@ def global_pars_update(model_dict,  data_name, config_name):
 
     ##### Prediction
     m['path_pred_data']    = root + f'/data/input/{data_name}/test/'
+    m['path_pred_pipeline']= root + f'/data/output/{data_name}/{config_name}/pipeline/'
     m['path_pred_model']   = root + f'/data/output/{data_name}/{config_name}/model/'
     m['path_pred_output']  = root + f'/data/output/{data_name}/pred_{config_name}/'
 
@@ -58,20 +64,12 @@ def global_pars_update(model_dict,  data_name, config_name):
     return model_dict
 
 
-def os_get_function_name():
-    import sys
-    return sys._getframe(1).f_code.co_name
-
-
-####################################################################################
-config_file     = "titanic_classifier.py"   ### name of file which contains data configuration
-config_default  = 'titanic_lightgbm'        ### name of function which contains data configuration
-
-
-
-
 ####################################################################################
 ##### Params########################################################################
+config_default   = 'titanic_lightgbm'          ### name of function which contains data configuration
+
+
+
 # data_name    = "titanic"     ### in data/input/
 cols_input_type_1 = {
      "coly"   :   "Survived"
@@ -93,7 +91,6 @@ cols_input_type_2 = {
     ,"coldate" :  []
     ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
 }
-
 
 
 ####################################################################################
@@ -121,15 +118,14 @@ def titanic_lightgbm(path_model_out="") :
         ### LightGBM API model   #######################################
          'model_class': model_class
         ,'model_pars' : {'objective': 'binary',
-                               'n_estimators':50,
-                               'learning_rate':0.001,
-                               'boosting_type':'gbdt',     ### Model hyperparameters
-                               'early_stopping_rounds': 5
+                           'n_estimators':50,
+                           'learning_rate':0.001,
+                           'boosting_type':'gbdt',     ### Model hyperparameters
+                           'early_stopping_rounds': 5
                         }
 
         ### After prediction  ##########################################
         , 'post_process_fun' : post_process_fun
-
 
         ### Before training  ##########################################
         , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
@@ -179,15 +175,6 @@ def titanic_lightgbm(path_model_out="") :
 
 
 
-
-
-
-
-
-
-
-
-
 #####################################################################################
 ########## Profile data #############################################################
 def data_profile(path_data_train="", path_model="", n_sample= 5000):
@@ -207,12 +194,12 @@ def preprocess(config=None, nsample=None):
     print(mdict)
 
     from source import run_preprocess
-    run_preprocess.run_preprocess(config_name       =  config_name,
-                                  config_path       =  m['config_path'],
-                                  n_sample          =  nsample if nsample is not None else m['n_sample'],
+    run_preprocess.run_preprocess(config_name   =  config_name,
+                                  config_path   =  m['config_path'],
+                                  n_sample      =  nsample if nsample is not None else m['n_sample'],
 
                                   ### Optonal
-                                  mode              =  'run_preprocess')
+                                  mode          =  'run_preprocess')
 
 
 ##################################################################################
@@ -249,7 +236,7 @@ def predict(config=None, nsample=None):
 
     from source import run_inference
     run_inference.run_predict(config_name = config_name,
-                              config_path =  m['config_path'],
+                              config_path = m['config_path'],
                               n_sample    = nsample if nsample is not None else m['n_sample'],
 
                               #### Optional
@@ -268,8 +255,6 @@ def run_all():
 
 
 
-
-
 ###########################################################################################################
 ###########################################################################################################
 """
@@ -283,7 +268,6 @@ python  titanic_classifier.py  run_all
 
 """
 if __name__ == "__main__":
-
     import fire
     fire.Fire()
     

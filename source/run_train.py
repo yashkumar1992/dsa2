@@ -5,23 +5,12 @@ cd analysis
 
 python source/run_train.py  run_train --config_name elasticnet  --path_data_train data/input/train/    --path_output data/output/a01_elasticnet/
 
-! activate py36 && python source/run_train.py  run_train   --n_sample 100  --config_name lightgbm  --path_model_config source/config_model.py  --path_output /data/output/a01_test/     --path_data_train /data/input/train/
-
-
-
-
-
-
-
+activate py36 && python source/run_train.py  run_train   --n_sample 100  --config_name lightgbm  --path_model_config source/config_model.py  --path_output /data/output/a01_test/     --path_data_train /data/input/train/
 
 """
 import warnings
 warnings.filterwarnings('ignore')
-import sys
-import os
-import json
-import importlib
-
+import sys, os, json, importlib
 
 ####################################################################################################
 #### Add path for python import
@@ -34,18 +23,16 @@ print(root)
 
 ####################################################################################################
 ####################################################################################################
+from util_feature import   load, save_list, load_function_uri, save
+from run_preprocess import  preprocess, preprocess_load
+
 def log(*s, n=0, m=0):
     sspace = "#" * n
     sjump = "\n" * m
     ### Implement pseudo Logging
     print(sjump, sspace, s, sspace, flush=True)
 
-from util_feature import   load, save_list, load_function_uri, save
 
-
-
-####################################################################################################
-####################################################################################################
 def save_features(df, name, path):
     if path is not None :
        os.makedirs( f"{path}/{name}", exist_ok=True)
@@ -60,13 +47,11 @@ def model_dict_load(model_dict, config_path, config_name, verbose=True):
     if verbose : log( model_dict )
     return model_dict
 
-from run_preprocess import  preprocess, preprocess_load
 
 ####################################################################################################
 ##### train    #####################################################################################
 def map_model(model_name):
     """
-
     :param model_name:
     :return:
     """
@@ -86,7 +71,6 @@ def map_model(model_name):
 
 def train(model_dict, dfX, cols_family, post_process_fun):
     """
-
     :param model_dict:
     :param dfX:
     :param cols_family:
@@ -117,8 +101,6 @@ def train(model_dict, dfX, cols_family, post_process_fun):
                           'Xval'   : dfX[colsX].iloc[ival:, :],
                           'yval'   : dfX[coly].iloc[ival:],
                           }
-
-
 
     log("#### Model Instance ##########################################################")
     # from config_model import map_model    
@@ -225,7 +207,7 @@ def run_train(config_name, path_data_train=None, path_output=None, config_path="
 
     elif mode == "load_preprocess" :  #### Load existing data
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline, cols_group, n_sample,
-                                 preprocess_pars,  path_features_store=path_features_store)
+                                     preprocess_pars,  path_features_store=path_features_store)
 
     ### Actual column for label
     model_dict['data_pars']['coly'] = cols['coly']
@@ -242,7 +224,7 @@ def run_train(config_name, path_data_train=None, path_output=None, config_path="
     dfXy, dfXytest   = train(model_dict, dfXy, cols, post_process_fun)
 
 
-    log("###### Export #################################################################")
+    log("###### Export ##################################################################")
     os.makedirs(path_check_out, exist_ok=True)
     colexport = [cols['colid'], cols['coly'], cols['coly'] + "_pred"]
     dfXy[colexport].reset_index().to_csv(path_check_out + "/pred_check.csv")  # Only results
@@ -275,7 +257,7 @@ def run_data_check(path_output, scoring):
         ### Metrics on test data
         log(stats['metrics_test'])
 
-        #### Loading training data  #######################################################
+        #### Loading training data  ######################################################
         dfX     = pd.read_csv(dir_model + "/check/dfX.csv")  #to load csv
         #dfX = pd.read_parquet(dir_model + "/check/dfX.parquet")    #to load parquet
         dfy     = dfX[coly]
@@ -287,13 +269,12 @@ def run_data_check(path_output, scoring):
         print(dfX.shape,  dfXtest.shape )
 
 
-        #### Feature importance on training data
+        #### Feature importance on training data  #######################################
         from util_feature import  feature_importance_perm
         lgb_featimpt_train,_ = feature_importance_perm(modelx, dfX[colused], dfy,
                                                        colused,
                                                        n_repeats=1,
                                                        scoring=scoring)
-
         print(lgb_featimpt_train)
     except :
         pass
@@ -302,4 +283,7 @@ def run_data_check(path_output, scoring):
 if __name__ == "__main__":
     import fire
     fire.Fire()
+
+
+
 
