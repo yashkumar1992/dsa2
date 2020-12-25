@@ -7,11 +7,8 @@ activate py36 && python source/run_inference.py  run_predict  --n_sample 1000  -
 """
 import warnings
 warnings.filterwarnings('ignore')
-import sys
-import gc
-import os
-import pandas as pd
-import importlib
+import sys, gc, os, pandas as pd, importlib
+
 
 #### Add path for python import
 sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
@@ -91,19 +88,14 @@ def predict(model_name, path_model, dfX, cols_family):
     return ypred
 
 
-
-
-
-
-
 ####################################################################################################
 ############CLI Command ############################################################################
 def run_predict(config_name, config_path, n_sample=-1,
                 path_data=None, path_output=None, pars={}, model_dict=None):
 
     model_dict = model_dict_load(model_dict, config_path, config_name, verbose=True)
+    m          = model_dict['global_pars']
 
-    m = model_dict['global_pars']
     model_name       = model_dict['model_pars']['model_class']
     path_output      = m['path_pred_output'] if path_output is None else path_output
     path_data        = m['path_pred_data']   if path_data   is None else path_data
