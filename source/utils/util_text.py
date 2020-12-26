@@ -290,6 +290,7 @@ def pd_coltext_minhash(dfref, colname, n_component=2, model_pretrain_dict=None,
     df = dfref[colname]
     model_pretrain_dict = {} if model_pretrain_dict is None else model_pretrain_dict
     enc_dict = {}
+    dfall = None
     for i, col in enumerate(colname):
 
         if model_pretrain_dict.get(col) is None:
@@ -298,17 +299,15 @@ def pd_coltext_minhash(dfref, colname, n_component=2, model_pretrain_dict=None,
         else:
             clf = copy.deepcopy(model_pretrain_dict[col])
 
+        #dfcat = clf.transform(df[col])
+        #dfcat.columns  = ["{col}_hash_{t}".format(col=col, t=t) for t in range(0,  len(dfcat.columns))]
+
         v = clf.transform(df[col].values)
+        dfcat = pd.DataFrame( v, columns=["{col}_hash_{t}".format(col=col, t=t) for t in range(0, v.shape[1])],
+                              index= df.index)
 
         enc_dict[col] = copy.deepcopy(clf)
-        dfcat = pd.DataFrame(
-            v, columns=["{col}_hash_{t}".format(col=col, t=t) for t in range(0, v.shape[1])]
-        )
-
-        try:
-            dfall = pd.concat((dfall, dfcat), axis=1)
-        except:
-            dfall = dfcat
+        dfall = pd.concat((dfall, dfcat), axis=1) if dfall is not None else dfcat
 
     if return_val == "dataframe,param":
         return dfall, enc_dict

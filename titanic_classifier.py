@@ -177,8 +177,8 @@ def titanic_lightgbm(path_model_out="") :
 ####################################################################################
 def titanic_lightgbm2(path_model_out="") :
     """
-       Contains all needed informations for Light GBM Classifier model,
-       used for titanic classification task
+     python  titanic_classifier.py  preprocess  --nsample 100  --config titatnic_lightgbm2
+
     """
     config_name  = os_get_function_name()
     data_name    = "titanic"         ### in data/input/
@@ -222,7 +222,7 @@ def titanic_lightgbm2(path_model_out="") :
       'data_pars'   : { 'n_sample' : n_sample,
           'cols_input_type' : cols_input_type_1,
           'cols_model_group': [ 'colnum',
-                                'colcat_bin',
+                                'colcat_minhash',
                               ]
           ### Filter data rows   ##################################################################
          ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
