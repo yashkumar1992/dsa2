@@ -1,14 +1,16 @@
 
-#### test
+#### Check here if latest commit is working :
 
-multi:
-![test_fast_linux](https://github.com/arita37/dsa2/workflows/test_fast_linux/badge.svg?branch=multi)
+[Code for train, predict check](https://github.com/arita37/dsa2/blob/main/ztest/run_fast.sh)
+
+Main
+![Main, test_fast_linux](https://github.com/arita37/dsa2/workflows/test_fast_linux/badge.svg?branch=main)
+![Main, test_full](https://github.com/arita37/dsa2/workflows/test_full/badge.svg?branch=main)
 
 
-main:
-![test_fast_linux](https://github.com/arita37/dsa2/workflows/test_fast_linux/badge.svg?branch=main)
-
-
+Multi
+  ![test_fast_linux](https://github.com/arita37/dsa2/workflows/test_fast_linux/badge.svg?branch=multi)
+   ![test_full](https://github.com/arita37/dsa2/workflows/test_full/badge.svg?branch=multi)
 
 
 ### Install 
