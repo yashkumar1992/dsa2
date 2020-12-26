@@ -560,8 +560,12 @@ def pd_coltext_universal_google(df, col, pars={}):
     import tensorflow_hub as hub
     import tensorflow_text
     #from tqdm import tqdm #progress bar
+    uri_list = [
 
-    uri_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual/1"
+
+
+    ]
+    uri_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual/3"
     uri         = pars.get("url_model", uri_default )
     use    = hub.load( uri )
     dfall  = None
@@ -574,7 +578,8 @@ def pd_coltext_universal_google(df, col, pars={}):
             review_emb = tf.reshape(emb, [-1]).numpy()
             X.append(review_emb)
 
-        dfi   = pd.DataFrame(X, columns= [ coli + "_" + str(i) for i in range(X.shape[1])   ])
+        dfi   = pd.DataFrame(X, columns= [ coli + "_" + str(i) for i in range( len(X[0]))   ] ,
+                             index = df.index)
         dfall = pd.concat((dfall, dfi))  if dfall is not None else dfi
 
     coltext_embed = list(dfall.columns)
