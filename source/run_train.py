@@ -1,7 +1,6 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-cd analysis
 
 python source/run_train.py  run_train --config_name elasticnet  --path_data_train data/input/train/    --path_output data/output/a01_elasticnet/
 
@@ -82,7 +81,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     model_name, model_path   = model_pars['model_class'], model_dict['global_pars']['path_train_model']
     metric_list              = compute_pars['metric_list']
 
-    log("#### Data preparation #############################################################")
+    log("#### Data preparation #########################################################")
     log(dfX.shape)
     dfX    = dfX.sample(frac=1.0)
     itrain = int(0.6 * len(dfX))
