@@ -1,13 +1,15 @@
 
-#### test
+#### Test runs of train, predict 
 
-multi:
-![test_fast_linux](https://github.com/arita37/dsa2/workflows/test_fast_linux/badge.svg?branch=multi)
+![Test Code](https://github.com/arita37/dsa2/blob/main/ztest/run_fast.sh)
 
+![Multi, test_fast_linux](https://github.com/arita37/dsa2/workflows/test_fast_linux/badge.svg?branch=multi)
 
-main:
-![test_fast_linux](https://github.com/arita37/dsa2/workflows/test_fast_linux/badge.svg?branch=main)
+![Main, test_fast_linux](https://github.com/arita37/dsa2/workflows/test_fast_linux/badge.svg?branch=main)
 
+![Multi, test_full](https://github.com/arita37/dsa2/workflows/test_full/badge.svg?branch=multi)
+
+![Main, test_full](https://github.com/arita37/dsa2/workflows/test_full/badge.svg?branch=main)
 
 
 
