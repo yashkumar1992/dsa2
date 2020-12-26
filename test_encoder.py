@@ -261,12 +261,12 @@ def run_all():
 ###########################################################################################################
 ###########################################################################################################
 """
-python  titanic_classifier.py  data_profile
-python  titanic_classifier.py  preprocess  --nsample 100
-python  titanic_classifier.py  train       --nsample 200
-python  titanic_classifier.py  check
-python  titanic_classifier.py  predict
-python  titanic_classifier.py  run_all
+python  test_encoder.py  data_profile
+python  test_encoder.py  preprocess  --nsample 100
+python  test_encoder.py  train       --nsample 200
+python  test_encoder.py  check
+python  test_encoder.py  predict
+python  test_encoder.py  run_all
 
 
 """
