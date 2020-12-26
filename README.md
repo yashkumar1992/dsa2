@@ -1,7 +1,7 @@
 
-#### Test runs of train, predict 
+#### Check here if latest commit is working :
 
-![Test Code](https://github.com/arita37/dsa2/blob/main/ztest/run_fast.sh)
+[Code for train, predict check](https://github.com/arita37/dsa2/blob/main/ztest/run_fast.sh)
 
 ![Multi, test_fast_linux](https://github.com/arita37/dsa2/workflows/test_fast_linux/badge.svg?branch=multi)
 
