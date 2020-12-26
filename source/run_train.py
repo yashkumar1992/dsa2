@@ -117,11 +117,11 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     dfX[coly + '_pred']  = dfX[coly + '_pred'].apply(lambda  x : post_process_fun(x) )
 
     ypred_proba_val = None
-    if len(ypred_proba.shape) <= 1:
+    if len(ypred_proba.shape) <= 1 and ypred_proba is not None :
        ypred_proba_val      = ypred_proba[ival:]
        dfX[coly + '_proba'] = ypred_proba
 
-    elif len(ypred_proba.shape) > 1:
+    elif len(ypred_proba.shape) > 1 and ypred_proba is not None :
         from util_feature import np_conv_to_one_col
         ypred_proba_val      = ypred_proba[ival:,:]
         dfX[coly + '_proba'] = np_conv_to_one_col(ypred_proba, ";")  ### merge into string "p1,p2,p3,p4"
