@@ -1,10 +1,8 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to titatinic dataet
-All in one file config
-  python titanic_classifier.py  train    > zlog/log_titanic_train.txt 2>&1
-  python titanic_classifier.py  predict  > zlog/log_titanic_predict.txt 2>&1
+For rsting encoding
+
 
 
 """
@@ -137,7 +135,10 @@ def titanic_lightgbm(path_model_out="") :
             {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
+            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'},
+
+            {'uri': 'source/preprocessors.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
+
         ],
                }
         },
@@ -154,10 +155,10 @@ def titanic_lightgbm(path_model_out="") :
           #  'coldate',
           #  'coltext',
           'cols_model_group': [ 'colnum_bin',
-                                'colcat_bin',
-                                # 'coltext',
-                                # 'coldate',
-                                # 'colcross_pair'
+                                # 'colcat_bin',
+                                # 'colnum_onehot',
+                                'colcat_minhash',
+                                # 'colcat_onehot',
                               ]
 
           ### Filter data rows   ##################################################################
@@ -169,6 +170,8 @@ def titanic_lightgbm(path_model_out="") :
     ##### Filling Global parameters    ############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name )
     return model_dict
+
+
 
 
 
