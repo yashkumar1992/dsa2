@@ -1,7 +1,7 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-For rsting encoding
+To test encoding
 
 
 
@@ -10,13 +10,10 @@ import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
 
 
-
-
 ####################################################################################
 ###### Path ########################################################################
 from source import util_feature
-config_file  = os.path.basename(__file__)
-# config_file      = "titanic_classifier.py"   ### name of file which contains data configuration
+config_file  = os.path.basename(__file__)  ### name of file which contains data configuration
 
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
@@ -112,57 +109,57 @@ def titanic_lightgbm(path_model_out="") :
 
 
     model_dict = {'model_pars': {
-        ### LightGBM API model   #######################################
-         'model_class': model_class
-        ,'model_pars' : {'objective': 'binary',
-                           'n_estimators':50,
-                           'learning_rate':0.001,
-                           'boosting_type':'gbdt',     ### Model hyperparameters
-                           'early_stopping_rounds': 5
-                        }
+    ### LightGBM API model   #######################################
+     'model_class': model_class
+    ,'model_pars' : {'objective': 'binary',
+                       'n_estimators':10,
+                       'learning_rate':0.001,
+                       'boosting_type':'gbdt',     ### Model hyperparameters
+                       'early_stopping_rounds': 5
+                    }
 
-        ### After prediction  ##########################################
-        , 'post_process_fun' : post_process_fun
+    ### After prediction  ##########################################
+    , 'post_process_fun' : post_process_fun
 
-        ### Before training  ##########################################
-        , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
+    ### Before training  ##########################################
+    , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
 
 
-        ### Pipeline for data processing ##############################
-        'pipe_list': [
-            {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
-            {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'},
+    ### Pipeline for data processing ##############################
+    'pipe_list': [
+        {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
+        {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'},
 
-            {'uri': 'source/preprocessors.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
 
-        ],
-               }
-        },
+    ],
+           }
+    },
 
-      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
-                      },
+  'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
+                  },
 
-      'data_pars': { 'n_sample' : n_sample,
-          'cols_input_type' : cols_input_type_1,
-          ### family of columns for MODEL  #########################################################
-          #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
-          #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
-          #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
-          #  'coldate',
-          #  'coltext',
-          'cols_model_group': [ 'colnum_bin',
-                                # 'colcat_bin',
-                                # 'colnum_onehot',
-                                'colcat_minhash',
-                                # 'colcat_onehot',
-                              ]
+  'data_pars': { 'n_sample' : n_sample,
+      'cols_input_type' : cols_input_type_1,
+      ### family of columns for MODEL  #########################################################
+      #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+      #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+      #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+      #  'coldate',
+      #  'coltext',
+      'cols_model_group': [ 'colnum_bin',
+                            # 'colcat_bin',
+                            # 'colnum_onehot',
+                            'colcat_minhash',
+                            # 'colcat_onehot',
+                          ]
 
-          ### Filter data rows   ##################################################################
-         ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
+      ### Filter data rows   ##################################################################
+     ,'filter_pars': { 'ymax' : 2 ,'ymin' : -1 }
 
          }
       }
