@@ -12,8 +12,6 @@ import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
 
 
-
-
 ####################################################################################
 ###### Path ########################################################################
 from source import util_feature
@@ -28,9 +26,11 @@ dir_data  = os.path.abspath( root + "/data/" ) + "/"
 dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
+
 def os_get_function_name():
     import sys
     return sys._getframe(1).f_code.co_name
+
 
 def global_pars_update(model_dict,  data_name, config_name):
     m                      = {}
@@ -67,7 +67,6 @@ def global_pars_update(model_dict,  data_name, config_name):
 ####################################################################################
 ##### Params########################################################################
 config_default   = 'titanic_lightgbm'          ### name of function which contains data configuration
-
 
 
 # data_name    = "titanic"     ### in data/input/

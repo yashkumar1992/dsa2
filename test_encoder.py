@@ -10,6 +10,8 @@ import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
 
 
+
+
 ####################################################################################
 ###### Path ########################################################################
 from source import util_feature
@@ -136,6 +138,9 @@ def titanic_lightgbm(path_model_out="") :
 
         {'uri': 'source/preprocessors.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
 
+
+        {'uri': 'source/preprocessors.py::pd_coltext_universal_google',   'pars': {}, 'cols_family': 'coltext',     'cols_out': 'coltext_universal_google',     'type': ''    },
+
     ],
            }
     },
@@ -144,7 +149,7 @@ def titanic_lightgbm(path_model_out="") :
                   },
 
   'data_pars': { 'n_sample' : n_sample,
-      'cols_input_type' : cols_input_type_1,
+      'cols_input_type' : cols_input_type_2,
       ### family of columns for MODEL  #########################################################
       #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
       #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
@@ -156,6 +161,7 @@ def titanic_lightgbm(path_model_out="") :
                             # 'colnum_onehot',
                             'colcat_minhash',
                             # 'colcat_onehot',
+                            'coltext_universal_google'
                           ]
 
       ### Filter data rows   ##################################################################
