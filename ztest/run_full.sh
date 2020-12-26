@@ -12,12 +12,13 @@ ls .
 
 
 python salary_regression.py  train   --nsample 1000
+python airbnb_regression.py  predict  --nsample 1000
 
 python cardif_regression.py  train   --nsample 1000
 
 
-python airbnb_regression.py  train   --nsample 10000
-python airbnb_regression.py  predict  --nsample 1000
+python airbnb_regression.py  train   --nsample 20000
+python airbnb_regression.py  predict  --nsample 5000
 
 
 
