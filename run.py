@@ -64,6 +64,7 @@ def get_config_path(config=''):
     elif "::" not in config :
         config_uri  = path0  + "::" + config
         config_name = config
+
     else :
         config_uri  = config
         config_name = config.split("::")[1]
@@ -80,7 +81,7 @@ def data_profile(config=''):
     """
     config_uri, config_name = get_config_path(config)
     from source.run_feature_profile import run_profile
-    mdict = get_global_pars( config)
+    mdict = get_global_pars( config_uri)
     m     = mdict['global_pars']
     log(mdict)
 
@@ -92,7 +93,7 @@ def data_profile(config=''):
 
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess(config='', nsample=1000):
+def preprocess(config='', nsample=None):
     """
 
 
@@ -113,7 +114,7 @@ def preprocess(config='', nsample=1000):
 
 ####################################################################################
 ########## Train ###################################################################
-def train(config='', nsample=6000):
+def train(config='', nsample=None):
 
     config_uri, config_name = get_config_path(config)
 
@@ -141,7 +142,7 @@ def check(config='titanic_classifier.py::titanic_lightgbm'):
 
 ########################################################################################
 ####### Inference ######################################################################
-def predict(config='', nsample=10000):
+def predict(config='', nsample=None):
 
     config_uri, config_name = get_config_path(config)
 

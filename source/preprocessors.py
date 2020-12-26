@@ -539,20 +539,18 @@ def pd_colcat_minhash(df, col, pars):
 
 def pd_coltext_universal_google(df, col, pars={}):
     """
+     # Universal sentence encoding from Tensorflow
        Text ---> Vectors
     from source.preprocessors import  pd_coltext_universal_google
     https://tfhub.dev/google/universal-sentence-encoder-multilingual/3
 
     #@title Setup Environment
-#latest Tensorflow that supports sentencepiece is 1.13.1
-!pip uninstall --quiet --yes tensorflow
-!pip install --quiet tensorflow-gpu==1.13.1
-!pip install --quiet tensorflow-hub
-!pip install --quiet bokeh
-pip install --quiet tf-sentencepiece, simpleneighbors
-!pip install --quiet simpleneighbors
-!pip install --quiet tqdm
-
+    #latest Tensorflow that supports sentencepiece is 1.13.1
+    !pip uninstall --quiet --yes tensorflow
+    !pip install --quiet tensorflow-gpu==1.13.1
+    !pip install --quiet tensorflow-hub
+    pip install --quiet tf-sentencepiece, simpleneighbors
+    !pip install --quiet simpleneighbors
 
     # df : dataframe
     # col : list of text colnum names
@@ -564,9 +562,8 @@ pip install --quiet tf-sentencepiece, simpleneighbors
     #from tqdm import tqdm #progress bar
 
     uri_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual/1"
-    # Universal sentence encoding from Tensorflow
-    use = hub.load( pars.get("url_model", uri_default )  )
-
+    uri         = pars.get("url_model", uri_default )
+    use    = hub.load( uri )
     dfall  = None
     for coli in col[:1] :
         X = []
@@ -579,7 +576,19 @@ pip install --quiet tf-sentencepiece, simpleneighbors
 
         dfi   = pd.DataFrame(X, columns= [ coli + "_" + str(i) for i in range(X.shape[1])   ])
         dfall = pd.concat((dfall, dfi))  if dfall is not None else dfi
-    return dfall
+
+    coltext_embed = list(dfall.columns)
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(dfall, 'dftext_embed', pars['path_features_store'])
+       save(coltext_embed, pars['path_pipeline_export'] + "/coltext_universal_google.pkl" )
+
+    col_pars = {'model_encoder' : uri}
+    col_pars['cols_new']      = {
+     'coltext_universal_google' :  coltext_embed ### list
+    }
+    return dfall, col_pars
+
 
 
 
