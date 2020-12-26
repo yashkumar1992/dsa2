@@ -1,6 +1,27 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
+https://github.com/Automunge/AutoMunge#library-of-transformations
+Library of Transformations
+Library of Transformations Subheadings:
+Intro
+Numerical Set Normalizations
+Numerical Set Transformations
+Numercial Set Bins and Grainings
+Sequential Numerical Set Transformations
+Categorical Set Encodings
+Date-Time Data Normalizations
+Date-Time Data Bins
+Differential Privacy Noise Injections
+Misc. Functions
+String Parsing
+More Efficient String Parsing
+Multi-tier String Parsing
+List of Root Categories
+List of Suffix Appenders
+Other Reserved Strings
+Root Category Family Tree Definitions
+
 
 
 """
@@ -536,6 +557,63 @@ def pd_colcat_minhash(df, col, pars):
 
 
 
+def pd_colcat_encoder_generic(df, col, pars):
+    """
+       https://pypi.org/project/category-encoders/
+       encoder = ce.BackwardDifferenceEncoder(cols=[...])
+encoder = ce.BaseNEncoder(cols=[...])
+encoder = ce.BinaryEncoder(cols=[...])
+encoder = ce.CatBoostEncoder(cols=[...])
+encoder = ce.CountEncoder(cols=[...])
+encoder = ce.GLMMEncoder(cols=[...])
+encoder = ce.HashingEncoder(cols=[...])
+encoder = ce.HelmertEncoder(cols=[...])
+encoder = ce.JamesSteinEncoder(cols=[...])
+encoder = ce.LeaveOneOutEncoder(cols=[...])
+encoder = ce.MEstimateEncoder(cols=[...])
+encoder = ce.OneHotEncoder(cols=[...])
+encoder = ce.OrdinalEncoder(cols=[...])
+encoder = ce.SumEncoder(cols=[...])
+encoder = ce.PolynomialEncoder(cols=[...])
+encoder = ce.TargetEncoder(cols=[...])
+encoder = ce.WOEEncoder(cols=[...])
+
+
+    """
+    colcat              = col
+    import category_encoders as ce
+    pars_encoder         = pars
+    pars_encoder['cols'] = col
+    if 'path_pipeline_export' in pars :
+        try :
+            pars_encoder = load( pars['path_pipeline_export'] + '/colcat_encoder_pars.pkl')
+        except : pass
+
+    encoder           = ce.HashingEncoder(**pars_encoder)
+    dfcat_bin         = encoder.fit_transform(df[col])
+
+
+    dfcat_bin.columns = [  t for t in dfcat_bin.columns ]
+    colcat_encoder    = list(dfcat_bin.columns)
+
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(dfcat_bin, 'dfcat_encoder', pars['path_features_store'])
+       save(encoder,       pars['path_pipeline_export']   + "/colcat_encoder_model.pkl" )
+       save(pars_encoder,  pars['path_pipeline_export']   + "/colcat_encoder_pars.pkl" )
+       save(colcat_encoder,  pars['path_pipeline_export'] + "/colcat_encoder.pkl" )
+
+
+    col_pars = {}
+    col_pars['col_encode_model'] = encoder
+    col_pars['cols_new'] = {
+     'colcat_encoder' :  colcat_encoder  ### list
+    }
+    return dfcat_bin, col_pars
+
+
+
+
 
 def pd_coltext_universal_google(df, col, pars={}):
     """
@@ -583,6 +661,7 @@ def pd_coltext_universal_google(df, col, pars={}):
         dfall = pd.concat((dfall, dfi))  if dfall is not None else dfi
 
     coltext_embed = list(dfall.columns)
+
     ###################################################################################
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
        save_features(dfall, 'dftext_embed', pars['path_features_store'])
