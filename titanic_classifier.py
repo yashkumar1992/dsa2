@@ -184,6 +184,10 @@ def data_profile(path_data_train="", path_model="", n_sample= 5000):
 
 ###################################################################################
 ########## Preprocess #############################################################
+### def preprocess(config='', nsample=1000):
+from run import preprocess
+
+"""
 def preprocess(config=None, nsample=None):
     config_name  = config  if config is not None else config_default
     mdict        = globals()[config_name]()
@@ -197,10 +201,14 @@ def preprocess(config=None, nsample=None):
 
                                   ### Optonal
                                   mode          =  'run_preprocess')
+"""
+
 
 
 ##################################################################################
 ########## Train #################################################################
+from run import train
+"""
 def train(config=None, nsample=None):
 
     config_name  = config  if config is not None else config_default
@@ -213,6 +221,8 @@ def train(config=None, nsample=None):
                         config_path       =  m['config_path'],
                         n_sample          =  nsample if nsample is not None else m['n_sample'],
                         )
+"""
+
 
 
 ###################################################################################
@@ -225,6 +235,10 @@ def check():
 
 ####################################################################################
 ####### Inference ##################################################################
+# predict(config='', nsample=10000)
+from run import predict
+
+"""
 def predict(config=None, nsample=None):
     config_name  = config  if config is not None else config_default
     mdict        = globals()[config_name]()
@@ -241,15 +255,7 @@ def predict(config=None, nsample=None):
                               path_output = m['path_pred_output'],
                               model_dict  = None
                               )
-
-
-def run_all():
-    data_profile()
-    preprocess()
-    train()
-    check()
-    predict()
-
+"""
 
 
 ###########################################################################################################
@@ -260,7 +266,6 @@ python  titanic_classifier.py  preprocess  --nsample 100
 python  titanic_classifier.py  train       --nsample 200
 python  titanic_classifier.py  check
 python  titanic_classifier.py  predict
-python  titanic_classifier.py  run_all
 
 
 """

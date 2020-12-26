@@ -60,6 +60,8 @@ def save_features(df, name, path):
        df0.to_parquet( f"{path}/{name}/features.parquet")
 
 
+
+
 ####################################################################################################
 def coltext_stopwords(text, stopwords=None, sep=" "):
     tokens = text.split(sep)
@@ -87,6 +89,8 @@ def pd_coltext_clean( df, col, stopwords= None , pars=None):
         dftext[col_n] = dftext[col_n].apply(lambda x: re.sub("[!@,#$+%*:()'-]", " ", x))
         dftext[col_n] = dftext[col_n].apply(lambda x: coltext_stopwords(x, stopwords=stopwords))
     return dftext
+
+
 
 def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
     """
@@ -478,7 +482,7 @@ def pd_coldate(df, col, pars):
     coldate = col
     dfdate  = None
     for coldate_i in coldate :
-        dfdate_i =  util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
+        dfdate_i = util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
         dfdate   = pd.concat((dfdate, dfdate_i),axis=1)  if dfdate is not None else dfdate_i
         # if 'path_features_store' in pars :
         #    path_features_store = pars['path_features_store']
