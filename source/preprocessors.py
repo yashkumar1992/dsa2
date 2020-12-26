@@ -501,28 +501,32 @@ def pd_colcat_minhash(df, col, pars):
        https://booking.ai/dont-be-tricked-by-the-hashing-trick-192a6aae3087
 
     """
-    path_pipeline  = pars.get('path_pipeline_export', None)
-    colcat         = col
+    colcat              = col
+
+    pars_minhash = {'n_component' : [4, 2], 'model_pretrain_dict' : None,}
+    if 'path_pipeline_export' in pars :
+        try :
+            pars_minhash = load( pars['path_pipeline_export'] + '/colcat_minhash_pars.pkl')
+        except : pass
 
     log("#### Colcat to Hash encoding #############################################")
     from utils import util_text
-    pars_default =  {'n_component' : [4, 2], 'model_pretrain_dict' : None,}
-    pars_minhash = load(f'{path_pipeline}/colcat_minhash_pars.pkl') if  path_pipeline else pars_default
     dfcat_bin, col_hash_model= util_text.pd_coltext_minhash(df[colcat], colcat,
                                                             return_val="dataframe,param", **pars_minhash )
     colcat_minhash = list(dfcat_bin.columns)
     log(col_hash_model)
     ###################################################################################
-    if 'path_features_store' in pars :
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
        save_features(dfcat_bin, 'dfcat_minhash', pars['path_features_store'])
-       save(col_hash_model,  pars['path_pipeline_export'] + "/colcat_minhash_model.pkl" )
-       save(colcat_minhash,  pars['path_pipeline_export'] + "/colcat_minhash.pkl" )
+       save(col_hash_model, pars['path_pipeline_export'] + "/colcat_minhash_model.pkl" )
+       save(colcat_minhash, pars['path_pipeline_export'] + "/colcat_minhash.pkl" )
+       save(pars_minhash,   pars['path_pipeline_export'] + "/colcat_minhash_pars.pkl" )
+
 
     col_pars = {}
     col_pars['col_hash_model'] = col_hash_model
     col_pars['cols_new'] = {
-     'colcat'     :  col ,               ### list
-     'colcat_minhahs' :  colcat_minhash  ### list
+     'colcat_minhash' :  colcat_minhash  ### list
     }
     return dfcat_bin, col_pars
 
