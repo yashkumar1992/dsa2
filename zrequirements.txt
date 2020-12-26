@@ -1,8 +1,12 @@
 lightgbm 
-pandas 
+optuna
+pyro-ppl
+pandas
 scikit-learn 
 scipy 
 matplotlib
-pyro-ppl 
 pyarrow
 pyod
+fire
+tensorflow_text
+tensorflow_text>=2.0.0rc0
