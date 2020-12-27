@@ -121,7 +121,6 @@ def train(config='', nsample=None):
     mdict = get_global_pars(  config_uri)
     m     = mdict['global_pars']
     log(mdict)
-    
     from source import run_train
     run_train.run_train(config_name       =  config_name,
                         config_path       =  m['config_path'],
