@@ -100,7 +100,8 @@ def titanic_lightgbm(path_model_out="") :
     """
     config_name  = os_get_function_name()
     data_name    = "titanic"         ### in data/input/
-    model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
+    # model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
+    model_class  = 'LGBMModel_optuna'  ### ACTUAL Class name for model_sklearn.py
     n_sample     = 1000
 
     def post_process_fun(y):
@@ -141,8 +142,15 @@ def titanic_lightgbm(path_model_out="") :
                }
         },
 
-      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
-                      },
+      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score'],
+                        'optuna_params': {
+                                        "early_stopping_rounds": 100,
+                                        "objective": "binary",
+                                        "metric": "binary_logloss",
+                                        "verbosity": -1,
+                                        "boosting_type": "gbdt",
+                                         }
+                        },
 
       'data_pars': { 'n_sample' : n_sample,
           'cols_input_type' : cols_input_type_1,
