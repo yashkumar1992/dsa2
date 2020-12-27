@@ -495,6 +495,177 @@ def pd_coldate(df, col, pars):
     return dfdate, col_pars
 
 
+
+
+
+def pd_colcat_symbolic(df, col, pars):
+    """
+       https://github.com/arita37/deltapy
+
+       pip install deltapy
+
+    """
+    pars_encoder         = pars
+    pars_encoder['cols'] = col
+    if 'path_pipeline_export' in pars :
+        try :
+            pars_encoder  = load( pars['path_pipeline_export'] + '/col_genetic_pars.pkl')
+            model_encoder = load( pars['path_pipeline_export'] + '/col_genetic_model.pkl')
+            col_encoder   = load( pars['path_pipeline_export'] + '/col_genetic.pkl')
+        except : pass
+
+
+    ###################################################################################
+    coly = pars['coly']
+    from gplearn.genetic import SymbolicTransformer
+    function_set = ['add', 'sub', 'mul', 'div',
+                      'sqrt', 'log', 'abs', 'neg', 'inv','tan']
+
+    gp = SymbolicTransformer(generations=20, population_size=200,
+                              hall_of_fame=100, n_components=10,
+                              function_set=function_set,
+                              parsimony_coefficient=0.0005,
+                              max_samples=0.9, verbose=1,
+                              random_state=0, n_jobs=6)
+
+    gen_feats = gp.fit_transform(df[col], df[ coly ])
+    gen_feats = pd.DataFrame(gen_feats, columns=["gen_"+str(a) for a in range(gen_feats.shape[1])])
+    gen_feats.index = df.index
+    dfnew = gen_feats
+    dfnew.columns = [  t for t in dfnew.columns ]
+
+    ###################################################################################
+    colnew        = list(dfnew.columns)
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(dfnew, 'dfgen', pars['path_features_store'])
+       save(gp,             pars['path_pipeline_export'] + "/col_genetic_model.pkl" )
+       save(pars_encoder,   pars['path_pipeline_export'] + "/col_genetic_pars.pkl" )
+       save(colnew,         pars['path_pipeline_export'] + "/col_genetic.pkl" )
+
+
+    col_pars = {'model' : gp}
+    col_pars['cols_new'] = {
+     'col_genetic' :  colnew  ### list
+    }
+    return dfnew, col_pars
+
+
+
+def pd_autoencoder(df, col, pars):
+    """"
+    (4) Autoencoder
+An autoencoder is a type of artificial neural network used to learn efficient data codings in an unsupervised manner. The aim of an autoencoder is to learn a representation (encoding) for a set of data, typically for dimensionality reduction, by training the network to ignore noise.
+
+(i) Feed Forward
+
+The simplest form of an autoencoder is a feedforward, non-recurrent neural network similar to single layer perceptrons that participate in multilayer perceptrons
+
+from sklearn.preprocessing import minmax_scale
+import tensorflow as tf
+import numpy as np
+
+def encoder_dataset(df, drop=None, dimesions=20):
+
+  if drop:
+    train_scaled = minmax_scale(df.drop(drop,axis=1).values, axis = 0)
+  else:
+    train_scaled = minmax_scale(df.values, axis = 0)
+
+  # define the number of encoding dimensions
+  encoding_dim = dimesions
+  # define the number of features
+  ncol = train_scaled.shape[1]
+  input_dim = tf.keras.Input(shape = (ncol, ))
+
+  # Encoder Layers
+  encoded1 = tf.keras.layers.Dense(3000, activation = 'relu')(input_dim)
+  encoded2 = tf.keras.layers.Dense(2750, activation = 'relu')(encoded1)
+  encoded3 = tf.keras.layers.Dense(2500, activation = 'relu')(encoded2)
+  encoded4 = tf.keras.layers.Dense(750, activation = 'relu')(encoded3)
+  encoded5 = tf.keras.layers.Dense(500, activation = 'relu')(encoded4)
+  encoded6 = tf.keras.layers.Dense(250, activation = 'relu')(encoded5)
+  encoded7 = tf.keras.layers.Dense(encoding_dim, activation = 'relu')(encoded6)
+
+  encoder = tf.keras.Model(inputs = input_dim, outputs = encoded7)
+  encoded_input = tf.keras.Input(shape = (encoding_dim, ))
+
+  encoded_train = pd.DataFrame(encoder.predict(train_scaled),index=df.index)
+  encoded_train = encoded_train.add_prefix('encoded_')
+  if drop:
+    encoded_train = pd.concat((df[drop],encoded_train),axis=1)
+
+  return encoded_train
+
+df_out = mapper.encoder_dataset(df.copy(), ["Close_1"], 15); df_out.head()
+
+    """
+
+
+def pd_colcat_encoder_generic(df, col, pars):
+    """
+       https://pypi.org/project/category-encoders/
+       encoder = ce.BackwardDifferenceEncoder(cols=[...])
+encoder = ce.BaseNEncoder(cols=[...])
+encoder = ce.BinaryEncoder(cols=[...])
+encoder = ce.CatBoostEncoder(cols=[...])
+encoder = ce.CountEncoder(cols=[...])
+encoder = ce.GLMMEncoder(cols=[...])
+encoder = ce.HashingEncoder(cols=[...])
+encoder = ce.HelmertEncoder(cols=[...])
+encoder = ce.JamesSteinEncoder(cols=[...])
+encoder = ce.LeaveOneOutEncoder(cols=[...])
+encoder = ce.MEstimateEncoder(cols=[...])
+encoder = ce.OneHotEncoder(cols=[...])
+encoder = ce.OrdinalEncoder(cols=[...])
+encoder = ce.SumEncoder(cols=[...])
+encoder = ce.PolynomialEncoder(cols=[...])
+encoder = ce.TargetEncoder(cols=[...])
+encoder = ce.WOEEncoder(cols=[...])
+
+
+    """
+    colcat              = col
+    import category_encoders as ce
+    pars_encoder         = pars
+    pars_encoder['cols'] = col
+    if 'path_pipeline_export' in pars :
+        try :
+            pars_encoder = load( pars['path_pipeline_export'] + '/colcat_encoder_pars.pkl')
+        except : pass
+
+    encoder           = ce.HashingEncoder(**pars_encoder)
+    dfcat_bin         = encoder.fit_transform(df[col])
+
+
+    dfcat_bin.columns = [  t for t in dfcat_bin.columns ]
+    colcat_encoder    = list(dfcat_bin.columns)
+
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(dfcat_bin, 'dfcat_encoder', pars['path_features_store'])
+       save(encoder,       pars['path_pipeline_export']   + "/colcat_encoder_model.pkl" )
+       save(pars_encoder,  pars['path_pipeline_export']   + "/colcat_encoder_pars.pkl" )
+       save(colcat_encoder,  pars['path_pipeline_export'] + "/colcat_encoder.pkl" )
+
+
+    col_pars = {}
+    col_pars['col_encode_model'] = encoder
+    col_pars['cols_new'] = {
+     'colcat_encoder' :  colcat_encoder  ### list
+    }
+    return dfcat_bin, col_pars
+
+
+
+
+
+
+
+
+
+
+
+
 def pd_colcat_minhash(df, col, pars):
     """
        MinHash Algo for category
@@ -529,6 +700,11 @@ def pd_colcat_minhash(df, col, pars):
      'colcat_minhash' :  colcat_minhash  ### list
     }
     return dfcat_bin, col_pars
+
+
+
+
+
 
 
 
