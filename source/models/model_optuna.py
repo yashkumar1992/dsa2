@@ -121,10 +121,17 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     if VERBOSE: log(Xtrain.shape, model.model)
 
     if "LGBM" in model.model_pars['model_class']:
-        dtrain = lgb.Dataset(train_x, label=train_y)
-        dval = lgb.Dataset(val_x, label=val_y)
+        dtrain = LGBMModel_optuna.Dataset(train_x, label=train_y)
+        dval = LGBMModel_optuna.Dataset(val_x, label=val_y)
 
-        model.model.(params, dtrain, valid_sets=[dtrain, dval],
+        params = {
+            "objective": "binary",
+            "metric": "binary_logloss",
+            "verbosity": -1,
+            "boosting_type": "gbdt",
+        }
+
+        LGBMModel_optuna.train(params, dtrain, valid_sets=[dtrain, dval],
                                     **compute_pars.get("compute_pars", {}))
 
     else:

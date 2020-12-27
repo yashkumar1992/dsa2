@@ -101,7 +101,8 @@ def titanic_lightgbm(path_model_out="") :
     """
     config_name  = os_get_function_name()
     data_name    = "titanic"         ### in data/input/
-    model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
+    # model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
+    model_class  = 'model_optuna'  ### ACTUAL Class name for model_sklearn.py
     n_sample     = 1000
 
     def post_process_fun(y):

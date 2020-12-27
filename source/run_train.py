@@ -55,16 +55,18 @@ def map_model(model_name):
     :param model_name:
     :return:
     """
-    try :
-       ##  'models.model_bayesian_pyro'   'model_widedeep'
-       mod    = f'models.{model_name}'
-       modelx = importlib.import_module(mod) 
+    # try :
+    print('here')
+    ##  'models.model_bayesian_pyro'   'model_widedeep'
+    mod    = f'models.{model_name}'
+    print(mod)
+    modelx = importlib.import_module(mod)
        
-    except :
-        ### Al SKLEARN API
-        #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
-       mod    = 'models.model_sklearn'
-       modelx = importlib.import_module(mod) 
+    # except :
+    #     ### Al SKLEARN API
+    #     #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
+    #    mod    = 'models.model_sklearn'
+    #    modelx = importlib.import_module(mod)
     
     return modelx
 
