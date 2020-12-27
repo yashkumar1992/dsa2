@@ -12,8 +12,8 @@ numba==0.48.0
 optuna==1.1.0
 fire
 pyarrow
-fastparquet
+# fastparquet
 nltk
 tensorflow_text>=2.0.0rc0
 # simpleneighbors[annoy]
-
+# cython

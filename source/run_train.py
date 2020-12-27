@@ -1,7 +1,6 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-cd analysis
 
 python source/run_train.py  run_train --config_name elasticnet  --path_data_train data/input/train/    --path_output data/output/a01_elasticnet/
 
@@ -80,19 +79,18 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     :return:
     """
     model_pars, compute_pars = model_dict['model_pars'], model_dict['compute_pars']
-    data_pars = model_dict['data_pars']
-    model_name, model_path = model_pars['model_class'], model_dict['global_pars']['path_train_model']
-    metric_list = compute_pars['metric_list']
+    data_pars                = model_dict['data_pars']
+    model_name, model_path   = model_pars['model_class'], model_dict['global_pars']['path_train_model']
+    metric_list              = compute_pars['metric_list']
 
-    log("#### Data preparation #############################################################")
+    log("#### Data preparation #########################################################")
     log(dfX.shape)
     dfX    = dfX.sample(frac=1.0)
     itrain = int(0.6 * len(dfX))
     ival   = int(0.8 * len(dfX))
-    colid  = cols_family['colid']
     colsX  = data_pars['cols_model']
     coly   = data_pars['coly']
-    print('colsX',colsX)
+    log('colsX',colsX)
 
     data_pars['data_type'] = 'ram'
     data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
@@ -104,7 +102,7 @@ def train(model_dict, dfX, cols_family, post_process_fun):
                           'yval'   : dfX[coly].iloc[ival:],
                           }
 
-    log("#### Model Instance ##########################################################")
+    log("#### Init, Train ############################################################")
     # from config_model import map_model    
     modelx = map_model(model_name)    
     log(modelx)
@@ -112,25 +110,22 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     modelx.init(model_pars, compute_pars=compute_pars)
     modelx.fit(data_pars, compute_pars)
 
-    log("#### Metrics #################################################################")
-    from util_feature import  metrics_eval
 
-    stats               = {}
+    log("#### Predict ################################################################")
     ypred, ypred_proba  = modelx.predict(dfX[colsX], compute_pars=compute_pars)
     dfX[coly + '_pred'] = ypred  # y_norm(ypred, inverse=True)
 
     dfX[coly]            = dfX[coly].apply(lambda  x : post_process_fun(x) )
     dfX[coly + '_pred']  = dfX[coly + '_pred'].apply(lambda  x : post_process_fun(x) )
 
-
     if ypred_proba is None :
-       ypred_proba_val = None
+        ypred_proba_val = None
 
-    elif len(ypred_proba.shape) <= 1:
+    elif len(ypred_proba.shape) <= 1  :
        ypred_proba_val      = ypred_proba[ival:]
        dfX[coly + '_proba'] = ypred_proba
 
-    elif len(ypred_proba.shape) > 1:
+    elif len(ypred_proba.shape) > 1 :
         from util_feature import np_conv_to_one_col
         ypred_proba_val      = ypred_proba[ival:,:]
         dfX[coly + '_proba'] = np_conv_to_one_col(ypred_proba, ";")  ### merge into string "p1,p2,p3,p4"
@@ -139,28 +134,28 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     log("Actual    : ",  dfX[coly ])
     log("Prediction: ",  dfX[coly + '_pred'])
 
+    log("#### Metrics #############################################################")
+    from util_feature import  metrics_eval
     metrics_test = metrics_eval(metric_list,
                                 ytrue       = dfX[coly].iloc[ival:],
                                 ypred       = dfX[coly + '_pred'].iloc[ival:],
                                 ypred_proba = ypred_proba_val )
-    stats['metrics_test'] = metrics_test
+    stats = {'metrics_test' : metrics_test}
     log(stats)
 
 
-    log("############ saving model, dfX, columns")
-    log(model_path)
+    log("### Saving model, dfX, columns ###########################################")
+    log(model_path + "/model.pkl")
     os.makedirs(model_path, exist_ok=True)
     save(colsX, model_path + "/colsX.pkl")
     save(coly,  model_path + "/coly.pkl")
-
     modelx.save(model_path, stats)
 
 
+    log("### Reload model,            ############################################")
     log(modelx.model.model_pars, modelx.model.compute_pars)
     a = load(model_path + "/model.pkl")
-    print('--------------')
-    print(model_path + "/model.pkl")
-    log("############ check re-loaded", a.model_pars)
+    log("Reload model pars", a.model_pars)
     
     return dfX.iloc[:ival, :].reset_index(), dfX.iloc[ival:, :].reset_index()
 

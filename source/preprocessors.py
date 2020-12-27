@@ -1,6 +1,27 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
+https://github.com/Automunge/AutoMunge#library-of-transformations
+Library of Transformations
+Library of Transformations Subheadings:
+Intro
+Numerical Set Normalizations
+Numerical Set Transformations
+Numercial Set Bins and Grainings
+Sequential Numerical Set Transformations
+Categorical Set Encodings
+Date-Time Data Normalizations
+Date-Time Data Bins
+Differential Privacy Noise Injections
+Misc. Functions
+String Parsing
+More Efficient String Parsing
+Multi-tier String Parsing
+List of Root Categories
+List of Suffix Appenders
+Other Reserved Strings
+Root Category Family Tree Definitions
+
 
 
 """
@@ -60,6 +81,8 @@ def save_features(df, name, path):
        df0.to_parquet( f"{path}/{name}/features.parquet")
 
 
+
+
 ####################################################################################################
 def coltext_stopwords(text, stopwords=None, sep=" "):
     tokens = text.split(sep)
@@ -87,6 +110,8 @@ def pd_coltext_clean( df, col, stopwords= None , pars=None):
         dftext[col_n] = dftext[col_n].apply(lambda x: re.sub("[!@,#$+%*:()'-]", " ", x))
         dftext[col_n] = dftext[col_n].apply(lambda x: coltext_stopwords(x, stopwords=stopwords))
     return dftext
+
+
 
 def pd_coltext_wordfreq(df, col, stopwords, ntoken=100):
     """
@@ -478,7 +503,7 @@ def pd_coldate(df, col, pars):
     coldate = col
     dfdate  = None
     for coldate_i in coldate :
-        dfdate_i =  util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
+        dfdate_i = util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
         dfdate   = pd.concat((dfdate, dfdate_i),axis=1)  if dfdate is not None else dfdate_i
         # if 'path_features_store' in pars :
         #    path_features_store = pars['path_features_store']
@@ -501,50 +526,109 @@ def pd_colcat_minhash(df, col, pars):
        https://booking.ai/dont-be-tricked-by-the-hashing-trick-192a6aae3087
 
     """
-    path_pipeline  = pars.get('path_pipeline_export', None)
-    colcat         = col
+    colcat              = col
+
+    pars_minhash = {'n_component' : [4, 2], 'model_pretrain_dict' : None,}
+    if 'path_pipeline_export' in pars :
+        try :
+            pars_minhash = load( pars['path_pipeline_export'] + '/colcat_minhash_pars.pkl')
+        except : pass
 
     log("#### Colcat to Hash encoding #############################################")
     from utils import util_text
-    pars_default =  {'n_component' : [4, 2], 'model_pretrain_dict' : None,}
-    pars_minhash = load(f'{path_pipeline}/colcat_minhash_pars.pkl') if  path_pipeline else pars_default
     dfcat_bin, col_hash_model= util_text.pd_coltext_minhash(df[colcat], colcat,
                                                             return_val="dataframe,param", **pars_minhash )
     colcat_minhash = list(dfcat_bin.columns)
     log(col_hash_model)
     ###################################################################################
-    if 'path_features_store' in pars :
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
        save_features(dfcat_bin, 'dfcat_minhash', pars['path_features_store'])
-       save(col_hash_model,  pars['path_pipeline_export'] + "/colcat_minhash_model.pkl" )
-       save(colcat_minhash,  pars['path_pipeline_export'] + "/colcat_minhash.pkl" )
+       save(col_hash_model, pars['path_pipeline_export'] + "/colcat_minhash_model.pkl" )
+       save(colcat_minhash, pars['path_pipeline_export'] + "/colcat_minhash.pkl" )
+       save(pars_minhash,   pars['path_pipeline_export'] + "/colcat_minhash_pars.pkl" )
+
 
     col_pars = {}
     col_pars['col_hash_model'] = col_hash_model
     col_pars['cols_new'] = {
-     'colcat'     :  col ,               ### list
-     'colcat_minhahs' :  colcat_minhash  ### list
+     'colcat_minhash' :  colcat_minhash  ### list
+    }
+    return dfcat_bin, col_pars
+
+
+
+def pd_colcat_encoder_generic(df, col, pars):
+    """
+       https://pypi.org/project/category-encoders/
+       encoder = ce.BackwardDifferenceEncoder(cols=[...])
+encoder = ce.BaseNEncoder(cols=[...])
+encoder = ce.BinaryEncoder(cols=[...])
+encoder = ce.CatBoostEncoder(cols=[...])
+encoder = ce.CountEncoder(cols=[...])
+encoder = ce.GLMMEncoder(cols=[...])
+encoder = ce.HashingEncoder(cols=[...])
+encoder = ce.HelmertEncoder(cols=[...])
+encoder = ce.JamesSteinEncoder(cols=[...])
+encoder = ce.LeaveOneOutEncoder(cols=[...])
+encoder = ce.MEstimateEncoder(cols=[...])
+encoder = ce.OneHotEncoder(cols=[...])
+encoder = ce.OrdinalEncoder(cols=[...])
+encoder = ce.SumEncoder(cols=[...])
+encoder = ce.PolynomialEncoder(cols=[...])
+encoder = ce.TargetEncoder(cols=[...])
+encoder = ce.WOEEncoder(cols=[...])
+
+
+    """
+    colcat              = col
+    import category_encoders as ce
+    pars_encoder         = pars
+    pars_encoder['cols'] = col
+    if 'path_pipeline_export' in pars :
+        try :
+            pars_encoder = load( pars['path_pipeline_export'] + '/colcat_encoder_pars.pkl')
+        except : pass
+
+    encoder           = ce.HashingEncoder(**pars_encoder)
+    dfcat_bin         = encoder.fit_transform(df[col])
+
+
+    dfcat_bin.columns = [  t for t in dfcat_bin.columns ]
+    colcat_encoder    = list(dfcat_bin.columns)
+
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(dfcat_bin, 'dfcat_encoder', pars['path_features_store'])
+       save(encoder,       pars['path_pipeline_export']   + "/colcat_encoder_model.pkl" )
+       save(pars_encoder,  pars['path_pipeline_export']   + "/colcat_encoder_pars.pkl" )
+       save(colcat_encoder,  pars['path_pipeline_export'] + "/colcat_encoder.pkl" )
+
+
+    col_pars = {}
+    col_pars['col_encode_model'] = encoder
+    col_pars['cols_new'] = {
+     'colcat_encoder' :  colcat_encoder  ### list
     }
     return dfcat_bin, col_pars
 
 
 
 
+
 def pd_coltext_universal_google(df, col, pars={}):
     """
+     # Universal sentence encoding from Tensorflow
        Text ---> Vectors
     from source.preprocessors import  pd_coltext_universal_google
     https://tfhub.dev/google/universal-sentence-encoder-multilingual/3
 
     #@title Setup Environment
-#latest Tensorflow that supports sentencepiece is 1.13.1
-!pip uninstall --quiet --yes tensorflow
-!pip install --quiet tensorflow-gpu==1.13.1
-!pip install --quiet tensorflow-hub
-!pip install --quiet bokeh
-pip install --quiet tf-sentencepiece, simpleneighbors
-!pip install --quiet simpleneighbors
-!pip install --quiet tqdm
-
+    #latest Tensorflow that supports sentencepiece is 1.13.1
+    !pip uninstall --quiet --yes tensorflow
+    !pip install --quiet tensorflow-gpu==1.13.1
+    !pip install --quiet tensorflow-hub
+    pip install --quiet tf-sentencepiece, simpleneighbors
+    !pip install --quiet simpleneighbors
 
     # df : dataframe
     # col : list of text colnum names
@@ -554,11 +638,14 @@ pip install --quiet tf-sentencepiece, simpleneighbors
     import tensorflow_hub as hub
     import tensorflow_text
     #from tqdm import tqdm #progress bar
+    uri_list = [
 
-    uri_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual/1"
-    # Universal sentence encoding from Tensorflow
-    use = hub.load( pars.get("url_model", uri_default )  )
 
+
+    ]
+    uri_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual/3"
+    uri         = pars.get("url_model", uri_default )
+    use    = hub.load( uri )
     dfall  = None
     for coli in col[:1] :
         X = []
@@ -569,9 +656,23 @@ pip install --quiet tf-sentencepiece, simpleneighbors
             review_emb = tf.reshape(emb, [-1]).numpy()
             X.append(review_emb)
 
-        dfi   = pd.DataFrame(X, columns= [ coli + "_" + str(i) for i in range(X.shape[1])   ])
+        dfi   = pd.DataFrame(X, columns= [ coli + "_" + str(i) for i in range( len(X[0]))   ] ,
+                             index = df.index)
         dfall = pd.concat((dfall, dfi))  if dfall is not None else dfi
-    return dfall
+
+    coltext_embed = list(dfall.columns)
+
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(dfall, 'dftext_embed', pars['path_features_store'])
+       save(coltext_embed, pars['path_pipeline_export'] + "/coltext_universal_google.pkl" )
+
+    col_pars = {'model_encoder' : uri}
+    col_pars['cols_new']      = {
+     'coltext_universal_google' :  coltext_embed ### list
+    }
+    return dfall, col_pars
+
 
 
 
