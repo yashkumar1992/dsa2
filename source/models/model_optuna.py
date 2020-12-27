@@ -49,12 +49,11 @@ def init(*kw, **kwargs):
 class Model(object):
     def __init__(self, model_pars=None, data_pars=None, compute_pars=None):
         self.model_pars, self.compute_pars, self.data_pars = model_pars, compute_pars, data_pars
-
         if model_pars is None:
             self.model = None
         else:
             model_class = globals()[model_pars['model_class']]
-            self.model = model_class(**model_pars['model_pars'])
+            self.model = model_class
             if VERBOSE: log(model_class, self.model)
 
 """
@@ -120,22 +119,14 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     Xtrain, ytrain, Xtest, ytest = get_dataset(data_pars, task_type="train")
     if VERBOSE: log(Xtrain.shape, model.model)
 
-    if "LGBM" in model.model_pars['model_class']:
-        dtrain = LGBMModel_optuna.Dataset(train_x, label=train_y)
-        dval = LGBMModel_optuna.Dataset(val_x, label=val_y)
+    # if "LGBM" in model.model_pars['model_class']:
+    dtrain = LGBMModel_optuna.Dataset(Xtrain, label=ytrain)
+    dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
 
-        params = {
-            "objective": "binary",
-            "metric": "binary_logloss",
-            "verbosity": -1,
-            "boosting_type": "gbdt",
-        }
+    return model.model.train(compute_pars.get("optuna_params", {}), dtrain, valid_sets=[dtrain, dval])
 
-        LGBMModel_optuna.train(params, dtrain, valid_sets=[dtrain, dval],
-                                    **compute_pars.get("compute_pars", {}))
-
-    else:
-        model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
+    # else:
+    #     model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
 
 
 def eval(data_pars=None, compute_pars=None, out_pars=None, **kw):
@@ -166,7 +157,9 @@ def eval(data_pars=None, compute_pars=None, out_pars=None, **kw):
 
 def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
     global model, session
+    optuna_model = model.model_pars.get('optuna_model', None)
     post_process_fun = model.model_pars.get('post_process_fun', None)
+
     if post_process_fun is None:
         def post_process_fun(y):
             return y
@@ -175,7 +168,7 @@ def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
         data_pars['train'] = False
         Xpred = get_dataset(data_pars, task_type="predict")
 
-    ypred = model.model.predict(Xpred)
+    ypred = optuna_model.predict(Xpred, num_iteration=optuna_model.best_iteration)
     #ypred = post_process_fun(ypred)
     
     ypred_proba = None  ### No proba    
