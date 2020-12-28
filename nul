@@ -1,1 +1,1 @@
-./ztest/airbnb.bat: line 13: del: command not found
+./ztest/optuna_classifier.bat: line 14: del: command not found

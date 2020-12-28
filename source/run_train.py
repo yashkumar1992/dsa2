@@ -55,12 +55,8 @@ def map_model(model_name):
     :return:
     """
     if 'optuna' in model_name:
-       print('here')
-       ##  'models.model_bayesian_pyro'   'model_widedeep'
        mod    = f'models.model_optuna'
-       print(mod)
        modelx = importlib.import_module(mod)
-       
     else :
         ### Al SKLEARN API
         #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
