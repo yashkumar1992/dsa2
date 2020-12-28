@@ -54,16 +54,18 @@ def map_model(model_name):
     :param model_name:
     :return:
     """
-    try :
+    if 'optuna' in model_name:
+       print('here')
        ##  'models.model_bayesian_pyro'   'model_widedeep'
-       mod    = f'models.{model_name}'
-       modelx = importlib.import_module(mod) 
+       mod    = f'models.model_optuna'
+       print(mod)
+       modelx = importlib.import_module(mod)
        
-    except :
+    else :
         ### Al SKLEARN API
         #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
        mod    = 'models.model_sklearn'
-       modelx = importlib.import_module(mod) 
+       modelx = importlib.import_module(mod)
     
     return modelx
 
@@ -106,11 +108,16 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     log(modelx)
     modelx.reset()
     modelx.init(model_pars, compute_pars=compute_pars)
-    modelx.fit(data_pars, compute_pars)
+
+    if 'optuna' in model_name:
+        modelx.model.model_pars['optuna_model'] = modelx.fit(data_pars, compute_pars)
+    else:
+        modelx.fit(data_pars, compute_pars)
 
 
     log("#### Predict ################################################################")
-    ypred, ypred_proba  = modelx.predict(dfX[colsX], compute_pars=compute_pars)
+    ypred, ypred_proba = modelx.predict(dfX[colsX], compute_pars=compute_pars)
+
     dfX[coly + '_pred'] = ypred  # y_norm(ypred, inverse=True)
 
     dfX[coly]            = dfX[coly].apply(lambda  x : post_process_fun(x) )
