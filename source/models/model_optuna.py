@@ -7,6 +7,9 @@ https://optuna.readthedocs.io/en/stable/reference/generated/optuna.integration.l
 https://github.com/optuna/optuna/blob/master/examples/lightgbm_tuner_simple.py
 
 
+
+
+
 """
 import os
 import pandas as pd, numpy as np, scipy as sci
@@ -53,7 +56,9 @@ class Model(object):
             self.model = None
         else:
             model_class = globals()[model_pars['model_class']]
-            self.model = model_class
+            self.model_meta = model_class  #### Hyper param seerch
+            self.model = None ### Best model saved after train
+            #self.model = model_class()
             if VERBOSE: log(model_class, self.model)
 
 """
@@ -120,11 +125,16 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     if VERBOSE: log(Xtrain.shape, model.model)
 
     # if "LGBM" in model.model_pars['model_class']:
-    dtrain = LGBMModel_optuna.Dataset(Xtrain, label=ytrain)
-    dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
 
-    return model.model.train(compute_pars.get("optuna_params", {}), dtrain, valid_sets=[dtrain, dval])
+    dtrain = model.model_meta.Dataset(Xtrain, label=ytrain)
+    dval = model.model_meta.Dataset(Xtest, label=ytest)
 
+    # dtrain = LGBMModel_optuna.Dataset(Xtrain, label=ytrain)
+    # dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
+
+    model_fit   = model.model_meta.train(compute_pars.get("optuna_params", {}), dtrain, valid_sets=[dtrain, dval])
+    model.model = model_fit ### best model
+    return model_fit
     # else:
     #     model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
 
@@ -157,7 +167,7 @@ def eval(data_pars=None, compute_pars=None, out_pars=None, **kw):
 
 def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
     global model, session
-    optuna_model = model.model_pars.get('optuna_model', None)
+    ## optuna_model = model.model_pars.get('optuna_model', None)   #### NO model is saved in model.model
     post_process_fun = model.model_pars.get('post_process_fun', None)
 
     if post_process_fun is None:
@@ -168,7 +178,9 @@ def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
         data_pars['train'] = False
         Xpred = get_dataset(data_pars, task_type="predict")
 
-    ypred = optuna_model.predict(Xpred, num_iteration=optuna_model.best_iteration)
+    # ypred = optuna_model.predict(Xpred, num_iteration=optuna_model.best_iteration)
+    ypred = model.model.predict(Xpred, num_iteration=model.model.best_iteration)
+
     #ypred = post_process_fun(ypred)
     
     ypred_proba = None  ### No proba    
