@@ -106,7 +106,9 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     modelx.init(model_pars, compute_pars=compute_pars)
 
     if 'optuna' in model_name:
-        modelx.model.model_pars['optuna_model'] = modelx.fit(data_pars, compute_pars)
+        modelx.fit(data_pars, compute_pars)
+        # No need anymore
+        # modelx.model.model_pars['optuna_model'] = modelx.fit(data_pars, compute_pars)
     else:
         modelx.fit(data_pars, compute_pars)
 

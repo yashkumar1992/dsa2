@@ -56,8 +56,8 @@ class Model(object):
             self.model = None
         else:
             model_class = globals()[model_pars['model_class']]
-            self.model_meta = model_class  #### Hyper param seerch
-            self.model = None ### Best model saved after train
+            self.model_meta = model_class  ### Hyper param seerch Model
+            self.model = None              ### Best model saved after train
             #self.model = model_class()
             if VERBOSE: log(model_class, self.model)
 
@@ -127,7 +127,7 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     # if "LGBM" in model.model_pars['model_class']:
 
     dtrain = model.model_meta.Dataset(Xtrain, label=ytrain)
-    dval = model.model_meta.Dataset(Xtest, label=ytest)
+    dval   = model.model_meta.Dataset(Xtest, label=ytest)
 
     # dtrain = LGBMModel_optuna.Dataset(Xtrain, label=ytrain)
     # dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
@@ -199,6 +199,7 @@ def save(path=None, info=None):
     import cloudpickle as pickle
     os.makedirs(path, exist_ok=True)
 
+
     filename = "model.pkl"
     pickle.dump(model, open(f"{path}/{filename}", mode='wb'))  # , protocol=pickle.HIGHEST_PROTOCOL )
 
@@ -212,7 +213,10 @@ def load_model(path=""):
     model0 = pickle.load(open(f"{path}/model.pkl", mode='rb'))
 
     model = Model()  # Empty model
-    model.model = model0.model
+    model.model      = model0.model
+    model.model_meta = model0.model_meta
+
+
     model.model_pars = model0.model_pars
     model.compute_pars = model0.compute_pars
     session = None
