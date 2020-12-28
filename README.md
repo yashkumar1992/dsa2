@@ -18,22 +18,20 @@ Multi
 
 
 
+### Basic usage 
+    python  titanic_classifier.py  data_profile
+    python  titanic_classifier.py  preprocess
+    python  titanic_classifier.py  train
+    python  titanic_classifier.py  predict
 
-### Basic usage
+
+### Basic usage 2
     cd dsa2
     python run.py data_profile --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
     python run.py preprocess   --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
     python run.py train        --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
     python run.py predict      --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
 
-
-
-### Basic usage 2
-    python  titanic_classifier.py  data_profile
-    python  titanic_classifier.py  preprocess
-    python  titanic_classifier.py  train
-    python  titanic_classifier.py  check
-    python  titanic_classifier.py  predict
 
 
 
