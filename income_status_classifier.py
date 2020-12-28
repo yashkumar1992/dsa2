@@ -1,13 +1,6 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to income_status dataset
-	python run.py data_profile --config_uri income_status_classifier.py::income_status_lightgbm   > zlog/log-income_status.txt 2>&1
-	python run.py preprocess   --config_uri income_status_classifier.py::income_status_lightgbm   > zlog/log-income_status.txt 2>&1
-	python run.py train        --config_uri income_status_classifier.py::income_status_lightgbm   > zlog/log-income_status.txt 2>&1
-	python run.py predict      --config_uri income_status_classifier.py::income_status_lightgbm   > zlog/log-income_status.txt 2>&1
-
-
 	python  income_status_classifier.py  data_profile
 	python  income_status_classifier.py  preprocess  --nsample 32560
 	python  income_status_classifier.py  train       --nsample 32560
@@ -135,6 +128,11 @@ def income_status_lightgbm(path_model_out="") :
 
         ### Pipeline for data processing ##############################
         'pipe_list': [
+
+            #{'uri': 'data/input/income/manual_preprocessing.py::pd_income_processor',      'pars': {}, 'cols_family': 'colall',   'cols_out': 'colall',
+            #        'type': 'filter'         },
+
+
             {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
             {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
@@ -182,13 +180,9 @@ def income_status_lightgbm(path_model_out="") :
 
 
 
-
-
-
-
 #####################################################################################
 ########## Profile data #############################################################
-def data_profile(path_data_train="", path_model="", n_sample= 32560):
+def data_profile(path_data_train="", path_model="", n_sample= 5000):
    from source.run_feature_profile import run_profile
    run_profile(path_data   = path_data_train,
                path_output = path_model + "/profile/",
@@ -199,17 +193,17 @@ def data_profile(path_data_train="", path_model="", n_sample= 32560):
 ###################################################################################
 ########## Preprocess #############################################################
 def preprocess(config=None, nsample=None):
-    model_class  = config  if config is not None else config_default
-    mdict        = globals()[model_class]()
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
     m            = mdict['global_pars']
     print(mdict)
 
-    from source import run_preprocess, run_preprocess_old
-    run_preprocess.run_preprocess(config_name=  model_class,
-                                  path_data         =  m['path_data_train'],
-                                  path_output       =  m['path_model'],
-                                  path_config_model =  m['path_config_model'],
+    from source import run_preprocess
+    run_preprocess.run_preprocess(config_name       =  config_name,
+                                  config_path       =  m['config_path'],
                                   n_sample          =  nsample if nsample is not None else m['n_sample'],
+
+                                  ### Optonal
                                   mode              =  'run_preprocess')
 
 
@@ -217,17 +211,15 @@ def preprocess(config=None, nsample=None):
 ########## Train #################################################################
 def train(config=None, nsample=None):
 
-    model_class  = config  if config is not None else config_default
-    mdict        = globals()[model_class]()
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
     m            = mdict['global_pars']
     print(mdict)
 
     from source import run_train
-    run_train.run_train(config_name=  model_class,
-                        path_data         =  m['path_data_train'],
-                        path_output       =  m['path_model'],
-                        path_config_model =  m['path_config_model'],
-                        n_sample          =  nsample if nsample is not None else m['n_sample']
+    run_train.run_train(config_name       =  config_name,
+                        config_path       =  m['config_path'],
+                        n_sample          =  nsample if nsample is not None else m['n_sample'],
                         )
 
 
@@ -242,28 +234,21 @@ def check():
 ####################################################################################
 ####### Inference ##################################################################
 def predict(config=None, nsample=None):
-    model_class  =  config  if config is not None else config_default
-    mdict        = globals()[model_class]()
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
     m            = mdict['global_pars']
 
 
-    from source import run_inference,run_inference
-    run_inference.run_predict(model_class,
-                              path_model  = m['path_model'],
-                              path_data   = m['path_data_test'],
-                              path_output = m['path_output_pred'],
-                              pars={'cols_group': mdict['data_pars']['cols_input_type'],
-                                  'pipe_list': mdict['model_pars']['pre_process_pars']['pipe_list']},
-                              n_sample    = nsample if nsample is not None else m['n_sample']
+    from source import run_inference
+    run_inference.run_predict(config_name = config_name,
+                              config_path =  m['config_path'],
+                              n_sample    = nsample if nsample is not None else m['n_sample'],
+
+                              #### Optional
+                              path_data   = m['path_pred_data'],
+                              path_output = m['path_pred_output'],
+                              model_dict  = None
                               )
-
-
-def run_all():
-    data_profile()
-    preprocess()
-    train()
-    check()
-    predict()
 
 
 
