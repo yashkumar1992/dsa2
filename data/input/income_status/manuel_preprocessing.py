@@ -144,7 +144,7 @@ target_test.to_csv('test/target.zip', index=False, compression=target)
 """
    
 
-def pd_income_processor(df, col, pars):
+def pd_income_processor_old(df, col, pars):
   """
   """
   df = df.rename(columns = {'39':'age' , ' State-gov':'workclass', ' 77516':'final_weight', ' Bachelors':'education', ' 13':'education-num', ' Never-married':'marital-status', ' Adm-clerical':'occupation', ' Not-in-family':'relationship', ' White':'race', ' Male':'sex', ' 2174':'capital-gain', ' 0':'capital-loss', ' 40':'hours-per-week', ' United-States':'native-country', ' <=50K':'status'})
