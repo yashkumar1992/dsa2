@@ -40,12 +40,12 @@ def model_dict_load(model_dict, config_path, config_name, verbose=True):
 
 
 def map_model(model_name):
-    try :
+    if 'optuna' in model_name:
        ##  'models.model_bayesian_pyro'   'model_widedeep'
-       mod    = f'models.{model_name}'
+       mod    = f'models.model_optuna'
        modelx = importlib.import_module(mod)
 
-    except :
+    else :
         ### Al SKLEARN API
         #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
        mod    = 'models.model_sklearn'
@@ -80,6 +80,7 @@ def predict(model_name, path_model, dfX, cols_family):
 
     log("### Prediction  ############################################")
     dfX1  = dfX.reindex(columns=colsX)   #reindex included
+
     ypred = modelx.predict(dfX1)
 
     return ypred
