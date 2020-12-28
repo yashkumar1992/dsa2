@@ -8,20 +8,27 @@ import numpy as np
 path_repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + "/"
 print("path_repo_root", path_repo_root)
 sys.path.append( path_repo_root)
-from util_feature import  save, load_function_uri, load
+from util_feature import  save, load_function_uri, load 		
 ########################################################################
 
 
-
 folder     = 'raw/'
+df         = pd.read_csv(folder+'train_csv.csv', delimiter=',')
+df_test     = pd.read_csv(folder+'test_csv.csv', delimiter=',')
+
+"""
+	Rename columns for train and test 
+"""
+df = df.rename(columns = {'39':'age' , ' State-gov':'workclass', ' 77516':'final_weight', ' Bachelors':'education', ' 13':'education-num', ' Never-married':'marital-status', ' Adm-clerical':'occupation', ' Not-in-family':'relationship', ' White':'race', ' Male':'sex', ' 2174':'capital-gain', ' 0':'capital-loss', ' 40':'hours-per-week', ' United-States':'native-country', ' <=50K':'status'})
+df_test = df_test.rename(columns = {'25':'age' , ' Private':'workclass', ' 226802':'final_weight', ' 11th':'education', ' 7':'education-num', ' Never-married':'marital-status', ' Machine-op-inspct':'occupation', ' Own-child':'relationship', ' Black':'race', ' Male':'sex', ' 0':'capital-gain', ' 0.1':'capital-loss', ' 40':'hours-per-week', ' United-States':'native-country', ' <=50K.':'status'})
+
 
 
 def pd_income_processor(df, col, pars):
   """
      Processor for DSA@
-
   """
-  df = df.rename(columns = {'39':'age' , ' State-gov':'workclass', ' 77516':'final_weight', ' Bachelors':'education', ' 13':'education-num', ' Never-married':'marital-status', ' Adm-clerical':'occupation', ' Not-in-family':'relationship', ' White':'race', ' Male':'sex', ' 2174':'capital-gain', ' 0':'capital-loss', ' 40':'hours-per-week', ' United-States':'native-country', ' <=50K':'status'})
+  #df = df.rename(columns = {'39':'age' , ' State-gov':'workclass', ' 77516':'final_weight', ' Bachelors':'education', ' 13':'education-num', ' Never-married':'marital-status', ' Adm-clerical':'occupation', ' Not-in-family':'relationship', ' White':'race', ' Male':'sex', ' 2174':'capital-gain', ' 0':'capital-loss', ' 40':'hours-per-week', ' United-States':'native-country', ' <=50K':'status'})
 
 
   df.drop(['education'], axis=1, inplace = True)
@@ -100,35 +107,45 @@ def pd_income_processor(df, col, pars):
 
 
 
-df         = pd.read_csv(folder+'train_csv.csv', delimiter=',')
+"""
+	Saving files to csv and also zip format
+"""
+
 df         = pd_income_processor(df, list(df.columns), pars={} )
-feature_tr = df.drop(["status"],axis=1)
-target_tr  = df[["status","id"]]
+feature_tr = df[0].drop(["status"],axis=1)
+target_tr  = df[0][["status","id"]]
 feature_tr.to_csv( "train/features.csv", index=False)
 target_tr.to_csv(  "train/target.csv",index=False)
 
 
+features = dict(method='zip',archive_name='features.csv')  
+target = dict(method='zip',archive_name='target.csv')
+feature_tr.to_csv('train/features.zip', index=False, compression=features) 
+target_tr.to_csv('train/target.zip', index=False,compression=target)
 
 
-df_test     = pd.read_csv(folder+'test_csv.csv', delimiter=',')
-df_test = pd_income_processor(df_test, list(df_test.columns), pars={} )
-feature_test=df_test.drop(["status"],axis=1)
-target_test=df_test[["status","id"]]
+
+
+df_test      = pd_income_processor(df_test, list(df_test.columns), pars={} )
+feature_test = df_test[0].drop(["status"],axis=1)
+target_test  = df_test[0][["status","id"]]
 feature_test.to_csv( "test/features.csv", index=False)
 target_test.to_csv(  "test/target.csv",index=False)
 
+feature_test.to_csv('test/features.zip', index=False,compression=features) 
+target_test.to_csv('test/target.zip', index=False, compression=target)
 
 
 
 
+"""
+	No need to use this function
 
-
+"""
    
 
-def pd_income_processor(df, col, pars):
+def pd_income_processor_old(df, col, pars):
   """
-
-
   """
   df = df.rename(columns = {'39':'age' , ' State-gov':'workclass', ' 77516':'final_weight', ' Bachelors':'education', ' 13':'education-num', ' Never-married':'marital-status', ' Adm-clerical':'occupation', ' Not-in-family':'relationship', ' White':'race', ' Male':'sex', ' 2174':'capital-gain', ' 0':'capital-loss', ' 40':'hours-per-week', ' United-States':'native-country', ' <=50K':'status'})
   df_test = df_test.rename(columns = {'25':'age' , ' Private':'workclass', ' 226802':'final_weight', ' 11th':'education', ' 7':'education-num', ' Never-married':'marital-status', ' Machine-op-inspct':'occupation', ' Own-child':'relationship', ' Black':'race', ' Male':'sex', ' 0':'capital-gain', ' 0.1':'capital-loss', ' 40':'hours-per-week', ' United-States':'native-country', ' <=50K.':'status'})
@@ -190,8 +207,6 @@ def pd_income_processor(df, col, pars):
       df_test[col] = np.where(df_test[col] < lower_bound, 0.75*lower_bound, df_test[col])
 
     return dfnew, col_pars
-
-
-
-
-
+	
+	
+	
