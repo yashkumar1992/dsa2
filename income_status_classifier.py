@@ -263,10 +263,7 @@ python  income_status_classifier.py  train
 python  income_status_classifier.py  check
 python  income_status_classifier.py  predict
 python  income_status_classifier.py  run_all
-
-
 """
 if __name__ == "__main__":
     import fire
     fire.Fire()
-
