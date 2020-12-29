@@ -24,12 +24,8 @@ df_test = df_test.rename(columns = {'25':'age' , ' Private':'workclass', ' 22680
 
 
 
-
-
-
-
-
-
+##########################################################################################
+##########################################################################################
 def pd_cleanup(df, col, pars):
   df.drop(['education'], axis=1, inplace = True)
   df.replace(" ?",np.NaN,inplace=True)
@@ -232,7 +228,7 @@ df_test = pd_cleanup(df_test, col=None, pars=None)
 df_test = pd_normalize_quantile(df_test,
                   col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'], pars={})
 
-df_test      = pd_income_processor(df_test, list(df_test.columns), pars={} )
+# df_test      = pd_income_processor(df_test, list(df_test.columns), pars={} )
 feature_test = df_test[0].drop(["status"],axis=1)
 target_test  = df_test[0][["status","id"]]
 feature_test.to_csv( "test/features.csv", index=False)

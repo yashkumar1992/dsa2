@@ -82,6 +82,50 @@ df_X = df.drop("is_attributed", axis=1)
 df_y = df["is_attributed"]
 
 
+
+
+###########################################################################
+###########################################################################
+# pip install dimae
+import pandas as pd
+import tensorflow as tf
+
+from dimae.autoencoders.autoencoder import AE
+
+
+# df = pd.DataFrame(...)
+
+#### Norm [0,1 ]
+dfnorm = df_X
+
+n_features = df.shape[1]
+output_features = max(2, n_features / 5 )
+
+ae = AE(n_features, output_features)
+
+batch_size = 8
+epochs = 15
+
+dataset = tf.data.Dataset.from_tensor_slices((dfnorm.values,
+                                              dfnorm.values ))
+t_dataset = dataset.batch(batch_size)
+
+ae.compile(optimizer = 'adam', loss = 'mse')
+ae.fit(t_dataset, epochs = epochs)
+
+encoder = ae.generate_encoder()
+encoder.summary()
+
+
+df_X =encoder.predict((df_X.values))
+
+
+
+
+
+
+
+################################################################################
 from sklearn.model_selection import train_test_split
 train_X,test_X,train_y,test_y=train_test_split(df_X,df_y,stratify=df_y,test_size=0.15)
 train_X,val_X,train_y,val_y=train_test_split(train_X,train_y,stratify=train_y,test_size=0.1)
@@ -339,6 +383,16 @@ from sklearn import metrics
 ypred = bst.predict(test_X_all)
 score = metrics.roc_auc_score(test_y, ypred)
 print(f"Test score: {score}")
+
+
+
+
+
+
+
+
+
+
 
 
 
