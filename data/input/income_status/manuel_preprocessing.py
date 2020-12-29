@@ -26,7 +26,7 @@ df_test = df_test.rename(columns = {'25':'age' , ' Private':'workclass', ' 22680
 df_test.name = "df_test"
 
 
-def pd_cleanup(df, col, pars):
+def pd_cleanup(df ,col, pars):
   df.drop(['education'], axis=1, inplace = True)
   df.replace(" ?",np.NaN,inplace=True)
 
@@ -40,15 +40,15 @@ def pd_cleanup(df, col, pars):
   return df
 
 
-def pd_normalize_quantile(df_train, df_test, col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'], pars={}):
+def pd_normalize_quantile(df, df_test=None, col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'], pars={}):
   """
      Processor for DSA@
   """
-  df = df[col]
+  df_train= df[col]
   
   num_col=col
   sparse_col= pars.get('colsparse', ['capital-gain', 'capital-loss'] )
-
+  
   # Find IQR and implement to numericals and sparse columns seperately
   Q1  = df_train.quantile(0.25)
   Q3  = df_train.quantile(0.75)
@@ -80,8 +80,9 @@ def pd_normalize_quantile(df_train, df_test, col=['age', 'final_weight', 'capita
 
       df_train[col] = np.where(df_train[col] > upper_bound, 1.25*upper_bound, df_train[col])
       df_train[col] = np.where(df_train[col] < lower_bound, 0.75*lower_bound, df_train[col])
-      df_test[col] = np.where(df_test[col] > upper_bound, 1.25*upper_bound, df_test[col])
-      df_test[col] = np.where(df_test[col] < lower_bound, 0.75*lower_bound, df_test[col])
+      if df_test is not None:
+          df_test[col] = np.where(df_test[col] > upper_bound, 1.25*upper_bound, df_test[col])
+          df_test[col] = np.where(df_test[col] < lower_bound, 0.75*lower_bound, df_test[col])
 
 
   colnew   = [ t + "_norm" for t in df.columns ]
@@ -111,14 +112,15 @@ def pd_normalize_quantile(df_train, df_test, col=['age', 'final_weight', 'capita
   return dfnew, df_test, col_pars
 
 
-"""
-	Saving files to csv and also zip format
-"""
 
+"""
+	Save files for the train
+"""
 df = pd_cleanup(df, col=None, pars=None)
+
 df_test = pd_cleanup(df_test, col=None, pars=None)
 
-df = pd_normalize_quantile(df, df_test, col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'] , pars={} )
+df = pd_normalize_quantile(df=df, df_test=df_test, col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'] , pars={} )
 
 feature_tr = df[0].drop(["status"],axis=1)
 target_tr  = df[0][["status","id"]]
@@ -130,11 +132,16 @@ target = dict(method='zip',archive_name='target.csv')
 feature_tr.to_csv('train/features.zip', index=False, compression=features) 
 target_tr.to_csv('train/target.zip', index=False,compression=target)
 
-feature_test = df[1].drop(["status"],axis=1)
-target_test  = df[1][["status","id"]]
-feature_test.to_csv( "test/features.csv", index=False)
-target_test.to_csv(  "test/target.csv",index=False)
 
-feature_test.to_csv('test/features.zip', index=False, compression=features) 
-target_test.to_csv('test/target.zip', index=False,compression=target)
+"""
+	If there is a test data, it will save the test set files
+"""
+if df[1] is not None:
+    feature_test = df[1].drop(["status"],axis=1)
+    target_test  = df[1][["status","id"]]
+    feature_test.to_csv( "test/features.csv", index=False)
+    target_test.to_csv(  "test/target.csv",index=False)
+
+    feature_test.to_csv('test/features.zip', index=False, compression=features) 
+    target_test.to_csv('test/target.zip', index=False,compression=target)
 
