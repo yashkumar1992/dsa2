@@ -24,14 +24,15 @@ from lightgbm import LGBMModel, LGBMRegressor, LGBMClassifier
 
 try :
   import optuna.integration.lightgbm as LGBMModel_optuna
-except:
-  print("cannot import Optuna")
+  import optuna.integration.lightgbm_tuner as LGBMModel_optuna_tuner
+
+except Exception as e :
+  raise Exception(f"cannot import Optuna {e}" )
 
 
  
 ####################################################################################################
 VERBOSE = True
-
 
 # MODEL_URI = get_model_uri(__file__)
 
@@ -124,19 +125,19 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     Xtrain, ytrain, Xtest, ytest = get_dataset(data_pars, task_type="train")
     if VERBOSE: log(Xtrain.shape, model.model)
 
-    # if "LGBM" in model.model_pars['model_class']:
 
     dtrain = model.model_meta.Dataset(Xtrain, label=ytrain)
     dval   = model.model_meta.Dataset(Xtest, label=ytest)
 
     # dtrain = LGBMModel_optuna.Dataset(Xtrain, label=ytrain)
     # dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
+    pars_optuna      = compute_pars.get("optuna_params", {})
 
-    model_fit   = model.model_meta.train(compute_pars.get("optuna_params", {}), dtrain, valid_sets=[dtrain, dval])
-    model.model = model_fit ### best model
+    model_fit        = model.model_meta.train( pars_optuna, dtrain, valid_sets=[dtrain, dval])
+    model.model      = model_fit ### best model
+    model.model_pars = model_fit.params
     return model_fit
-    # else:
-    #     model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
+
 
 
 def eval(data_pars=None, compute_pars=None, out_pars=None, **kw):
