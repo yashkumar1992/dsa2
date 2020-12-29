@@ -5,8 +5,6 @@ You can put hardcode here, specific to titanic dataset (along with optuna)
 All in one file config
   python optuna_classifier.py  train    > zlog/log_optuna_cls_train.txt 2>&1
   python optuna_classifier.py  predict  > zlog/log_optuna_cls_predict.txt 2>&1
-
-
 """
 import warnings, copy, os, sys
 
@@ -97,7 +95,7 @@ def titanic_lightgbm(path_model_out=""):
     """
     config_name = os_get_function_name()
     data_name = "titanic"  ### in data/input/
-    model_class = 'LGBMModel_optuna'  ### ACTUAL Class name for model_sklearn.py
+    model_class = 'LGBMModel_optuna'
     n_sample = 1000
 
     def post_process_fun(y):
@@ -148,8 +146,10 @@ def titanic_lightgbm(path_model_out=""):
                              "objective": "binary",
                              "metric": "binary_logloss",
                              "verbosity": -1,
-                             "boosting_type": "gbdt",
-                         }
+                             "boosting_type": "gbdt"
+                                            },
+                         'optuna_type': 'tuner' ### 'tuner' ->  optuna.integration.lightgbm.LightGBMTuner
+                                                ### 'simple' ->  optuna.integration.lightgbm.train
                          },
 
         'data_pars': {'n_sample': n_sample,
