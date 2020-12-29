@@ -138,3 +138,5 @@ dmypy.json
 /first_10_DB_exam_questions.txt
 /ztmp/talkingdata-adtracking-fraud-detection
 /ztmp
+/data/input/adfraud/train
+/data/input/adfraud/test
