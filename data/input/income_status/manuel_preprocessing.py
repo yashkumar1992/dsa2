@@ -135,13 +135,13 @@ def pd_normalize_quantile(df, col=['age', 'final_weight', 'capital-gain', 'capit
 
 ###############################################################################
 ##### Train processing ########################################################
-df    =  pd_cleanup(df, col=None, pars=None)
-df, col_pars    = pd_normalize_quantile(df,  col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'] , pars={} )
+df           =  pd_cleanup(df, col=None, pars=None)
+df, col_pars = pd_normalize_quantile(df,  col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'] , pars={} )
 
 
 
-feature_tr = df[0].drop(["status"],axis=1)
-target_tr  = df[0][["status","id"]]
+feature_tr = df.drop(["status"],axis=1)
+target_tr  = df[["status","id"]]
 feature_tr.to_csv( "train/features.csv", index=False)
 target_tr.to_csv(  "train/target.csv",index=False)
 
@@ -157,9 +157,9 @@ pars = col_pars['pars']
 
 
 ##### Test processing ############################################################
-df_test = pd_cleanup(df_test, col=None, pars=None)
+df_test   = pd_cleanup(df_test, col=None, pars=None)
 
-df_test = pd_normalize_quantile(df_test,
+df_test,_ = pd_normalize_quantile(df_test,
                   col  = ['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'],
                   pars = pars)
 
