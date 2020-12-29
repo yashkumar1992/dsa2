@@ -26,9 +26,8 @@ def pd_colall_preprocess(df, col, pars):
 
    df.drop(columns=["attributed_time"], inplace=True)
 
-   ## Let's see on which hour the click was happend
-   df["click_time"]=pd.to_datetime(df["click_time"])
-
+   ## Click time Split
+   df["click_time"]         = pd.to_datetime(df["click_time"])
    df["hour"]               = df["click_time"].dt.hour.astype("uint8")
    df["minute"]             = df["click_time"].dt.minute.astype("uint8")
    df["second"]             = df["click_time"].dt.second.astype("uint8")
@@ -36,25 +35,25 @@ def pd_colall_preprocess(df, col, pars):
    df["day_of_week"]        = df["click_time"].dt.dayofweek.astype("uint8")
 
 
-   print("Let's divide the day in four section ,See in which section click has happend ")
+   # "Let's divide the day in four section ,See in which section click has happend ")
    day_section              = 0
    for start_time, end_time in zip([0, 6, 12, 18], [6, 12, 18, 24]):
      df.loc[(df['hour']    >= start_time) & (df['hour'] < end_time), 'day_section'] = day_section
      day_section           += 1
 
-   print( "Let's see new clicks count features")
+   #  "Let's see new clicks count features")
    df["n_ip_clicks"]        = df[['ip', 'channel']].groupby(by=["ip"])[["channel"]].transform("count").astype("uint8")
 
-   print('Computing the number of clicks associated with a given app per hour...')
+   # 'Computing the number of clicks associated with a given app per hour...')
    df["n_app_clicks"]       = df[['app', 'day', 'hour', 'channel']].groupby(by=['app', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
 
-   print('Computing the number of channels associated with a given IP address within each hour...')
+   # 'Computing the number of channels associated with a given IP address within each hour...')
    df["n_channels"]         = df[['ip', 'day', 'hour', 'channel']].groupby(by=['ip', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
 
-   print('Computing the number of channels associated with ')
+   # 'Computing the number of channels associated with ')
    df['ip_app_count']       = df[['ip', 'app', 'channel']].groupby(by=['ip', 'app'])[['channel']].transform("count").astype("uint8")
 
-   print('Computing the number of channels associated with ')
+   # 'Computing the number of channels associated with ')
    df["ip_app_os_count"]    = df[['ip', 'app', 'os', 'channel']].groupby(by=['ip', 'app', 'os'])[['channel']].transform("count").astype("uint8")
 
 
@@ -157,7 +156,7 @@ bst = lgb.train(param, dtrain, num_round, valid_sets=[dvalid], early_stopping_ro
 from sklearn import metrics
 ypred = bst.predict(test_X)
 score = metrics.roc_auc_score(test_y, ypred)
-print(f"Test score: {score}")
+# f"Test score: {score}")
 
 
 
@@ -225,7 +224,7 @@ bst = lgb.train(param, dtrain, num_round, valid_sets=[dvalid], early_stopping_ro
 from sklearn import metrics
 ypred = bst.predict(test_X_all)
 score = metrics.roc_auc_score(test_y, ypred)
-print(f"Test score: {score}")
+# f"Test score: {score}")
 
 train_X.columns
 
@@ -263,7 +262,7 @@ bst = lgb.train(param, dtrain, num_round, valid_sets=[dvalid], early_stopping_ro
 from sklearn import metrics
 ypred = bst.predict(test_X_all)
 score = metrics.roc_auc_score(test_y, ypred)
-print(f"Test score: {score}")
+# f"Test score: {score}")
 
 
 
@@ -305,7 +304,7 @@ bst = lgb.train(param, dtrain, num_round, valid_sets=[dvalid], early_stopping_ro
 from sklearn import metrics
 ypred = bst.predict(test_X_all)
 score = metrics.roc_auc_score(test_y, ypred)
-print(f"Test score: {score}")
+# f"Test score: {score}")
 
 
 
@@ -382,7 +381,7 @@ bst = lgb.train(param, dtrain, num_round, valid_sets=[dvalid], early_stopping_ro
 from sklearn import metrics
 ypred = bst.predict(test_X_all)
 score = metrics.roc_auc_score(test_y, ypred)
-print(f"Test score: {score}")
+# f"Test score: {score}")
 
 
 

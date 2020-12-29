@@ -113,7 +113,6 @@ def pd_normalize_quantile(df, col=['age', 'final_weight', 'capital-gain', 'capit
     
   ###################################################################################
   if 'path_features_store' in pars and 'path_pipeline_export' in pars:
-    
       #pass
       #save_features(df, 'dfcat_encoder', pars['path_features_store'])
       #save(colnew,    pars['path_pipeline_export']  + "/colnum_encoder_model.pkl" )
