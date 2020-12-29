@@ -1,23 +1,24 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to titanic dataset
-All in one file config
-  python titanic_classifier.py  train    > zlog/log_titanic_train.txt 2>&1
-  python titanic_classifier.py  predict  > zlog/log_titanic_predict.txt 2>&1
-
-
+	python  income_status_classifier.py  data_profile
+	python  income_status_classifier.py  preprocess  --nsample 32560
+	python  income_status_classifier.py  train       --nsample 32560
+	python  income_status_classifier.py  check
+	python  income_status_classifier.py  predict
 """
+
+
+
 import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
+
+###################################################################################
+from source import util_feature
 
 
 ####################################################################################
 ###### Path ########################################################################
-from source import util_feature
-config_file  = os.path.basename(__file__)
-# config_file      = "titanic_classifier.py"   ### name of file which contains data configuration
-
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
@@ -27,81 +28,71 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
+def global_pars_update(model_dict,  data_name, config_name):
+    m                      = {}
+    model_name             = model_dict['model_pars']['model_class']
+    m['path_config_model'] = root + f"/{config_file}"
+    m['config_name']       = config_name
+
+    m['path_data_train']   = f'data/input/{data_name}/train/'
+    m['path_data_test']    = f'data/input/{data_name}/test/'
+
+    m['path_model']        = f'data/output/{data_name}/{config_name}/'
+    m['path_output_pred']  = f'data/output/{data_name}/pred_{config_name}/'
+    m['n_sample']          = model_dict['data_pars'].get('n_sample', 32560)
+
+    model_dict[ 'global_pars'] = m
+    return model_dict
+    
+
+
 def os_get_function_name():
     import sys
     return sys._getframe(1).f_code.co_name
 
 
-def global_pars_update(model_dict,  data_name, config_name):
-    m                      = {}
-    m['config_path']       = root + f"/{config_file}"
-    m['config_name']       = config_name
-
-    ##### run_Preoprocess ONLY
-    m['path_data_preprocess'] = root + f'/data/input/{data_name}/train/'
-
-    ##### run_Train  ONLY
-    m['path_data_train']   = root + f'/data/input/{data_name}/train/'
-    m['path_data_test']    = root + f'/data/input/{data_name}/test/'
-    #m['path_data_val']    = root + f'/data/input/{data_name}/test/'
-    m['path_train_output']    = root + f'/data/output/{data_name}/{config_name}/'
-    m['path_train_model']     = root + f'/data/output/{data_name}/{config_name}/model/'
-    m['path_features_store']  = root + f'/data/output/{data_name}/{config_name}/features_store/'
-    m['path_pipeline']        = root + f'/data/output/{data_name}/{config_name}/pipeline/'
+####################################################################################
+config_file     = "income_status_classifier.py"   ### name of file which contains data configuration
+config_default  = 'income_status_lightgbm'        ### name of function which contains data configuration
 
 
-    ##### Prediction
-    m['path_pred_data']    = root + f'/data/input/{data_name}/test/'
-    m['path_pred_pipeline']= root + f'/data/output/{data_name}/{config_name}/pipeline/'
-    m['path_pred_model']   = root + f'/data/output/{data_name}/{config_name}/model/'
-    m['path_pred_output']  = root + f'/data/output/{data_name}/pred_{config_name}/'
-
-
-    #####  Generic
-    m['n_sample']             = model_dict['data_pars'].get('n_sample', 5000)
-
-    model_dict[ 'global_pars'] = m
-    return model_dict
 
 
 ####################################################################################
 ##### Params########################################################################
-config_default   = 'titanic_lightgbm'          ### name of function which contains data configuration
-
-
-# data_name    = "titanic"     ### in data/input/
+# data_name    = "income_status"     ### in data/input/
 cols_input_type_1 = {
-     "coly"   :   "Survived"
-    ,"colid"  :   "PassengerId"
-    ,"colcat" :   ["Sex", "Embarked" ]
-    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
+     "coly"   :   "status"
+    ,"colid"  :   "id"
+    ,"colcat" :   ["occupation","workclass","native-country","education-num","marital-status","relationship","race","sex"]
+    ,"colnum" :   ["age", "final_weight", "capital-gain", "capital-loss", "hours-per-week"]
     ,"coltext" :  []
     ,"coldate" :  []
-    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+    ,"colcross" : ["occupation","workclass","native-country","education-num","marital-status","relationship","race","sex","age", "final_weight", "capital-gain", "capital-loss", "hours-per-week"]
 }
 
 
 cols_input_type_2 = {
-     "coly"   :   "Survived"
-    ,"colid"  :   "PassengerId"
-    ,"colcat" :   ["Sex", "Embarked" ]
-    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-    ,"coltext" :  ["Name", "Ticket"]
+     "coly"   :   "status"
+    ,"colid"  :   "id"
+    ,"colcat" :   ["occupation","workclass","native-country","education-num","marital-status","relationship","race","sex"]
+    ,"colnum" :   ["age", "final_weight", "capital-gain", "capital-loss", "hours-per-week"]
+    ,"coltext" :  []
     ,"coldate" :  []
-    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+    ,"colcross" : ["occupation","workclass","native-country","education-num","marital-status","relationship","race","sex","age", "final_weight", "capital-gain", "capital-loss", "hours-per-week"]
 }
 
 
+
 ####################################################################################
-def titanic_lightgbm(path_model_out="") :
+def income_status_lightgbm(path_model_out="") :
     """
        Contains all needed informations for Light GBM Classifier model,
        used for titanic classification task
     """
-    config_name  = os_get_function_name()
-    data_name    = "titanic"         ### in data/input/
+    data_name    = "income_status"         ### in data/input/
     model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
-    n_sample     = 1000
+    n_sample     = 32560
 
     def post_process_fun(y):
         ### After prediction is done
@@ -113,17 +104,23 @@ def titanic_lightgbm(path_model_out="") :
 
 
     model_dict = {'model_pars': {
+        'model_path'       : path_model_out
+
         ### LightGBM API model   #######################################
-         'model_class': model_class
-        ,'model_pars' : {'objective': 'binary',
-                           'n_estimators':50,
-                           'learning_rate':0.001,
-                           'boosting_type':'gbdt',     ### Model hyperparameters
-                           'early_stopping_rounds': 5
-                        }
+        ,'model_class': model_class
+        ,'model_pars' : {'boosting_type':'gbdt', 'class_weight':None, 'colsample_bytree':1.0,
+						'importance_type':'split', 'learning_rate':0.001, 'max_depth':-1,
+						'min_child_samples':20, 'min_child_weight':0.001, 'min_split_gain':0,
+						'n_estimators':5000, 'n_jobs':-1, 'num_leaves':31, 'objective':None,
+						'random_state':None, 'reg_alpha':0, 'reg_lambda':0.0, 'silent':True,
+						'subsample':1.0, 'subsample_for_bin':200000, 'subsample_freq':0}
+                      
+                        
+        
 
         ### After prediction  ##########################################
         , 'post_process_fun' : post_process_fun
+
 
         ### Before training  ##########################################
         , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
@@ -131,6 +128,11 @@ def titanic_lightgbm(path_model_out="") :
 
         ### Pipeline for data processing ##############################
         'pipe_list': [
+
+            #{'uri': 'data/input/income/manual_preprocessing.py::pd_income_processor',      'pars': {}, 'cols_family': 'colall',   'cols_out': 'colall',
+            #        'type': 'filter'         },
+
+
             {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
             {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
@@ -142,11 +144,12 @@ def titanic_lightgbm(path_model_out="") :
         },
 
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
-                        },
+                      },
 
       'data_pars': { 'n_sample' : n_sample,
           'cols_input_type' : cols_input_type_1,
-          ### family of columns for MODEL  #########################################################
+
+          ### family of columns for MODEL  ########################################################
           #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
           #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
@@ -166,8 +169,14 @@ def titanic_lightgbm(path_model_out="") :
       }
 
     ##### Filling Global parameters    ############################################################
-    model_dict        = global_pars_update(model_dict, data_name, config_name )
+    model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
+
+
+
+
+
+
 
 
 
@@ -183,10 +192,6 @@ def data_profile(path_data_train="", path_model="", n_sample= 5000):
 
 ###################################################################################
 ########## Preprocess #############################################################
-### def preprocess(config='', nsample=1000):
-from run import preprocess
-
-"""
 def preprocess(config=None, nsample=None):
     config_name  = config  if config is not None else config_default
     mdict        = globals()[config_name]()
@@ -194,20 +199,16 @@ def preprocess(config=None, nsample=None):
     print(mdict)
 
     from source import run_preprocess
-    run_preprocess.run_preprocess(config_name   =  config_name,
-                                  config_path   =  m['config_path'],
-                                  n_sample      =  nsample if nsample is not None else m['n_sample'],
+    run_preprocess.run_preprocess(config_name       =  config_name,
+                                  config_path       =  m['config_path'],
+                                  n_sample          =  nsample if nsample is not None else m['n_sample'],
 
                                   ### Optonal
-                                  mode          =  'run_preprocess')
-"""
-
+                                  mode              =  'run_preprocess')
 
 
 ##################################################################################
 ########## Train #################################################################
-from run import train
-"""
 def train(config=None, nsample=None):
 
     config_name  = config  if config is not None else config_default
@@ -220,8 +221,6 @@ def train(config=None, nsample=None):
                         config_path       =  m['config_path'],
                         n_sample          =  nsample if nsample is not None else m['n_sample'],
                         )
-"""
-
 
 
 ###################################################################################
@@ -234,10 +233,6 @@ def check():
 
 ####################################################################################
 ####### Inference ##################################################################
-# predict(config='', nsample=10000)
-from run import predict
-
-"""
 def predict(config=None, nsample=None):
     config_name  = config  if config is not None else config_default
     mdict        = globals()[config_name]()
@@ -246,7 +241,7 @@ def predict(config=None, nsample=None):
 
     from source import run_inference
     run_inference.run_predict(config_name = config_name,
-                              config_path = m['config_path'],
+                              config_path =  m['config_path'],
                               n_sample    = nsample if nsample is not None else m['n_sample'],
 
                               #### Optional
@@ -254,22 +249,21 @@ def predict(config=None, nsample=None):
                               path_output = m['path_pred_output'],
                               model_dict  = None
                               )
-"""
+
+
+
 
 
 ###########################################################################################################
 ###########################################################################################################
 """
-python  titanic_classifier.py  data_profile
-python  titanic_classifier.py  preprocess  --nsample 100
-python  titanic_classifier.py  train       --nsample 200
-python  titanic_classifier.py  check
-python  titanic_classifier.py  predict
-
-
+python  income_status_classifier.py  data_profile
+python  income_status_classifier.py  preprocess
+python  income_status_classifier.py  train 
+python  income_status_classifier.py  check
+python  income_status_classifier.py  predict
+python  income_status_classifier.py  run_all
 """
 if __name__ == "__main__":
     import fire
     fire.Fire()
-    
-

@@ -7,6 +7,9 @@ https://optuna.readthedocs.io/en/stable/reference/generated/optuna.integration.l
 https://github.com/optuna/optuna/blob/master/examples/lightgbm_tuner_simple.py
 
 
+
+
+
 """
 import os
 import pandas as pd, numpy as np, scipy as sci
@@ -49,12 +52,13 @@ def init(*kw, **kwargs):
 class Model(object):
     def __init__(self, model_pars=None, data_pars=None, compute_pars=None):
         self.model_pars, self.compute_pars, self.data_pars = model_pars, compute_pars, data_pars
-
         if model_pars is None:
             self.model = None
         else:
             model_class = globals()[model_pars['model_class']]
-            self.model = model_class(**model_pars['model_pars'])
+            self.model_meta = model_class  ### Hyper param seerch Model
+            self.model = None              ### Best model saved after train
+            #self.model = model_class()
             if VERBOSE: log(model_class, self.model)
 
 """
@@ -120,15 +124,19 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     Xtrain, ytrain, Xtest, ytest = get_dataset(data_pars, task_type="train")
     if VERBOSE: log(Xtrain.shape, model.model)
 
-    if "LGBM" in model.model_pars['model_class']:
-        dtrain = lgb.Dataset(train_x, label=train_y)
-        dval = lgb.Dataset(val_x, label=val_y)
+    # if "LGBM" in model.model_pars['model_class']:
 
-        model.model.(params, dtrain, valid_sets=[dtrain, dval],
-                                    **compute_pars.get("compute_pars", {}))
+    dtrain = model.model_meta.Dataset(Xtrain, label=ytrain)
+    dval   = model.model_meta.Dataset(Xtest, label=ytest)
 
-    else:
-        model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
+    # dtrain = LGBMModel_optuna.Dataset(Xtrain, label=ytrain)
+    # dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
+
+    model_fit   = model.model_meta.train(compute_pars.get("optuna_params", {}), dtrain, valid_sets=[dtrain, dval])
+    model.model = model_fit ### best model
+    return model_fit
+    # else:
+    #     model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
 
 
 def eval(data_pars=None, compute_pars=None, out_pars=None, **kw):
@@ -159,7 +167,9 @@ def eval(data_pars=None, compute_pars=None, out_pars=None, **kw):
 
 def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
     global model, session
+    ## optuna_model = model.model_pars.get('optuna_model', None)   #### NO model is saved in model.model
     post_process_fun = model.model_pars.get('post_process_fun', None)
+
     if post_process_fun is None:
         def post_process_fun(y):
             return y
@@ -168,7 +178,9 @@ def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
         data_pars['train'] = False
         Xpred = get_dataset(data_pars, task_type="predict")
 
-    ypred = model.model.predict(Xpred)
+    # ypred = optuna_model.predict(Xpred, num_iteration=optuna_model.best_iteration)
+    ypred = model.model.predict(Xpred, num_iteration=model.model.best_iteration)
+
     #ypred = post_process_fun(ypred)
     
     ypred_proba = None  ### No proba    
@@ -187,6 +199,7 @@ def save(path=None, info=None):
     import cloudpickle as pickle
     os.makedirs(path, exist_ok=True)
 
+
     filename = "model.pkl"
     pickle.dump(model, open(f"{path}/{filename}", mode='wb'))  # , protocol=pickle.HIGHEST_PROTOCOL )
 
@@ -200,7 +213,10 @@ def load_model(path=""):
     model0 = pickle.load(open(f"{path}/model.pkl", mode='rb'))
 
     model = Model()  # Empty model
-    model.model = model0.model
+    model.model      = model0.model
+    model.model_meta = model0.model_meta
+
+
     model.model_pars = model0.model_pars
     model.compute_pars = model0.compute_pars
     session = None
