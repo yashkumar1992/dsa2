@@ -122,9 +122,11 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     # if "LGBM" in model.model_pars['model_class']:
     dtrain = LGBMModel_optuna.Dataset(Xtrain, label=ytrain)
     dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
-
-    return model.model.train(compute_pars.get("optuna_params", {}), dtrain, valid_sets=[dtrain, dval])
-
+    optuna_type = compute_pars.get('optuna_type', 'simple')
+    if optuna_type == 'tuner':
+        return model.model.LightGBMTuner(compute_pars.get("optuna_params", {}), dtrain, valid_sets=[dtrain, dval]).run()
+    else:
+        return model.model.train(compute_pars.get("optuna_params", {}), dtrain, valid_sets=[dtrain, dval])
     # else:
     #     model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
 
@@ -167,7 +169,6 @@ def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
     if Xpred is None:
         data_pars['train'] = False
         Xpred = get_dataset(data_pars, task_type="predict")
-
     ypred = optuna_model.predict(Xpred, num_iteration=optuna_model.best_iteration)
     #ypred = post_process_fun(ypred)
     
