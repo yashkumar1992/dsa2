@@ -106,7 +106,7 @@ def pd_normalize_quantile(df, col=['age', 'final_weight', 'capital-gain', 'capit
 
   colnew   = [ t + "_norm" for t in df.columns ]
   pars_new = {'lower_bound' : lower_bound, 'upper_bound': upper_bound,
-              'lower_bound_sparse' : lower_bound_sparse
+              'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse
               }
   dfnew    = df
   encoder_model = None
@@ -129,7 +129,6 @@ def pd_normalize_quantile(df, col=['age', 'final_weight', 'capital-gain', 'capit
 
   #dfnew    = df.drop(["status"],axis=1)
   return dfnew,  col_pars
-
 
 
 
