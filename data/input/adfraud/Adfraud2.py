@@ -1,8 +1,7 @@
-
-
 import pandas as pd
 import numpy as np
 import random
+import copy
 random.seed(100)
 
 
@@ -10,86 +9,74 @@ df=pd.read_csv("raw/train_sample.csv")
 df.head()
 
 df.drop(columns=["attributed_time"], inplace=True)
-df["click_time"]=pd.to_datetime(df["click_time"])
 
-"""## Let's Perform Some Feature Engineering"""
-import copy
 
-def preprocess_data(df):
-       ## Let's Extract some features out of all availabel columns
 
-       ## Let's see on which hour the click was happend
-       df["hour"]=df["click_time"].dt.hour.astype("uint8")
 
-       ## Let's see on which minute the click was happend
-       df["minute"]=df["click_time"].dt.minute.astype("uint8")
 
-       ## Let's see on which second the click was happend
-       df["second"]=df["click_time"].dt.second.astype("uint8")
-
-       ## Let's see on which day the click was happend
-       df["day"]=df["click_time"].dt.day.astype("uint8")
-       return df
 
 def pd_colall_preprocess(df, col=None, pars=None):
    df = copy.deepcopy(df)
-   df=preprocess_data(df)
-
-       ## Let's see on which dayofweek the click was happend
 
 
-   print("Let's divide the day in four section ,See in which section click has happend ")
+   ##Let's divide the day in four section ,See in which section click has happend ")
    day_section = 0
    for start_time, end_time in zip([0, 6, 12, 18], [6, 12, 18, 24]):
               df.loc[(df['hour'] >= start_time) & (df['hour'] < end_time), 'day_section'] = day_section
               day_section += 1
 
    print( "Let's see new clicks count features")
-   df["n_ip_clicks"]=df[['ip', 'channel']].groupby(by=["ip"])[["channel"]].transform("count").astype("uint8")
+   df["n_ip_clicks"]  = df[['ip', 'channel']].groupby(by=["ip"])[["channel"]].transform("count").astype("uint8")
    ## Let's see on which hour the click was happend
-   df["click_time"]=pd.to_datetime(df["click_time"])
+   df["click_time"]   = pd.to_datetime(df["click_time"])
 
-   df["hour"]  = df["click_time"].dt.hour.astype("uint8")
-   df["minute"]  = df["click_time"].dt.minute.astype("uint8")
-   df["second"] = df["click_time"].dt.second.astype("uint8")
-   df["day"]= df["click_time"].dt.day.astype("uint8")
-   df["day_of_week"]=df["click_time"].dt.dayofweek.astype("uint8")
-   print('Computing the number of clicks associated with a given app per hour...')
-   df["n_app_clicks"]= df[['app', 'day', 'hour', 'channel']].groupby(by=['app', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
+   df["hour"]         = df["click_time"].dt.hour.astype("uint8")
+   df["minute"]       = df["click_time"].dt.minute.astype("uint8")
+   df["second"]       = df["click_time"].dt.second.astype("uint8")
+   df["day"]          = df["click_time"].dt.day.astype("uint8")
+   df["day_of_week"]  = df["click_time"].dt.dayofweek.astype("uint8")
 
-   print('Computing the number of channels associated with a given IP address within each hour...')
-   df["n_channels"]=df[['ip', 'day', 'hour', 'channel']].groupby(by=['ip', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
-   print("Let's divide the day in four section ,See in which section click has happend ")
+
+   ##Computing the number of clicks associated with a given app per hour...')
+   df["n_app_clicks"] = df[['app', 'day', 'hour', 'channel']].groupby(by=['app', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
+
+   ##Computing the number of channels associated with a given IP address within each hour...')
+   df["n_channels"]   = df[['ip', 'day', 'hour', 'channel']].groupby(by=['ip', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
+
+
+   ##Let's divide the day in four section ,See in which section click has happend ")
    day_section              = 0
    for start_time, end_time in zip([0, 6, 12, 18], [6, 12, 18, 24]):
      df.loc[(df['hour'] >= start_time) & (df['hour'] < end_time), 'day_section'] = day_section
      day_section             += 1
 
-   print('Computing the number of channels associated with ')
-   df['ip_app_count']=df[['ip', 'app', 'channel']].groupby(by=['ip', 'app'])[['channel']].transform("count").astype("uint8")
+   ##Computing the number of channels associated with ')
+   df['ip_app_count']       = df[['ip', 'app', 'channel']].groupby(by=['ip', 'app'])[['channel']].transform("count").astype("uint8")
    print( "Let's see new clicks count features")
    df["n_ip_clicks"]        = df[['ip', 'channel']].groupby(by=["ip"])[["channel"]].transform("count").astype("uint8")
 
-   print('Computing the number of channels associated with ')
-   df["ip_app_os_count"]= df[['ip', 'app', 'os', 'channel']].groupby(by=['ip', 'app', 'os'])[['channel']].transform("count").astype("uint8")
-
-   df['n_ip_os_day_hh']=df[['ip', 'os', 'day', 'hour', 'channel']].groupby(by=['ip', 'os', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
-   print('Computing the number of clicks associated with a given app per hour...')
-   df["n_app_clicks"]       = df[['app', 'day', 'hour', 'channel']].groupby(by=['app', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
-
-   df['n_ip_app_day_hh']=df[['ip', 'app', 'day', 'hour', 'channel']].groupby(by=['ip', 'app', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
-   print('Computing the number of channels associated with a given IP address within each hour...')
-   df["n_channels"]         = df[['ip', 'day', 'hour', 'channel']].groupby(by=['ip', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
-
-   df['n_ip_app_os_day_hh']=df[['ip', 'app', 'os', 'day', 'hour', 'channel']].groupby(by=['ip', 'app', 'os', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
-   print('Computing the number of channels associated with ')
-   df['ip_app_count']       = df[['ip', 'app', 'channel']].groupby(by=['ip', 'app'])[['channel']].transform("count").astype("uint8")
-
-   df['n_ip_app_dev_os']=df[['ip', 'app', 'device', 'os', 'channel']].groupby(by=['ip', 'app', 'device', 'os'])[['channel']].transform("count").astype("uint8")
-   print('Computing the number of channels associated with ')
+   ##Computing the number of channels associated with ')
    df["ip_app_os_count"]    = df[['ip', 'app', 'os', 'channel']].groupby(by=['ip', 'app', 'os'])[['channel']].transform("count").astype("uint8")
 
-   df['n_ip_dev_os']=df[['ip', 'device', 'os', 'channel']].groupby(by=['ip', 'device', 'os'])[['channel']].transform("count").astype("uint8")
+   df['n_ip_os_day_hh']     = df[['ip', 'os', 'day', 'hour', 'channel']].groupby(by=['ip', 'os', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
+   ##Computing the number of clicks associated with a given app per hour...')
+   df["n_app_clicks"]       = df[['app', 'day', 'hour', 'channel']].groupby(by=['app', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
+
+   df['n_ip_app_day_hh']    = df[['ip', 'app', 'day', 'hour', 'channel']].groupby(by=['ip', 'app', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
+   ##Computing the number of channels associated with a given IP address within each hour...')
+   df["n_channels"]         = df[['ip', 'day', 'hour', 'channel']].groupby(by=['ip', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
+
+   df['n_ip_app_os_day_hh'] = df[['ip', 'app', 'os', 'day', 'hour', 'channel']].groupby(by=['ip', 'app', 'os', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
+   ##Computing the number of channels associated with ')
+   df['ip_app_count']       = df[['ip', 'app', 'channel']].groupby(by=['ip', 'app'])[['channel']].transform("count").astype("uint8")
+
+   df['n_ip_app_dev_os']    = df[['ip', 'app', 'device', 'os', 'channel']].groupby(by=['ip', 'app', 'device', 'os'])[['channel']].transform("count").astype("uint8")
+   ##Computing the number of channels associated with ')
+   df["ip_app_os_count"]    = df[['ip', 'app', 'os', 'channel']].groupby(by=['ip', 'app', 'os'])[['channel']].transform("count").astype("uint8")
+
+   df['n_ip_dev_os']        = df[['ip', 'device', 'os', 'channel']].groupby(by=['ip', 'device', 'os'])[['channel']].transform("count").astype("uint8")
+
+
    GROUPBY_AGGREGATIONS = [
     # Count, for ip-day-hour
     {'groupby': ['ip','day','hour'], 'select': 'channel', 'agg': 'count'},
@@ -131,33 +118,29 @@ def pd_colall_preprocess(df, col=None, pars=None):
 
 # Apply all the groupby transformations
    for spec in GROUPBY_AGGREGATIONS:
+      # Name of the aggregation we're applying
+      agg_name = spec['agg_name'] if 'agg_name' in spec else spec['agg']
 
-    # Name of the aggregation we're applying
-    agg_name = spec['agg_name'] if 'agg_name' in spec else spec['agg']
+      # Name of new feature
+      new_feature = '{}_{}_{}'.format('_'.join(spec['groupby']), agg_name, spec['select'])
 
-    # Name of new feature
-    new_feature = '{}_{}_{}'.format('_'.join(spec['groupby']), agg_name, spec['select'])
+      print("Grouping by {}, and aggregating {} with {}".format( spec['groupby'], spec['select'], agg_name ))
 
-    # Info
-    print("Grouping by {}, and aggregating {} with {}".format(
-        spec['groupby'], spec['select'], agg_name
-    ))
+      # Unique list of features to select
+      all_features = list(set(spec['groupby'] + [spec['select']]))
 
-    # Unique list of features to select
-    all_features = list(set(spec['groupby'] + [spec['select']]))
+      # Perform the groupby
+      gp = df[all_features]. \
+          groupby(spec['groupby'])[spec['select']]. \
+          agg(spec['agg']). \
+          reset_index(). \
+          rename(index=str, columns={spec['select']: new_feature})
 
-    # Perform the groupby
-    gp = df[all_features]. \
-        groupby(spec['groupby'])[spec['select']]. \
-        agg(spec['agg']). \
-        reset_index(). \
-        rename(index=str, columns={spec['select']: new_feature})
-
-    # Merge back to df
-    if 'cumcount' == spec['agg']:
-        df[new_feature] = gp[0].values
-    else:
-        df = df.merge(gp, on=spec['groupby'], how='left')
+      # Merge back to df
+      if 'cumcount' == spec['agg']:
+          df[new_feature] = gp[0].values
+      else:
+          df = df.merge(gp, on=spec['groupby'], how='left')
 
    del gp
 
@@ -192,6 +175,8 @@ train_X,test_X,train_y,test_y=train_test_split(df_X,df_y,stratify=df_y,test_size
 
 train_X,val_X,train_y,val_y=train_test_split(train_X,train_y,stratify=train_y,test_size=0.1)
 
+
+
 import lightgbm as lgb
 dtrain = lgb.Dataset(train_X, train_y)
 dvalid = lgb.Dataset(val_X, val_y)
@@ -214,6 +199,8 @@ param = {'num_leaves': 64, 'objective': 'binary',"seed":1,'boosting_type': 'dart
     'reg_lambda': 0,}
 num_round = 100
 bst = lgb.train(param, dtrain, num_round, valid_sets=[dvalid], early_stopping_rounds=20)
+
+
 
 from sklearn import metrics
 ypred = bst.predict(test_X)
@@ -304,6 +291,10 @@ ypred = bst.predict(test_X_all)
 score = metrics.roc_auc_score(test_y, ypred)
 print(f"Test score: {score}")
 
+
+
+
+#######################################################################################################
 from gplearn.genetic import SymbolicTransformer
 
 def pd_col_genetic_transform(df=None, col=None, pars=None):
