@@ -4,6 +4,7 @@ import random
 import copy
 import imblearn
 import time
+
 random.seed(100)
 
 df = pd.read_csv("raw/train_sample.csv")
@@ -12,32 +13,17 @@ df.head()
 df.drop(columns=["attributed_time"], inplace=True)
 df["click_time"] = pd.to_datetime(df["click_time"])
 
-"""## Let's Perform Some Feature Engineering"""
 
-
-def preprocess_data(df):
-    ## Let's Extract some features out of all availabel columns
-
-    ## Let's see on which hour the click was happend
-    df["hour"] = df["click_time"].dt.hour.astype("uint8")
-
-    ## Let's see on which minute the click was happend
-    df["minute"] = df["click_time"].dt.minute.astype("uint8")
-
-    ## Let's see on which second the click was happend
-    df["second"] = df["click_time"].dt.second.astype("uint8")
-
-    ## Let's see on which day the click was happend
-    df["day"] = df["click_time"].dt.day.astype("uint8")
-    df["day_of_week"] = df["click_time"].dt.dayofweek.astype("uint8")
-    return df
-
+##  Feature Engineering
 
 def pd_colall_preprocess(df, col=None, pars=None):
     df = copy.deepcopy(df)
-    df = preprocess_data(df)
-
-    ## Let's see on which dayofweek the click was happend
+    # Extract hour , minute, second, day and day of week features from click_time timestamp
+    df["hour"] = df["click_time"].dt.hour.astype("uint8")
+    df["minute"] = df["click_time"].dt.minute.astype("uint8")
+    df["second"] = df["click_time"].dt.second.astype("uint8")
+    df["day"] = df["click_time"].dt.day.astype("uint8")
+    df["day_of_week"] = df["click_time"].dt.dayofweek.astype("uint8")
 
     print("Let's divide the day in four section ,See in which section click has happend ")
     day_section = 0
@@ -182,14 +168,8 @@ def pd_colall_preprocess(df, col=None, pars=None):
         "count").astype("uint8")
 
     df.drop(columns=["click_time"], axis=1, inplace=True)
-
-    df['is_attributed'].value_counts(normalize=True)  ### ?
-    df["is_attributed"] = df["is_attributed"].astype("uint8")
-
-    df.is_attributed.value_counts(normalize=True)
-    dfnew = df
     col_pars = {}
-    return dfnew, col_pars
+    return df, col_pars
 
 
 df, col_pars = pd_colall_preprocess(df)
@@ -231,9 +211,8 @@ from sklearn import metrics
 
 ypred = bst.predict(test_X)
 score = metrics.roc_auc_score(test_y, ypred)
-print(f"Test score: {score}") #Best Test score: 0.9798680931680435 Other executions: score: 0.9199833347745086 Test score: 0.9577218165095787
-
-
+print(
+    f"Test score: {score}")  # Best Test score: 0.9798680931680435 Other executions: score: 0.9199833347745086 Test score: 0.9577218165095787
 
 from gplearn.genetic import SymbolicTransformer
 
@@ -272,9 +251,9 @@ train_X_all, test_X_all, val_X_all = pd_col_genetic_transform(df, col=list(df.co
 
 import lightgbm as lgb
 
-dtrain = lgb.Dataset(train_X_all, train_y)
-dvalid = lgb.Dataset(val_X_all, val_y)
-dtest = lgb.Dataset(test_X_all, test_y)
+dtrain_genetic = lgb.Dataset(train_X_all, train_y)
+dvalid_genetic = lgb.Dataset(val_X_all, val_y)
+dtest_genetic = lgb.Dataset(test_X_all, test_y)
 
 param = {'num_leaves': 63, 'objective': 'binary', "seed": 1, 'boosting_type': 'dart',
          # Use boosting_type="gbrt" for large dataset
@@ -291,25 +270,25 @@ param = {'num_leaves': 63, 'objective': 'binary', "seed": 1, 'boosting_type': 'd
          'reg_alpha': 0,
          'reg_lambda': 0, }
 num_round = 1000
-bst = lgb.train(param, dtrain, num_round, valid_sets=[dvalid], early_stopping_rounds=20)
+bst = lgb.train(param, dtrain_genetic, num_round, valid_sets=[dvalid_genetic], early_stopping_rounds=20)
 
 from sklearn import metrics
 
 ypred = bst.predict(test_X_all)
 score = metrics.roc_auc_score(test_y, ypred)
-print(f"Test score: {score}") #Best test score: Test score: 0.9802690018944903 Other executions : Test score: 0.9790603799985851 Test score: 0.954113637971559
+print(
+    f"Test score: {score}")  # Best test score: Test score: 0.9802690018944903 Other executions : Test score: 0.9790603799985851 Test score: 0.954113637971559
 
 
 ### Since the data is highly imbalanced we use lightgbm scale_pos_weight
 
 def lgb_modelfit_nocv(params, dtrain, dvalid, objective='binary', metrics='auc',
-                      feval=None, early_stopping_rounds=20, num_boost_round=3000,verbose_eval=10):
+                      feval=None, early_stopping_rounds=20, num_boost_round=3000, verbose_eval=10):
     lgb_params = {
         'boosting_type': 'gbdt',
         'objective': objective,
         'metric': metrics,
         'learning_rate': 0.01,
-        # 'is_unbalance': 'true',  #because training data is unbalance (replaced with scale_pos_weight)
         'num_leaves': 31,  # we should let it be smaller than 2^(max_depth)
         'max_depth': -1,  # -1 means no limit
         'min_child_samples': 20,  # Minimum number of data need in a child(min_data_in_leaf)
@@ -330,7 +309,7 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, objective='binary', metrics='auc',
 
     print("preparing validation datasets")
 
-    xgtrain = dtrain
+    xgtrain = dtrain  # we're using the feature engineered dataset not the genetic one
     xgvalid = dvalid
 
     evals_results = {}
@@ -351,6 +330,7 @@ def lgb_modelfit_nocv(params, dtrain, dvalid, objective='binary', metrics='auc',
     print(metrics + ":", evals_results['valid'][metrics][n_estimators - 1])
 
     return bst1
+
 
 print("Training...")
 start_time = time.time()
@@ -390,3 +370,37 @@ print(f"Test score: {score}")
 # auc: 0.936902301739492
 # [0.5453190803527832]: model training time
 # Test score: 0.9526652569353279
+
+
+## Dealing with class imbalance using SMOTE
+
+from imblearn.over_sampling import SMOTE
+
+X_SMOTE_resampled, y_SMOTE_resampled = SMOTE().fit_resample(train_X, train_y)
+
+dtrain = lgb.Dataset(X_SMOTE_resampled, y_SMOTE_resampled)
+dvalid = lgb.Dataset(val_X, val_y)
+dtest = lgb.Dataset(test_X, test_y)
+
+param = {'num_leaves': 63, 'objective': 'binary', "seed": 1, 'boosting_type': 'dart',
+         # Use boosting_type="gbrt" for large dataset
+         'metric': 'auc',
+         'learning_rate': 0.1,
+         'max_depth': -1,
+         'min_child_samples': 100,
+         'max_bin': 100,
+         'subsample': 0.9,  # Was 0.7
+         'subsample_freq': 1,
+         'colsample_bytree': 0.7,
+         'min_child_weight': 0,
+         'min_split_gain': 0,
+         'reg_alpha': 0,
+         'reg_lambda': 0, }
+num_round = 1000
+bst = lgb.train(param, dtrain, num_round, valid_sets=[dvalid], early_stopping_rounds=20)
+
+from sklearn import metrics
+
+ypred = bst.predict(test_X)
+score = metrics.roc_auc_score(test_y, ypred)
+print(f"Test score: {score}")  #
