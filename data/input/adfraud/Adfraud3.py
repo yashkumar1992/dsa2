@@ -178,6 +178,9 @@ df_y = df["is_attributed"]
 
 df["is_attributed"] = df["is_attributed"].astype("uint8")
 
+####################################################################################################
+## Let's train a baseline model with the features we created in the above code
+
 from sklearn.model_selection import train_test_split
 
 train_X, test_X, train_y, test_y = train_test_split(df_X, df_y, stratify=df_y, test_size=0.15)
@@ -213,6 +216,10 @@ ypred = bst.predict(test_X)
 score = metrics.roc_auc_score(test_y, ypred)
 print(
     f"Test score: {score}")  # Best Test score: 0.9798680931680435 Other executions: score: 0.9199833347745086 Test score: 0.9577218165095787
+
+####################################################################################################
+## The following experiment with Genetic algorithm for categorical feature encoding
+
 
 from gplearn.genetic import SymbolicTransformer
 
@@ -278,6 +285,10 @@ ypred = bst.predict(test_X_all)
 score = metrics.roc_auc_score(test_y, ypred)
 print(
     f"Test score: {score}")  # Best test score: Test score: 0.9802690018944903 Other executions : Test score: 0.9790603799985851 Test score: 0.954113637971559
+
+####################################################################################################
+## Now we will test two methods to handle imbalance in the dataset first we use:
+## 1) scale_pos_weight': 99  # because training data is extremely unbalanced
 
 
 ### Since the data is highly imbalanced we use lightgbm scale_pos_weight
@@ -371,8 +382,11 @@ print(f"Test score: {score}")
 # [0.5453190803527832]: model training time
 # Test score: 0.9526652569353279
 
-
-## Dealing with class imbalance using SMOTE
+####################################################################################################
+####################################################################################################
+## Now we will test two methods to handle imbalance in the dataset second we use:
+## 2) Synthetic Minority Oversampling Technique (SMOTE) for Over-Sampling
+##
 
 from imblearn.over_sampling import SMOTE
 
@@ -404,3 +418,9 @@ from sklearn import metrics
 ypred = bst.predict(test_X)
 score = metrics.roc_auc_score(test_y, ypred)
 print(f"Test score: {score}")  #Test score: 0.96083278961725
+
+####################################################################################################
+####################################################################################################
+## Now we will use the GeFS Model on our data
+
+
