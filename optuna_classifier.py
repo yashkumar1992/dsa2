@@ -5,9 +5,10 @@ You can put hardcode here, specific to titanic dataset (along with optuna)
 All in one file config
   python optuna_classifier.py  train    > zlog/log_optuna_cls_train.txt 2>&1
   python optuna_classifier.py  predict  > zlog/log_optuna_cls_predict.txt 2>&1
+
+
 """
 import warnings, copy, os, sys
-
 warnings.filterwarnings('ignore')
 
 ####################################################################################
@@ -15,7 +16,7 @@ warnings.filterwarnings('ignore')
 from source import util_feature
 
 config_file = os.path.basename(__file__)
-# config_file      = "titanic_classifier.py"   ### name of file which contains data configuration
+print(config_file)
 
 print(os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
@@ -63,7 +64,7 @@ def global_pars_update(model_dict, data_name, config_name):
 
 ####################################################################################
 ##### Params########################################################################
-config_default = 'titanic_lightgbm'  ### name of function which contains data configuration
+config_default = 'titanic_lightoptuna'  ### name of function which contains data configuration
 
 # data_name    = "titanic"     ### in data/input/
 cols_input_type_1 = {
@@ -88,15 +89,15 @@ cols_input_type_2 = {
 
 
 ####################################################################################
-def titanic_lightgbm(path_model_out=""):
+def titanic_lightoptuna():
     """
        Contains all needed informations for Light GBM Classifier model,
        used for titanic classification task
     """
     config_name = os_get_function_name()
-    data_name = "titanic"  ### in data/input/
-    model_class = 'LGBMModel_optuna'
-    n_sample = 1000
+    data_name   = "titanic"  ### in data/input/
+    model_class = 'LGBMModel_optuna'  ### ACTUAL Class name for model_sklearn.py
+    n_sample    = 1000
 
     def post_process_fun(y):
         ### After prediction is done
@@ -107,70 +108,73 @@ def titanic_lightgbm(path_model_out=""):
         return int(y)
 
     model_dict = {'model_pars': {
-        ### LightGBM API model   #######################################
-        'model_class': model_class
-        , 'model_pars': {'objective': 'binary',
-                         'n_estimators': 50,
-                         'learning_rate': 0.001,
-                         'boosting_type': 'gbdt',  ### Model hyperparameters
-                         'early_stopping_rounds': 5
-                         }
+    ### LightGBM API model   #######################################
+    'model_file'  : 'model_optuna.py',  ###Optional one
+    'model_class' :  model_class
+    ,'model_pars':  {'objective': 'binary',
+                     'n_estimators': 50,
+                     'learning_rate': 0.001,
+                     'boosting_type': 'gbdt',  ### Model hyperparameters
+                     'early_stopping_rounds': 5
+                     }
 
-        ### After prediction  ##########################################
-        , 'post_process_fun': post_process_fun
 
-        ### Before training  ##########################################
-        , 'pre_process_pars': {'y_norm_fun': pre_process_fun,
+    ### After prediction  ##########################################
+    , 'post_process_fun': post_process_fun
 
-                               ### Pipeline for data processing ##############################
-                               'pipe_list': [
-                                   {'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly',
-                                    'cols_out': 'coly', 'type': 'coly'},
-                                   {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {},
-                                    'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''},
-                                   {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {},
-                                    'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''},
-                                   {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {},
-                                    'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''},
-                                   {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {},
-                                    'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''},
-                                   {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {},
-                                    'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}
-                               ],
-                               }
+    ### Before training  ##########################################
+    , 'pre_process_pars': {'y_norm_fun': pre_process_fun,
+
+       ### Pipeline for data processing ##############################
+       'pipe_list': [
+           {'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'},
+           {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {},  'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''},
+           # {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''},
+
+           {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''},
+           # {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''},
+           #{'uri': 'source/preprocessors.py::pd_colcross', 'pars': {},'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}
+       ],
+       }
     },
 
-        'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score'],
-                         'optuna_params': {
-                             "early_stopping_rounds": 100,
-                             "objective": "binary",
-                             "metric": "binary_logloss",
-                             "verbosity": -1,
-                             "boosting_type": "gbdt"
-                                            },
-                         'optuna_type': 'tuner' ### 'tuner' ->  optuna.integration.lightgbm.LightGBMTuner
-                                                ### 'simple' ->  optuna.integration.lightgbm.train
-                         },
+    #classoptuna.integration.lightgbm.LightGBMTuner(params: Dict[str, Any], train_set: lgb.Dataset,
+    # num_boost_round: int = 1000, valid_sets: Optional[VALID_SET_TYPE] = None,
+    # valid_names: Optional[Any] = None, fobj: Optional[Callable[[…], Any]] = None,
+    # feval: Optional[Callable[[…], Any]] = None, feature_name: str = 'auto', categorical_feature: str = 'auto', early_stopping_rounds: Optional[int] = None, evals_result: Optional[Dict[Any, Any]] = None, verbose_eval: Union[bool, int, None] = True, learning_rates: Optional[List[float]] = None, keep_training_booster: bool = False, callbacks: Optional[List[Callable[[…], Any]]] = None, time_budget: Optional[int] = None, sample_size: Optional[int] = None, study: Optional[optuna.study.Study] = None, optuna_callbacks: Optional[List[Callable[[optuna.study.Study, optuna.trial._frozen.FrozenTrial], None]]] = None, model_dir: Optional[str] = None, verbosity: Optional[int] = None, show_progress_bar: bool = True)[source]
+    'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score'],
+                     'optuna_params': {
+                         "early_stopping_rounds": 5,
+                          'verbose_eval' :        100,
+                           #  folds=KFold(n_splits=3)
+                     },
 
-        'data_pars': {'n_sample': n_sample,
-                      'cols_input_type': cols_input_type_1,
-                      ### family of columns for MODEL  #########################################################
-                      #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
-                      #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
-                      #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
-                      #  'coldate',
-                      #  'coltext',
-                      'cols_model_group': ['colnum_bin',
-                                           'colcat_bin',
-                                           # 'coltext',
-                                           # 'coldate',
-                                           # 'colcross_pair'
-                                           ]
+                     'optuna_engine' : 'LightGBMTuner'   ###  LightGBMTuner', LightGBMTunerCV
 
-                      ### Filter data rows   ##################################################################
-            , 'filter_pars': {'ymax': 2, 'ymin': -1}
+                     },
 
-                      }
+
+
+
+    'data_pars': {'n_sample': n_sample,
+                  'cols_input_type': cols_input_type_1,
+                  ### family of columns for MODEL  #########################################################
+                  #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+                  #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+                  #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+                  #  'coldate',
+                  #  'coltext',
+                  'cols_model_group': ['colnum_bin',
+                                       'colcat_bin',
+                                       # 'coltext',
+                                       # 'coldate',
+                                       # 'colcross_pair'
+                                       ]
+
+                  ### Filter data rows   ##################################################################
+        , 'filter_pars': {'ymax': 2, 'ymin': -1}
+
+                  }
     }
 
     ##### Filling Global parameters    ############################################################
