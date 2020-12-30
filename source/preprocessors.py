@@ -557,6 +557,51 @@ def pd_colcat_minhash(df, col, pars):
 
 
 
+def pd_col_genetic_transform(df=None, col=None, pars=None):
+    """
+        Find Symbolic formulae for faeture engineering
+
+    """
+    prefix = 'col_genetic'
+    ######################################################################################
+    from gplearn.genetic import SymbolicTransformer
+    coly     = pars['coly']
+    colX     = [t for t in col if t not in  [ coly]]
+    train_X  = df[colX]
+    train_y  = df[ coly ]
+
+    function_set = ['add', 'sub', 'mul', 'div',  'sqrt', 'log', 'abs', 'neg', 'inv','tan']
+    pars_genetic =  pars.get('pars_genetic',
+                             { 'generations' : 20, 'n_components': 10, 'population_size' : 200 } )
+
+    gp = SymbolicTransformer(hall_of_fame=100,
+                            function_set=function_set,
+                            parsimony_coefficient=0.0005,
+                            max_samples=0.9, verbose=1,
+                            random_state=0, n_jobs=6, **pars_genetic)
+
+    gp.fit(train_X, train_y)
+    df_genetic = gp.transform(train_X)
+    df_genetic = pd.DataFrame(df_genetic, columns=["gen_"+str(a) for a in range(df_genetic.shape[1])])
+    df_genetic.index = train_X.index
+
+    col_genetic = list(df_genetic.columns)
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(df_genetic, 'df_genetic', pars['path_features_store'])
+       save(gp,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+       save(col_genetic,  pars['path_pipeline_export'] + f"/{prefix}.pkl" )
+       save(pars_genetic, pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+
+
+    col_pars = {'model' : gp , 'pars' : pars_genetic}
+    col_pars['cols_new'] = {
+     'col_genetic' :  col_genetic  ### list
+    }
+    return df_genetic, col_pars
+
+
+
 def pd_colcat_encoder_generic(df, col, pars):
     """
        https://pypi.org/project/category-encoders/
