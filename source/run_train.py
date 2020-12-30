@@ -51,18 +51,21 @@ def model_dict_load(model_dict, config_path, config_name, verbose=True):
 ##### train    #####################################################################################
 def map_model(model_name):
     """
-    :param model_name:
-    :return:
+      hacky way
+      model_file.py / mode_namel
     """
-    if 'optuna' in model_name:
-       mod    = f'models.model_optuna'
+    model_file = model_name
+    if  'optuna' in model_name : model_file = 'model_optuna'
+    try :
+       ##  'models.model_bayesian_pyro'   'model_widedeep'
+       mod    = f'models.{model_file}'
        modelx = importlib.import_module(mod)
-    else :
+
+    except :
         ### Al SKLEARN API
         #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
        mod    = 'models.model_sklearn'
        modelx = importlib.import_module(mod)
-    
     return modelx
 
 
@@ -106,7 +109,9 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     modelx.init(model_pars, compute_pars=compute_pars)
 
     if 'optuna' in model_name:
-        modelx.model.model_pars['optuna_model'] = modelx.fit(data_pars, compute_pars)
+        modelx.fit(data_pars, compute_pars)
+        # No need anymore
+        # modelx.model.model_pars['optuna_model'] = modelx.fit(data_pars, compute_pars)
     else:
         modelx.fit(data_pars, compute_pars)
 

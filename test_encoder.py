@@ -10,9 +10,6 @@ import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
 
 
-
-
-####################################################################################
 ###### Path ########################################################################
 from source import util_feature
 config_file  = os.path.basename(__file__)  ### name of file which contains data configuration
@@ -63,11 +60,8 @@ def global_pars_update(model_dict,  data_name, config_name):
 
 ####################################################################################
 ##### Params########################################################################
-config_default   = 'titanic_lightgbm'          ### name of function which contains data configuration
+config_default   = 'titanic1'          ### name of function which contains data configuration
 
-
-
-# data_name    = "titanic"     ### in data/input/
 cols_input_type_1 = {
      "coly"   :   "Survived"
     ,"colid"  :   "PassengerId"
@@ -87,11 +81,13 @@ cols_input_type_2 = {
     ,"coltext" :  ["Name", "Ticket"]
     ,"coldate" :  []
     ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+
+    ,'colgen'  : [  'Survived', "Pclass", "Age","SibSp", "Parch","Fare" ]
 }
 
 
 ####################################################################################
-def titanic_lightgbm(path_model_out="") :
+def titanic1(path_model_out="") :
     """
        Contains all needed informations for Light GBM Classifier model,
        used for titanic classification task
@@ -102,28 +98,19 @@ def titanic_lightgbm(path_model_out="") :
     n_sample     = 1000
 
     def post_process_fun(y):
-        ### After prediction is done
         return  int(y)
 
     def pre_process_fun(y):
-        ### Before the prediction is done
         return  int(y)
 
 
     model_dict = {'model_pars': {
     ### LightGBM API model   #######################################
      'model_class': model_class
-    ,'model_pars' : {'objective': 'binary',
-                       'n_estimators':10,
-                       'learning_rate':0.001,
-                       'boosting_type':'gbdt',     ### Model hyperparameters
-                       'early_stopping_rounds': 5
+    ,'model_pars' : {'objective': 'binary', 'n_estimators':10,
                     }
 
-    ### After prediction  ##########################################
     , 'post_process_fun' : post_process_fun
-
-    ### Before training  ##########################################
     , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
 
 
@@ -131,15 +118,21 @@ def titanic_lightgbm(path_model_out="") :
     'pipe_list': [
         {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
         {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
-        {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+        # {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
         {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
-        {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-        {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'},
-
-        {'uri': 'source/preprocessors.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
+        # {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+        # {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'},
 
 
-        {'uri': 'source/preprocessors.py::pd_coltext_universal_google',   'pars': {}, 'cols_family': 'coltext',     'cols_out': 'coltext_universal_google',     'type': ''    },
+        #  {'uri': 'source/preprocessors.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
+
+
+        # {'uri': 'source/preprocessors.py::pd_coltext_universal_google',   'pars': {}, 'cols_family': 'coltext',     'cols_out': 'coltext_universal_google',     'type': ''    },
+
+
+        {'uri': 'source/preprocessors.py::pd_col_genetic_transform',       'pars': {'coly' :  "Survived" },
+         'cols_family': 'colgen',     'cols_out': 'col_genetic',     'type': ''             },
+
 
     ],
            }
@@ -156,12 +149,17 @@ def titanic_lightgbm(path_model_out="") :
       #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
       #  'coldate',
       #  'coltext',
-      'cols_model_group': [ 'colnum_bin',
+      'cols_model_group': [ 'colnum',  ### should be optional 'colcat'
+          
+                            'colcat_bin',
                             # 'colcat_bin',
                             # 'colnum_onehot',
-                            'colcat_minhash',
+
+                            #'colcat_minhash',
                             # 'colcat_onehot',
-                            'coltext_universal_google'
+                            # 'coltext_universal_google'
+
+                            'col_genetic'
                           ]
 
       ### Filter data rows   ##################################################################
