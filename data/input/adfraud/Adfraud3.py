@@ -280,6 +280,9 @@ print(
     f"Test score: {score}")  # Best test score: Test score: 0.9802690018944903 Other executions : Test score: 0.9790603799985851 Test score: 0.954113637971559
 
 
+
+
+####################################################
 ### Since the data is highly imbalanced we use lightgbm scale_pos_weight
 
 def lgb_modelfit_nocv(params, dtrain, dvalid, objective='binary', metrics='auc',
@@ -372,8 +375,9 @@ print(f"Test score: {score}")
 # Test score: 0.9526652569353279
 
 
-## Dealing with class imbalance using SMOTE
 
+##################################################################################
+## Dealing with class imbalance using SMOTE
 from imblearn.over_sampling import SMOTE
 
 X_SMOTE_resampled, y_SMOTE_resampled = SMOTE().fit_resample(train_X, train_y)
