@@ -52,10 +52,13 @@ def model_dict_load(model_dict, config_path, config_name, verbose=True):
 def map_model(model_name):
     """
       hacky way
+      model_file.py / mode_namel
     """
+    model_file = model_name
+    if  'optuna' in model_name : model_file = 'model_optuna'
     try :
        ##  'models.model_bayesian_pyro'   'model_widedeep'
-       mod    = f'models.{model_name}'
+       mod    = f'models.{model_file}'
        modelx = importlib.import_module(mod)
 
     except :
@@ -63,17 +66,6 @@ def map_model(model_name):
         #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
        mod    = 'models.model_sklearn'
        modelx = importlib.import_module(mod)
-
-    """
-    if 'optuna' in model_name:
-       mod    = f'models.model_optuna'
-       modelx = importlib.import_module(mod)
-    else :
-        ### Al SKLEARN API
-        #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
-       mod    = 'models.model_sklearn'
-       modelx = importlib.import_module(mod)
-    """
     return modelx
 
 
