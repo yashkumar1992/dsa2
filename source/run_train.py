@@ -51,8 +51,19 @@ def model_dict_load(model_dict, config_path, config_name, verbose=True):
 ##### train    #####################################################################################
 def map_model(model_name):
     """
-    :param model_name:
-    :return:
+      hacky way
+    """
+    try :
+       ##  'models.model_bayesian_pyro'   'model_widedeep'
+       mod    = f'models.{model_name}'
+       modelx = importlib.import_module(mod)
+
+    except :
+        ### Al SKLEARN API
+        #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
+       mod    = 'models.model_sklearn'
+       modelx = importlib.import_module(mod)
+
     """
     if 'optuna' in model_name:
        mod    = f'models.model_optuna'
@@ -62,7 +73,7 @@ def map_model(model_name):
         #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
        mod    = 'models.model_sklearn'
        modelx = importlib.import_module(mod)
-    
+    """
     return modelx
 
 
