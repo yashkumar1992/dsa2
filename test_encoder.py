@@ -98,11 +98,9 @@ def titanic1(path_model_out="") :
     n_sample     = 1000
 
     def post_process_fun(y):
-        ### After prediction is done
         return  int(y)
 
     def pre_process_fun(y):
-        ### Before the prediction is done
         return  int(y)
 
 
@@ -112,7 +110,6 @@ def titanic1(path_model_out="") :
     ,'model_pars' : {'objective': 'binary', 'n_estimators':10,
                     }
 
-    ### After prediction  ##########################################
     , 'post_process_fun' : post_process_fun
     , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
 
@@ -152,7 +149,9 @@ def titanic1(path_model_out="") :
       #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
       #  'coldate',
       #  'coltext',
-      'cols_model_group': [ 'colnum_bin',
+      'cols_model_group': [ 'colnum',  ### should be optional 'colcat'
+          
+                            'colcat_bin',
                             # 'colcat_bin',
                             # 'colnum_onehot',
 
