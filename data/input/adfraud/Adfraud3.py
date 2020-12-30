@@ -173,10 +173,9 @@ def pd_colall_preprocess(df, col=None, pars=None):
 
 
 df, col_pars = pd_colall_preprocess(df)
+df["is_attributed"] = df["is_attributed"].astype("uint8")
 df_X = df.drop("is_attributed", axis=1)
 df_y = df["is_attributed"]
-
-df["is_attributed"] = df["is_attributed"].astype("uint8")
 
 ####################################################################################################
 ## Let's train a baseline model with the features we created in the above code
@@ -422,5 +421,189 @@ print(f"Test score: {score}")  #Test score: 0.96083278961725
 ####################################################################################################
 ####################################################################################################
 ## Now we will use the GeFS Model on our data
+
+from gefs import RandomForest
+
+# Auxiliary functions for GeFS
+def get_dummies(data):
+    data = data.copy()
+    if isinstance(data, pd.Series):
+        data = pd.factorize(data)[0]
+        return data
+    for col in data.columns:
+        data.loc[:, col] = pd.factorize(data[col])[0]
+    return data
+
+
+def learncats(data, classcol=None, continuous_ids=[]):
+    """
+        Learns the number of categories in each variable and standardizes the data.
+
+        Parameters
+        ----------
+        data: numpy n x m
+            Numpy array comprising n realisations (instances) of m variables.
+        classcol: int
+            The column index of the class variables (if any).
+        continuous_ids: list of ints
+            List containing the indices of known continuous variables. Useful for
+            discrete data like age, which is better modeled as continuous.
+
+        Returns
+        -------
+        ncat: numpy m
+            The number of categories of each variable. One if the variable is
+            continuous.
+    """
+    data = data.copy()
+    ncat = np.ones(data.shape[1])
+    if not classcol:
+        classcol = data.shape[1]-1
+    for i in range(data.shape[1]):
+        if i != classcol and (i in continuous_ids or is_continuous(data[:, i])):
+            continue
+        else:
+            data[:, i] = data[:, i].astype(int)
+            ncat[i] = max(data[:, i]) + 1
+    return ncat
+
+
+def get_stats(data, ncat=None):
+    """
+        Compute univariate statistics for continuous variables.
+
+        Parameters
+        ----------
+        data: numpy n x m
+            Numpy array comprising n realisations (instances) of m variables.
+
+        Returns
+        -------
+        data: numpy n x m
+            The normalized data.
+        maxv, minv: numpy m
+            The maximum and minimum values of each variable. One and zero, resp.
+            if the variable is categorical.
+        mean, std: numpy m
+            The mean and standard deviation of the variable. Zero and one, resp.
+            if the variable is categorical.
+
+    """
+    data = data.copy()
+    maxv = np.ones(data.shape[1])
+    minv = np.zeros(data.shape[1])
+    mean = np.zeros(data.shape[1])
+    std = np.zeros(data.shape[1])
+    if ncat is not None:
+        for i in range(data.shape[1]):
+            if ncat[i] == 1:
+                maxv[i] = np.max(data[:, i])
+                minv[i] = np.min(data[:, i])
+                mean[i] = np.mean(data[:, i])
+                std[i] = np.std(data[:, i])
+                assert maxv[i] != minv[i], 'Cannot have constant continuous variable in the data'
+                data[:, i] = (data[:, i] - minv[i])/(maxv[i] - minv[i])
+    else:
+        for i in range(data.shape[1]):
+            if is_continuous(data[:, i]):
+                maxv[i] = np.max(data[:, i])
+                minv[i] = np.min(data[:, i])
+                mean[i] = np.mean(data[:, i])
+                std[i] = np.std(data[:, i])
+                assert maxv[i] != minv[i], 'Cannot have constant continuous variable in the data'
+                data[:, i] = (data[:, i] - minv[i])/(maxv[i] - minv[i])
+    return data, maxv, minv, mean, std
+
+
+def normalize_data(data, maxv, minv):
+    """
+        Normalizes the data given the maximum and minimum values of each variable.
+
+        Parameters
+        ----------
+        data: numpy n x m
+            Numpy array comprising n realisations (instances) of m variables.
+        maxv, minv: numpy m
+            The maximum and minimum values of each variable. One and zero, resp.
+            if the variable is categorical.
+
+        Returns
+        -------
+        data: numpy n x m
+            The normalized data.
+    """
+    data = data.copy()
+    for v in range(data.shape[1]):
+        if maxv[v] != minv[v]:
+            data[:, v] = (data[:, v] - minv[v])/(maxv[v] - minv[v])
+    return data
+
+
+def standardize_data(data, mean, std):
+    """
+        Standardizes the data given the mean and standard deviations values of
+        each variable.
+
+        Parameters
+        ----------
+        data: numpy n x m
+            Numpy array comprising n realisations (instances) of m variables.
+        mean, std: numpy m
+            The mean and standard deviation of the variable. Zero and one, resp.
+            if the variable is categorical.
+
+        Returns
+        -------
+        data: numpy n x m
+            The standardized data.
+    """
+    data = data.copy()
+    for v in range(data.shape[1]):
+        if std[v] > 0:
+            data[:, v] = (data[:, v] - mean[v])/(std[v])
+            #  Clip values more than 6 standard deviations from the mean
+            data[:, v] = np.clip(data[:, v], -6, 6)
+    return data
+
+
+def is_continuous(data):
+    """
+        Returns true if data was sampled from a continuous variables, and false
+        Otherwise.
+
+        Parameters
+        ----------
+        data: numpy
+            One dimensional array containing the values of one variable.
+    """
+    observed = data[~np.isnan(data)]  # not consider missing values for this.
+    rules = [np.min(observed) < 0,
+             np.sum((observed) != np.round(observed)) > 0,
+             len(np.unique(observed)) > min(30, len(observed)/3)]
+    if any(rules):
+        return True
+    else:
+        return False
+
+
+def train_test_split(data, ncat, train_ratio=0.7, prep='std'):
+    assert train_ratio >= 0
+    assert train_ratio <= 1
+    shuffle = np.random.choice(range(data.shape[0]), data.shape[0], replace=False)
+    data_train = data[shuffle[:int(train_ratio*data.shape[0])], :]
+    data_test = data[shuffle[int(train_ratio*data.shape[0]):], :]
+    if prep=='norm':
+        data_train, maxv, minv, _, _, = get_stats(data_train, ncat)
+        data_test = normalize_data(data_test, maxv, minv)
+    elif prep=='std':
+        _, maxv, minv, mean, std = get_stats(data_train, ncat)
+        data_train = standardize_data(data_train, mean, std)
+        data_test = standardize_data(data_test, mean, std)
+
+    X_train, y_train = data_train[:, :-1], data_train[:, -1]
+    X_test, y_test = data_test[:, :-1], data_test[:, -1]
+
+    return X_train, X_test, y_train, y_test, data_train, data_test
+print("Preparing data for GeFs Random forest model")
 
 
