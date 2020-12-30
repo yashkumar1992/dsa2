@@ -403,4 +403,4 @@ from sklearn import metrics
 
 ypred = bst.predict(test_X)
 score = metrics.roc_auc_score(test_y, ypred)
-print(f"Test score: {score}")  #
+print(f"Test score: {score}")  #Test score: 0.96083278961725
