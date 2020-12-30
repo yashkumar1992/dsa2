@@ -78,16 +78,15 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     # dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
 
     pars_lightgbm = model.model_pars['model_pars']   #### from model_pars
-    print("pars", pars_lightgbm)
-
     pars_optuna   = compute_pars.get("optuna_params", {})    ### Specific to Optuna
-    optuna_engine = compute_pars.get('optuna_type', 'simple')
-    # optuna_type = 'simple'
+    optuna_engine = compute_pars.get('optuna_engine', 'simple')
+    print("pars", pars_lightgbm)
+    
     if optuna_engine == 'LightGBMTuner':
-        model_fit = model.model.LightGBMTuner(pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna).run()
+        model_fit = model.model_meta.LightGBMTuner(pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna).run()
 
     elif optuna_engine == 'LightGBMTunerCV':
-        model_fit = model.model.LightGBMTunerCV(pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna).run()
+        model_fit = model.model_meta.LightGBMTunerCV(pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna).run()
 
     else :
         model_fit = model.model_meta.train( pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna)
