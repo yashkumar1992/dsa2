@@ -68,12 +68,12 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     """
     global model, session
     session = None  # Session type for compute
-    Xtrain, ytrain, Xtest, ytest = get_dataset(data_pars, task_type="train")
+    Xtrain, ytrain, Xval, yval = get_dataset(data_pars, task_type="train")
     if VERBOSE: log(Xtrain.shape, model.model)
 
 
     dtrain = model.model_meta.Dataset(Xtrain,label = ytrain)
-    dval   = model.model_meta.Dataset(Xtest, label = ytest)
+    dval   = model.model_meta.Dataset(Xval,  label = yval)
     # dtrain = LGBMModel_optuna.Dataset(Xtrain, label=ytrain)
     # dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
 
