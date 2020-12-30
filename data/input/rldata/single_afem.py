@@ -10,12 +10,12 @@ def simulate(inp):
     env,g,epsilon,opt_size,input_size,gamestep,load,localsess,localmodelNetwork,model_dir,fid = inp
 
     if load:
-        localmodelNetwork = Model(opt_size=opt_size, input_size=input_size, name="model",maml=False)
+        localmodelNetwork               = Model(opt_size=opt_size, input_size=input_size, name="model",maml=False)
 
-        config = tf.ConfigProto()
+        config                          = tf.ConfigProto()
         config.gpu_options.allow_growth = True
-        localsess = tf.Session(config=config)
-        saver = tf.train.Saver()
+        localsess                       = tf.Session(config=config)
+        saver                           = tf.train.Saver()
         #print('model_%d_%d.ckpt' % (fid,g))
         saver.restore(localsess,os.path.join(model_dir,'model_%d_%d.ckpt' % (fid,g)))
 
@@ -80,11 +80,11 @@ def main():
     out_dir = os.path.join(args.out_dir,'safem')
     model_dir = os.path.join(args.out_dir,'safem_model')
     if not os.path.isdir(args.out_dir):
-        os.makedirs(args.out_dir)
+        os.mkdir(args.out_dir)
     if not os.path.isdir(model_dir):
-        os.makedirs(model_dir)
+        os.mkdir(model_dir)
     if not os.path.isdir(out_dir):
-        os.makedirs(out_dir)
+        os.mkdir(out_dir)
 
     did = args.dataset
     f_dataset = "../data/%d/%d.arff" % (did,did)
@@ -192,17 +192,17 @@ def main():
                             experience = buff.sample(batch_size)
                             #print(experience.shape)
                             s, a, r, s_next,act_mask = [np.squeeze(elem, axis=1) for elem in np.split(experience, 5, 1)]
-                            s = np.array([ss for ss in s])
-                            s = np.reshape(s, (batch_size, input_size))
+                            s        = np.array([ss for ss in s])
+                            s        = np.reshape(s, (batch_size, input_size))
                             #print(s_next.shape)
-                            s_next = np.array([ss for ss in s_next])
+                            s_next   = np.array([ss for ss in s_next])
                             #print(s_next.shape)
-                            s_next = np.reshape(s_next, (batch_size, input_size))
+                            s_next   = np.reshape(s_next, (batch_size, input_size))
                             act_mask = np.array([am for am in act_mask])
                             act_mask = np.reshape(act_mask, (batch_size, opt_size))
 
-                            Q1 = sess.run(modelNetwork.Q_, feed_dict={modelNetwork.inputs: s_next})
-                            Q2 = sess.run(targetNetwork.Q_, feed_dict={targetNetwork.inputs: s_next})
+                            Q1       = sess.run(modelNetwork.Q_, feed_dict={modelNetwork.inputs: s_next})
+                            Q2       = sess.run(targetNetwork.Q_, feed_dict={targetNetwork.inputs: s_next})
                             #doubleQ = Q2[:, np.argmax(ma.masked_array(Q1, mask=act_mask), axis=-1)]
                             doubleQ = np.array([Q2[i][ss] for i, ss in
                                        enumerate(np.argmax(ma.masked_array(Q1, mask=act_mask), axis=-1))])
@@ -245,10 +245,10 @@ def main():
                         saver.restore(sess, os.path.join(model_dir, "model_%d.ckpt" % (fid)))
 
                         for j in range(gamestep):
-                            s = np.copy(env.state)
+                            s        = np.copy(env.state)
                             act_mask = np.copy(env.action_mask)
-                            Q = sess.run(modelNetwork.Q_, feed_dict={modelNetwork.inputs: [s]})
-                            action = ma.masked_array(Q, mask=act_mask).argmax()
+                            Q        = sess.run(modelNetwork.Q_, feed_dict={modelNetwork.inputs: [s]})
+                            action   = ma.masked_array(Q, mask=act_mask).argmax()
                             s_next, reward = env.step(action)
                             if env.stop:
                                 break
