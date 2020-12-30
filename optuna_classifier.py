@@ -96,7 +96,7 @@ def titanic_lightoptuna():
     """
     config_name = os_get_function_name()
     data_name   = "titanic"  ### in data/input/
-    model_class = 'model_optuna'  ### ACTUAL Class name for model_sklearn.py
+    model_class = 'LGBMModel_optuna'  ### ACTUAL Class name for model_sklearn.py
     n_sample    = 1000
 
     def post_process_fun(y):
@@ -109,8 +109,9 @@ def titanic_lightoptuna():
 
     model_dict = {'model_pars': {
     ### LightGBM API model   #######################################
-    'model_class': model_class
-    , 'model_pars': {'objective': 'binary',
+    'model_file'  : 'model_optuna.py',  ###Optional one
+    'model_class' :  model_class
+    ,'model_pars':  {'objective': 'binary',
                      'n_estimators': 50,
                      'learning_rate': 0.001,
                      'boosting_type': 'gbdt',  ### Model hyperparameters
