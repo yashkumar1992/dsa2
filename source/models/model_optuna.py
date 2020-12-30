@@ -46,7 +46,7 @@ global model, session
 
 def init(*kw, **kwargs):
     global model, session
-    model = Model(*kw, **kwargs)
+    model   = Model(*kw, **kwargs)
     session = None
 
 
@@ -56,67 +56,12 @@ class Model(object):
         if model_pars is None:
             self.model = None
         else:
-            model_class = globals()[model_pars['model_class']]
+            model_class     = globals()[model_pars['model_class']]
             self.model_meta = model_class  ### Hyper param seerch Model
-            self.model = None              ### Best model saved after train
+            self.model      = None         ### Best model saved after train
             #self.model = model_class()
             if VERBOSE: log(model_class, self.model)
 
-"""
-
-###########################################
-    data, target = sklearn.datasets.load_breast_cancer(return_X_y=True)
-    dtrain = lgb.Dataset(data, label=target)
-
-    params = {
-        "objective": "binary",
-        "metric": "binary_logloss",
-        "verbosity": -1,
-        "boosting_type": "gbdt",
-    }
-
-    tuner = lgb.LightGBMTunerCV(
-        params, dtrain, verbose_eval=100, early_stopping_rounds=100, folds=KFold(n_splits=3)
-    )
-
-    tuner.run()
-
-    print("Best score:", tuner.best_score)
-    best_params = tuner.best_params
-    print("Best params:", best_params)
-    print("  Params: ")
-    for key, value in best_params.items():
-        print("    {}: {}".format(key, value))
-        
-        
-############################################        
-      data, target = sklearn.datasets.load_breast_cancer(return_X_y=True)
-    train_x, val_x, train_y, val_y = train_test_split(data, target, test_size=0.25)
-    dtrain = lgb.Dataset(train_x, label=train_y)
-    dval = lgb.Dataset(val_x, label=val_y)
-
-    params = {
-        "objective": "binary",
-        "metric": "binary_logloss",
-        "verbosity": -1,
-        "boosting_type": "gbdt",
-    }
-
-    model = lgb.train(
-        params, dtrain, valid_sets=[dtrain, dval], verbose_eval=100, early_stopping_rounds=100
-    )
-
-    prediction = np.rint(model.predict(val_x, num_iteration=model.best_iteration))
-    accuracy = accuracy_score(val_y, prediction)
-
-    best_params = model.params
-    print("Best params:", best_params)
-    print("  Accuracy = {}".format(accuracy))
-    print("  Params: ")
-    for key, value in best_params.items():
-        print("    {}: {}".format(key, value))      
-
-"""
 def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     """
     """
@@ -126,16 +71,34 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     if VERBOSE: log(Xtrain.shape, model.model)
 
 
-    dtrain = model.model_meta.Dataset(Xtrain, label=ytrain)
-    dval   = model.model_meta.Dataset(Xtest, label=ytest)
-
+    dtrain = model.model_meta.Dataset(Xtrain,label = ytrain)
+    dval   = model.model_meta.Dataset(Xtest, label = ytest)
     # dtrain = LGBMModel_optuna.Dataset(Xtrain, label=ytrain)
     # dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
-    pars_optuna      = compute_pars.get("optuna_params", {})
 
-    model_fit        = model.model_meta.train( pars_optuna, dtrain, valid_sets=[dtrain, dval])
-    model.model      = model_fit ### best model
-    model.model_pars = model_fit.params
+    pars_lightgbm = model.model_pars['model_pars']   #### from model_pars
+    print("pars", pars_lightgbm)
+
+    pars_optuna   = compute_pars.get("optuna_params", {})    ### Specific to Optuna
+    optuna_engine = compute_pars.get('optuna_type', 'simple')
+    # optuna_type = 'simple'
+    if optuna_engine == 'LightGBMTuner':
+        model_fit = model.model.LightGBMTuner(pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna).run()
+
+    elif optuna_engine == 'LightGBMTunerCV':
+        model_fit = model.model.LightGBMTunerCV(pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna).run()
+
+    else :
+        model_fit = model.model_meta.train( pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna)
+
+    """
+       print("Best score:", tuner.best_score)
+       best_params = tuner.best_params
+         
+    """
+
+    model.model                    = model_fit ### best model
+    model.model_pars['model_pars'] = model_fit.params
     return model_fit
 
 
