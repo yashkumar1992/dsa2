@@ -9,7 +9,6 @@ All in one file config
 
 """
 import warnings, copy, os, sys
-
 warnings.filterwarnings('ignore')
 
 ####################################################################################
@@ -17,7 +16,7 @@ warnings.filterwarnings('ignore')
 from source import util_feature
 
 config_file = os.path.basename(__file__)
-# config_file      = "titanic_classifier.py"   ### name of file which contains data configuration
+print(config_file)
 
 print(os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
@@ -65,7 +64,7 @@ def global_pars_update(model_dict, data_name, config_name):
 
 ####################################################################################
 ##### Params########################################################################
-config_default = 'titanic_lightgbm'  ### name of function which contains data configuration
+config_default = 'titanic_lightoptuna'  ### name of function which contains data configuration
 
 # data_name    = "titanic"     ### in data/input/
 cols_input_type_1 = {
@@ -90,15 +89,15 @@ cols_input_type_2 = {
 
 
 ####################################################################################
-def titanic_lightgbm(path_model_out=""):
+def titanic_lightoptuna():
     """
        Contains all needed informations for Light GBM Classifier model,
        used for titanic classification task
     """
     config_name = os_get_function_name()
-    data_name = "titanic"  ### in data/input/
+    data_name   = "titanic"  ### in data/input/
     model_class = 'LGBMModel_optuna'  ### ACTUAL Class name for model_sklearn.py
-    n_sample = 1000
+    n_sample    = 1000
 
     def post_process_fun(y):
         ### After prediction is done
@@ -127,18 +126,13 @@ def titanic_lightgbm(path_model_out=""):
 
        ### Pipeline for data processing ##############################
        'pipe_list': [
-           {'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly',
-            'cols_out': 'coly', 'type': 'coly'},
-           {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {},
-            'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''},
-           {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {},
-            'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''},
-           {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {},
-            'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''},
-           {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {},
-            'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''},
-           {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {},
-            'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}
+           {'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'},
+           {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {},  'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''},
+           # {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''},
+
+           {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''},
+           # {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''},
+           #{'uri': 'source/preprocessors.py::pd_colcross', 'pars': {},'cols_family': 'colcross', 'cols_out': 'colcross_pair_onehot', 'type': 'cross'}
        ],
        }
     },
