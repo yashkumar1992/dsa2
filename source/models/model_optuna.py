@@ -24,10 +24,11 @@ from lightgbm import LGBMModel, LGBMRegressor, LGBMClassifier
 
 try :
   import optuna.integration.lightgbm as LGBMModel_optuna
-  import optuna.integration.lightgbm_tuner as LGBMModel_optuna_tuner
-
 except Exception as e :
   raise Exception(f"cannot import Optuna {e}" )
+
+
+### https://github.com/optuna/optuna/blob/master/examples/pruning/lightgbm_integration.py
 
 
  
@@ -97,7 +98,8 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
          
     """
 
-    model.model                    = model_fit ### best model
+    ### Best model store as
+    model.model                    = model_fit
     model.model_pars['model_pars'] = model_fit.params
     return model_fit
 
@@ -143,7 +145,7 @@ def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
         Xpred = get_dataset(data_pars, task_type="predict")
 
     # ypred = optuna_model.predict(Xpred, num_iteration=optuna_model.best_iteration)
-    ypred = model.model.predict(Xpred, num_iteration=model.model.best_iteration)
+    ypred = model.model.predict(Xpred,) # num_iteration=model.model.best_iteration)
 
     #ypred = post_process_fun(ypred)
     
