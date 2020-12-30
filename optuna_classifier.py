@@ -143,15 +143,23 @@ def titanic_lightgbm(path_model_out=""):
        }
     },
 
+    #classoptuna.integration.lightgbm.LightGBMTuner(params: Dict[str, Any], train_set: lgb.Dataset,
+    # num_boost_round: int = 1000, valid_sets: Optional[VALID_SET_TYPE] = None,
+    # valid_names: Optional[Any] = None, fobj: Optional[Callable[[…], Any]] = None,
+    # feval: Optional[Callable[[…], Any]] = None, feature_name: str = 'auto', categorical_feature: str = 'auto', early_stopping_rounds: Optional[int] = None, evals_result: Optional[Dict[Any, Any]] = None, verbose_eval: Union[bool, int, None] = True, learning_rates: Optional[List[float]] = None, keep_training_booster: bool = False, callbacks: Optional[List[Callable[[…], Any]]] = None, time_budget: Optional[int] = None, sample_size: Optional[int] = None, study: Optional[optuna.study.Study] = None, optuna_callbacks: Optional[List[Callable[[optuna.study.Study, optuna.trial._frozen.FrozenTrial], None]]] = None, model_dir: Optional[str] = None, verbosity: Optional[int] = None, show_progress_bar: bool = True)[source]
     'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score'],
                      'optuna_params': {
-                         "early_stopping_rounds": 10,
-                         "objective": "binary",
-                         "metric": "binary_logloss",
-                         "verbosity": -1,
-                         "boosting_type": "gbdt",
-                     }
+                         "early_stopping_rounds": 5,
+                          'verbose_eval' :        100,
+                           #  folds=KFold(n_splits=3)
                      },
+
+                     'optuna_engine' : 'LightGBMTuner'   ###  LightGBMTuner', LightGBMTunerCV
+
+                     },
+
+
+
 
     'data_pars': {'n_sample': n_sample,
                   'cols_input_type': cols_input_type_1,
