@@ -384,12 +384,13 @@ def pd_colnum_quantile_norm(df, col, pars={}):
       df[col] = np.where(df[col] < lower_bound, 0.75 * lower_bound, df[col])
 
 
-  colnew   = [ t + "_qt_norm" for t in df.columns ]
-  pars_new = {'lower_bound' : lower_bound, 'upper_bound': upper_bound,
-              'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse
-              }
+  df.columns = [ t + "_qt_norm" for t in df.columns ]
+  pars_new   = {'lower_bound' : lower_bound, 'upper_bound': upper_bound,
+                'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse
+               }
   dfnew    = df
   model    = None
+  colnew   = list(df.columns)
 
   ###################################################################################
   if 'path_features_store' in pars and 'path_pipeline_export' in pars:
