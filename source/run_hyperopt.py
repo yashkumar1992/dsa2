@@ -2,7 +2,21 @@
 """
 Created on Mon Mar 16 10:45:07 2020
 
-@author: dellbook
+
+Input a dict of variables.
+
+pars_dict
+
+pars_dict_range :
+
+
+Optimize all
+
+obj_fun
+
+
+
+
 """
 
 
@@ -38,6 +52,35 @@ import os
 print(os.listdir("../input"))
 
 # Any results you write to the current directory are saved as output
+
+
+https://rbfopt.readthedocs.io/en/latest/rbfopt_aux_problems.html
+
+
+
+
+
+“RBFOpt: an open-source library for black-box optimization with costly function ...
+
+https://github.com/coin-or/rbfopt
+
+After installation, the easiest way to optimize a function is to use the RbfoptUserBlackBox class to define a black-box, and execute RbfoptAlgorithm on it. This is a minimal example to optimize the 3-dimensional function defined below:
+
+import rbfopt
+import numpy as np
+def obj_funct(x):
+  return x[0]*x[1] - x[2]
+
+bb = rbfopt.RbfoptUserBlackBox(3, np.array([0] * 3), np.array([10] * 3),
+                               np.array(['R', 'I', 'R']), obj_funct)
+settings = rbfopt.RbfoptSettings(max_evaluations=50)
+alg = rbfopt.RbfoptAlgorithm(settings, bb)
+val, x, itercount, evalcount, fast_evalcount = alg.optimize()
+Another possibility is to define your own class derived from RbfoptBlackBox in a separate file, and execute the command-line interface on the file. An example is provided under src/rbfopt/examples, in the file rbfopt_black_box_example.py. This can be executed with:
+
+rbfopt_cl_interface.py src/rbfopt/examples/rbfopt_black_box_example.py
+
+
 
 
 

@@ -25,5 +25,9 @@ python airbnb_regression.py  predict  --nsample 5000
 
 
 
+python income_classifier.py  train    --nsample 1000   ;
+python income_classifier.py  predict  --nsample 1000   ;
+
+
 
 
