@@ -3589,3 +3589,52 @@ And if memory is not enough, you can set `force_col_wise=true`.
 [999]	valid_0's auc: 0.886738
 [1000]	valid_0's auc: 0.886632
 Test score: 0.9730821234012782
+
+/home/mohamedaminebenslama/anaconda3/envs/dsa2/bin/python /home/mohamedaminebenslama/.local/share/JetBrains/Toolbox/apps/PyCharm-P/ch-0/193.7288.30/plugins/python/helpers/pydev/pydevconsole.py --mode=client --port=40521
+import sys; print('Python %s on %s' % (sys.version, sys.platform))
+sys.path.extend(['/home/mohamedaminebenslama/projects/dsa2-amine'])
+Python 3.7.9 | packaged by conda-forge | (default, Dec  9 2020, 21:08:20)
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.19.0 -- An enhanced Interactive Python. Type '?' for help.
+PyDev console: using IPython 7.19.0
+Python 3.7.9 | packaged by conda-forge | (default, Dec  9 2020, 21:08:20)
+[GCC 9.3.0] on linux
+In[2]: runfile('/home/mohamedaminebenslama/projects/dsa2-amine/data/input/adfraud/Adfraud3.py', wdir='/home/mohamedaminebenslama/projects/dsa2-amine/data/input/adfraud')
+Let's divide the day in four section ,See in which section click has happend
+Let's see new clicks count features
+Computing the number of clicks associated with a given app per hour...
+Computing the number of channels associated with a given IP address within each hour...
+Let's divide the day in four section ,See in which section click has happend
+Computing the number of channels associated with
+Let's see new clicks count features
+Computing the number of channels associated with
+Computing the number of clicks associated with a given app per hour...
+Computing the number of channels associated with a given IP address within each hour...
+Computing the number of channels associated with
+Computing the number of channels associated with
+Grouping by ['ip', 'day', 'hour'], and aggregating channel with count
+Grouping by ['ip', 'app'], and aggregating channel with count
+Grouping by ['ip', 'app', 'os'], and aggregating channel with count
+Grouping by ['ip', 'app', 'day', 'hour'], and aggregating channel with count
+Grouping by ['ip', 'app', 'channel'], and aggregating hour with mean
+Grouping by ['app'], and aggregating ip with AvgViewPerDistinct
+Grouping by ['app'], and aggregating channel with count
+Grouping by ['channel'], and aggregating app with count
+Grouping by ['ip'], and aggregating channel with nunique
+Grouping by ['ip'], and aggregating app with nunique
+Grouping by ['ip', 'day'], and aggregating hour with nunique
+Grouping by ['ip', 'app'], and aggregating os with nunique
+Grouping by ['ip'], and aggregating device with nunique
+Grouping by ['app'], and aggregating channel with nunique
+Grouping by ['ip', 'device', 'os'], and aggregating app with nunique
+Grouping by ['ip', 'device', 'os'], and aggregating app with cumcount
+Grouping by ['ip'], and aggregating app with cumcount
+Grouping by ['ip'], and aggregating os with cumcount
+Preparing data for GeFs Random forest model
+Starting the GeFs Random Forest Training
+/home/mohamedaminebenslama/anaconda3/envs/dsa2/lib/python3.7/site-packages/numba/np/ufunc/parallel.py:363: NumbaWarning: The TBB threading layer requires TBB version 2019.5 or later i.e., TBB_INTERFACE_VERSION >= 11005. Found TBB_INTERFACE_VERSION = 9107. The TBB threading layer is disabled.
+  warnings.warn(problem)
+Converting Random Forest to GeF
+100%|██████████| 30/30 [01:52<00:00,  3.76s/it]
+Making predictions on test data
+Test score: 0.5
