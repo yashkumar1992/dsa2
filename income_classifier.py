@@ -13,7 +13,6 @@ import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
 
 
-
 ####################################################################################
 ###### Path ########################################################################
 from source import util_feature
@@ -87,8 +86,8 @@ def income_status_lightgbm(path_model_out="") :
 
 
     """
-    data_name    = "income_status"     ### in data/input/
-    model_class  = 'LGBMClassifier_optuna' # _optuna'    ###  'LGBMClassifier' ACTUAL Class name for model_sklearn.py
+    data_name    = "income_status"       ### in data/input/
+    model_class  = 'LGBMClassifier' #  'LGBMClassifier_optuna' ACTUAL Class name for model_sklearn.py
     n_sample     = 32500 # 32560
 
     def post_process_fun(y):  ### After prediction is done
@@ -124,11 +123,15 @@ def income_status_lightgbm(path_model_out="") :
 
             {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
             {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-            #{'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
 
+            {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+
+            ### Cross Features
+            {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair',  'type': 'cross'},
+
+            ### Quantile normalization
             {'uri': 'source/preprocessors.py::pd_colnum_quantile_norm',       'pars': {'colsparse' :  [] },
              'cols_family': 'colnum',     'cols_out': 'colnum_quantile_norm',     'type': ''             },
 
@@ -153,13 +156,15 @@ def income_status_lightgbm(path_model_out="") :
           #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
           #  'coldate',  'coltext',
-          'cols_model_group': [ # 'colnum_bin',
+          'cols_model_group': [ 'colnum_bin',
                                 'colcat_bin',
 
                                 'colnum_quantile_norm',
+
+
                                 # 'coltext',
                                 # 'coldate',
-                                # 'colcross_pair'
+                                'colcross_pair'
                               ]
 
           ### Filter data rows   ##################################################################
