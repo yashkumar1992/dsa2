@@ -70,7 +70,7 @@ jobs:
 
     - name: Install numpy
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
-      run: pip install numpy==1.18.2   pillow==6.2.1  
+      run: pip install numpy==1.18.2   pillow==6.2.1  scipy
       
 
     - name: Install repo requirements  1
