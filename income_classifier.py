@@ -84,12 +84,12 @@ cols_input_type_1 = {
 ####################################################################################
 def income_status_lightgbm(path_model_out="") :
     """
-       Contains all needed informations for Light GBM Classifier model,
-       used for titanic classification task
+
+
     """
     data_name    = "income_status"     ### in data/input/
-    model_class  = 'LGBMClassifier'    ### ACTUAL Class name for model_sklearn.py
-    n_sample     = 1000 # 32560
+    model_class  = 'LGBMClassifier_optuna' # _optuna'    ###  'LGBMClassifier' ACTUAL Class name for model_sklearn.py
+    n_sample     = 32500 # 32560
 
     def post_process_fun(y):  ### After prediction is done
         return  int(y)
@@ -106,7 +106,7 @@ def income_status_lightgbm(path_model_out="") :
         ,'model_pars' : {'boosting_type':'gbdt', 'class_weight':None, 'colsample_bytree':1.0,
 						'importance_type':'split', 'learning_rate':0.001, 'max_depth':-1,
 						'min_child_samples':20, 'min_child_weight':0.001, 'min_split_gain':0,
-						'n_estimators':500,
+						'n_estimators':1000,
                          'n_jobs':-1, 'num_leaves':31, 'objective':None,
 						'random_state':None, 'reg_alpha':0, 'reg_lambda':0.0, 'silent':True,
 						'subsample':1.0, 'subsample_for_bin':200000, 'subsample_freq':0
@@ -136,8 +136,14 @@ def income_status_lightgbm(path_model_out="") :
                }
         },
 
-      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
+      'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score'],
+                      'optuna_params': {
+                          "early_stopping_rounds": 5,
+                          'verbose_eval' :        100,
+                           #  folds=KFold(n_splits=3)
                       },
+                      'optuna_engine' : 'LightGBMTuner'   ###  LightGBMTuner', LightGBMTunerCV
+                    },
 
       'data_pars': { 'n_sample' : n_sample,
           'cols_input_type' : cols_input_type_1,
@@ -146,10 +152,11 @@ def income_status_lightgbm(path_model_out="") :
           #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
           #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
-          #  'coldate',
-          #  'coltext',
-          'cols_model_group': [ 'colnum_bin',
+          #  'coldate',  'coltext',
+          'cols_model_group': [ # 'colnum_bin',
                                 'colcat_bin',
+
+                                'colnum_quantile_norm',
                                 # 'coltext',
                                 # 'coldate',
                                 # 'colcross_pair'
