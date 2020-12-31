@@ -603,7 +603,7 @@ def pd_colcross(df, col, pars):
 
 
 def pd_coldate(df, col, pars):
-    log("##### Coldate processing   #############################################################")
+    log("##### Coldate processing   ##########################################")
     from utils import util_date
     coldate = col
     dfdate  = None
@@ -709,57 +709,61 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
 
 def pd_colcat_encoder_generic(df, col, pars):
     """
-       https://pypi.org/project/category-encoders/
-       encoder = ce.BackwardDifferenceEncoder(cols=[...])
-encoder = ce.BaseNEncoder(cols=[...])
-encoder = ce.BinaryEncoder(cols=[...])
-encoder = ce.CatBoostEncoder(cols=[...])
-encoder = ce.CountEncoder(cols=[...])
-encoder = ce.GLMMEncoder(cols=[...])
-encoder = ce.HashingEncoder(cols=[...])
-encoder = ce.HelmertEncoder(cols=[...])
-encoder = ce.JamesSteinEncoder(cols=[...])
-encoder = ce.LeaveOneOutEncoder(cols=[...])
-encoder = ce.MEstimateEncoder(cols=[...])
-encoder = ce.OneHotEncoder(cols=[...])
-encoder = ce.OrdinalEncoder(cols=[...])
-encoder = ce.SumEncoder(cols=[...])
-encoder = ce.PolynomialEncoder(cols=[...])
-encoder = ce.TargetEncoder(cols=[...])
-encoder = ce.WOEEncoder(cols=[...])
-
-
+        Create a Class or decorator
+        https://pypi.org/project/category-encoders/
+        encoder = ce.BackwardDifferenceEncoder(cols=[...])
+        encoder = ce.BaseNEncoder(cols=[...])
+        encoder = ce.BinaryEncoder(cols=[...])
+        encoder = ce.CatBoostEncoder(cols=[...])
+        encoder = ce.CountEncoder(cols=[...])
+        encoder = ce.GLMMEncoder(cols=[...])
+        encoder = ce.HashingEncoder(cols=[...])
+        encoder = ce.HelmertEncoder(cols=[...])
+        encoder = ce.JamesSteinEncoder(cols=[...])
+        encoder = ce.LeaveOneOutEncoder(cols=[...])
+        encoder = ce.MEstimateEncoder(cols=[...])
+        encoder = ce.OneHotEncoder(cols=[...])
+        encoder = ce.OrdinalEncoder(cols=[...])
+        encoder = ce.SumEncoder(cols=[...])
+        encoder = ce.PolynomialEncoder(cols=[...])
+        encoder = ce.TargetEncoder(cols=[...])
+        encoder = ce.WOEEncoder(cols=[...])
     """
-    colcat              = col
-    import category_encoders as ce
-    pars_encoder         = pars
-    pars_encoder['cols'] = col
-    if 'path_pipeline_export' in pars :
-        try :
-            pars_encoder = load( pars['path_pipeline_export'] + '/colcat_encoder_pars.pkl')
-        except : pass
+    prefix     = "colcat_encoder_generic"
+    pars_model = None
+    if 'path_pipeline' in  pars  :   ### Load during Inference
+       colcat_encoder = load( pars['path_pipeline'] + f"/{prefix}.pkl" )
+       pars_model     = load( pars['path_pipeline'] + f"/{prefix}_pars.pkl" )
+       #model         = load( pars['path_pipeline'] + f"/{prefix}_model.pkl" )
 
-    encoder           = ce.HashingEncoder(**pars_encoder)
-    dfcat_bin         = encoder.fit_transform(df[col])
+    ####### Custom Code ###############################################################
+    from category_encoders import HashingEncoder, WOEEncoder
+    pars_model         = pars.get('model_pars', {})  if pars_model is None else pars_model
+    pars_model['cols'] = col
+    model_name         = pars.get('model_name', 'HashingEncoder')
 
+    model_class        = { 'HashingEncoder' : HashingEncoder  }[model_name]
+    model              = model_class(**pars_model)
+    dfcat_encoder      = model.fit_transform(df[col])
 
-    dfcat_bin.columns = [  t for t in dfcat_bin.columns ]
-    colcat_encoder    = list(dfcat_bin.columns)
+    dfcat_encoder.columns = [t + "_cod" for t in dfcat_encoder.columns ]
+    colcat_encoder        = list(dfcat_encoder.columns)
+
 
     ###################################################################################
+    model_uri = None
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
-       save_features(dfcat_bin, 'dfcat_encoder', pars['path_features_store'])
-       save(encoder,       pars['path_pipeline_export']   + "/colcat_encoder_model.pkl" )
-       save(pars_encoder,  pars['path_pipeline_export']   + "/colcat_encoder_pars.pkl" )
-       save(colcat_encoder,  pars['path_pipeline_export'] + "/colcat_encoder.pkl" )
+       save_features(dfcat_encoder, 'dfcat_encoder', pars['path_features_store'])
+       save(model,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+       save(pars_model,      pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+       save(colcat_encoder,  pars['path_pipeline_export'] + f"/{prefix}.pkl" )
+       model_uri           = pars['path_pipeline_export'] + f"/{prefix}_model.pkl"
 
-
-    col_pars = {}
-    col_pars['col_encode_model'] = encoder
+    col_pars = {'model_uri' : model_uri, 'pars' : pars_model}
     col_pars['cols_new'] = {
-     'colcat_encoder' :  colcat_encoder  ### list
+     'colcat_encoder_generic' :  colcat_encoder  ### list
     }
-    return dfcat_bin, col_pars
+    return dfcat_encoder, col_pars
 
 
 
@@ -772,7 +776,6 @@ def pd_coltext_universal_google(df, col, pars={}):
     from source.preprocessors import  pd_coltext_universal_google
     https://tfhub.dev/google/universal-sentence-encoder-multilingual/3
 
-    #@title Setup Environment
     #latest Tensorflow that supports sentencepiece is 1.13.1
     !pip uninstall --quiet --yes tensorflow
     !pip install --quiet tensorflow-gpu==1.13.1
@@ -784,25 +787,29 @@ def pd_coltext_universal_google(df, col, pars={}):
     # col : list of text colnum names
     pars
     """
+    prefix = "coltext_universal_google"
+    if 'path_pipeline' in  pars  :   ### Load during Inference
+       coltext_embed = load( pars['path_pipeline'] + "/{prefix}.pkl" )
+       pars_model    = load( pars['path_pipeline'] + "/{prefix}_pars.pkl" )
+
+    ####### Custom Code ###############################################################
     import tensorflow as tf
     import tensorflow_hub as hub
     import tensorflow_text
     #from tqdm import tqdm #progress bar
     uri_list = [
-
-
-
     ]
-    uri_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual/3"
-    uri         = pars.get("url_model", uri_default )
-    use    = hub.load( uri )
-    dfall  = None
+    url_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual/3"
+    url         = pars.get("model_uri", url_default )
+    model       = hub.load( url )
+    pars_model  = {}
+    dfall       = None
     for coli in col[:1] :
         X = []
         for r in (df[coli]):
             if pd.isnull(r)==True :
                 r=""
-            emb = use(r)
+            emb = model(r)
             review_emb = tf.reshape(emb, [-1]).numpy()
             X.append(review_emb)
 
@@ -812,14 +819,19 @@ def pd_coltext_universal_google(df, col, pars={}):
 
     coltext_embed = list(dfall.columns)
 
-    ###################################################################################
+
+    ##### Export ####################################################################
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
        save_features(dfall, 'dftext_embed', pars['path_features_store'])
-       save(coltext_embed, pars['path_pipeline_export'] + "/coltext_universal_google.pkl" )
+       save(coltext_embed,  pars['path_pipeline_export'] + "/{prefix}.pkl" )
+       save(pars_model,     pars['path_pipeline_export'] + "/{prefix}_pars.pkl" )
+       save(model,          pars['path_pipeline_export'] + "/{prefix}_model.pkl" )
+       model_uri = pars['path_pipeline_export'] + "/{prefix}_model.pkl"
 
-    col_pars = {'model_encoder' : uri}
+
+    col_pars = {'model_uri' :  model_uri, 'pars': pars_model}
     col_pars['cols_new']      = {
-     'coltext_universal_google' :  coltext_embed ### list
+       'coltext_universal_google' :  coltext_embed ### list
     }
     return dfall, col_pars
 

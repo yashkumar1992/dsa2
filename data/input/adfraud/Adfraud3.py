@@ -619,6 +619,8 @@ rf.fit(X_train, y_train)
 print('Converting Random Forest to GeF')
 gef = rf.topc()  # Convert to a GeF
 
+
+
 ## Classification is performed either by averaging the prediction of each tree (`classify_avg` method)
 #  or by defining a mixture over them (`classify` method).
 print('Making predictions on test data')
@@ -633,3 +635,5 @@ print(f"Test score for GeFs Model: {score}")
 ##  Robustness values can be computed with the `compute_rob_class` function.
 from gefs import compute_rob_class
 #pred, rob = compute_rob_class(gef.root, X_test, data.shape[1]-1, int(ncat[-1]))
+
+
