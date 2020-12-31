@@ -73,30 +73,20 @@ config_default   = 'adfraud_lightgbm'          ### name of function which contai
 cols_input_type_1 = {
      "coly"   :   "Survived"
     ,"colid"  :   "PassengerId"
-    ,"colcat" :   ["Sex", "Embarked" ]
-    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
+    ,"colcat" :   [ ]
+    ,"colnum" :   [  ]
     ,"coltext" :  []
     ,"coldate" :  []
-    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+    ,"colcross" : [  ]
 }
 
 
-cols_input_type_2 = {
-     "coly"   :   "Survived"
-    ,"colid"  :   "PassengerId"
-    ,"colcat" :   ["Sex", "Embarked" ]
-    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
-    ,"coltext" :  ["Name", "Ticket"]
-    ,"coldate" :  []
-    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
-}
 
 
 ####################################################################################
 def adfraud_lightgbm(path_model_out="") :
     """
-       Contains all needed informations for Light GBM Classifier model,
-       used for adfraud classification task
+      
     """
     config_name  = os_get_function_name()
     data_name    = "adfraud"         ### in data/input/
@@ -105,11 +95,9 @@ def adfraud_lightgbm(path_model_out="") :
 
 
     def post_process_fun(y):
-        ### After prediction is done
         return  int(y)
 
     def pre_process_fun(y):
-        ### Before the prediction is done
         return  int(y)
 
 
@@ -133,11 +121,11 @@ def adfraud_lightgbm(path_model_out="") :
         ### Pipeline for data processing ##############################
         'pipe_list': [
             {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
-            {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+            #{'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+            #{'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
+            #{'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+            #{'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
         ],
                }
         },
@@ -154,7 +142,7 @@ def adfraud_lightgbm(path_model_out="") :
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
           #  'coldate',
           #  'coltext',
-          'cols_model_group': [ 'colnum_bin',
+          'cols_model_group': [ 'colnum',
                                 'colcat_bin',
                                 # 'coltext',
                                 # 'coldate',
@@ -174,51 +162,29 @@ def adfraud_lightgbm(path_model_out="") :
 
 
 
+
 #####################################################################################
 ########## Profile data #############################################################
-def data_profile(path_data_train="", path_output="", n_sample= 5000):
+def data_profile(path_data_train="", path_model="", n_sample= 5000):
    from source.run_feature_profile import run_profile
-
-   path1 = os.path.dirname( os.path.dirname(os.path.abspath( path_data_train) ) )
-   path_output = path1 + "/profile/"
-
    run_profile(path_data   = path_data_train,
-               path_output = path_output,
+               path_output = path_model + "/profile/",
                n_sample    = n_sample,
               )
 
 
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess(config=None, nsample=None):
-    config_name  = config  if config is not None else config_default
-    mdict        = globals()[config_name]()
-    m            = mdict['global_pars']
-    print(mdict)
+### def preprocess(config='', nsample=1000):
+from run import preprocess
 
-    from source import run_preprocess
-    run_preprocess.run_preprocess(config_name   =  config_name,
-                                  config_path   =  m['config_path'],
-                                  n_sample      =  nsample if nsample is not None else m['n_sample'],
-
-                                  ### Optonal
-                                  mode          =  'run_preprocess')
 
 
 ##################################################################################
 ########## Train #################################################################
-def train(config=None, nsample=None):
+## def train(config=None, nsample=None):
+from run import train
 
-    config_name  = config  if config is not None else config_default
-    mdict        = globals()[config_name]()
-    m            = mdict['global_pars']
-    print(mdict)
-
-    from source import run_train
-    run_train.run_train(config_name       =  config_name,
-                        config_path       =  m['config_path'],
-                        n_sample          =  nsample if nsample is not None else m['n_sample'],
-                        )
 
 
 ###################################################################################
@@ -231,32 +197,8 @@ def check():
 
 ####################################################################################
 ####### Inference ##################################################################
-def predict(config=None, nsample=None):
-    config_name  = config  if config is not None else config_default
-    mdict        = globals()[config_name]()
-    m            = mdict['global_pars']
-
-
-    from source import run_inference
-    run_inference.run_predict(config_name = config_name,
-                              config_path = m['config_path'],
-                              n_sample    = nsample if nsample is not None else m['n_sample'],
-
-                              #### Optional
-                              path_data   = m['path_pred_data'],
-                              path_output = m['path_pred_output'],
-                              model_dict  = None
-                              )
-
-
-def run_all():
-    data_profile()
-    preprocess()
-    train()
-    check()
-    predict()
-
-
+# predict(config='', nsample=10000)
+from run import predict
 
 ###########################################################################################################
 ###########################################################################################################

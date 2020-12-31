@@ -20,6 +20,16 @@ obj_fun
 """
 
 
+def run_hyper(pars_dict_init,  pars_dict_range, obj_fun, engine_pars):
+    """
+
+    """
+
+    obj_fun(pars_dict_init)
+
+    for sample in pars_dict_samples :
+        engine.run(obj_fun, sample_dict)
+
 
 
 
