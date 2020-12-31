@@ -130,8 +130,12 @@ def titanic1(path_model_out="") :
         # {'uri': 'source/preprocessors.py::pd_coltext_universal_google',   'pars': {}, 'cols_family': 'coltext',     'cols_out': 'coltext_universal_google',     'type': ''    },
 
 
-        {'uri': 'source/preprocessors.py::pd_col_genetic_transform',       'pars': {'coly' :  "Survived" },
-         'cols_family': 'colgen',     'cols_out': 'col_genetic',     'type': ''             },
+        #{'uri': 'source/preprocessors.py::pd_col_genetic_transform',       'pars': {'coly' :  "Survived" },
+        # 'cols_family': 'colgen',     'cols_out': 'col_genetic',     'type': ''             },
+
+
+        {'uri': 'source/preprocessors.py::pd_colnum_quantile_norm',       'pars': {'colsparse' :  [] },
+         'cols_family': 'colnum',     'cols_out': 'colnum_quantile_norm',     'type': ''             },
 
 
     ],
@@ -159,7 +163,11 @@ def titanic1(path_model_out="") :
                             # 'colcat_onehot',
                             # 'coltext_universal_google'
 
-                            'col_genetic'
+                            # 'col_genetic',
+
+                            'colnum_quantile_norm'
+
+
                           ]
 
       ### Filter data rows   ##################################################################

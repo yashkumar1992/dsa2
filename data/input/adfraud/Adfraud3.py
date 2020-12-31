@@ -439,7 +439,6 @@ def get_dummies(data):
 def learncats(data, classcol=None, continuous_ids=[]):
     """
         Learns the number of categories in each variable and standardizes the data.
-
         Parameters
         ----------
         data: numpy n x m
@@ -449,7 +448,6 @@ def learncats(data, classcol=None, continuous_ids=[]):
         continuous_ids: list of ints
             List containing the indices of known continuous variables. Useful for
             discrete data like age, which is better modeled as continuous.
-
         Returns
         -------
         ncat: numpy m
@@ -472,12 +470,10 @@ def learncats(data, classcol=None, continuous_ids=[]):
 def get_stats(data, ncat=None):
     """
         Compute univariate statistics for continuous variables.
-
         Parameters
         ----------
         data: numpy n x m
             Numpy array comprising n realisations (instances) of m variables.
-
         Returns
         -------
         data: numpy n x m
@@ -488,7 +484,6 @@ def get_stats(data, ncat=None):
         mean, std: numpy m
             The mean and standard deviation of the variable. Zero and one, resp.
             if the variable is categorical.
-
     """
     data = data.copy()
     maxv = np.ones(data.shape[1])
@@ -519,7 +514,6 @@ def get_stats(data, ncat=None):
 def normalize_data(data, maxv, minv):
     """
         Normalizes the data given the maximum and minimum values of each variable.
-
         Parameters
         ----------
         data: numpy n x m
@@ -527,7 +521,6 @@ def normalize_data(data, maxv, minv):
         maxv, minv: numpy m
             The maximum and minimum values of each variable. One and zero, resp.
             if the variable is categorical.
-
         Returns
         -------
         data: numpy n x m
@@ -544,7 +537,6 @@ def standardize_data(data, mean, std):
     """
         Standardizes the data given the mean and standard deviations values of
         each variable.
-
         Parameters
         ----------
         data: numpy n x m
@@ -552,7 +544,6 @@ def standardize_data(data, mean, std):
         mean, std: numpy m
             The mean and standard deviation of the variable. Zero and one, resp.
             if the variable is categorical.
-
         Returns
         -------
         data: numpy n x m
@@ -571,7 +562,6 @@ def is_continuous(data):
     """
         Returns true if data was sampled from a continuous variables, and false
         Otherwise.
-
         Parameters
         ----------
         data: numpy
@@ -643,4 +633,3 @@ print(f"Test score for GeFs Model: {score}")
 ##  Robustness values can be computed with the `compute_rob_class` function.
 from gefs import compute_rob_class
 #pred, rob = compute_rob_class(gef.root, X_test, data.shape[1]-1, int(ncat[-1]))
-

@@ -28,6 +28,7 @@ Root Category Family Tree Definitions
 import warnings
 warnings.filterwarnings('ignore')
 import sys, gc, os, pandas as pd, json, copy
+import numpy as np
 
 ####################################################################################################
 #### Add path for python import
@@ -314,6 +315,101 @@ def pd_colnum_normalize(df, col, pars):
     return dfnum_norm, colnum_norm
 
 
+
+
+
+def pd_colnum_quantile_norm(df, col, pars={}):
+  """
+     Distribution normalization
+  """
+  prefix= "colnum_quantile_norm"
+
+  df      = df[col]
+  num_col = col
+
+  pars2 = {}
+  if  'path_pipeline' in pars :   #### Load existing column list
+       colnum_quantile_norm = load( pars['path_pipeline']  +f'/{prefix}.pkl')
+       model                = load( pars['path_pipeline']  +f'/{prefix}_model.pkl')
+       pars2                = load( pars['path_pipeline']  +f'/{prefix}_pars.pkl')
+
+  ##### Grab previous computed params
+  lower_bound_sparse = pars2.get('lower_bound_sparse', None)
+  upper_bound_sparse = pars2.get('upper_bound_sparse', None)
+  lower_bound        = pars2.get('lower_bound_sparse', None)
+  upper_bound        = pars2.get('upper_bound_sparse', None)
+  sparse_col         = pars2.get('colsparse', ['capital-gain', 'capital-loss'] )
+
+
+  ####### Find IQR and implement to numericals and sparse columns seperately
+  Q1  = df.quantile(0.25)
+  Q3  = df.quantile(0.75)
+  IQR = Q3 - Q1
+
+  for col in num_col:
+    if col in sparse_col:
+      df_nosparse = pd.DataFrame(df[df[col] != df[col].mode()[0]][col])
+
+      if lower_bound_sparse is not None:
+        pass
+
+      elif df_nosparse[col].quantile(0.25) < df[col].mode()[0]: #Unexpected case
+        lower_bound_sparse = df_nosparse[col].quantile(0.25)
+
+      else:
+        lower_bound_sparse = df[col].mode()[0]
+
+      if upper_bound_sparse is not None:
+        pass
+
+      elif df_nosparse[col].quantile(0.75) < df[col].mode()[0]: #Unexpected case
+        upper_bound_sparse = df[col].mode()[0]
+
+      else:
+        upper_bound_sparse = df_nosparse[col].quantile(0.75)
+
+
+      n_outliers = len(df[(df[col] < lower_bound_sparse) | (df[col] > upper_bound_sparse)][col])
+
+      if n_outliers > 0:
+        df.loc[df[col] < lower_bound_sparse, col] = lower_bound_sparse * 0.75 #--> MAIN DF CHANGED
+        df.loc[df[col] > upper_bound_sparse, col] = upper_bound_sparse * 1.25 # --> MAIN DF CHANGED
+
+    else:
+      if lower_bound is None or upper_bound is None :
+         lower_bound = df[col].quantile(0.25) - 1.5 * IQR[col]
+         upper_bound = df[col].quantile(0.75) + 1.5 * IQR[col]
+
+      df[col] = np.where(df[col] > upper_bound, 1.25 * upper_bound, df[col])
+      df[col] = np.where(df[col] < lower_bound, 0.75 * lower_bound, df[col])
+
+
+  df.columns = [ t + "_qt_norm" for t in df.columns ]
+  pars_new   = {'lower_bound' : lower_bound, 'upper_bound': upper_bound,
+                'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse
+               }
+  dfnew    = df
+  model    = None
+  colnew   = list(df.columns)
+
+  ###################################################################################
+  if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+      save_features(df,  prefix, pars['path_features_store'])
+      save(model,      pars['path_pipeline_export']  + f"/{prefix}_model.pkl" )
+      save(colnew,     pars['path_pipeline_export']  + f"/{prefix}.pkl" )
+      save(pars_new,   pars['path_pipeline_export']  + f"/{prefix}_pars.pkl" )
+
+
+  col_pars = {'model' : model, 'pars': pars_new}
+  col_pars['cols_new'] = {
+    prefix :  colnew  ### list
+  }
+  return dfnew,  col_pars
+
+
+
+
+
 def pd_colnum_bin(df, col, pars):
     from util_feature import  pd_colnum_tocat
 
@@ -453,6 +549,11 @@ def pd_colcat_bin(df, col=None, pars=None):
 
 
 def pd_colcross(df, col, pars):
+    """
+
+
+    """
+    prefix = 'colcross_onehot_pair'
     log("#####  Cross Features From OneHot Features   ######################################")
     from util_feature import pd_feature_generate_cross
 
@@ -466,8 +567,10 @@ def pd_colcross(df, col, pars):
        df_onehot = copy.deepcopy(dfcat_hot)
 
     colcross_single = pars['colcross_single']
+    pars_model      = { 'pct_threshold' :0.02,  'm_combination': 2 }
     if  'path_pipeline' in pars :   #### Load existing column list
-       colcross_single = load( pars['path_pipeline']  +f'/colcross_single_onehot_select.pkl')
+       colcross_single = load( pars['path_pipeline']  + f'/{prefix}_select.pkl')
+       # pars_model      = load( pars['path_pipeline']  + f'/{prefix}_pars.pkl')
 
     colcross_single_onehot_select = []
     for t in list(df_onehot.columns):
@@ -478,20 +581,23 @@ def pd_colcross(df, col, pars):
 
     df_onehot = df_onehot[colcross_single_onehot_select ]
     dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
-                                                           pct_threshold=0.02,  m_combination=2)
+                                                           **pars_model)
     log(dfcross_hot.head(2).T)
     colcross_pair_onehot = list(dfcross_hot.columns)
 
+    ##############################################################################
     if 'path_features_store' in pars:
         save_features(dfcross_hot, 'colcross_onehot', pars['path_features_store'])
-        save(colcross_single_onehot_select, pars['path_pipeline_export'] + '/colcross_single_onehot_select.pkl')
-        save(colcross_pair,                 pars['path_pipeline_export'] + '/colcross_pair.pkl')
+        save(colcross_single_onehot_select, pars['path_pipeline_export'] + f'/{prefix}_select.pkl')
+        save(colcross_pair,                 pars['path_pipeline_export'] + f'/{prefix}_stats.pkl')
+        save(colcross_pair_onehot,          pars['path_pipeline_export'] + f'/{prefix}_pair.pkl')
+        save(pars_model,                    pars['path_pipeline_export'] + f'/{prefix}_pars.pkl')
 
-    col_pars = {}
-    col_pars['colcross_pair'] = colcross_pair
+
+    col_pars = {'model': None, 'stats' : colcross_pair }
     col_pars['cols_new'] = {
      # 'colcross_single'     :  col ,    ###list
-     'colcross_pair' :  colcross_pair       ### list
+     'colcross_pair' :  colcross_pair_onehot       ### list
     }
     return dfcross_hot, col_pars
 

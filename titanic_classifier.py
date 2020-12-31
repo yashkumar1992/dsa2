@@ -77,7 +77,7 @@ cols_input_type_1 = {
     ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
     ,"coltext" :  []
     ,"coldate" :  []
-    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", ]
 }
 
 
@@ -103,12 +103,10 @@ def titanic_lightgbm(path_model_out="") :
     model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
     n_sample     = 1000
 
-    def post_process_fun(y):
-        ### After prediction is done
+    def post_process_fun(y):   ### After prediction is done
         return  int(y)
 
-    def pre_process_fun(y):
-        ### Before the prediction is done
+    def pre_process_fun(y):    ### Before the prediction is done
         return  int(y)
 
 
@@ -122,11 +120,8 @@ def titanic_lightgbm(path_model_out="") :
                            'early_stopping_rounds': 5
                         }
 
-        ### After prediction  ##########################################
-        , 'post_process_fun' : post_process_fun
-
-        ### Before training  ##########################################
-        , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,
+        , 'post_process_fun' : post_process_fun   ### After prediction  ##########################################
+        , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,  ### Before training  ##########################
 
 
         ### Pipeline for data processing ##############################
@@ -136,7 +131,7 @@ def titanic_lightgbm(path_model_out="") :
             {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'}
+            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair',  'type': 'cross'}
         ],
                }
         },
@@ -150,13 +145,12 @@ def titanic_lightgbm(path_model_out="") :
           #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
           #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
-          #  'coldate',
-          #  'coltext',
+          #  'coldate', 'coltext',
           'cols_model_group': [ 'colnum_bin',
                                 'colcat_bin',
                                 # 'coltext',
                                 # 'coldate',
-                                # 'colcross_pair'
+                                'colcross_pair'
                               ]
 
           ### Filter data rows   ##################################################################
