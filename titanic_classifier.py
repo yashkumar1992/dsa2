@@ -145,8 +145,7 @@ def titanic_lightgbm(path_model_out="") :
           #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
           #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
-          #  'coldate',
-          #  'coltext',
+          #  'coldate', 'coltext',
           'cols_model_group': [ 'colnum_bin',
                                 'colcat_bin',
                                 # 'coltext',
