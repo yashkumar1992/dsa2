@@ -549,6 +549,11 @@ def pd_colcat_bin(df, col=None, pars=None):
 
 
 def pd_colcross(df, col, pars):
+    """
+
+
+    """
+    prefix = 'colcross_onehot_pair'
     log("#####  Cross Features From OneHot Features   ######################################")
     from util_feature import pd_feature_generate_cross
 
@@ -562,8 +567,10 @@ def pd_colcross(df, col, pars):
        df_onehot = copy.deepcopy(dfcat_hot)
 
     colcross_single = pars['colcross_single']
+    pars_model      = { 'pct_threshold' :0.02,  'm_combination': 2 }
     if  'path_pipeline' in pars :   #### Load existing column list
-       colcross_single = load( pars['path_pipeline']  +f'/colcross_single_onehot_select.pkl')
+       colcross_single = load( pars['path_pipeline']  + f'/{prefix}_select.pkl')
+       # pars_model      = load( pars['path_pipeline']  + f'/{prefix}_pars.pkl')
 
     colcross_single_onehot_select = []
     for t in list(df_onehot.columns):
@@ -574,20 +581,23 @@ def pd_colcross(df, col, pars):
 
     df_onehot = df_onehot[colcross_single_onehot_select ]
     dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
-                                                           pct_threshold=0.02,  m_combination=2)
+                                                           **pars_model)
     log(dfcross_hot.head(2).T)
     colcross_pair_onehot = list(dfcross_hot.columns)
 
+    ##############################################################################
     if 'path_features_store' in pars:
         save_features(dfcross_hot, 'colcross_onehot', pars['path_features_store'])
-        save(colcross_single_onehot_select, pars['path_pipeline_export'] + '/colcross_single_onehot_select.pkl')
-        save(colcross_pair,                 pars['path_pipeline_export'] + '/colcross_pair.pkl')
+        save(colcross_single_onehot_select, pars['path_pipeline_export'] + f'/{prefix}_select.pkl')
+        save(colcross_pair,                 pars['path_pipeline_export'] + f'/{prefix}_stats.pkl')
+        save(colcross_pair_onehot,          pars['path_pipeline_export'] + f'/{prefix}_pair.pkl')
+        save(pars_model,                    pars['path_pipeline_export'] + f'/{prefix}_pars.pkl')
 
-    col_pars = {}
-    col_pars['colcross_pair'] = colcross_pair
+
+    col_pars = {'model': None, 'stats' : colcross_pair }
     col_pars['cols_new'] = {
      # 'colcross_single'     :  col ,    ###list
-     'colcross_pair' :  colcross_pair       ### list
+     'colcross_pair' :  colcross_pair_onehot       ### list
     }
     return dfcross_hot, col_pars
 

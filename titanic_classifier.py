@@ -77,7 +77,7 @@ cols_input_type_1 = {
     ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
     ,"coltext" :  []
     ,"coldate" :  []
-    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", ]
 }
 
 
@@ -156,7 +156,7 @@ def titanic_lightgbm(path_model_out="") :
                                 'colcat_bin',
                                 # 'coltext',
                                 # 'coldate',
-                                # 'colcross_pair'
+                                'colcross_pair'
                               ]
 
           ### Filter data rows   ##################################################################
