@@ -42,17 +42,14 @@ def pd_cleanup(df, col, pars):
 
 
 
-def pd_normalize_quantile(df_, col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'], pars={}):
+def pd_normalize_quantile(df, col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'], pars={}):
   """
      Processor for DSA@
   """
-  df     = df_[col]
+  df      = df[col]
   num_col = col
 
   sparse_col         = pars.get('colsparse', ['capital-gain', 'capital-loss'] )
-
-  ##### Grab previous computed params
-
 
 
   # Find IQR and implement to numericals and sparse columns seperately
@@ -63,10 +60,10 @@ def pd_normalize_quantile(df_, col=['age', 'final_weight', 'capital-gain', 'capi
   for col in num_col:
     
 	
-	"""
-		When it runs for testing, it will go into the if block because it will use the saved boundaries.
-	"""
 	
+	######  When it runs for testing, it will go into the if block because it will use the saved boundaries.
+	
+	##### Grab previous computed params
     if pars.get(col, None) is not None:
         saved_bounds = pars.get(col, None)
         lower_bound_sparse = saved_bounds.get("lower_bound_sparse",None)
@@ -118,25 +115,18 @@ def pd_normalize_quantile(df_, col=['age', 'final_weight', 'capital-gain', 'capi
         df[col] = np.where(df[col] < lower_bound, 0.75 * lower_bound, df[col])
     
 
-      # df_test[col] = np.where(df_test[col] > upper_bound, 1.25*upper_bound, df_test[col])
-      # df_test[col] = np.where(df_test[col] < lower_bound, 0.75*lower_bound, df_test[col])
-
-    
     colnew   = [ t + "_norm" for t in df.columns ]
 	
     				
-	"""
-		Each column has its own boundries. So save boundries seperately.
-	"""	
+	
+	######	Each column has its own boundries. So save boundries seperately.
+	
     pars_new[col]={'lower_bound' : lower_bound, 'upper_bound': upper_bound,
                 'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse
                 }
+
 				
-	#pars_new = {'lower_bound' : lower_bound, 'upper_bound': upper_bound,
-                #'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse
-                #}
-				
-	# If we do not reset the values here, the previous column values will be assigned as saved boundaries for the next iteration.	
+	######  If we do not reset the values here, the previous column values will be assigned as saved boundaries for the next iteration.	
     lower_bound=None
     upper_bound=None
     lower_bound_sparse=None
@@ -169,9 +159,10 @@ def pd_normalize_quantile(df_, col=['age', 'final_weight', 'capital-gain', 'capi
 
 ###############################################################################
 ##### Train processing ########################################################
-df           =  pd_cleanup(df, col=None, pars=None)
-df_, col_pars = pd_normalize_quantile(df,  col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'] , pars={} )
-df[df_.columns]=df_
+df             = pd_cleanup(df, col=None, pars=None)
+df_, col_pars  = pd_normalize_quantile(df,  col=['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'] , pars={} )
+df[df_.columns]= df_
+
 
 
 feature_tr = df.drop(["status"],axis=1)
@@ -191,7 +182,7 @@ pars = col_pars['pars']
 
 
 ##### Test processing ############################################################
-df_test   = pd_cleanup(df_test, col=None, pars=None)
+df_test    = pd_cleanup(df_test, col=None, pars=None)
 
 df_test_,_ = pd_normalize_quantile(df_test,
                   col  = ['age', 'final_weight', 'capital-gain', 'capital-loss', 'hours-per-week'],
