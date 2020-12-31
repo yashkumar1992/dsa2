@@ -13,11 +13,11 @@ optuna==1.1.0
 fire
 pyarrow
 # fastparquet
+numba==0.50.1
 nltk
 tensorflow_text>=2.0.0rc0
 # simpleneighbors[annoy]
 # cython
-numba==0.50.1
 #cycler==0.10.0
 #joblib
 #kiwisolver==1.2.0
@@ -26,4 +26,5 @@ numba==0.50.1
 #pyparsing
 #python-dateutil==2.8.1
 #pytz==2020.1
-tqdm==4.48.0
+# tqdm==4.48.0
+tqdm
