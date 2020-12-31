@@ -4,30 +4,27 @@
 Run template
 
 
-python run.py data_profile --config_uri titanic_classifier.py::titanic_lightgbm
+python run.py data_profile --config titanic_classifier.py::titanic_lightgbm
 
                                                                                      
-python run.py preprocess --config_uri titanic_classifier.py::titanic_lightgbm
+python run.py preprocess --config titanic_classifier.py::titanic_lightgbm
 
 
-python run.py train --config_uri titanic_classifier.py::titanic_lightgbm
+python run.py train --config titanic_classifier.py::titanic_lightgbm
 
 
-python run.py predict --config_uri titanic_classifier.py::titanic_lightgbm
+python run.py predict --config titanic_classifier.py::titanic_lightgbm
 
 
 
 """
-import warnings, copy
+import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
-import os, sys
-import pandas as pd
+
 
 ####################################################################################
 from source.util_feature import log
 
-
-###### Path ########################################################################
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
@@ -37,31 +34,55 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
-
+ 
 def get_global_pars(config_uri=""):
-  log("#### Model Params Dynamic loading  ###############################################")
+  log("#### Model Params Dynamic loading  ##########################################")
   from source.util_feature import load_function_uri
   model_dict_fun = load_function_uri(uri_name=config_uri )
 
   #### Get dict + Update Global variables
-  model_dict     = model_dict_fun()   ### params
+  try :
+     model_dict     = model_dict_fun()   ### params
+  except :
+     model_dict  = model_dict_fun
+
   return model_dict
 
 
+def get_config_path(config=''):
+    #### Get params where the file is imported  #####################
+    path0 =  os.path.abspath( sys.modules['__main__'].__file__)
+    print("file where imported", path0)
+
+    config_default = get_global_pars( path0 + "::config_default")
 
 
+    if len(config)  == 0 :
+        config_uri  = path0  + "::" + config_default
+        config_name = config_default
 
-####################################################################################################
-########## Init variable ###########################################################################
-# globals()[config_name]()
+    elif "::" not in config :
+        config_uri  = path0  + "::" + config
+        config_name = config
+
+    else :
+        config_uri  = config
+        config_name = config.split("::")[1]
+    ##################################################################
+    print("default: ", config_uri)
+    return config_uri, config_name
 
 
-###################################################################################
+#####################################################################################
 ########## Profile data #############################################################
-def data_profile(config_uri='titanic_classifier.py::titanic_lightgbm'):
+def data_profile(config=''):
+    """
+
+    """
+    config_uri, config_name = get_config_path(config)
     from source.run_feature_profile import run_profile
-    mdict = get_global_pars( root + config_uri)
-    m = mdict['global_pars']
+    mdict = get_global_pars( config_uri)
+    m     = mdict['global_pars']
     log(mdict)
 
     run_profile(path_data   = m['path_data_train'],
@@ -72,78 +93,85 @@ def data_profile(config_uri='titanic_classifier.py::titanic_lightgbm'):
 
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess(config_uri='titanic_classifier.py::titanic_lightgbm'):
-    from source import run_preprocess_old
-    mdict = get_global_pars( root + config_uri)
-    m = mdict['global_pars']
+def preprocess(config='', nsample=None):
+    """
+
+
+    """
+    config_uri, config_name = get_config_path(config)
+    mdict = get_global_pars( config_uri)
+    m     = mdict['global_pars']
     log(mdict)
 
-    run_preprocess_old.run_preprocess(model_name       =  m['model_class'],
-                                      path_data         =  m['path_data_train'],
-                                      path_output       =  m['path_model'],
-                                      path_config_model =  m['config_path'],
-                                      n_sample          =  m['n_sample'],
-                                      mode              =  'run_preprocess')
+    from source import run_preprocess
+    run_preprocess.run_preprocess(config_name   =  config_name,
+                                  config_path   =  m['config_path'],
+                                  n_sample      =  nsample if nsample is not None else m['n_sample'],
 
-############################################################################
-########## Train ###########################################################
-def train(config_uri='titanic_classifier.py::titanic_lightgbm'):
+                                  ### Optonal
+                                  mode          =  'run_preprocess')
+
+
+####################################################################################
+########## Train ###################################################################
+def train(config='', nsample=None):
+
+    config_uri, config_name = get_config_path(config)
+
+    mdict = get_global_pars(  config_uri)
+    m     = mdict['global_pars']
+    log(mdict)
     from source import run_train
-    mdict = get_global_pars( root + config_uri)
-    m = mdict['global_pars']
-    log(mdict)
-
-    run_train.run_train(config_name=  m['model_class'],
-                        path_data_train=  m['path_data_train'],
-                        path_output       =  m['path_model'],
-                        config_path=  m['config_path'],
-                        n_sample          =  m['n_sample']
+    run_train.run_train(config_name       =  config_name,
+                        config_path       =  m['config_path'],
+                        n_sample          =  nsample if nsample is not None else m['n_sample'],
                         )
 
 
-
-######### Check model #############################################################
-def check(config_uri='titanic_classifier.py::titanic_lightgbm'):
-    mdict = get_global_pars( root + config_uri)
-    m = mdict['global_pars']
+####################################################################################
+######### Check model ##############################################################
+def check(config='titanic_classifier.py::titanic_lightgbm'):
+    mdict = get_global_pars(config)
+    m     = mdict['global_pars']
     log(mdict)
     pass
 
 
 
 
-
-
-
-
 ########################################################################################
 ####### Inference ######################################################################
-def predict(config_uri='titanic_classifier.py::titanic_lightgbm'):
-    from source import run_inference
-    mdict = get_global_pars( root + config_uri)
-    m = mdict['global_pars']
+def predict(config='', nsample=None):
+
+    config_uri, config_name = get_config_path(config)
+
+    mdict = get_global_pars( config_uri)
+    m     = mdict['global_pars']
     log(mdict)
 
-    run_inference.run_predict(model_name  = m['model_class'],
-                              path_model  = m['path_model'],
-                              path_data   = m['path_data_test'],
-                              path_output = m['path_output_pred'],
-                              n_sample    = m['n_sample']
+
+    from source import run_inference
+    run_inference.run_predict(config_name = config_name,
+                              config_path = m['config_path'],
+                              n_sample    = nsample if nsample is not None else m['n_sample'],
+
+                              #### Optional
+                              path_data   = m['path_pred_data'],
+                              path_output = m['path_pred_output'],
+                              model_dict  = None
                               )
 
 
-def run_all(config_uri='titanic_classifier.py::titanic_lightgbm'):
-    preprocess(config_uri)
-    train(config_uri)
-    check(config_uri)
-    predict(config_uri)
-
-
-
-
-###########################################################################################################
-###########################################################################################################
+##########################################################################################
 if __name__ == "__main__":
     import fire
     fire.Fire()
     
+
+
+
+
+
+
+
+

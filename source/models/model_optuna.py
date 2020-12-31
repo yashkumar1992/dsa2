@@ -7,6 +7,9 @@ https://optuna.readthedocs.io/en/stable/reference/generated/optuna.integration.l
 https://github.com/optuna/optuna/blob/master/examples/lightgbm_tuner_simple.py
 
 
+
+
+
 """
 import os
 import pandas as pd, numpy as np, scipy as sci
@@ -21,14 +24,16 @@ from lightgbm import LGBMModel, LGBMRegressor, LGBMClassifier
 
 try :
   import optuna.integration.lightgbm as LGBMModel_optuna
-except:
-  print("cannot import Optuna")
+except Exception as e :
+  raise Exception(f"cannot import Optuna {e}" )
+
+
+### https://github.com/optuna/optuna/blob/master/examples/pruning/lightgbm_integration.py
 
 
  
 ####################################################################################################
 VERBOSE = True
-
 
 # MODEL_URI = get_model_uri(__file__)
 
@@ -42,93 +47,70 @@ global model, session
 
 def init(*kw, **kwargs):
     global model, session
-    model = Model(*kw, **kwargs)
+    model   = Model(*kw, **kwargs)
     session = None
 
 
 class Model(object):
     def __init__(self, model_pars=None, data_pars=None, compute_pars=None):
         self.model_pars, self.compute_pars, self.data_pars = model_pars, compute_pars, data_pars
-
         if model_pars is None:
             self.model = None
         else:
-            model_class = globals()[model_pars['model_class']]
-            self.model = model_class(**model_pars['model_pars'])
+            model_object_name = 'LGBMModel_optuna'
+            if 'LGBMClassifier' in model_pars['model_class']  :
+               self.model_pars['model_pars']['objective'] =  'binary'
+
+            elif  'LGBMRegressor' in model_pars['model_class'] :
+               self.model_pars['model_pars']['objective'] =  'huber'
+
+            model_class     = globals()[model_object_name]
+            self.model_meta = model_class  ### Hyper param seerch Model
+            self.model      = None         ### Best model saved after train
+            #self.model = model_class()
             if VERBOSE: log(model_class, self.model)
 
-"""
-
-###########################################
-    data, target = sklearn.datasets.load_breast_cancer(return_X_y=True)
-    dtrain = lgb.Dataset(data, label=target)
-
-    params = {
-        "objective": "binary",
-        "metric": "binary_logloss",
-        "verbosity": -1,
-        "boosting_type": "gbdt",
-    }
-
-    tuner = lgb.LightGBMTunerCV(
-        params, dtrain, verbose_eval=100, early_stopping_rounds=100, folds=KFold(n_splits=3)
-    )
-
-    tuner.run()
-
-    print("Best score:", tuner.best_score)
-    best_params = tuner.best_params
-    print("Best params:", best_params)
-    print("  Params: ")
-    for key, value in best_params.items():
-        print("    {}: {}".format(key, value))
-        
-        
-############################################        
-      data, target = sklearn.datasets.load_breast_cancer(return_X_y=True)
-    train_x, val_x, train_y, val_y = train_test_split(data, target, test_size=0.25)
-    dtrain = lgb.Dataset(train_x, label=train_y)
-    dval = lgb.Dataset(val_x, label=val_y)
-
-    params = {
-        "objective": "binary",
-        "metric": "binary_logloss",
-        "verbosity": -1,
-        "boosting_type": "gbdt",
-    }
-
-    model = lgb.train(
-        params, dtrain, valid_sets=[dtrain, dval], verbose_eval=100, early_stopping_rounds=100
-    )
-
-    prediction = np.rint(model.predict(val_x, num_iteration=model.best_iteration))
-    accuracy = accuracy_score(val_y, prediction)
-
-    best_params = model.params
-    print("Best params:", best_params)
-    print("  Accuracy = {}".format(accuracy))
-    print("  Params: ")
-    for key, value in best_params.items():
-        print("    {}: {}".format(key, value))      
-
-"""
 def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     """
     """
     global model, session
     session = None  # Session type for compute
-    Xtrain, ytrain, Xtest, ytest = get_dataset(data_pars, task_type="train")
+    Xtrain, ytrain, Xval, yval = get_dataset(data_pars, task_type="train")
     if VERBOSE: log(Xtrain.shape, model.model)
 
-    if "LGBM" in model.model_pars['model_class']:
-        dtrain = lgb.Dataset(train_x, label=train_y)
-        dval = lgb.Dataset(val_x, label=val_y)
 
-        model.model.(params, dtrain, valid_sets=[dtrain, dval],
-                                    **compute_pars.get("compute_pars", {}))
+    dtrain = model.model_meta.Dataset(Xtrain,label = ytrain)
+    dval   = model.model_meta.Dataset(Xval,  label = yval)
+    # dtrain = LGBMModel_optuna.Dataset(Xtrain, label=ytrain)
+    # dval = LGBMModel_optuna.Dataset(Xtest, label=ytest)
 
-    else:
-        model.model.fit(Xtrain, ytrain, **compute_pars.get("compute_pars", {}))
+    pars_lightgbm = model.model_pars['model_pars']   #### from model_pars
+    pars_optuna   = compute_pars.get("optuna_params", {})    ### Specific to Optuna
+    optuna_engine = compute_pars.get('optuna_engine', 'simple')
+    print("pars_lightgbm", pars_lightgbm)
+    print("pars_optuna", pars_optuna)
+
+    if optuna_engine == 'LightGBMTuner':
+        model_fit = model.model_meta.LightGBMTuner(pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna).run()
+
+    elif optuna_engine == 'LightGBMTunerCV':
+        model_fit = model.model_meta.LightGBMTunerCV(pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna).run()
+
+    else :
+        model_fit = model.model_meta.train( pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna)
+
+    """
+       print("Best score:", tuner.best_score)
+       best_params = tuner.best_params
+         
+    """
+
+    ### Best model store as
+    print(model_fit.params)
+    model.model                    = model_fit
+    model.model_pars['model_pars'] = model_fit.params
+    return model_fit
+
 
 
 def eval(data_pars=None, compute_pars=None, out_pars=None, **kw):
@@ -159,7 +141,9 @@ def eval(data_pars=None, compute_pars=None, out_pars=None, **kw):
 
 def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
     global model, session
+    ## optuna_model = model.model_pars.get('optuna_model', None)   #### NO model is saved in model.model
     post_process_fun = model.model_pars.get('post_process_fun', None)
+
     if post_process_fun is None:
         def post_process_fun(y):
             return y
@@ -168,7 +152,9 @@ def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
         data_pars['train'] = False
         Xpred = get_dataset(data_pars, task_type="predict")
 
-    ypred = model.model.predict(Xpred)
+    # ypred = optuna_model.predict(Xpred, num_iteration=optuna_model.best_iteration)
+    ypred = model.model.predict(Xpred,) # num_iteration=model.model.best_iteration)
+
     #ypred = post_process_fun(ypred)
     
     ypred_proba = None  ### No proba    
@@ -193,6 +179,9 @@ def save(path=None, info=None):
     filename = "info.pkl"
     pickle.dump(info, open(f"{path}/{filename}", mode='wb'))  # ,protocol=pickle.HIGHEST_PROTOCOL )
 
+    filename = "model_pars.pkl"
+    pickle.dump(model.model_pars, open(f"{path}/{filename}", mode='wb'))  # , protocol=pickle.HIGHEST_PROTOCOL )
+
 
 def load_model(path=""):
     global model, session
@@ -200,8 +189,10 @@ def load_model(path=""):
     model0 = pickle.load(open(f"{path}/model.pkl", mode='rb'))
 
     model = Model()  # Empty model
-    model.model = model0.model
-    model.model_pars = model0.model_pars
+    model.model      = model0.model
+    model.model_meta = model0.model_meta
+
+    model.model_pars   = model0.model_pars
     model.compute_pars = model0.compute_pars
     session = None
     return model, session
