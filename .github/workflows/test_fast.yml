@@ -76,8 +76,8 @@ jobs:
     - name: Install repo requirements  1
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
       run: |
-
            pip install -r   install/py36.txt
+           pip install pyod==0.3.0
 
     - name: Install repo requirements   2
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
