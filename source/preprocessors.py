@@ -475,9 +475,11 @@ def pd_colnum_binto_onehot(df, col=None, pars=None):
 
 
 def pd_colcat_to_onehot(df, col=None, pars=None):
-    dfbum_bin = df[col]
-    if len(col)==1:
+    """
 
+    """
+    log("#### colcat to onehot")
+    if len(col)==1:
         colnew       = [col[0] + "_onehot"]
         df[ colnew ] =  df[col]
         col_pars     = {}
@@ -488,18 +490,19 @@ def pd_colcat_to_onehot(df, col=None, pars=None):
         }
         return df[colnew], col_pars
 
-    path_pipeline = pars.get('path_pipeline', False)
-    colcat_onehot = load(f'{path_pipeline}/colcat_onehot.pkl') if  path_pipeline else None
+    colcat_onehot = None
+    if  'path_pipeline' in pars :
+       colcat_onehot = load( pars['path_pipeline'] + '/colcat_onehot.pkl')
 
+    ######################################################################################
     colcat = col
-    log("#### colcat to onehot")
     dfcat_hot, colcat_onehot = util_feature.pd_col_to_onehot(df[colcat], colname=colcat,
                                                 colonehot=colcat_onehot, return_val="dataframe,param")
     log(dfcat_hot[colcat_onehot].head(5))
 
+    ######################################################################################
     if 'path_features_store' in pars :
-        path_features_store = pars['path_features_store']
-        save_features(dfcat_hot, 'colcat_onehot', path_features_store)
+        save_features(dfcat_hot, 'colcat_onehot', pars['path_features_store'])
         save(colcat_onehot,  pars['path_pipeline_export'] + "/colcat_onehot.pkl" )
         save(colcat,         pars['path_pipeline_export'] + "/colcat.pkl" )
 
@@ -631,6 +634,7 @@ def pd_colcat_minhash(df, col, pars):
        https://booking.ai/dont-be-tricked-by-the-hashing-trick-192a6aae3087
 
     """
+    prefix = 'colcat_minhash'
     colcat              = col
 
     pars_minhash = {'n_component' : [4, 2], 'model_pretrain_dict' : None,}
@@ -645,13 +649,13 @@ def pd_colcat_minhash(df, col, pars):
                                                             return_val="dataframe,param", **pars_minhash )
     colcat_minhash = list(dfcat_bin.columns)
     log(col_hash_model)
+
     ###################################################################################
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
-       save_features(dfcat_bin, 'dfcat_minhash', pars['path_features_store'])
-       save(col_hash_model, pars['path_pipeline_export'] + "/colcat_minhash_model.pkl" )
-       save(colcat_minhash, pars['path_pipeline_export'] + "/colcat_minhash.pkl" )
-       save(pars_minhash,   pars['path_pipeline_export'] + "/colcat_minhash_pars.pkl" )
-
+       save_features(dfcat_bin, prefix, pars['path_features_store'])
+       save(colcat_minhash, pars['path_pipeline_export'] + f"/{prefix}.pkl" )
+       save(pars_minhash,   pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+       save(col_hash_model, pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
 
     col_pars = {}
     col_pars['col_hash_model'] = col_hash_model
@@ -694,10 +698,9 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     ###################################################################################
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
        save_features(df_genetic, 'df_genetic', pars['path_features_store'])
-       save(gp,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
        save(col_genetic,  pars['path_pipeline_export'] + f"/{prefix}.pkl" )
        save(pars_genetic, pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
-
+       save(gp,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
 
     col_pars = {'model' : gp , 'pars' : pars_genetic}
     col_pars['cols_new'] = {
