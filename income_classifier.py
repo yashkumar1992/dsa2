@@ -164,7 +164,7 @@ def income_status_lightgbm(path_model_out="") :
 
                                 # 'coltext',
                                 # 'coldate',
-                                'colcross_pair'
+                                # 'colcross_pair'
                               ]
 
           ### Filter data rows   ##################################################################
