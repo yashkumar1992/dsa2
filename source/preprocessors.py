@@ -553,7 +553,7 @@ def pd_colcross(df, col, pars):
 
 
     """
-    prefix = 'colcross_onehot_pair'
+    prefix = 'colcross_onehot'
     log("#####  Cross Features From OneHot Features   ######################################")
     from util_feature import pd_feature_generate_cross
 
@@ -572,12 +572,11 @@ def pd_colcross(df, col, pars):
        colcross_single = load( pars['path_pipeline']  + f'/{prefix}_select.pkl')
        # pars_model      = load( pars['path_pipeline']  + f'/{prefix}_pars.pkl')
 
-    colcross_single_onehot_select = []
+    colcross_single_onehot_select = []  ## Select existing columns
     for t in list(df_onehot.columns):
        for c1 in colcross_single:
            if c1 in t:
                colcross_single_onehot_select.append(t)
-
 
     df_onehot = df_onehot[colcross_single_onehot_select ]
     dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
@@ -585,16 +584,16 @@ def pd_colcross(df, col, pars):
     log(dfcross_hot.head(2).T)
     colcross_pair_onehot = list(dfcross_hot.columns)
 
+    model = None
     ##############################################################################
     if 'path_features_store' in pars:
         save_features(dfcross_hot, 'colcross_onehot', pars['path_features_store'])
         save(colcross_single_onehot_select, pars['path_pipeline_export'] + f'/{prefix}_select.pkl')
         save(colcross_pair,                 pars['path_pipeline_export'] + f'/{prefix}_stats.pkl')
         save(colcross_pair_onehot,          pars['path_pipeline_export'] + f'/{prefix}_pair.pkl')
-        save(pars_model,                    pars['path_pipeline_export'] + f'/{prefix}_pars.pkl')
+        save(model,                         pars['path_pipeline_export'] + f'/{prefix}_pars.pkl')
 
-
-    col_pars = {'model': None, 'stats' : colcross_pair }
+    col_pars = {'model': model, 'stats' : colcross_pair }
     col_pars['cols_new'] = {
      # 'colcross_single'     :  col ,    ###list
      'colcross_pair' :  colcross_pair_onehot       ### list
