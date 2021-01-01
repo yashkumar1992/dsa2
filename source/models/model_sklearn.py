@@ -33,6 +33,7 @@ from lightgbm import LGBMModel, LGBMRegressor, LGBMClassifier
 
 
 try :
+    #### All are Un-supervised Model
     from pyod.models.abod  import *
     from pyod.models.auto_encoder import *
     from pyod.models.cblof import *

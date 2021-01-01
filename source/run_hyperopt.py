@@ -1,9 +1,233 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Mar 16 10:45:07 2020
 
-@author: dellbook
+
+Input a dict of variables.
+
+pars_dict
+
+pars_dict_range :
+
+
+Optimize all
+
+obj_fun
+
+
+
+
 """
+
+
+def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars):
+    """
+      pars_dict_init =  {  'boosting_type':'gbdt',
+						'importance_type':'split', 'learning_rate':0.001, 'max_depth':10,
+						'n_estimators': 50, 'n_jobs':-1, 'num_leaves':31 }
+
+	  pars_dict_range =   {  'boosting_type':  ( 'list',  ['gbdt', 'gbdt']      ) ,
+						 'importance_type':'split',
+						 'learning_rate':  ('float' , 0.001, 0.1, 'uniform' ),
+						 'max_depth':      ('int',  1, 10, 'uniform')
+						 'n_estimators':   ('int', 0, 10,  'uniform' )
+						 'n_jobs':-1,
+						 'num_leaves':31 }
+
+
+      obj_fun(pars_dict) :  Objective function
+
+      engine_pars :   optuna parameters
+
+    """
+
+    def obj_custom(trial) :
+        model_pars = copy.deepcopy( pars_dict_init )
+
+        #### Recursive parse the dict
+        for t, p in pars_dict_range.items():
+
+            if t == 'engine_pars': continue  ##Skip
+            # type, init, range[0,1]
+            x = p['type']
+            if x == 'log_uniform':
+                pres = trial.suggest_loguniform(t, p['range'][0], p['range'][1])
+            elif x == 'int':
+                pres = trial.suggest_int(t, p['range'][0], p['range'][1])
+            elif x == 'categorical':
+                pres = trial.suggest_categorical(t, p['value'])
+            elif x == 'discrete_uniform':
+                pres = trial.suggest_discrete_uniform(t, p['init'], p['range'][0], p['range'][1])
+            elif x == 'uniform':
+                pres = trial.suggest_uniform(t, p['range'][0], p['range'][1])
+            else:
+                raise Exception(f'Not supported type {x}')
+                pres = None
+
+            model_pars[t] = pres
+
+        score = obj_fun(model_pars)
+        return score
+
+        log("###### Hyper-optimization through study   ##################################")
+        pruner = optuna.pruners.MedianPruner() if engine_pars["method"] == 'prune' else None
+
+        if engine_pars.get("distributed") is not None:
+            # study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
+            try:
+                study = optuna.load_study(study_name=engine_pars['study_name'], storage=engine_pars['storage'])
+            except:
+                study = optuna.create_study(study_name=engine_pars['study_name'], storage=engine_pars['storage'],
+                                            pruner=pruner)
+        else:
+            study = optuna.create_study(pruner=pruner)
+
+
+        study.optimize(obj_custom, n_trials=ntrials)  # Invoke optimization of the objective function.
+        log("Optim, finished", n=35)
+        pars_best = study.best_params
+
+    ##############################################################
+
+    return pars_best, score_best
+
+
+
+
+
+
+############################################################################################################
+def optim_optuna_old(model_uri="model_tf.1_lstm.py",
+                 hypermodel_pars = {"engine_pars": {}},
+                 model_pars      = {},
+                 data_pars       = {},
+                 compute_pars    = {},  # only Model pars
+                 out_pars        = {}):
+    """
+    ### Distributed
+    https://optuna.readthedocs.io/en/latest/tutorial/distributed.html
+      { 'distributed' : 1,
+       'study_name' : 'ok' ,
+      'storage' : 'sqlite'
+     }
+
+     ###### 1st engine is optuna
+     https://optuna.readthedocs.io/en/stable/installation.html
+    https://github.com/pfnet/optuna/blob/master/examples/tensorflow_estimator_simple.py
+    https://github.com/pfnet/optuna/tree/master/examples
+    Interface layer to Optuna  for hyperparameter optimization
+    optuna create-study --study-name "distributed-example" --storage "sqlite:///example.db"
+    https://optuna.readthedocs.io/en/latest/tutorial/distributed.html
+    study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
+    study.optimize(objective, n_trials=100)
+
+    weight_decay = trial.suggest_loguniform('weight_decay', 1e-10, 1e-3)
+    optimizer = trial.suggest_categorical('optimizer', ['MomentumSGD', 'Adam']) # Categorical parameter
+    num_layers = trial.suggest_int('num_layers', 1, 3)      # Int parameter
+    dropout_rate = trial.suggest_uniform('dropout_rate', 0.0, 1.0)      # Uniform parameter
+    learning_rate = trial.suggest_loguniform('learning_rate', 1e-5, 1e-2)      # Loguniform parameter
+    drop_path_rate = trial.suggest_discrete_uniform('drop_path_rate', 0.0, 1.0, 0.1) # Discrete-uniform parameter
+
+    """
+    import optuna
+    # these parameters should be inside the key "engine_pars" which should be inside "hypermodel_pars" of the config json
+    engine_pars   = hypermodel_pars['engine_pars']
+    ntrials       = engine_pars['ntrials']
+    # metric target should be a value that is available in the model.stats of the model we are optimizing it can simply be called "loss" or
+    # specific like "roc_auc_score"
+    metric_target = engine_pars["metric_target"]
+
+    save_path     = out_pars['path']
+    # log_path      = out_pars['log_path']
+    os.makedirs(save_path, exist_ok=True)
+
+    model_name    = model_pars.get("model_name")  #### Only for sklearn model
+    # model_type    = model_pars['model_type']
+    log(model_pars, data_pars, compute_pars, hypermodel_pars)
+
+    module = module_load(model_uri)
+    log(module)
+
+    def objective(trial):
+        # log("check", module, data_pars)
+        for t, p in hypermodel_pars.items():
+
+            if t == 'engine_pars': continue  ##Skip
+            # type, init, range[0,1]
+            x = p['type']
+            if x == 'log_uniform':
+                pres = trial.suggest_loguniform(t, p['range'][0], p['range'][1])
+            elif x == 'int':
+                pres = trial.suggest_int(t, p['range'][0], p['range'][1])
+            elif x == 'categorical':
+                pres = trial.suggest_categorical(t, p['value'])
+            elif x == 'discrete_uniform':
+                pres = trial.suggest_discrete_uniform(t, p['init'], p['range'][0], p['range'][1])
+            elif x == 'uniform':
+                pres = trial.suggest_uniform(t, p['range'][0], p['range'][1])
+            else:
+                raise Exception(f'Not supported type {x}')
+                pres = None
+
+            model_pars[t] = pres
+
+        module = model_create(module, model_pars, data_pars, compute_pars)  # module.Model(**param_dict)
+        if VERBOSE: log(model)
+
+        module.fit(data_pars=data_pars, compute_pars=compute_pars, out_pars=out_pars)
+        metrics = module.evaluate(data_pars=data_pars, compute_pars=compute_pars, out_pars=out_pars)
+        mtarget = metrics[metric_target]
+        try:
+            module.reset_model()  # Reset Graph for TF
+        except Exception as e:
+            log(e)
+
+        return mtarget
+
+
+    log("###### Hyper-optimization through study   ##################################")
+    pruner = optuna.pruners.MedianPruner() if engine_pars["method"] == 'prune' else None
+
+    if engine_pars.get("distributed") is not None:
+        # study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
+        try:
+            study = optuna.load_study(study_name=engine_pars['study_name'], storage=engine_pars['storage'])
+        except:
+            study = optuna.create_study(study_name=engine_pars['study_name'], storage=engine_pars['storage'],
+                                        pruner=pruner)
+    else:
+        study = optuna.create_study(pruner=pruner)
+
+    study.optimize(objective, n_trials=ntrials)  # Invoke optimization of the objective function.
+    log("Optim, finished", n=35)
+    param_dict_best = study.best_params
+    # param_dict.update(module.config_get_pars(choice="test", )
+
+
+    log("### Save Stats   ##########################################################")
+    study_trials = study.trials_dataframe()
+    study_trials.to_csv(f"{save_path}/{model_uri}_study.csv")
+    param_dict_best["best_value"] = study.best_value
+    json.dump(param_dict_best, open(f"{save_path}/{model_uri}_best-params.json", mode="w"))
+
+
+    log("### Run Model with best   #################################################")
+    model_pars_update = copy.deepcopy(model_pars)
+    model_pars_update.update(param_dict_best)
+    model_pars_update["model_name"] = model_name  ###SKLearn model
+
+    module = model_create(module, model_pars_update, data_pars, compute_pars)
+    module.fit(data_pars=data_pars, compute_pars=compute_pars, out_pars=out_pars)
+
+
+    log("#### Saving     ###########################################################")
+    model_uri = model_uri.replace(".", "-")
+    save_pars = {'path': save_path, 'model_type': model_uri.split("-")[0], 'model_uri': model_uri}
+    module.save(save_pars=save_pars)
+
+    #log( os.stats(save_path))
+    ## model_pars_update["model_name"] = model_name
+    return model_pars_update
+
 
 
 
@@ -38,6 +262,35 @@ import os
 print(os.listdir("../input"))
 
 # Any results you write to the current directory are saved as output
+
+
+https://rbfopt.readthedocs.io/en/latest/rbfopt_aux_problems.html
+
+
+
+
+
+“RBFOpt: an open-source library for black-box optimization with costly function ...
+
+https://github.com/coin-or/rbfopt
+
+After installation, the easiest way to optimize a function is to use the RbfoptUserBlackBox class to define a black-box, and execute RbfoptAlgorithm on it. This is a minimal example to optimize the 3-dimensional function defined below:
+
+import rbfopt
+import numpy as np
+def obj_funct(x):
+  return x[0]*x[1] - x[2]
+
+bb = rbfopt.RbfoptUserBlackBox(3, np.array([0] * 3), np.array([10] * 3),
+                               np.array(['R', 'I', 'R']), obj_funct)
+settings = rbfopt.RbfoptSettings(max_evaluations=50)
+alg = rbfopt.RbfoptAlgorithm(settings, bb)
+val, x, itercount, evalcount, fast_evalcount = alg.optimize()
+Another possibility is to define your own class derived from RbfoptBlackBox in a separate file, and execute the command-line interface on the file. An example is provided under src/rbfopt/examples, in the file rbfopt_black_box_example.py. This can be executed with:
+
+rbfopt_cl_interface.py src/rbfopt/examples/rbfopt_black_box_example.py
+
+
 
 
 

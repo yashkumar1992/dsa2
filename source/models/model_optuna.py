@@ -57,7 +57,14 @@ class Model(object):
         if model_pars is None:
             self.model = None
         else:
-            model_class     = globals()[model_pars['model_class']]
+            model_object_name = 'LGBMModel_optuna'
+            if 'LGBMClassifier' in model_pars['model_class']  :
+               self.model_pars['model_pars']['objective'] =  'binary'
+
+            elif  'LGBMRegressor' in model_pars['model_class'] :
+               self.model_pars['model_pars']['objective'] =  'huber'
+
+            model_class     = globals()[model_object_name]
             self.model_meta = model_class  ### Hyper param seerch Model
             self.model      = None         ### Best model saved after train
             #self.model = model_class()
@@ -80,8 +87,9 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     pars_lightgbm = model.model_pars['model_pars']   #### from model_pars
     pars_optuna   = compute_pars.get("optuna_params", {})    ### Specific to Optuna
     optuna_engine = compute_pars.get('optuna_engine', 'simple')
-    print("pars", pars_lightgbm)
-    
+    print("pars_lightgbm", pars_lightgbm)
+    print("pars_optuna", pars_optuna)
+
     if optuna_engine == 'LightGBMTuner':
         model_fit = model.model_meta.LightGBMTuner(pars_lightgbm, dtrain, valid_sets=[dtrain, dval], **pars_optuna).run()
 
@@ -98,6 +106,7 @@ def fit(data_pars=None, compute_pars=None, out_pars=None, **kw):
     """
 
     ### Best model store as
+    print(model_fit.params)
     model.model                    = model_fit
     model.model_pars['model_pars'] = model_fit.params
     return model_fit
@@ -164,12 +173,14 @@ def save(path=None, info=None):
     import cloudpickle as pickle
     os.makedirs(path, exist_ok=True)
 
-
     filename = "model.pkl"
     pickle.dump(model, open(f"{path}/{filename}", mode='wb'))  # , protocol=pickle.HIGHEST_PROTOCOL )
 
     filename = "info.pkl"
     pickle.dump(info, open(f"{path}/{filename}", mode='wb'))  # ,protocol=pickle.HIGHEST_PROTOCOL )
+
+    filename = "model_pars.pkl"
+    pickle.dump(model.model_pars, open(f"{path}/{filename}", mode='wb'))  # , protocol=pickle.HIGHEST_PROTOCOL )
 
 
 def load_model(path=""):
@@ -181,8 +192,7 @@ def load_model(path=""):
     model.model      = model0.model
     model.model_meta = model0.model_meta
 
-
-    model.model_pars = model0.model_pars
+    model.model_pars   = model0.model_pars
     model.compute_pars = model0.compute_pars
     session = None
     return model, session
