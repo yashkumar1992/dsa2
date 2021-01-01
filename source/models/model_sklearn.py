@@ -33,31 +33,32 @@ from lightgbm import LGBMModel, LGBMRegressor, LGBMClassifier
 
 
 try :
+    #### All are Un-supervised Model
     from pyod.models.abod  import *
-    #from pyod.models.auto_encoder import *
-    #from pyod.models.cblof import *
-    #from pyod.models.cof import *
+    from pyod.models.auto_encoder import *
+    from pyod.models.cblof import *
+    from pyod.models.cof import *
     from pyod.models.combination import *
-    #from pyod.models.copod import *
-    #from pyod.models.feature_bagging import *
+    from pyod.models.copod import *
+    from pyod.models.feature_bagging import *
     from pyod.models.hbos import *
     from pyod.models.iforest import *
     from pyod.models.knn import *
-    #from pyod.models.lmdd import *
-    #from pyod.models.loda import *
+    from pyod.models.lmdd import *
+    from pyod.models.loda import *
     from pyod.models.lof import *
-    #from pyod.models.loci import *
-    #from pyod.models.lscp import *
-    #from pyod.models.mad import *
-    #from pyod.models.mcd import *
-    #from pyod.models.mo_gaal import *
+    from pyod.models.loci import *
+    from pyod.models.lscp import *
+    from pyod.models.mad import *
+    from pyod.models.mcd import *
+    from pyod.models.mo_gaal import *
     from pyod.models.ocsvm import *
-    #from pyod.models.pca import *
-    #from pyod.models.sod import *
-    #from pyod.models.so_gaal import *
-    #from pyod.models.sos import *
-    #from pyod.models.vae import *
-    #from pyod.models.xgbod import *
+    from pyod.models.pca import *
+    from pyod.models.sod import *
+    from pyod.models.so_gaal import *
+    from pyod.models.sos import *
+    from pyod.models.vae import *
+    from pyod.models.xgbod import *
 except :
     print("cannot import pyod")
  

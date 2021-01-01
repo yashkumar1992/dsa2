@@ -16,15 +16,13 @@ warnings.filterwarnings('ignore')
 ###### Path ########################################################################
 from source import util_feature
 config_file  = os.path.basename(__file__)
-# config_file      = "outlier_predict.py"   ### name of file which contains data configuration
 
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
-print(root)
 
 dir_data  = os.path.abspath( root + "/data/" ) + "/"
 dir_data  = dir_data.replace("\\", "/")
-print(dir_data)
+print(root, dir_data)
 
 
 def os_get_function_name():
@@ -83,18 +81,38 @@ cols_input_type_2 = {
 
 ####################################################################################
 def titanic_pyod(path_model_out="") :
-    """
-        from pyod.models.abod import ABOD
-        from pyod.models.cblof import CBLOF
-        from pyod.models.feature_bagging import FeatureBagging
-        from pyod.models.hbos import HBOS
-        from pyod.models.iforest import IForest
-        from pyod.models.knn import KNN
-        from pyod.models.lof import LOF
-        from pyod.models.mcd import MCD
-        from pyod.models.ocsvm import OCSVM
-        from pyod.models.pca import PCA
-        from pyod.models.lscp import LSCP
+    """ All Models
+        pyod.models.abod 
+        pyod.models.auto_encoder 
+        pyod.models.cblof 
+        pyod.models.cof 
+        pyod.models.combination 
+        pyod.models.copod 
+        pyod.models.feature_bagging 
+        pyod.models.hbos 
+        pyod.models.iforest 
+        pyod.models.knn 
+        pyod.models.lmdd 
+        pyod.models.loda 
+        pyod.models.lof 
+        pyod.models.loci 
+        pyod.models.lscp 
+        pyod.models.mad 
+        pyod.models.mcd 
+        pyod.models.mo_gaal 
+        pyod.models.ocsvm 
+        pyod.models.pca 
+        pyod.models.sod 
+        pyod.models.so_gaal 
+        pyod.models.sos 
+        pyod.models.vae 
+        pyod.models.xgbod 
+         contents
+        Utility Functions
+        pyod.utils.data 
+        pyod.utils.example 
+        pyod.utils.stat_models 
+        pyod.utils.utility 
 
         clf.fit(X)
         scores_pred = clf.decision_function(X) * -1
@@ -103,21 +121,30 @@ def titanic_pyod(path_model_out="") :
     """
     config_name  = os_get_function_name()
     data_name    = "titanic"         ### in data/input/
-    model_class  = 'IForest'  ### ACTUAL Class name for model_sklearn.py
+    model_class  = 'COPOD'  ### ACTUAL Class name for model_sklearn.py
     n_sample     = 1000
 
     def post_process_fun(y):   ### After prediction is done
         return  float(y)
 
     def pre_process_fun(y):    ### Before the prediction is done
-        return  float(y)   ### proba
+        return   1 if y > 0.5 else 0    ### proba
+
+    ##### Model pars for each
+    mpars = {
+      'IForest' : {},
+      'VAE' :   { 'encoder_neurons' : [13, 8, 4 ],
+            'decoder_neurons' : [4, 8, 13]
+        },
+
+       'COPOD' : {'contamination' : 0.05}
+    }
 
 
     model_dict = {'model_pars': {
         ### LightGBM API model   #######################################
-         'model_class': model_class
-        ,'model_pars' : {
-                        }
+         'model_class':  model_class
+        ,'model_pars' :  mpars[model_class]
 
         , 'post_process_fun' : post_process_fun   ### After prediction  ##########################################
         , 'pre_process_pars' : {'y_norm_fun' :  pre_process_fun ,  ### Before training  ##########################
@@ -146,7 +173,7 @@ def titanic_pyod(path_model_out="") :
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
           #  'coldate', 'coltext',
           'cols_model_group': [ 'colnum',
-                                'colcat_bin',
+                                'colcat_onehot',
                                 # 'coltext',
                                 # 'coldate',
                                 # 'colcross_pair'
@@ -192,8 +219,6 @@ from run import train
 ######### Check data ##############################################################
 def check():
    pass
-
-
 
 
 ####################################################################################
