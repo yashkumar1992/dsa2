@@ -4,16 +4,16 @@
 Run template
 
 
-python run.py data_profile --config titanic_classifier.py::titanic_lightgbm
+python run.py data_profile --config outlier_predict.py::titanic_lightgbm
 
                                                                                      
-python run.py preprocess --config titanic_classifier.py::titanic_lightgbm
+python run.py preprocess --config outlier_predict.py::titanic_lightgbm
 
 
-python run.py train --config titanic_classifier.py::titanic_lightgbm
+python run.py train --config outlier_predict.py::titanic_lightgbm
 
 
-python run.py predict --config titanic_classifier.py::titanic_lightgbm
+python run.py predict --config outlier_predict.py::titanic_lightgbm
 
 
 
@@ -130,7 +130,7 @@ def train(config='', nsample=None):
 
 ####################################################################################
 ######### Check model ##############################################################
-def check(config='titanic_classifier.py::titanic_lightgbm'):
+def check(config='outlier_predict.py::titanic_lightgbm'):
     mdict = get_global_pars(config)
     m     = mdict['global_pars']
     log(mdict)

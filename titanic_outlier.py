@@ -3,8 +3,8 @@
 """
 You can put hardcode here, specific to titanic dataset
 All in one file config
-  python titanic_classifier.py  train    > zlog/log_titanic_train.txt 2>&1
-  python titanic_classifier.py  predict  > zlog/log_titanic_predict.txt 2>&1
+  python outlier_predict.py  train    > zlog/log_titanic_train.txt 2>&1
+  python outlier_predict.py  predict  > zlog/log_titanic_predict.txt 2>&1
 
 
 """
@@ -16,7 +16,7 @@ warnings.filterwarnings('ignore')
 ###### Path ########################################################################
 from source import util_feature
 config_file  = os.path.basename(__file__)
-# config_file      = "titanic_classifier.py"   ### name of file which contains data configuration
+# config_file      = "outlier_predict.py"   ### name of file which contains data configuration
 
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
@@ -254,11 +254,11 @@ def predict(config=None, nsample=None):
 ###########################################################################################################
 ###########################################################################################################
 """
-python  titanic_classifier.py  data_profile
-python  titanic_classifier.py  preprocess  --nsample 100
-python  titanic_classifier.py  train       --nsample 200
-python  titanic_classifier.py  check
-python  titanic_classifier.py  predict
+python  outlier_predict.py  data_profile
+python  outlier_predict.py  preprocess  --nsample 100
+python  outlier_predict.py  train       --nsample 200
+python  outlier_predict.py  check
+python  outlier_predict.py  predict
 
 
 """
