@@ -1,10 +1,8 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to titanic dataset
-All in one file config
-  python outlier_predict.py  train    > zlog/log_titanic_train.txt 2>&1
-  python outlier_predict.py  predict  > zlog/log_titanic_predict.txt 2>&1
+  python outlier_predict.py  train    > zlog/log_outlier_train.txt 2>&1
+  python outlier_predict.py  predict  > zlog/log_outlier_predict.txt 2>&1
 
 
 """
@@ -81,7 +79,7 @@ cols_input_type_2 = {
 
 ####################################################################################
 def titanic_pyod(path_model_out="") :
-    """ All Models
+    """ All Models  :    https://pyod.readthedocs.io/en/latest/pyod.html
         pyod.models.abod 
         pyod.models.auto_encoder 
         pyod.models.cblof 
@@ -134,7 +132,7 @@ def titanic_pyod(path_model_out="") :
     mpars = {
       'IForest' : {},
       'VAE' :   { 'encoder_neurons' : [13, 8, 4 ],
-            'decoder_neurons' : [4, 8, 13]
+                 'decoder_neurons' : [4, 8, 13]
         },
 
        'COPOD' : {'contamination' : 0.05}

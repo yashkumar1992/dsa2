@@ -61,7 +61,6 @@ def global_pars_update(model_dict,  data_name, config_name):
     return model_dict
 
 
-
 ####################################################################################
 ##### Params########################################################################
 config_default  = 'income_status_lightgbm'        ### name of function which contains data configuration
