@@ -1,5 +1,12 @@
 
 
+#### New Gradient Boosting
+https://github.com/arita37/snapboost-neurips
+
+
+
+
+
 ### Features hashing
 
 https://booking.ai/dont-be-tricked-by-the-hashing-trick-192a6aae3087
