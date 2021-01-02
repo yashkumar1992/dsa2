@@ -131,7 +131,11 @@ def titanic_lightgbm(path_model_out="") :
             {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair',  'type': 'cross'}
+            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair',  'type': 'cross'},
+
+            #### Example of Custom processor
+            {'uri': 'titanic_classifier.py::pd_colnum_quantile_norm',   'pars': {}, 'cols_family': 'colnum',   'cols_out': 'colnum_quantile_norm',  'type': '' },          
+          
         ],
                }
         },
@@ -150,7 +154,10 @@ def titanic_lightgbm(path_model_out="") :
                                 'colcat_bin',
                                 # 'coltext',
                                 # 'coldate',
-                                'colcross_pair'
+                                'colcross_pair',
+                               
+                               ### example of custom
+                               'colnum_quantile_norm'
                               ]
 
           ### Filter data rows   ##################################################################
@@ -163,6 +170,96 @@ def titanic_lightgbm(path_model_out="") :
     model_dict        = global_pars_update(model_dict, data_name, config_name )
     return model_dict
 
+  
+#######################################################################################
+########## Examepl of custom processor ################################################  
+
+def pd_colnum_quantile_norm(df, col, pars={}):
+  """
+     colnum normalization by quantile
+  """
+  prefix  = "colnum_quantile_norm"
+  df      = df[col]
+  num_col = col
+
+  ##### Grab previous computed params  ################################################    
+  pars2 = {}
+  if  'path_pipeline' in pars :   #### Load existing column list
+       colnum_quantile_norm = load( pars['path_pipeline']  +f'/{prefix}.pkl')
+       model                = load( pars['path_pipeline']  +f'/{prefix}_model.pkl')
+       pars2                = load( pars['path_pipeline']  +f'/{prefix}_pars.pkl')
+
+
+
+  ########### Compute #################################################################
+  lower_bound_sparse = pars2.get('lower_bound_sparse', None)
+  upper_bound_sparse = pars2.get('upper_bound_sparse', None)
+  lower_bound        = pars2.get('lower_bound_sparse', None)
+  upper_bound        = pars2.get('upper_bound_sparse', None)
+  sparse_col         = pars2.get('colsparse', ['capital-gain', 'capital-loss'] )
+  
+  ####### Find IQR and implement to numericals and sparse columns seperately ##########
+  Q1  = df.quantile(0.25)
+  Q3  = df.quantile(0.75)
+  IQR = Q3 - Q1
+
+  for col in num_col:
+    if col in sparse_col:
+      df_nosparse = pd.DataFrame(df[df[col] != df[col].mode()[0]][col])
+
+      if lower_bound_sparse is not None:
+        pass
+
+      elif df_nosparse[col].quantile(0.25) < df[col].mode()[0]: #Unexpected case
+        lower_bound_sparse = df_nosparse[col].quantile(0.25)
+
+      else:
+        lower_bound_sparse = df[col].mode()[0]
+
+      if upper_bound_sparse is not None:
+        pass
+
+      elif df_nosparse[col].quantile(0.75) < df[col].mode()[0]: #Unexpected case
+        upper_bound_sparse = df[col].mode()[0]
+
+      else:
+        upper_bound_sparse = df_nosparse[col].quantile(0.75)
+
+      n_outliers = len(df[(df[col] < lower_bound_sparse) | (df[col] > upper_bound_sparse)][col])
+
+      if n_outliers > 0:
+        df.loc[df[col] < lower_bound_sparse, col] = lower_bound_sparse * 0.75 #--> MAIN DF CHANGED
+        df.loc[df[col] > upper_bound_sparse, col] = upper_bound_sparse * 1.25 # --> MAIN DF CHANGED
+
+    else:
+      if lower_bound is None or upper_bound is None :
+         lower_bound = df[col].quantile(0.25) - 1.5 * IQR[col]
+         upper_bound = df[col].quantile(0.75) + 1.5 * IQR[col]
+
+      df[col] = np.where(df[col] > upper_bound, 1.25 * upper_bound, df[col])
+      df[col] = np.where(df[col] < lower_bound, 0.75 * lower_bound, df[col])
+
+  df.columns = [ t + "_qt_norm" for t in df.columns ]
+  pars_new   = {'lower_bound' : lower_bound, 'upper_bound': upper_bound,
+                'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse  }
+  dfnew    = df
+  model    = None
+  colnew   = list(df.columns)
+
+  ##### Export ##############################################################################
+  if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+      save_features(df,  prefix, pars['path_features_store'])
+      save(colnew,     pars['path_pipeline_export']  + f"/{prefix}.pkl" )
+      save(pars_new,   pars['path_pipeline_export']  + f"/{prefix}_pars.pkl" )
+      save(model,      pars['path_pipeline_export']  + f"/{prefix}_model.pkl" )
+
+
+  col_pars = {'prefix' : prefix, 'path': pars.get('path_pipeline_export', pars.get("path_pipeline". None)) }
+  col_pars['cols_new'] = {
+    prefix :  colnew  ### list
+  }
+  return dfnew,  col_pars
+  
 
 
 #####################################################################################
