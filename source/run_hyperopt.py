@@ -18,8 +18,12 @@ obj_fun
 
 """
 
+def log(*s):
+    print(*s)
 
-def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars):
+import copy, optuna
+
+def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, ntrials=3):
     """
       pars_dict_init =  {  'boosting_type':'gbdt',
 						'importance_type':'split', 'learning_rate':0.001, 'max_depth':10,
@@ -36,56 +40,59 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars):
 
       obj_fun(pars_dict) :  Objective function
 
-      engine_pars :   optuna parameters
+      engine_pars :    {   }  optuna parameters
 
     """
 
+    def parse_dict(mdict, trial):
+        #### Recursive parse the dict
+        mnew = copy.deepcopy((mdict))
+        for t, p in mdict.items():
+            if isinstance(p, dict) :
+                pres = parse_dict(p, trial)
+
+            else :
+                pres  = None
+                dtype = p[0]
+                x     = p[1]
+                if   x == 'log_uniform':      pres = trial.suggest_loguniform(t, p[2], p[3])
+                elif x == 'int':              pres = trial.suggest_int(t, p[2], p[3])
+                elif x == 'categorical':      pres = trial.suggest_categorical(t, p[2])
+                elif x == 'discrete_uniform': pres = trial.suggest_discrete_uniform(t, p[4], p[2], p[3])
+                elif x == 'uniform':          pres = trial.suggest_uniform(t, p[2], p[3])
+                else:
+                    raise Exception(f'Not supported type {x}')
+
+            mnew[t] = pres
+        return mnew
+
     def obj_custom(trial) :
         model_pars = copy.deepcopy( pars_dict_init )
-
-        #### Recursive parse the dict
-        for t, p in pars_dict_range.items():
-
-            if t == 'engine_pars': continue  ##Skip
-            # type, init, range[0,1]
-            x = p['type']
-            if x == 'log_uniform':
-                pres = trial.suggest_loguniform(t, p['range'][0], p['range'][1])
-            elif x == 'int':
-                pres = trial.suggest_int(t, p['range'][0], p['range'][1])
-            elif x == 'categorical':
-                pres = trial.suggest_categorical(t, p['value'])
-            elif x == 'discrete_uniform':
-                pres = trial.suggest_discrete_uniform(t, p['init'], p['range'][0], p['range'][1])
-            elif x == 'uniform':
-                pres = trial.suggest_uniform(t, p['range'][0], p['range'][1])
-            else:
-                raise Exception(f'Not supported type {x}')
-                pres = None
-
-            model_pars[t] = pres
-
+        model_pars = parse_dict(model_pars, trial)
         score = obj_fun(model_pars)
         return score
 
-        log("###### Hyper-optimization through study   ##################################")
-        pruner = optuna.pruners.MedianPruner() if engine_pars["method"] == 'prune' else None
 
-        if engine_pars.get("distributed") is not None:
-            # study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
-            try:
-                study = optuna.load_study(study_name=engine_pars['study_name'], storage=engine_pars['storage'])
-            except:
-                study = optuna.create_study(study_name=engine_pars['study_name'], storage=engine_pars['storage'],
-                                            pruner=pruner)
-        else:
-            study = optuna.create_study(pruner=pruner)
+    log("###### Hyper-optimization through study   ##################################")
+    pruner = optuna.pruners.MedianPruner() if engine_pars.get("method", '') == 'prune' else None
+
+    if engine_pars.get("distributed") is not None:
+        study_name = engine_pars['study_name']
+        storage=  engine_pars['storage']
+        # study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
+        try:
+            study = optuna.load_study(study_name, storage)
+        except:
+            study = optuna.create_study(study_name, storage,
+                                        pruner=pruner)
+    else:
+        study = optuna.create_study(pruner=pruner)
 
 
-        study.optimize(obj_custom, n_trials=ntrials)  # Invoke optimization of the objective function.
-        log("Optim, finished", n=35)
-        pars_best = study.best_params
-
+    study.optimize(obj_custom, n_trials=ntrials)  # Invoke optimization of the objective function.
+    log("Optim, finished", n=35)
+    pars_best   = study.best_params
+    score_nest = study.best_value
     ##############################################################
 
     return pars_best, score_best
