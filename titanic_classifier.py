@@ -254,7 +254,7 @@ def pd_colnum_quantile_norm(df, col, pars={}):
       save(model,      pars['path_pipeline_export']  + f"/{prefix}_model.pkl" )
 
 
-  col_pars = {'prefix' : prefix, 'path': pars['path_pipeline_export'] }
+  col_pars = {'prefix' : prefix, 'path': pars.get('path_pipeline_export', pars.get("path_pipeline". None)) }
   col_pars['cols_new'] = {
     prefix :  colnew  ### list
   }
