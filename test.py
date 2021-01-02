@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 To test encoding
-
 """
 import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
@@ -48,6 +47,7 @@ def global_pars_update(model_dict,  data_name, config_name):
     m['path_pred_model']   = root + f'/data/output/{data_name}/{config_name}/model/'
     m['path_pred_output']  = root + f'/data/output/{data_name}/pred_{config_name}/'
 
+
     #####  Generic
     m['n_sample']             = model_dict['data_pars'].get('n_sample', 5000)
 
@@ -58,6 +58,16 @@ def global_pars_update(model_dict,  data_name, config_name):
 ####################################################################################
 ##### Params########################################################################
 config_default   = 'titanic1'          ### name of function which contains data configuration
+
+cols_input_type_1 = {
+     "coly"   :   "Survived"
+    ,"colid"  :   "PassengerId"
+    ,"colcat" :   ["Sex", "Embarked" ]
+    ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
+    ,"coltext" :  []
+    ,"coldate" :  []
+    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
+}
 
 
 cols_input_type_2 = {
@@ -171,25 +181,83 @@ def titanic1(path_model_out="") :
 
 
 
+#####################################################################################
+########## Profile data #############################################################
+def data_profile(path_data_train="", path_model="", n_sample= 5000):
+   from source.run_feature_profile import run_profile
+   run_profile(path_data   = path_data_train,
+               path_output = path_model + "/profile/",
+               n_sample    = n_sample,
+              )
+
 
 ###################################################################################
 ########## Preprocess #############################################################
-### def preprocess(config='', nsample=1000):
-from run import preprocess
+def preprocess(config=None, nsample=None):
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(mdict)
 
+    from source import run_preprocess
+    run_preprocess.run_preprocess(config_name   =  config_name,
+                                  config_path   =  m['config_path'],
+                                  n_sample      =  nsample if nsample is not None else m['n_sample'],
+
+                                  ### Optonal
+                                  mode          =  'run_preprocess')
 
 
 ##################################################################################
 ########## Train #################################################################
-from run import train
+def train(config=None, nsample=None):
+
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(mdict)
+
+    from source import run_train
+    run_train.run_train(config_name       =  config_name,
+                        config_path       =  m['config_path'],
+                        n_sample          =  nsample if nsample is not None else m['n_sample'],
+                        )
+
+
+###################################################################################
+######### Check data ##############################################################
+def check():
+   pass
+
 
 
 
 ####################################################################################
 ####### Inference ##################################################################
-# predict(config='', nsample=10000)
-from run import predict
+def predict(config=None, nsample=None):
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
 
+
+    from source import run_inference
+    run_inference.run_predict(config_name = config_name,
+                              config_path = m['config_path'],
+                              n_sample    = nsample if nsample is not None else m['n_sample'],
+
+                              #### Optional
+                              path_data   = m['path_pred_data'],
+                              path_output = m['path_pred_output'],
+                              model_dict  = None
+                              )
+
+
+def run_all():
+    data_profile()
+    preprocess()
+    train()
+    check()
+    predict()
 
 
 
@@ -202,11 +270,7 @@ python  test_encoder.py  train       --nsample 200
 python  test_encoder.py  check
 python  test_encoder.py  predict
 python  test_encoder.py  run_all
-
-
 """
 if __name__ == "__main__":
     import fire
     fire.Fire()
-    
-
