@@ -61,7 +61,6 @@ def global_pars_update(model_dict,  data_name, config_name):
     return model_dict
 
 
-
 ####################################################################################
 ##### Params########################################################################
 config_default  = 'income_status_lightgbm'        ### name of function which contains data configuration
@@ -105,7 +104,7 @@ def income_status_lightgbm(path_model_out="") :
         ,'model_pars' : {'boosting_type':'gbdt', 'class_weight':None, 'colsample_bytree':1.0,
 						'importance_type':'split', 'learning_rate':0.001, 'max_depth':-1,
 						'min_child_samples':20, 'min_child_weight':0.001, 'min_split_gain':0,
-						'n_estimators':1000,
+						'n_estimators': 5000,
                          'n_jobs':-1, 'num_leaves':31, 'objective':None,
 						'random_state':None, 'reg_alpha':0, 'reg_lambda':0.0, 'silent':True,
 						'subsample':1.0, 'subsample_for_bin':200000, 'subsample_freq':0
@@ -156,15 +155,15 @@ def income_status_lightgbm(path_model_out="") :
           #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
           #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
           #  'coldate',  'coltext',
-          'cols_model_group': [ 'colnum_bin',
+          'cols_model_group': [ # 'colnum_bin',
                                 'colcat_bin',
 
                                 'colnum_quantile_norm',
 
-
                                 # 'coltext',
                                 # 'coldate',
-                                # 'colcross_pair'
+                                'colcross_pair',
+
                               ]
 
           ### Filter data rows   ##################################################################

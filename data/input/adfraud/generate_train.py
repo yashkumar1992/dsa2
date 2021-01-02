@@ -163,8 +163,8 @@ coly = "is_attributed"
 df   = pd.read_csv("raw/train_100k.zip")
 
 df, col_pars = generate_train(df)
-df_X = df.drop(coly, axis=1)
-df_y = df[[coly]]
+df_X         = df.drop(coly, axis=1)
+df_y         = df[[coly]]
 
 
 path = "train_100k/"
@@ -176,10 +176,10 @@ os.makedirs(path, exist_ok=True)
 
 
 ##### Train data  ############################################
-df = pd.read_csv("raw/train_200m.zip")
+df           = pd.read_csv("raw/train_200m.zip")
 df, col_pars = generate_train(df)
-df_X = df.drop(coly, axis=1)
-df_y = df[[coly]]
+df_X         = df.drop(coly, axis=1)
+df_y         = df[[coly]]
 
 
 path = "train/"

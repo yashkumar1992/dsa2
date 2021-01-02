@@ -1,0 +1,3640 @@
+Python 3.7.9 | packaged by conda-forge | (default, Dec  9 2020, 21:08:20)
+[GCC 9.3.0] on linux
+In[2]: runfile('/home/mohamedaminebenslama/projects/dsa2-amine/data/input/adfraud/Adfraud3.py', wdir='/home/mohamedaminebenslama/projects/dsa2-amine/data/input/adfraud')
+Let's divide the day in four section ,See in which section click has happend
+Let's see new clicks count features
+Computing the number of clicks associated with a given app per hour...
+Computing the number of channels associated with a given IP address within each hour...
+Let's divide the day in four section ,See in which section click has happend
+Computing the number of channels associated with
+Let's see new clicks count features
+Computing the number of channels associated with
+Computing the number of clicks associated with a given app per hour...
+Computing the number of channels associated with a given IP address within each hour...
+Computing the number of channels associated with
+Computing the number of channels associated with
+Grouping by ['ip', 'day', 'hour'], and aggregating channel with count
+Grouping by ['ip', 'app'], and aggregating channel with count
+Grouping by ['ip', 'app', 'os'], and aggregating channel with count
+Grouping by ['ip', 'app', 'day', 'hour'], and aggregating channel with count
+Grouping by ['ip', 'app', 'channel'], and aggregating hour with mean
+Grouping by ['app'], and aggregating ip with AvgViewPerDistinct
+Grouping by ['app'], and aggregating channel with count
+Grouping by ['channel'], and aggregating app with count
+Grouping by ['ip'], and aggregating channel with nunique
+Grouping by ['ip'], and aggregating app with nunique
+Grouping by ['ip', 'day'], and aggregating hour with nunique
+Grouping by ['ip', 'app'], and aggregating os with nunique
+Grouping by ['ip'], and aggregating device with nunique
+Grouping by ['app'], and aggregating channel with nunique
+Grouping by ['ip', 'device', 'os'], and aggregating app with nunique
+Grouping by ['ip', 'device', 'os'], and aggregating app with cumcount
+Grouping by ['ip'], and aggregating app with cumcount
+Grouping by ['ip'], and aggregating os with cumcount
+[LightGBM] [Info] Number of positive: 174, number of negative: 76326
+[LightGBM] [Warning] Auto-choosing col-wise multi-threading, the overhead of testing was 0.039974 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 1838
+[LightGBM] [Info] Number of data points in the train set: 76500, number of used features: 39
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.002275 -> initscore=-6.083714
+[LightGBM] [Info] Start training from score -6.083714
+[1]	valid_0's auc: 0.838552
+/home/mohamedaminebenslama/anaconda3/envs/dsa2/lib/python3.7/site-packages/lightgbm/callback.py:186: UserWarning: Early stopping is not available in dart mode
+  warnings.warn('Early stopping is not available in dart mode')
+[2]	valid_0's auc: 0.867416
+[3]	valid_0's auc: 0.658168
+[4]	valid_0's auc: 0.653898
+[5]	valid_0's auc: 0.752602
+[6]	valid_0's auc: 0.91463
+[7]	valid_0's auc: 0.913829
+[8]	valid_0's auc: 0.908269
+[9]	valid_0's auc: 0.908185
+[10]	valid_0's auc: 0.896983
+[11]	valid_0's auc: 0.901644
+[12]	valid_0's auc: 0.913289
+[13]	valid_0's auc: 0.91013
+[14]	valid_0's auc: 0.8587
+[15]	valid_0's auc: 0.909879
+[16]	valid_0's auc: 0.91068
+[17]	valid_0's auc: 0.908495
+[18]	valid_0's auc: 0.90318
+[19]	valid_0's auc: 0.902299
+[20]	valid_0's auc: 0.900052
+[21]	valid_0's auc: 0.900573
+[22]	valid_0's auc: 0.901188
+[23]	valid_0's auc: 0.900443
+[24]	valid_0's auc: 0.898364
+[25]	valid_0's auc: 0.898889
+[26]	valid_0's auc: 0.899292
+[27]	valid_0's auc: 0.898498
+[28]	valid_0's auc: 0.924457
+[29]	valid_0's auc: 0.77193
+[30]	valid_0's auc: 0.771868
+[31]	valid_0's auc: 0.770893
+[32]	valid_0's auc: 0.771086
+[33]	valid_0's auc: 0.770968
+[34]	valid_0's auc: 0.771018
+[35]	valid_0's auc: 0.770484
+[36]	valid_0's auc: 0.797765
+[37]	valid_0's auc: 0.789275
+[38]	valid_0's auc: 0.770329
+[39]	valid_0's auc: 0.770186
+[40]	valid_0's auc: 0.770136
+[41]	valid_0's auc: 0.919988
+[42]	valid_0's auc: 0.919647
+[43]	valid_0's auc: 0.919175
+[44]	valid_0's auc: 0.918648
+[45]	valid_0's auc: 0.918952
+[46]	valid_0's auc: 0.91912
+[47]	valid_0's auc: 0.919424
+[48]	valid_0's auc: 0.919393
+[49]	valid_0's auc: 0.919318
+[50]	valid_0's auc: 0.919616
+[51]	valid_0's auc: 0.919846
+[52]	valid_0's auc: 0.918679
+[53]	valid_0's auc: 0.919399
+[54]	valid_0's auc: 0.91969
+[55]	valid_0's auc: 0.919585
+[56]	valid_0's auc: 0.919802
+[57]	valid_0's auc: 0.920528
+[58]	valid_0's auc: 0.918573
+[59]	valid_0's auc: 0.918549
+[60]	valid_0's auc: 0.919442
+[61]	valid_0's auc: 0.919579
+[62]	valid_0's auc: 0.914862
+[63]	valid_0's auc: 0.807458
+[64]	valid_0's auc: 0.815575
+[65]	valid_0's auc: 0.904306
+[66]	valid_0's auc: 0.914583
+[67]	valid_0's auc: 0.912945
+[68]	valid_0's auc: 0.917283
+[69]	valid_0's auc: 0.917705
+[70]	valid_0's auc: 0.918487
+[71]	valid_0's auc: 0.918995
+[72]	valid_0's auc: 0.91951
+[73]	valid_0's auc: 0.918617
+[74]	valid_0's auc: 0.919542
+[75]	valid_0's auc: 0.921229
+[76]	valid_0's auc: 0.921478
+[77]	valid_0's auc: 0.921651
+[78]	valid_0's auc: 0.922005
+[79]	valid_0's auc: 0.919436
+[80]	valid_0's auc: 0.920479
+[81]	valid_0's auc: 0.92162
+[82]	valid_0's auc: 0.922409
+[83]	valid_0's auc: 0.922378
+[84]	valid_0's auc: 0.922545
+[85]	valid_0's auc: 0.92154
+[86]	valid_0's auc: 0.920646
+[87]	valid_0's auc: 0.921018
+[88]	valid_0's auc: 0.920547
+[89]	valid_0's auc: 0.920379
+[90]	valid_0's auc: 0.920386
+[91]	valid_0's auc: 0.921025
+[92]	valid_0's auc: 0.921565
+[93]	valid_0's auc: 0.921472
+[94]	valid_0's auc: 0.921534
+[95]	valid_0's auc: 0.921651
+[96]	valid_0's auc: 0.920584
+[97]	valid_0's auc: 0.920317
+[98]	valid_0's auc: 0.920801
+[99]	valid_0's auc: 0.920696
+[100]	valid_0's auc: 0.920317
+[101]	valid_0's auc: 0.920485
+[102]	valid_0's auc: 0.920987
+[103]	valid_0's auc: 0.921273
+[104]	valid_0's auc: 0.918921
+[105]	valid_0's auc: 0.918139
+[106]	valid_0's auc: 0.919256
+[107]	valid_0's auc: 0.919684
+[108]	valid_0's auc: 0.918871
+[109]	valid_0's auc: 0.918902
+[110]	valid_0's auc: 0.918573
+[111]	valid_0's auc: 0.918617
+[112]	valid_0's auc: 0.917463
+[113]	valid_0's auc: 0.916662
+[114]	valid_0's auc: 0.916817
+[115]	valid_0's auc: 0.91709
+[116]	valid_0's auc: 0.916755
+[117]	valid_0's auc: 0.912368
+[118]	valid_0's auc: 0.914751
+[119]	valid_0's auc: 0.906658
+[120]	valid_0's auc: 0.863993
+[121]	valid_0's auc: 0.912293
+[122]	valid_0's auc: 0.914285
+[123]	valid_0's auc: 0.915073
+[124]	valid_0's auc: 0.914844
+[125]	valid_0's auc: 0.914546
+[126]	valid_0's auc: 0.911524
+[127]	valid_0's auc: 0.86606
+[128]	valid_0's auc: 0.909029
+[129]	valid_0's auc: 0.906863
+[130]	valid_0's auc: 0.909016
+[131]	valid_0's auc: 0.860282
+[132]	valid_0's auc: 0.909178
+[133]	valid_0's auc: 0.914068
+[134]	valid_0's auc: 0.913931
+[135]	valid_0's auc: 0.914074
+[136]	valid_0's auc: 0.913919
+[137]	valid_0's auc: 0.914105
+[138]	valid_0's auc: 0.914409
+[139]	valid_0's auc: 0.914062
+[140]	valid_0's auc: 0.913199
+[141]	valid_0's auc: 0.9131
+[142]	valid_0's auc: 0.912852
+[143]	valid_0's auc: 0.913174
+[144]	valid_0's auc: 0.913137
+[145]	valid_0's auc: 0.912498
+[146]	valid_0's auc: 0.91233
+[147]	valid_0's auc: 0.912088
+[148]	valid_0's auc: 0.910009
+[149]	valid_0's auc: 0.912492
+[150]	valid_0's auc: 0.912051
+[151]	valid_0's auc: 0.909687
+[152]	valid_0's auc: 0.908414
+[153]	valid_0's auc: 0.911803
+[154]	valid_0's auc: 0.912808
+[155]	valid_0's auc: 0.913863
+[156]	valid_0's auc: 0.914242
+[157]	valid_0's auc: 0.914291
+[158]	valid_0's auc: 0.91354
+[159]	valid_0's auc: 0.913447
+[160]	valid_0's auc: 0.91323
+[161]	valid_0's auc: 0.913236
+[162]	valid_0's auc: 0.913516
+[163]	valid_0's auc: 0.914124
+[164]	valid_0's auc: 0.914484
+[165]	valid_0's auc: 0.917252
+[166]	valid_0's auc: 0.917481
+[167]	valid_0's auc: 0.917072
+[168]	valid_0's auc: 0.917245
+[169]	valid_0's auc: 0.916979
+[170]	valid_0's auc: 0.916432
+[171]	valid_0's auc: 0.916743
+[172]	valid_0's auc: 0.916799
+[173]	valid_0's auc: 0.916166
+[174]	valid_0's auc: 0.916048
+[175]	valid_0's auc: 0.916221
+[176]	valid_0's auc: 0.926641
+[177]	valid_0's auc: 0.926703
+[178]	valid_0's auc: 0.926765
+[179]	valid_0's auc: 0.926877
+[180]	valid_0's auc: 0.926629
+[181]	valid_0's auc: 0.926194
+[182]	valid_0's auc: 0.925834
+[183]	valid_0's auc: 0.92311
+[184]	valid_0's auc: 0.923668
+[185]	valid_0's auc: 0.923929
+[186]	valid_0's auc: 0.923892
+[187]	valid_0's auc: 0.923637
+[188]	valid_0's auc: 0.923855
+[189]	valid_0's auc: 0.923519
+[190]	valid_0's auc: 0.923215
+[191]	valid_0's auc: 0.921968
+[192]	valid_0's auc: 0.921875
+[193]	valid_0's auc: 0.921968
+[194]	valid_0's auc: 0.92077
+[195]	valid_0's auc: 0.92046
+[196]	valid_0's auc: 0.920354
+[197]	valid_0's auc: 0.920019
+[198]	valid_0's auc: 0.919951
+[199]	valid_0's auc: 0.91997
+[200]	valid_0's auc: 0.919976
+[201]	valid_0's auc: 0.919976
+[202]	valid_0's auc: 0.920069
+[203]	valid_0's auc: 0.919759
+[204]	valid_0's auc: 0.919374
+[205]	valid_0's auc: 0.918276
+[206]	valid_0's auc: 0.918393
+[207]	valid_0's auc: 0.918058
+[208]	valid_0's auc: 0.864955
+[209]	valid_0's auc: 0.865154
+[210]	valid_0's auc: 0.865036
+[211]	valid_0's auc: 0.86475
+[212]	valid_0's auc: 0.864217
+[213]	valid_0's auc: 0.864148
+[214]	valid_0's auc: 0.86457
+[215]	valid_0's auc: 0.865315
+[216]	valid_0's auc: 0.86601
+[217]	valid_0's auc: 0.904728
+[218]	valid_0's auc: 0.903065
+[219]	valid_0's auc: 0.912001
+[220]	valid_0's auc: 0.911586
+[221]	valid_0's auc: 0.915309
+[222]	valid_0's auc: 0.915967
+[223]	valid_0's auc: 0.915576
+[224]	valid_0's auc: 0.915166
+[225]	valid_0's auc: 0.93029
+[226]	valid_0's auc: 0.93024
+[227]	valid_0's auc: 0.930098
+[228]	valid_0's auc: 0.929775
+[229]	valid_0's auc: 0.9298
+[230]	valid_0's auc: 0.929533
+[231]	valid_0's auc: 0.92939
+[232]	valid_0's auc: 0.928639
+[233]	valid_0's auc: 0.928596
+[234]	valid_0's auc: 0.928391
+[235]	valid_0's auc: 0.928248
+[236]	valid_0's auc: 0.928484
+[237]	valid_0's auc: 0.929278
+[238]	valid_0's auc: 0.928981
+[239]	valid_0's auc: 0.927721
+[240]	valid_0's auc: 0.927274
+[241]	valid_0's auc: 0.926982
+[242]	valid_0's auc: 0.926064
+[243]	valid_0's auc: 0.929074
+[244]	valid_0's auc: 0.92872
+[245]	valid_0's auc: 0.928782
+[246]	valid_0's auc: 0.927684
+[247]	valid_0's auc: 0.927199
+[248]	valid_0's auc: 0.925623
+[249]	valid_0's auc: 0.927317
+[250]	valid_0's auc: 0.925456
+[251]	valid_0's auc: 0.924649
+[252]	valid_0's auc: 0.924922
+[253]	valid_0's auc: 0.924152
+[254]	valid_0's auc: 0.92589
+[255]	valid_0's auc: 0.926008
+[256]	valid_0's auc: 0.925139
+[257]	valid_0's auc: 0.924593
+[258]	valid_0's auc: 0.923495
+[259]	valid_0's auc: 0.923011
+[260]	valid_0's auc: 0.921912
+[261]	valid_0's auc: 0.921273
+[262]	valid_0's auc: 0.921602
+[263]	valid_0's auc: 0.92113
+[264]	valid_0's auc: 0.921267
+[265]	valid_0's auc: 0.921136
+[266]	valid_0's auc: 0.921112
+[267]	valid_0's auc: 0.920659
+[268]	valid_0's auc: 0.92028
+[269]	valid_0's auc: 0.919355
+[270]	valid_0's auc: 0.919039
+[271]	valid_0's auc: 0.918232
+[272]	valid_0's auc: 0.918232
+[273]	valid_0's auc: 0.917034
+[274]	valid_0's auc: 0.916916
+[275]	valid_0's auc: 0.916029
+[276]	valid_0's auc: 0.916153
+[277]	valid_0's auc: 0.913751
+[278]	valid_0's auc: 0.913776
+[279]	valid_0's auc: 0.912659
+[280]	valid_0's auc: 0.9113
+[281]	valid_0's auc: 0.910388
+[282]	valid_0's auc: 0.909035
+[283]	valid_0's auc: 0.909159
+[284]	valid_0's auc: 0.909234
+[285]	valid_0's auc: 0.909364
+[286]	valid_0's auc: 0.909047
+[287]	valid_0's auc: 0.908867
+[288]	valid_0's auc: 0.908961
+[289]	valid_0's auc: 0.908781
+[290]	valid_0's auc: 0.908489
+[291]	valid_0's auc: 0.908576
+[292]	valid_0's auc: 0.908483
+[293]	valid_0's auc: 0.907192
+[294]	valid_0's auc: 0.906249
+[295]	valid_0's auc: 0.906447
+[296]	valid_0's auc: 0.906522
+[297]	valid_0's auc: 0.912107
+[298]	valid_0's auc: 0.912126
+[299]	valid_0's auc: 0.911784
+[300]	valid_0's auc: 0.911592
+[301]	valid_0's auc: 0.910611
+[302]	valid_0's auc: 0.910537
+[303]	valid_0's auc: 0.915713
+[304]	valid_0's auc: 0.921081
+[305]	valid_0's auc: 0.921205
+[306]	valid_0's auc: 0.921453
+[307]	valid_0's auc: 0.921465
+[308]	valid_0's auc: 0.926281
+[309]	valid_0's auc: 0.929055
+[310]	valid_0's auc: 0.932456
+[311]	valid_0's auc: 0.932518
+[312]	valid_0's auc: 0.93204
+[313]	valid_0's auc: 0.930464
+[314]	valid_0's auc: 0.92975
+[315]	valid_0's auc: 0.932326
+[316]	valid_0's auc: 0.932592
+[317]	valid_0's auc: 0.93181
+[318]	valid_0's auc: 0.932127
+[319]	valid_0's auc: 0.931891
+[320]	valid_0's auc: 0.931283
+[321]	valid_0's auc: 0.930631
+[322]	valid_0's auc: 0.930253
+[323]	valid_0's auc: 0.929626
+[324]	valid_0's auc: 0.929496
+[325]	valid_0's auc: 0.929856
+[326]	valid_0's auc: 0.931463
+[327]	valid_0's auc: 0.931221
+[328]	valid_0's auc: 0.930687
+[329]	valid_0's auc: 0.933554
+[330]	valid_0's auc: 0.933188
+[331]	valid_0's auc: 0.933027
+[332]	valid_0's auc: 0.932661
+[333]	valid_0's auc: 0.932431
+[334]	valid_0's auc: 0.932003
+[335]	valid_0's auc: 0.931736
+[336]	valid_0's auc: 0.931519
+[337]	valid_0's auc: 0.930681
+[338]	valid_0's auc: 0.932363
+[339]	valid_0's auc: 0.932183
+[340]	valid_0's auc: 0.936595
+[341]	valid_0's auc: 0.936012
+[342]	valid_0's auc: 0.935546
+[343]	valid_0's auc: 0.935131
+[344]	valid_0's auc: 0.934715
+[345]	valid_0's auc: 0.934529
+[346]	valid_0's auc: 0.933089
+[347]	valid_0's auc: 0.932406
+[348]	valid_0's auc: 0.932121
+[349]	valid_0's auc: 0.93904
+[350]	valid_0's auc: 0.939102
+[351]	valid_0's auc: 0.938711
+[352]	valid_0's auc: 0.940331
+[353]	valid_0's auc: 0.93994
+[354]	valid_0's auc: 0.9394
+[355]	valid_0's auc: 0.941243
+[356]	valid_0's auc: 0.938941
+[357]	valid_0's auc: 0.938581
+[358]	valid_0's auc: 0.936173
+[359]	valid_0's auc: 0.935602
+[360]	valid_0's auc: 0.936254
+[361]	valid_0's auc: 0.936365
+[362]	valid_0's auc: 0.939164
+[363]	valid_0's auc: 0.939171
+[364]	valid_0's auc: 0.939245
+[365]	valid_0's auc: 0.938469
+[366]	valid_0's auc: 0.937464
+[367]	valid_0's auc: 0.935813
+[368]	valid_0's auc: 0.936204
+[369]	valid_0's auc: 0.932543
+[370]	valid_0's auc: 0.936949
+[371]	valid_0's auc: 0.936204
+[372]	valid_0's auc: 0.93487
+[373]	valid_0's auc: 0.934969
+[374]	valid_0's auc: 0.934876
+[375]	valid_0's auc: 0.934361
+[376]	valid_0's auc: 0.934336
+[377]	valid_0's auc: 0.935112
+[378]	valid_0's auc: 0.934051
+[379]	valid_0's auc: 0.93415
+[380]	valid_0's auc: 0.934491
+[381]	valid_0's auc: 0.93595
+[382]	valid_0's auc: 0.935931
+[383]	valid_0's auc: 0.936061
+[384]	valid_0's auc: 0.934944
+[385]	valid_0's auc: 0.933498
+[386]	valid_0's auc: 0.933256
+[387]	valid_0's auc: 0.933207
+[388]	valid_0's auc: 0.930098
+[389]	valid_0's auc: 0.929998
+[390]	valid_0's auc: 0.930153
+[391]	valid_0's auc: 0.930153
+[392]	valid_0's auc: 0.929154
+[393]	valid_0's auc: 0.932388
+[394]	valid_0's auc: 0.935273
+[395]	valid_0's auc: 0.937774
+[396]	valid_0's auc: 0.937867
+[397]	valid_0's auc: 0.937365
+[398]	valid_0's auc: 0.937209
+[399]	valid_0's auc: 0.936893
+[400]	valid_0's auc: 0.936409
+[401]	valid_0's auc: 0.93595
+[402]	valid_0's auc: 0.938755
+[403]	valid_0's auc: 0.93868
+[404]	valid_0's auc: 0.938655
+[405]	valid_0's auc: 0.938482
+[406]	valid_0's auc: 0.940896
+[407]	valid_0's auc: 0.941858
+[408]	valid_0's auc: 0.941622
+[409]	valid_0's auc: 0.941938
+[410]	valid_0's auc: 0.943769
+[411]	valid_0's auc: 0.944656
+[412]	valid_0's auc: 0.945203
+[413]	valid_0's auc: 0.945184
+[414]	valid_0's auc: 0.944644
+[415]	valid_0's auc: 0.944743
+[416]	valid_0's auc: 0.943887
+[417]	valid_0's auc: 0.943769
+[418]	valid_0's auc: 0.946282
+[419]	valid_0's auc: 0.94627
+[420]	valid_0's auc: 0.946413
+[421]	valid_0's auc: 0.949392
+[422]	valid_0's auc: 0.948591
+[423]	valid_0's auc: 0.948361
+[424]	valid_0's auc: 0.9482
+[425]	valid_0's auc: 0.947288
+[426]	valid_0's auc: 0.947263
+[427]	valid_0's auc: 0.947207
+[428]	valid_0's auc: 0.947064
+[429]	valid_0's auc: 0.944508
+[430]	valid_0's auc: 0.944439
+[431]	valid_0's auc: 0.94447
+[432]	valid_0's auc: 0.944911
+[433]	valid_0's auc: 0.946996
+[434]	valid_0's auc: 0.944824
+[435]	valid_0's auc: 0.945134
+[436]	valid_0's auc: 0.943086
+[437]	valid_0's auc: 0.9429
+[438]	valid_0's auc: 0.941671
+[439]	valid_0's auc: 0.943037
+[440]	valid_0's auc: 0.94066
+[441]	valid_0's auc: 0.940486
+[442]	valid_0's auc: 0.941392
+[443]	valid_0's auc: 0.941566
+[444]	valid_0's auc: 0.943328
+[445]	valid_0's auc: 0.941945
+[446]	valid_0's auc: 0.941771
+[447]	valid_0's auc: 0.940182
+[448]	valid_0's auc: 0.940219
+[449]	valid_0's auc: 0.940132
+[450]	valid_0's auc: 0.939425
+[451]	valid_0's auc: 0.938705
+[452]	valid_0's auc: 0.938606
+[453]	valid_0's auc: 0.938624
+[454]	valid_0's auc: 0.936943
+[455]	valid_0's auc: 0.939208
+[456]	valid_0's auc: 0.939202
+[457]	valid_0's auc: 0.938935
+[458]	valid_0's auc: 0.939046
+[459]	valid_0's auc: 0.938829
+[460]	valid_0's auc: 0.938134
+[461]	valid_0's auc: 0.938116
+[462]	valid_0's auc: 0.937445
+[463]	valid_0's auc: 0.93729
+[464]	valid_0's auc: 0.937501
+[465]	valid_0's auc: 0.939133
+[466]	valid_0's auc: 0.938631
+[467]	valid_0's auc: 0.940908
+[468]	valid_0's auc: 0.943235
+[469]	valid_0's auc: 0.944017
+[470]	valid_0's auc: 0.944055
+[471]	valid_0's auc: 0.943825
+[472]	valid_0's auc: 0.943695
+[473]	valid_0's auc: 0.943297
+[474]	valid_0's auc: 0.94532
+[475]	valid_0's auc: 0.945277
+[476]	valid_0's auc: 0.945414
+[477]	valid_0's auc: 0.943012
+[478]	valid_0's auc: 0.943173
+[479]	valid_0's auc: 0.942224
+[480]	valid_0's auc: 0.942087
+[481]	valid_0's auc: 0.943862
+[482]	valid_0's auc: 0.943664
+[483]	valid_0's auc: 0.944805
+[484]	valid_0's auc: 0.944719
+[485]	valid_0's auc: 0.944681
+[486]	valid_0's auc: 0.944818
+[487]	valid_0's auc: 0.945885
+[488]	valid_0's auc: 0.94398
+[489]	valid_0's auc: 0.94393
+[490]	valid_0's auc: 0.946251
+[491]	valid_0's auc: 0.945389
+[492]	valid_0's auc: 0.945333
+[493]	valid_0's auc: 0.946332
+[494]	valid_0's auc: 0.946251
+[495]	valid_0's auc: 0.946698
+[496]	valid_0's auc: 0.945178
+[497]	valid_0's auc: 0.944998
+[498]	valid_0's auc: 0.945035
+[499]	valid_0's auc: 0.946127
+[500]	valid_0's auc: 0.945389
+[501]	valid_0's auc: 0.945234
+[502]	valid_0's auc: 0.946276
+[503]	valid_0's auc: 0.948647
+[504]	valid_0's auc: 0.946593
+[505]	valid_0's auc: 0.946146
+[506]	valid_0's auc: 0.946146
+[507]	valid_0's auc: 0.948386
+[508]	valid_0's auc: 0.950093
+[509]	valid_0's auc: 0.948982
+[510]	valid_0's auc: 0.949025
+[511]	valid_0's auc: 0.948926
+[512]	valid_0's auc: 0.950025
+[513]	valid_0's auc: 0.94995
+[514]	valid_0's auc: 0.949528
+[515]	valid_0's auc: 0.949801
+[516]	valid_0's auc: 0.952606
+[517]	valid_0's auc: 0.954176
+[518]	valid_0's auc: 0.955827
+[519]	valid_0's auc: 0.955771
+[520]	valid_0's auc: 0.95592
+[521]	valid_0's auc: 0.954642
+[522]	valid_0's auc: 0.954424
+[523]	valid_0's auc: 0.954524
+[524]	valid_0's auc: 0.954536
+[525]	valid_0's auc: 0.954635
+[526]	valid_0's auc: 0.954362
+[527]	valid_0's auc: 0.953971
+[528]	valid_0's auc: 0.953922
+[529]	valid_0's auc: 0.954015
+[530]	valid_0's auc: 0.953469
+[531]	valid_0's auc: 0.955548
+[532]	valid_0's auc: 0.955721
+[533]	valid_0's auc: 0.955746
+[534]	valid_0's auc: 0.956212
+[535]	valid_0's auc: 0.955281
+[536]	valid_0's auc: 0.955839
+[537]	valid_0's auc: 0.954908
+[538]	valid_0's auc: 0.955014
+[539]	valid_0's auc: 0.956466
+[540]	valid_0's auc: 0.956013
+[541]	valid_0's auc: 0.95592
+[542]	valid_0's auc: 0.956162
+[543]	valid_0's auc: 0.955988
+[544]	valid_0's auc: 0.955796
+[545]	valid_0's auc: 0.955908
+[546]	valid_0's auc: 0.955908
+[547]	valid_0's auc: 0.955057
+[548]	valid_0's auc: 0.955728
+[549]	valid_0's auc: 0.955833
+[550]	valid_0's auc: 0.954542
+[551]	valid_0's auc: 0.954567
+[552]	valid_0's auc: 0.954604
+[553]	valid_0's auc: 0.954604
+[554]	valid_0's auc: 0.954604
+[555]	valid_0's auc: 0.953109
+[556]	valid_0's auc: 0.952215
+[557]	valid_0's auc: 0.952116
+[558]	valid_0's auc: 0.952085
+[559]	valid_0's auc: 0.952556
+[560]	valid_0's auc: 0.951681
+[561]	valid_0's auc: 0.951688
+[562]	valid_0's auc: 0.951669
+[563]	valid_0's auc: 0.950744
+[564]	valid_0's auc: 0.950496
+[565]	valid_0's auc: 0.951781
+[566]	valid_0's auc: 0.951806
+[567]	valid_0's auc: 0.951855
+[568]	valid_0's auc: 0.952004
+[569]	valid_0's auc: 0.950881
+[570]	valid_0's auc: 0.950831
+[571]	valid_0's auc: 0.950788
+[572]	valid_0's auc: 0.951284
+[573]	valid_0's auc: 0.951806
+[574]	valid_0's auc: 0.951843
+[575]	valid_0's auc: 0.951998
+[576]	valid_0's auc: 0.952389
+[577]	valid_0's auc: 0.952228
+[578]	valid_0's auc: 0.952215
+[579]	valid_0's auc: 0.9526
+[580]	valid_0's auc: 0.951477
+[581]	valid_0's auc: 0.951452
+[582]	valid_0's auc: 0.951433
+[583]	valid_0's auc: 0.953469
+[584]	valid_0's auc: 0.95273
+[585]	valid_0's auc: 0.952681
+[586]	valid_0's auc: 0.952581
+[587]	valid_0's auc: 0.952488
+[588]	valid_0's auc: 0.952594
+[589]	valid_0's auc: 0.95255
+[590]	valid_0's auc: 0.952103
+[591]	valid_0's auc: 0.952501
+[592]	valid_0's auc: 0.9526
+[593]	valid_0's auc: 0.951948
+[594]	valid_0's auc: 0.95237
+[595]	valid_0's auc: 0.95224
+[596]	valid_0's auc: 0.952265
+[597]	valid_0's auc: 0.952339
+[598]	valid_0's auc: 0.952333
+[599]	valid_0's auc: 0.953084
+[600]	valid_0's auc: 0.95404
+[601]	valid_0's auc: 0.952525
+[602]	valid_0's auc: 0.952525
+[603]	valid_0's auc: 0.951619
+[604]	valid_0's auc: 0.951526
+[605]	valid_0's auc: 0.951613
+[606]	valid_0's auc: 0.953289
+[607]	valid_0's auc: 0.951706
+[608]	valid_0's auc: 0.951768
+[609]	valid_0's auc: 0.951762
+[610]	valid_0's auc: 0.951824
+[611]	valid_0's auc: 0.951173
+[612]	valid_0's auc: 0.951303
+[613]	valid_0's auc: 0.951123
+[614]	valid_0's auc: 0.952575
+[615]	valid_0's auc: 0.952476
+[616]	valid_0's auc: 0.95247
+[617]	valid_0's auc: 0.950893
+[618]	valid_0's auc: 0.949522
+[619]	valid_0's auc: 0.950198
+[620]	valid_0's auc: 0.949013
+[621]	valid_0's auc: 0.949056
+[622]	valid_0's auc: 0.948845
+[623]	valid_0's auc: 0.948759
+[624]	valid_0's auc: 0.94982
+[625]	valid_0's auc: 0.949814
+[626]	valid_0's auc: 0.949373
+[627]	valid_0's auc: 0.949354
+[628]	valid_0's auc: 0.949298
+[629]	valid_0's auc: 0.949162
+[630]	valid_0's auc: 0.9491
+[631]	valid_0's auc: 0.949218
+[632]	valid_0's auc: 0.951179
+[633]	valid_0's auc: 0.950142
+[634]	valid_0's auc: 0.950087
+[635]	valid_0's auc: 0.95072
+[636]	valid_0's auc: 0.950626
+[637]	valid_0's auc: 0.949385
+[638]	valid_0's auc: 0.949311
+[639]	valid_0's auc: 0.949329
+[640]	valid_0's auc: 0.949528
+[641]	valid_0's auc: 0.949522
+[642]	valid_0's auc: 0.949534
+[643]	valid_0's auc: 0.949522
+[644]	valid_0's auc: 0.949472
+[645]	valid_0's auc: 0.949416
+[646]	valid_0's auc: 0.949398
+[647]	valid_0's auc: 0.951259
+[648]	valid_0's auc: 0.951173
+[649]	valid_0's auc: 0.951185
+[650]	valid_0's auc: 0.950757
+[651]	valid_0's auc: 0.952687
+[652]	valid_0's auc: 0.952736
+[653]	valid_0's auc: 0.952687
+[654]	valid_0's auc: 0.952811
+[655]	valid_0's auc: 0.952867
+[656]	valid_0's auc: 0.953388
+[657]	valid_0's auc: 0.953096
+[658]	valid_0's auc: 0.952873
+[659]	valid_0's auc: 0.955088
+[660]	valid_0's auc: 0.955107
+[661]	valid_0's auc: 0.956354
+[662]	valid_0's auc: 0.955287
+[663]	valid_0's auc: 0.953922
+[664]	valid_0's auc: 0.9552
+[665]	valid_0's auc: 0.955039
+[666]	valid_0's auc: 0.955014
+[667]	valid_0's auc: 0.955026
+[668]	valid_0's auc: 0.954958
+[669]	valid_0's auc: 0.954071
+[670]	valid_0's auc: 0.954077
+[671]	valid_0's auc: 0.954108
+[672]	valid_0's auc: 0.954089
+[673]	valid_0's auc: 0.954033
+[674]	valid_0's auc: 0.954071
+[675]	valid_0's auc: 0.953829
+[676]	valid_0's auc: 0.953934
+[677]	valid_0's auc: 0.955355
+[678]	valid_0's auc: 0.95435
+[679]	valid_0's auc: 0.954958
+[680]	valid_0's auc: 0.954964
+[681]	valid_0's auc: 0.955188
+[682]	valid_0's auc: 0.955306
+[683]	valid_0's auc: 0.954865
+[684]	valid_0's auc: 0.954791
+[685]	valid_0's auc: 0.954598
+[686]	valid_0's auc: 0.954648
+[687]	valid_0's auc: 0.954741
+[688]	valid_0's auc: 0.954791
+[689]	valid_0's auc: 0.954747
+[690]	valid_0's auc: 0.953158
+[691]	valid_0's auc: 0.953078
+[692]	valid_0's auc: 0.953953
+[693]	valid_0's auc: 0.954375
+[694]	valid_0's auc: 0.954418
+[695]	valid_0's auc: 0.954307
+[696]	valid_0's auc: 0.954251
+[697]	valid_0's auc: 0.954716
+[698]	valid_0's auc: 0.954685
+[699]	valid_0's auc: 0.954027
+[700]	valid_0's auc: 0.953996
+[701]	valid_0's auc: 0.954015
+[702]	valid_0's auc: 0.95422
+[703]	valid_0's auc: 0.955771
+[704]	valid_0's auc: 0.955901
+[705]	valid_0's auc: 0.955833
+[706]	valid_0's auc: 0.955721
+[707]	valid_0's auc: 0.95466
+[708]	valid_0's auc: 0.95466
+[709]	valid_0's auc: 0.95458
+[710]	valid_0's auc: 0.954443
+[711]	valid_0's auc: 0.954611
+[712]	valid_0's auc: 0.954679
+[713]	valid_0's auc: 0.954666
+[714]	valid_0's auc: 0.954741
+[715]	valid_0's auc: 0.954778
+[716]	valid_0's auc: 0.954766
+[717]	valid_0's auc: 0.954791
+[718]	valid_0's auc: 0.953872
+[719]	valid_0's auc: 0.953822
+[720]	valid_0's auc: 0.953351
+[721]	valid_0's auc: 0.954164
+[722]	valid_0's auc: 0.954238
+[723]	valid_0's auc: 0.953729
+[724]	valid_0's auc: 0.954877
+[725]	valid_0's auc: 0.954915
+[726]	valid_0's auc: 0.95494
+[727]	valid_0's auc: 0.954952
+[728]	valid_0's auc: 0.954226
+[729]	valid_0's auc: 0.953562
+[730]	valid_0's auc: 0.953568
+[731]	valid_0's auc: 0.953531
+[732]	valid_0's auc: 0.953593
+[733]	valid_0's auc: 0.953289
+[734]	valid_0's auc: 0.953357
+[735]	valid_0's auc: 0.953245
+[736]	valid_0's auc: 0.952519
+[737]	valid_0's auc: 0.952507
+[738]	valid_0's auc: 0.95247
+[739]	valid_0's auc: 0.952569
+[740]	valid_0's auc: 0.952097
+[741]	valid_0's auc: 0.952054
+[742]	valid_0's auc: 0.950806
+[743]	valid_0's auc: 0.952178
+[744]	valid_0's auc: 0.952215
+[745]	valid_0's auc: 0.952228
+[746]	valid_0's auc: 0.952234
+[747]	valid_0's auc: 0.951135
+[748]	valid_0's auc: 0.950794
+[749]	valid_0's auc: 0.950819
+[750]	valid_0's auc: 0.950173
+[751]	valid_0's auc: 0.949925
+[752]	valid_0's auc: 0.950577
+[753]	valid_0's auc: 0.950664
+[754]	valid_0's auc: 0.950577
+[755]	valid_0's auc: 0.950571
+[756]	valid_0's auc: 0.950912
+[757]	valid_0's auc: 0.950943
+[758]	valid_0's auc: 0.952184
+[759]	valid_0's auc: 0.951719
+[760]	valid_0's auc: 0.951756
+[761]	valid_0's auc: 0.951737
+[762]	valid_0's auc: 0.951588
+[763]	valid_0's auc: 0.95152
+[764]	valid_0's auc: 0.95152
+[765]	valid_0's auc: 0.95152
+[766]	valid_0's auc: 0.952867
+[767]	valid_0's auc: 0.952339
+[768]	valid_0's auc: 0.95247
+[769]	valid_0's auc: 0.951092
+[770]	valid_0's auc: 0.951042
+[771]	valid_0's auc: 0.95103
+[772]	valid_0's auc: 0.951098
+[773]	valid_0's auc: 0.950744
+[774]	valid_0's auc: 0.950744
+[775]	valid_0's auc: 0.950322
+[776]	valid_0's auc: 0.950341
+[777]	valid_0's auc: 0.950422
+[778]	valid_0's auc: 0.950409
+[779]	valid_0's auc: 0.949795
+[780]	valid_0's auc: 0.949795
+[781]	valid_0's auc: 0.949845
+[782]	valid_0's auc: 0.95
+[783]	valid_0's auc: 0.950068
+[784]	valid_0's auc: 0.950279
+[785]	valid_0's auc: 0.950267
+[786]	valid_0's auc: 0.950347
+[787]	valid_0's auc: 0.950236
+[788]	valid_0's auc: 0.950242
+[789]	valid_0's auc: 0.950229
+[790]	valid_0's auc: 0.950298
+[791]	valid_0's auc: 0.950602
+[792]	valid_0's auc: 0.951005
+[793]	valid_0's auc: 0.950713
+[794]	valid_0's auc: 0.950757
+[795]	valid_0's auc: 0.950775
+[796]	valid_0's auc: 0.95108
+[797]	valid_0's auc: 0.951092
+[798]	valid_0's auc: 0.9508
+[799]	valid_0's auc: 0.950509
+[800]	valid_0's auc: 0.950614
+[801]	valid_0's auc: 0.950335
+[802]	valid_0's auc: 0.950223
+[803]	valid_0's auc: 0.950142
+[804]	valid_0's auc: 0.950155
+[805]	valid_0's auc: 0.949634
+[806]	valid_0's auc: 0.949466
+[807]	valid_0's auc: 0.948399
+[808]	valid_0's auc: 0.948423
+[809]	valid_0's auc: 0.94843
+[810]	valid_0's auc: 0.948653
+[811]	valid_0's auc: 0.94838
+[812]	valid_0's auc: 0.948436
+[813]	valid_0's auc: 0.948516
+[814]	valid_0's auc: 0.947952
+[815]	valid_0's auc: 0.948548
+[816]	valid_0's auc: 0.949336
+[817]	valid_0's auc: 0.94838
+[818]	valid_0's auc: 0.949392
+[819]	valid_0's auc: 0.949392
+[820]	valid_0's auc: 0.949329
+[821]	valid_0's auc: 0.949305
+[822]	valid_0's auc: 0.947952
+[823]	valid_0's auc: 0.947567
+[824]	valid_0's auc: 0.947759
+[825]	valid_0's auc: 0.947741
+[826]	valid_0's auc: 0.948982
+[827]	valid_0's auc: 0.948963
+[828]	valid_0's auc: 0.948932
+[829]	valid_0's auc: 0.949416
+[830]	valid_0's auc: 0.94946
+[831]	valid_0's auc: 0.949491
+[832]	valid_0's auc: 0.949534
+[833]	valid_0's auc: 0.94954
+[834]	valid_0's auc: 0.949466
+[835]	valid_0's auc: 0.949404
+[836]	valid_0's auc: 0.95
+[837]	valid_0's auc: 0.949919
+[838]	valid_0's auc: 0.950242
+[839]	valid_0's auc: 0.950229
+[840]	valid_0's auc: 0.950415
+[841]	valid_0's auc: 0.950353
+[842]	valid_0's auc: 0.949807
+[843]	valid_0's auc: 0.94977
+[844]	valid_0's auc: 0.949795
+[845]	valid_0's auc: 0.950049
+[846]	valid_0's auc: 0.950415
+[847]	valid_0's auc: 0.950422
+[848]	valid_0's auc: 0.95247
+[849]	valid_0's auc: 0.952482
+[850]	valid_0's auc: 0.95296
+[851]	valid_0's auc: 0.9534
+[852]	valid_0's auc: 0.953649
+[853]	valid_0's auc: 0.953636
+[854]	valid_0's auc: 0.952836
+[855]	valid_0's auc: 0.952823
+[856]	valid_0's auc: 0.952848
+[857]	valid_0's auc: 0.95291
+[858]	valid_0's auc: 0.95291
+[859]	valid_0's auc: 0.952364
+[860]	valid_0's auc: 0.950881
+[861]	valid_0's auc: 0.950924
+[862]	valid_0's auc: 0.950999
+[863]	valid_0's auc: 0.951011
+[864]	valid_0's auc: 0.950279
+[865]	valid_0's auc: 0.950254
+[866]	valid_0's auc: 0.95157
+[867]	valid_0's auc: 0.951533
+[868]	valid_0's auc: 0.951526
+[869]	valid_0's auc: 0.951284
+[870]	valid_0's auc: 0.950434
+[871]	valid_0's auc: 0.950409
+[872]	valid_0's auc: 0.950384
+[873]	valid_0's auc: 0.950366
+[874]	valid_0's auc: 0.95026
+[875]	valid_0's auc: 0.950279
+[876]	valid_0's auc: 0.950099
+[877]	valid_0's auc: 0.95018
+[878]	valid_0's auc: 0.951092
+[879]	valid_0's auc: 0.951253
+[880]	valid_0's auc: 0.951216
+[881]	valid_0's auc: 0.951228
+[882]	valid_0's auc: 0.951303
+[883]	valid_0's auc: 0.951204
+[884]	valid_0's auc: 0.951117
+[885]	valid_0's auc: 0.951154
+[886]	valid_0's auc: 0.95108
+[887]	valid_0's auc: 0.950453
+[888]	valid_0's auc: 0.950254
+[889]	valid_0's auc: 0.949491
+[890]	valid_0's auc: 0.94941
+[891]	valid_0's auc: 0.949342
+[892]	valid_0's auc: 0.949323
+[893]	valid_0's auc: 0.949305
+[894]	valid_0's auc: 0.94936
+[895]	valid_0's auc: 0.949323
+[896]	valid_0's auc: 0.949305
+[897]	valid_0's auc: 0.949249
+[898]	valid_0's auc: 0.949236
+[899]	valid_0's auc: 0.949255
+[900]	valid_0's auc: 0.949199
+[901]	valid_0's auc: 0.949205
+[902]	valid_0's auc: 0.948324
+[903]	valid_0's auc: 0.947989
+[904]	valid_0's auc: 0.947946
+[905]	valid_0's auc: 0.947635
+[906]	valid_0's auc: 0.947623
+[907]	valid_0's auc: 0.94735
+[908]	valid_0's auc: 0.946698
+[909]	valid_0's auc: 0.946779
+[910]	valid_0's auc: 0.946773
+[911]	valid_0's auc: 0.947275
+[912]	valid_0's auc: 0.947275
+[913]	valid_0's auc: 0.947244
+[914]	valid_0's auc: 0.946512
+[915]	valid_0's auc: 0.947083
+[916]	valid_0's auc: 0.94712
+[917]	valid_0's auc: 0.947176
+[918]	valid_0's auc: 0.947157
+[919]	valid_0's auc: 0.947803
+[920]	valid_0's auc: 0.94784
+[921]	valid_0's auc: 0.94784
+[922]	valid_0's auc: 0.947064
+[923]	valid_0's auc: 0.947449
+[924]	valid_0's auc: 0.947325
+[925]	valid_0's auc: 0.947362
+[926]	valid_0's auc: 0.947368
+[927]	valid_0's auc: 0.948045
+[928]	valid_0's auc: 0.947412
+[929]	valid_0's auc: 0.947213
+[930]	valid_0's auc: 0.947263
+[931]	valid_0's auc: 0.946115
+[932]	valid_0's auc: 0.946096
+[933]	valid_0's auc: 0.944644
+[934]	valid_0's auc: 0.9447
+[935]	valid_0's auc: 0.9447
+[936]	valid_0's auc: 0.94375
+[937]	valid_0's auc: 0.943769
+[938]	valid_0's auc: 0.943881
+[939]	valid_0's auc: 0.942875
+[940]	valid_0's auc: 0.943397
+[941]	valid_0's auc: 0.943459
+[942]	valid_0's auc: 0.944663
+[943]	valid_0's auc: 0.943601
+[944]	valid_0's auc: 0.943533
+[945]	valid_0's auc: 0.943552
+[946]	valid_0's auc: 0.943539
+[947]	valid_0's auc: 0.943577
+[948]	valid_0's auc: 0.943695
+[949]	valid_0's auc: 0.943117
+[950]	valid_0's auc: 0.942621
+[951]	valid_0's auc: 0.94264
+[952]	valid_0's auc: 0.943279
+[953]	valid_0's auc: 0.943353
+[954]	valid_0's auc: 0.943446
+[955]	valid_0's auc: 0.944663
+[956]	valid_0's auc: 0.94465
+[957]	valid_0's auc: 0.944656
+[958]	valid_0's auc: 0.944625
+[959]	valid_0's auc: 0.945469
+[960]	valid_0's auc: 0.945507
+[961]	valid_0's auc: 0.945848
+[962]	valid_0's auc: 0.945767
+[963]	valid_0's auc: 0.945308
+[964]	valid_0's auc: 0.944836
+[965]	valid_0's auc: 0.944899
+[966]	valid_0's auc: 0.944961
+[967]	valid_0's auc: 0.943719
+[968]	valid_0's auc: 0.944545
+[969]	valid_0's auc: 0.944694
+[970]	valid_0's auc: 0.944346
+[971]	valid_0's auc: 0.944123
+[972]	valid_0's auc: 0.944042
+[973]	valid_0's auc: 0.943937
+[974]	valid_0's auc: 0.943974
+[975]	valid_0's auc: 0.943955
+[976]	valid_0's auc: 0.94452
+[977]	valid_0's auc: 0.944545
+[978]	valid_0's auc: 0.943899
+[979]	valid_0's auc: 0.943819
+[980]	valid_0's auc: 0.943806
+[981]	valid_0's auc: 0.943763
+[982]	valid_0's auc: 0.943701
+[983]	valid_0's auc: 0.943744
+[984]	valid_0's auc: 0.944377
+[985]	valid_0's auc: 0.943763
+[986]	valid_0's auc: 0.943415
+[987]	valid_0's auc: 0.943831
+[988]	valid_0's auc: 0.943757
+[989]	valid_0's auc: 0.943757
+[990]	valid_0's auc: 0.943273
+[991]	valid_0's auc: 0.943266
+[992]	valid_0's auc: 0.942249
+[993]	valid_0's auc: 0.942807
+[994]	valid_0's auc: 0.943
+[995]	valid_0's auc: 0.943068
+[996]	valid_0's auc: 0.943012
+[997]	valid_0's auc: 0.943242
+[998]	valid_0's auc: 0.943229
+[999]	valid_0's auc: 0.943254
+[1000]	valid_0's auc: 0.943012
+Test score: 0.9823344679312324
+    |   Population Average    |             Best Individual              |
+---- ------------------------- ------------------------------------------ ----------
+ Gen   Length          Fitness   Length          Fitness      OOB Fitness  Time Left
+   0     7.89        0.0211682        6         0.131219         0.138209      1.70m
+   1     5.41        0.0680782        8         0.150733        0.0991665     37.68s
+   2     4.46         0.102321        9         0.177135         0.128765     40.23s
+   3     5.91         0.110502        8         0.193183         0.187697     37.18s
+   4     8.25         0.115642        8         0.198496         0.127279     37.53s
+   5     8.29          0.11873        9         0.196935        0.0646339     29.65s
+   6     8.88         0.135463       10         0.202836        0.0667588     27.70s
+   7     9.53         0.154439       15         0.204617        0.0910953     22.22s
+   8     8.84         0.153187        6         0.207306         0.103024     32.95s
+   9     8.12         0.144936        8         0.204171        0.0991727     26.03s
+  10     7.80         0.142911       10          0.20882        0.0631757     17.23s
+  11     7.84         0.153242       10         0.206041        0.0877575     16.81s
+  12     7.18         0.146673        6         0.205164        0.0841358     13.08s
+  13     6.50         0.149543        6         0.206085        0.0873314     10.33s
+  14     6.04         0.148807        8         0.210202        0.0484522      7.78s
+  15     6.34         0.151344        6         0.207584        0.0712372      7.81s
+  16     6.49          0.14879        6         0.205298         0.129032      5.20s
+  17     6.68         0.151896        8         0.209842        0.0653142      3.05s
+  18     6.32         0.156423        8         0.209748        0.0646099      1.80s
+  19     6.46          0.15382        6          0.20557         0.116182      0.00s
+[LightGBM] [Info] Number of positive: 174, number of negative: 76326
+[LightGBM] [Warning] Auto-choosing col-wise multi-threading, the overhead of testing was 0.021240 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 2838
+[LightGBM] [Info] Number of data points in the train set: 76500, number of used features: 49
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.002275 -> initscore=-6.083714
+[LightGBM] [Info] Start training from score -6.083714
+[1]	valid_0's auc: 0.88428
+/home/mohamedaminebenslama/anaconda3/envs/dsa2/lib/python3.7/site-packages/lightgbm/callback.py:186: UserWarning: Early stopping is not available in dart mode
+  warnings.warn('Early stopping is not available in dart mode')
+[2]	valid_0's auc: 0.840628
+[3]	valid_0's auc: 0.775219
+[4]	valid_0's auc: 0.750604
+[5]	valid_0's auc: 0.783715
+[6]	valid_0's auc: 0.785592
+[7]	valid_0's auc: 0.787305
+[8]	valid_0's auc: 0.835865
+[9]	valid_0's auc: 0.837767
+[10]	valid_0's auc: 0.8372
+[11]	valid_0's auc: 0.944343
+[12]	valid_0's auc: 0.740684
+[13]	valid_0's auc: 0.742793
+[14]	valid_0's auc: 0.742427
+[15]	valid_0's auc: 0.741624
+[16]	valid_0's auc: 0.741652
+[17]	valid_0's auc: 0.740994
+[18]	valid_0's auc: 0.740677
+[19]	valid_0's auc: 0.740094
+[20]	valid_0's auc: 0.73938
+[21]	valid_0's auc: 0.739281
+[22]	valid_0's auc: 0.743433
+[23]	valid_0's auc: 0.744506
+[24]	valid_0's auc: 0.745468
+[25]	valid_0's auc: 0.749192
+[26]	valid_0's auc: 0.750489
+[27]	valid_0's auc: 0.751438
+[28]	valid_0's auc: 0.748906
+[29]	valid_0's auc: 0.752456
+[30]	valid_0's auc: 0.752983
+[31]	valid_0's auc: 0.747826
+[32]	valid_0's auc: 0.747026
+[33]	valid_0's auc: 0.741832
+[34]	valid_0's auc: 0.742527
+[35]	valid_0's auc: 0.746014
+[36]	valid_0's auc: 0.745431
+[37]	valid_0's auc: 0.745325
+[38]	valid_0's auc: 0.745208
+[39]	valid_0's auc: 0.745177
+[40]	valid_0's auc: 0.745065
+[41]	valid_0's auc: 0.745282
+[42]	valid_0's auc: 0.745164
+[43]	valid_0's auc: 0.746188
+[44]	valid_0's auc: 0.746685
+[45]	valid_0's auc: 0.748236
+[46]	valid_0's auc: 0.746337
+[47]	valid_0's auc: 0.746101
+[48]	valid_0's auc: 0.74553
+[49]	valid_0's auc: 0.745549
+[50]	valid_0's auc: 0.745747
+[51]	valid_0's auc: 0.745878
+[52]	valid_0's auc: 0.74558
+[53]	valid_0's auc: 0.744872
+[54]	valid_0's auc: 0.745114
+[55]	valid_0's auc: 0.745201
+[56]	valid_0's auc: 0.745394
+[57]	valid_0's auc: 0.745586
+[58]	valid_0's auc: 0.745723
+[59]	valid_0's auc: 0.745958
+[60]	valid_0's auc: 0.746045
+[61]	valid_0's auc: 0.745927
+[62]	valid_0's auc: 0.745952
+[63]	valid_0's auc: 0.745561
+[64]	valid_0's auc: 0.745549
+[65]	valid_0's auc: 0.745617
+[66]	valid_0's auc: 0.746064
+[67]	valid_0's auc: 0.745965
+[68]	valid_0's auc: 0.745909
+[69]	valid_0's auc: 0.74594
+[70]	valid_0's auc: 0.745704
+[71]	valid_0's auc: 0.745859
+[72]	valid_0's auc: 0.746176
+[73]	valid_0's auc: 0.746306
+[74]	valid_0's auc: 0.746418
+[75]	valid_0's auc: 0.746436
+[76]	valid_0's auc: 0.74679
+[77]	valid_0's auc: 0.746703
+[78]	valid_0's auc: 0.746896
+[79]	valid_0's auc: 0.746883
+[80]	valid_0's auc: 0.746964
+[81]	valid_0's auc: 0.851346
+[82]	valid_0's auc: 0.85191
+[83]	valid_0's auc: 0.851836
+[84]	valid_0's auc: 0.851954
+[85]	valid_0's auc: 0.851954
+[86]	valid_0's auc: 0.851997
+[87]	valid_0's auc: 0.851768
+[88]	valid_0's auc: 0.851656
+[89]	valid_0's auc: 0.851619
+[90]	valid_0's auc: 0.851662
+[91]	valid_0's auc: 0.851811
+[92]	valid_0's auc: 0.851712
+[93]	valid_0's auc: 0.851035
+[94]	valid_0's auc: 0.850949
+[95]	valid_0's auc: 0.851122
+[96]	valid_0's auc: 0.851129
+[97]	valid_0's auc: 0.851197
+[98]	valid_0's auc: 0.851228
+[99]	valid_0's auc: 0.851296
+[100]	valid_0's auc: 0.851209
+[101]	valid_0's auc: 0.850992
+[102]	valid_0's auc: 0.851153
+[103]	valid_0's auc: 0.851178
+[104]	valid_0's auc: 0.851203
+[105]	valid_0's auc: 0.851178
+[106]	valid_0's auc: 0.851302
+[107]	valid_0's auc: 0.85134
+[108]	valid_0's auc: 0.851271
+[109]	valid_0's auc: 0.851271
+[110]	valid_0's auc: 0.851253
+[111]	valid_0's auc: 0.851296
+[112]	valid_0's auc: 0.851507
+[113]	valid_0's auc: 0.85142
+[114]	valid_0's auc: 0.851408
+[115]	valid_0's auc: 0.850992
+[116]	valid_0's auc: 0.851097
+[117]	valid_0's auc: 0.850961
+[118]	valid_0's auc: 0.851147
+[119]	valid_0's auc: 0.850942
+[120]	valid_0's auc: 0.851017
+[121]	valid_0's auc: 0.850918
+[122]	valid_0's auc: 0.85088
+[123]	valid_0's auc: 0.850887
+[124]	valid_0's auc: 0.851042
+[125]	valid_0's auc: 0.85075
+[126]	valid_0's auc: 0.850887
+[127]	valid_0's auc: 0.850955
+[128]	valid_0's auc: 0.850887
+[129]	valid_0's auc: 0.850868
+[130]	valid_0's auc: 0.8507
+[131]	valid_0's auc: 0.850738
+[132]	valid_0's auc: 0.8508
+[133]	valid_0's auc: 0.850967
+[134]	valid_0's auc: 0.850924
+[135]	valid_0's auc: 0.85098
+[136]	valid_0's auc: 0.85093
+[137]	valid_0's auc: 0.850918
+[138]	valid_0's auc: 0.850874
+[139]	valid_0's auc: 0.850936
+[140]	valid_0's auc: 0.850961
+[141]	valid_0's auc: 0.850849
+[142]	valid_0's auc: 0.850818
+[143]	valid_0's auc: 0.850936
+[144]	valid_0's auc: 0.850967
+[145]	valid_0's auc: 0.849875
+[146]	valid_0's auc: 0.84985
+[147]	valid_0's auc: 0.8498
+[148]	valid_0's auc: 0.84967
+[149]	valid_0's auc: 0.849931
+[150]	valid_0's auc: 0.849825
+[151]	valid_0's auc: 0.849825
+[152]	valid_0's auc: 0.849763
+[153]	valid_0's auc: 0.849738
+[154]	valid_0's auc: 0.849714
+[155]	valid_0's auc: 0.849726
+[156]	valid_0's auc: 0.849701
+[157]	valid_0's auc: 0.849652
+[158]	valid_0's auc: 0.849676
+[159]	valid_0's auc: 0.849645
+[160]	valid_0's auc: 0.849701
+[161]	valid_0's auc: 0.849602
+[162]	valid_0's auc: 0.849397
+[163]	valid_0's auc: 0.849509
+[164]	valid_0's auc: 0.849347
+[165]	valid_0's auc: 0.847939
+[166]	valid_0's auc: 0.847988
+[167]	valid_0's auc: 0.847889
+[168]	valid_0's auc: 0.847566
+[169]	valid_0's auc: 0.847529
+[170]	valid_0's auc: 0.847511
+[171]	valid_0's auc: 0.846648
+[172]	valid_0's auc: 0.846896
+[173]	valid_0's auc: 0.846847
+[174]	valid_0's auc: 0.846716
+[175]	valid_0's auc: 0.846654
+[176]	valid_0's auc: 0.846263
+[177]	valid_0's auc: 0.846375
+[178]	valid_0's auc: 0.846393
+[179]	valid_0's auc: 0.846412
+[180]	valid_0's auc: 0.846567
+[181]	valid_0's auc: 0.846425
+[182]	valid_0's auc: 0.846276
+[183]	valid_0's auc: 0.846251
+[184]	valid_0's auc: 0.845351
+[185]	valid_0's auc: 0.845593
+[186]	valid_0's auc: 0.845543
+[187]	valid_0's auc: 0.845543
+[188]	valid_0's auc: 0.845463
+[189]	valid_0's auc: 0.845562
+[190]	valid_0's auc: 0.845667
+[191]	valid_0's auc: 0.845692
+[192]	valid_0's auc: 0.845816
+[193]	valid_0's auc: 0.84581
+[194]	valid_0's auc: 0.845754
+[195]	valid_0's auc: 0.845773
+[196]	valid_0's auc: 0.845798
+[197]	valid_0's auc: 0.845816
+[198]	valid_0's auc: 0.845847
+[199]	valid_0's auc: 0.845835
+[200]	valid_0's auc: 0.845841
+[201]	valid_0's auc: 0.845792
+[202]	valid_0's auc: 0.84594
+[203]	valid_0's auc: 0.845916
+[204]	valid_0's auc: 0.845971
+[205]	valid_0's auc: 0.846251
+[206]	valid_0's auc: 0.846263
+[207]	valid_0's auc: 0.846195
+[208]	valid_0's auc: 0.846176
+[209]	valid_0's auc: 0.846182
+[210]	valid_0's auc: 0.846207
+[211]	valid_0's auc: 0.846263
+[212]	valid_0's auc: 0.846214
+[213]	valid_0's auc: 0.846232
+[214]	valid_0's auc: 0.8463
+[215]	valid_0's auc: 0.8463
+[216]	valid_0's auc: 0.846387
+[217]	valid_0's auc: 0.846325
+[218]	valid_0's auc: 0.846294
+[219]	valid_0's auc: 0.84622
+[220]	valid_0's auc: 0.846133
+[221]	valid_0's auc: 0.845965
+[222]	valid_0's auc: 0.845897
+[223]	valid_0's auc: 0.845897
+[224]	valid_0's auc: 0.845922
+[225]	valid_0's auc: 0.845916
+[226]	valid_0's auc: 0.84594
+[227]	valid_0's auc: 0.84586
+[228]	valid_0's auc: 0.84599
+[229]	valid_0's auc: 0.845394
+[230]	valid_0's auc: 0.84545
+[231]	valid_0's auc: 0.84537
+[232]	valid_0's auc: 0.845376
+[233]	valid_0's auc: 0.845338
+[234]	valid_0's auc: 0.845456
+[235]	valid_0's auc: 0.845332
+[236]	valid_0's auc: 0.845233
+[237]	valid_0's auc: 0.845239
+[238]	valid_0's auc: 0.845345
+[239]	valid_0's auc: 0.845065
+[240]	valid_0's auc: 0.845177
+[241]	valid_0's auc: 0.845208
+[242]	valid_0's auc: 0.844966
+[243]	valid_0's auc: 0.844774
+[244]	valid_0's auc: 0.845785
+[245]	valid_0's auc: 0.84581
+[246]	valid_0's auc: 0.845159
+[247]	valid_0's auc: 0.84519
+[248]	valid_0's auc: 0.84527
+[249]	valid_0's auc: 0.845072
+[250]	valid_0's auc: 0.844972
+[251]	valid_0's auc: 0.844892
+[252]	valid_0's auc: 0.844904
+[253]	valid_0's auc: 0.844439
+[254]	valid_0's auc: 0.871024
+[255]	valid_0's auc: 0.871086
+[256]	valid_0's auc: 0.871024
+[257]	valid_0's auc: 0.868908
+[258]	valid_0's auc: 0.869094
+[259]	valid_0's auc: 0.870733
+[260]	valid_0's auc: 0.868784
+[261]	valid_0's auc: 0.868492
+[262]	valid_0's auc: 0.868511
+[263]	valid_0's auc: 0.867754
+[264]	valid_0's auc: 0.867804
+[265]	valid_0's auc: 0.868083
+[266]	valid_0's auc: 0.868201
+[267]	valid_0's auc: 0.868393
+[268]	valid_0's auc: 0.868095
+[269]	valid_0's auc: 0.867456
+[270]	valid_0's auc: 0.867667
+[271]	valid_0's auc: 0.866196
+[272]	valid_0's auc: 0.866283
+[273]	valid_0's auc: 0.866054
+[274]	valid_0's auc: 0.86606
+[275]	valid_0's auc: 0.86498
+[276]	valid_0's auc: 0.86444
+[277]	valid_0's auc: 0.865073
+[278]	valid_0's auc: 0.864769
+[279]	valid_0's auc: 0.864397
+[280]	valid_0's auc: 0.864546
+[281]	valid_0's auc: 0.863584
+[282]	valid_0's auc: 0.863621
+[283]	valid_0's auc: 0.863286
+[284]	valid_0's auc: 0.863428
+[285]	valid_0's auc: 0.863522
+[286]	valid_0's auc: 0.863044
+[287]	valid_0's auc: 0.862727
+[288]	valid_0's auc: 0.86287
+[289]	valid_0's auc: 0.862678
+[290]	valid_0's auc: 0.861492
+[291]	valid_0's auc: 0.861573
+[292]	valid_0's auc: 0.861945
+[293]	valid_0's auc: 0.861306
+[294]	valid_0's auc: 0.862299
+[295]	valid_0's auc: 0.862417
+[296]	valid_0's auc: 0.862485
+[297]	valid_0's auc: 0.861455
+[298]	valid_0's auc: 0.861623
+[299]	valid_0's auc: 0.861412
+[300]	valid_0's auc: 0.861064
+[301]	valid_0's auc: 0.860692
+[302]	valid_0's auc: 0.860518
+[303]	valid_0's auc: 0.859302
+[304]	valid_0's auc: 0.858135
+[305]	valid_0's auc: 0.854132
+[306]	valid_0's auc: 0.852581
+[307]	valid_0's auc: 0.85268
+[308]	valid_0's auc: 0.862274
+[309]	valid_0's auc: 0.861393
+[310]	valid_0's auc: 0.86107
+[311]	valid_0's auc: 0.861269
+[312]	valid_0's auc: 0.861312
+[313]	valid_0's auc: 0.861585
+[314]	valid_0's auc: 0.862026
+[315]	valid_0's auc: 0.861213
+[316]	valid_0's auc: 0.860487
+[317]	valid_0's auc: 0.860568
+[318]	valid_0's auc: 0.860307
+[319]	valid_0's auc: 0.860375
+[320]	valid_0's auc: 0.860015
+[321]	valid_0's auc: 0.858929
+[322]	valid_0's auc: 0.85878
+[323]	valid_0's auc: 0.858687
+[324]	valid_0's auc: 0.858718
+[325]	valid_0's auc: 0.85888
+[326]	valid_0's auc: 0.858371
+[327]	valid_0's auc: 0.858544
+[328]	valid_0's auc: 0.858433
+[329]	valid_0's auc: 0.857781
+[330]	valid_0's auc: 0.857651
+[331]	valid_0's auc: 0.857403
+[332]	valid_0's auc: 0.857278
+[333]	valid_0's auc: 0.857384
+[334]	valid_0's auc: 0.857477
+[335]	valid_0's auc: 0.857508
+[336]	valid_0's auc: 0.85739
+[337]	valid_0's auc: 0.857533
+[338]	valid_0's auc: 0.856906
+[339]	valid_0's auc: 0.856925
+[340]	valid_0's auc: 0.85654
+[341]	valid_0's auc: 0.856472
+[342]	valid_0's auc: 0.856255
+[343]	valid_0's auc: 0.856397
+[344]	valid_0's auc: 0.856478
+[345]	valid_0's auc: 0.856639
+[346]	valid_0's auc: 0.860257
+[347]	valid_0's auc: 0.860375
+[348]	valid_0's auc: 0.86017
+[349]	valid_0's auc: 0.859928
+[350]	valid_0's auc: 0.859711
+[351]	valid_0's auc: 0.859631
+[352]	valid_0's auc: 0.85942
+[353]	valid_0's auc: 0.859233
+[354]	valid_0's auc: 0.859407
+[355]	valid_0's auc: 0.859221
+[356]	valid_0's auc: 0.858942
+[357]	valid_0's auc: 0.859004
+[358]	valid_0's auc: 0.863093
+[359]	valid_0's auc: 0.862957
+[360]	valid_0's auc: 0.862746
+[361]	valid_0's auc: 0.862808
+[362]	valid_0's auc: 0.862864
+[363]	valid_0's auc: 0.862287
+[364]	valid_0's auc: 0.862274
+[365]	valid_0's auc: 0.862249
+[366]	valid_0's auc: 0.861393
+[367]	valid_0's auc: 0.859531
+[368]	valid_0's auc: 0.859401
+[369]	valid_0's auc: 0.864099
+[370]	valid_0's auc: 0.864384
+[371]	valid_0's auc: 0.863602
+[372]	valid_0's auc: 0.867369
+[373]	valid_0's auc: 0.867456
+[374]	valid_0's auc: 0.867468
+[375]	valid_0's auc: 0.867506
+[376]	valid_0's auc: 0.867537
+[377]	valid_0's auc: 0.867531
+[378]	valid_0's auc: 0.867084
+[379]	valid_0's auc: 0.866966
+[380]	valid_0's auc: 0.866866
+[381]	valid_0's auc: 0.865973
+[382]	valid_0's auc: 0.86583
+[383]	valid_0's auc: 0.865687
+[384]	valid_0's auc: 0.86444
+[385]	valid_0's auc: 0.869293
+[386]	valid_0's auc: 0.869485
+[387]	valid_0's auc: 0.869281
+[388]	valid_0's auc: 0.868958
+[389]	valid_0's auc: 0.869088
+[390]	valid_0's auc: 0.869119
+[391]	valid_0's auc: 0.868896
+[392]	valid_0's auc: 0.873594
+[393]	valid_0's auc: 0.87275
+[394]	valid_0's auc: 0.872172
+[395]	valid_0's auc: 0.872086
+[396]	valid_0's auc: 0.872557
+[397]	valid_0's auc: 0.872464
+[398]	valid_0's auc: 0.871769
+[399]	valid_0's auc: 0.871726
+[400]	valid_0's auc: 0.871701
+[401]	valid_0's auc: 0.871657
+[402]	valid_0's auc: 0.871322
+[403]	valid_0's auc: 0.870727
+[404]	valid_0's auc: 0.870776
+[405]	valid_0's auc: 0.871049
+[406]	valid_0's auc: 0.869808
+[407]	valid_0's auc: 0.86915
+[408]	valid_0's auc: 0.869101
+[409]	valid_0's auc: 0.868896
+[410]	valid_0's auc: 0.868455
+[411]	valid_0's auc: 0.868511
+[412]	valid_0's auc: 0.869895
+[413]	valid_0's auc: 0.869715
+[414]	valid_0's auc: 0.869349
+[415]	valid_0's auc: 0.869485
+[416]	valid_0's auc: 0.869063
+[417]	valid_0's auc: 0.868902
+[418]	valid_0's auc: 0.868443
+[419]	valid_0's auc: 0.86992
+[420]	valid_0's auc: 0.86951
+[421]	valid_0's auc: 0.868865
+[422]	valid_0's auc: 0.868573
+[423]	valid_0's auc: 0.868499
+[424]	valid_0's auc: 0.878732
+[425]	valid_0's auc: 0.875927
+[426]	valid_0's auc: 0.873662
+[427]	valid_0's auc: 0.871335
+[428]	valid_0's auc: 0.872073
+[429]	valid_0's auc: 0.873482
+[430]	valid_0's auc: 0.879911
+[431]	valid_0's auc: 0.871285
+[432]	valid_0's auc: 0.88119
+[433]	valid_0's auc: 0.878385
+[434]	valid_0's auc: 0.8833
+[435]	valid_0's auc: 0.882089
+[436]	valid_0's auc: 0.88047
+[437]	valid_0's auc: 0.878174
+[438]	valid_0's auc: 0.880085
+[439]	valid_0's auc: 0.878732
+[440]	valid_0's auc: 0.883151
+[441]	valid_0's auc: 0.924438
+[442]	valid_0's auc: 0.923284
+[443]	valid_0's auc: 0.922458
+[444]	valid_0's auc: 0.92419
+[445]	valid_0's auc: 0.931966
+[446]	valid_0's auc: 0.931643
+[447]	valid_0's auc: 0.930948
+[448]	valid_0's auc: 0.930811
+[449]	valid_0's auc: 0.888202
+[450]	valid_0's auc: 0.889052
+[451]	valid_0's auc: 0.891553
+[452]	valid_0's auc: 0.889636
+[453]	valid_0's auc: 0.888854
+[454]	valid_0's auc: 0.893334
+[455]	valid_0's auc: 0.891286
+[456]	valid_0's auc: 0.890821
+[457]	valid_0's auc: 0.890269
+[458]	valid_0's auc: 0.889282
+[459]	valid_0's auc: 0.939487
+[460]	valid_0's auc: 0.938333
+[461]	valid_0's auc: 0.937526
+[462]	valid_0's auc: 0.936539
+[463]	valid_0's auc: 0.935652
+[464]	valid_0's auc: 0.830438
+[465]	valid_0's auc: 0.828663
+[466]	valid_0's auc: 0.815935
+[467]	valid_0's auc: 0.836917
+[468]	valid_0's auc: 0.83122
+[469]	valid_0's auc: 0.824847
+[470]	valid_0's auc: 0.835149
+[471]	valid_0's auc: 0.837587
+[472]	valid_0's auc: 0.828204
+[473]	valid_0's auc: 0.831264
+[474]	valid_0's auc: 0.805019
+[475]	valid_0's auc: 0.805367
+[476]	valid_0's auc: 0.806006
+[477]	valid_0's auc: 0.81295
+[478]	valid_0's auc: 0.807557
+[479]	valid_0's auc: 0.830345
+[480]	valid_0's auc: 0.829979
+[481]	valid_0's auc: 0.837277
+[482]	valid_0's auc: 0.84002
+[483]	valid_0's auc: 0.839294
+[484]	valid_0's auc: 0.838835
+[485]	valid_0's auc: 0.844401
+[486]	valid_0's auc: 0.849856
+[487]	valid_0's auc: 0.83037
+[488]	valid_0's auc: 0.832766
+[489]	valid_0's auc: 0.832921
+[490]	valid_0's auc: 0.841454
+[491]	valid_0's auc: 0.845103
+[492]	valid_0's auc: 0.846592
+[493]	valid_0's auc: 0.846294
+[494]	valid_0's auc: 0.846518
+[495]	valid_0's auc: 0.851302
+[496]	valid_0's auc: 0.854138
+[497]	valid_0's auc: 0.854709
+[498]	valid_0's auc: 0.855255
+[499]	valid_0's auc: 0.858315
+[500]	valid_0's auc: 0.855206
+[501]	valid_0's auc: 0.859351
+[502]	valid_0's auc: 0.866227
+[503]	valid_0's auc: 0.868623
+[504]	valid_0's auc: 0.869119
+[505]	valid_0's auc: 0.871837
+[506]	valid_0's auc: 0.874841
+[507]	valid_0's auc: 0.876392
+[508]	valid_0's auc: 0.874562
+[509]	valid_0's auc: 0.87733
+[510]	valid_0's auc: 0.87921
+[511]	valid_0's auc: 0.878713
+[512]	valid_0's auc: 0.889903
+[513]	valid_0's auc: 0.890387
+[514]	valid_0's auc: 0.894433
+[515]	valid_0's auc: 0.904306
+[516]	valid_0's auc: 0.90525
+[517]	valid_0's auc: 0.90327
+[518]	valid_0's auc: 0.902606
+[519]	valid_0's auc: 0.903239
+[520]	valid_0's auc: 0.903499
+[521]	valid_0's auc: 0.906547
+[522]	valid_0's auc: 0.908203
+[523]	valid_0's auc: 0.90865
+[524]	valid_0's auc: 0.909041
+[525]	valid_0's auc: 0.909004
+[526]	valid_0's auc: 0.91086
+[527]	valid_0's auc: 0.911213
+[528]	valid_0's auc: 0.911598
+[529]	valid_0's auc: 0.912169
+[530]	valid_0's auc: 0.912684
+[531]	valid_0's auc: 0.915173
+[532]	valid_0's auc: 0.915173
+[533]	valid_0's auc: 0.915365
+[534]	valid_0's auc: 0.916228
+[535]	valid_0's auc: 0.917053
+[536]	valid_0's auc: 0.917419
+[537]	valid_0's auc: 0.918449
+[538]	valid_0's auc: 0.919473
+[539]	valid_0's auc: 0.9201
+[540]	valid_0's auc: 0.910748
+[541]	valid_0's auc: 0.911579
+[542]	valid_0's auc: 0.910376
+[543]	valid_0's auc: 0.914409
+[544]	valid_0's auc: 0.917773
+[545]	valid_0's auc: 0.919864
+[546]	valid_0's auc: 0.919666
+[547]	valid_0's auc: 0.921515
+[548]	valid_0's auc: 0.920832
+[549]	valid_0's auc: 0.921335
+[550]	valid_0's auc: 0.922396
+[551]	valid_0's auc: 0.922824
+[552]	valid_0's auc: 0.922893
+[553]	valid_0's auc: 0.92365
+[554]	valid_0's auc: 0.925232
+[555]	valid_0's auc: 0.926113
+[556]	valid_0's auc: 0.928348
+[557]	valid_0's auc: 0.929291
+[558]	valid_0's auc: 0.929489
+[559]	valid_0's auc: 0.930073
+[560]	valid_0's auc: 0.930855
+[561]	valid_0's auc: 0.931606
+[562]	valid_0's auc: 0.93222
+[563]	valid_0's auc: 0.933256
+[564]	valid_0's auc: 0.933896
+[565]	valid_0's auc: 0.936105
+[566]	valid_0's auc: 0.936111
+[567]	valid_0's auc: 0.936303
+[568]	valid_0's auc: 0.936334
+[569]	valid_0's auc: 0.936601
+[570]	valid_0's auc: 0.936843
+[571]	valid_0's auc: 0.936949
+[572]	valid_0's auc: 0.93675
+[573]	valid_0's auc: 0.934907
+[574]	valid_0's auc: 0.935354
+[575]	valid_0's auc: 0.935658
+[576]	valid_0's auc: 0.935435
+[577]	valid_0's auc: 0.936155
+[578]	valid_0's auc: 0.936179
+[579]	valid_0's auc: 0.935968
+[580]	valid_0's auc: 0.933008
+[581]	valid_0's auc: 0.934684
+[582]	valid_0's auc: 0.936924
+[583]	valid_0's auc: 0.935875
+[584]	valid_0's auc: 0.933834
+[585]	valid_0's auc: 0.934355
+[586]	valid_0's auc: 0.934429
+[587]	valid_0's auc: 0.934324
+[588]	valid_0's auc: 0.935385
+[589]	valid_0's auc: 0.935795
+[590]	valid_0's auc: 0.937495
+[591]	valid_0's auc: 0.939326
+[592]	valid_0's auc: 0.939313
+[593]	valid_0's auc: 0.937321
+[594]	valid_0's auc: 0.937967
+[595]	valid_0's auc: 0.938271
+[596]	valid_0's auc: 0.938327
+[597]	valid_0's auc: 0.936998
+[598]	valid_0's auc: 0.938327
+[599]	valid_0's auc: 0.940852
+[600]	valid_0's auc: 0.942013
+[601]	valid_0's auc: 0.942453
+[602]	valid_0's auc: 0.943564
+[603]	valid_0's auc: 0.944551
+[604]	valid_0's auc: 0.944545
+[605]	valid_0's auc: 0.944601
+[606]	valid_0's auc: 0.944303
+[607]	valid_0's auc: 0.944973
+[608]	valid_0's auc: 0.946102
+[609]	valid_0's auc: 0.949882
+[610]	valid_0's auc: 0.949851
+[611]	valid_0's auc: 0.931556
+[612]	valid_0's auc: 0.919815
+[613]	valid_0's auc: 0.924357
+[614]	valid_0's auc: 0.93163
+[615]	valid_0's auc: 0.933449
+[616]	valid_0's auc: 0.933529
+[617]	valid_0's auc: 0.920323
+[618]	valid_0's auc: 0.927224
+[619]	valid_0's auc: 0.922291
+[620]	valid_0's auc: 0.925878
+[621]	valid_0's auc: 0.925499
+[622]	valid_0's auc: 0.928974
+[623]	valid_0's auc: 0.929043
+[624]	valid_0's auc: 0.929167
+[625]	valid_0's auc: 0.929192
+[626]	valid_0's auc: 0.92975
+[627]	valid_0's auc: 0.929812
+[628]	valid_0's auc: 0.930085
+[629]	valid_0's auc: 0.930582
+[630]	valid_0's auc: 0.932599
+[631]	valid_0's auc: 0.932592
+[632]	valid_0's auc: 0.92998
+[633]	valid_0's auc: 0.930091
+[634]	valid_0's auc: 0.92293
+[635]	valid_0's auc: 0.918182
+[636]	valid_0's auc: 0.918325
+[637]	valid_0's auc: 0.918511
+[638]	valid_0's auc: 0.918629
+[639]	valid_0's auc: 0.920404
+[640]	valid_0's auc: 0.916128
+[641]	valid_0's auc: 0.916091
+[642]	valid_0's auc: 0.916954
+[643]	valid_0's auc: 0.916861
+[644]	valid_0's auc: 0.917183
+[645]	valid_0's auc: 0.917233
+[646]	valid_0's auc: 0.917779
+[647]	valid_0's auc: 0.920975
+[648]	valid_0's auc: 0.920261
+[649]	valid_0's auc: 0.920268
+[650]	valid_0's auc: 0.908272
+[651]	valid_0's auc: 0.905969
+[652]	valid_0's auc: 0.907204
+[653]	valid_0's auc: 0.907248
+[654]	valid_0's auc: 0.916153
+[655]	valid_0's auc: 0.916494
+[656]	valid_0's auc: 0.912138
+[657]	valid_0's auc: 0.912728
+[658]	valid_0's auc: 0.913013
+[659]	valid_0's auc: 0.900738
+[660]	valid_0's auc: 0.900924
+[661]	valid_0's auc: 0.90448
+[662]	valid_0's auc: 0.904635
+[663]	valid_0's auc: 0.904759
+[664]	valid_0's auc: 0.904449
+[665]	valid_0's auc: 0.905175
+[666]	valid_0's auc: 0.905454
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[667]	valid_0's auc: 0.905566
+[668]	valid_0's auc: 0.901135
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[669]	valid_0's auc: 0.90376
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[670]	valid_0's auc: 0.908768
+[671]	valid_0's auc: 0.90883
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[672]	valid_0's auc: 0.907806
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[673]	valid_0's auc: 0.909494
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[674]	valid_0's auc: 0.909904
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[675]	valid_0's auc: 0.912988
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[676]	valid_0's auc: 0.913032
+[677]	valid_0's auc: 0.916277
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[678]	valid_0's auc: 0.913634
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[679]	valid_0's auc: 0.914397
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[680]	valid_0's auc: 0.915464
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[681]	valid_0's auc: 0.912076
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[682]	valid_0's auc: 0.914521
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[683]	valid_0's auc: 0.925766
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[684]	valid_0's auc: 0.925785
+[685]	valid_0's auc: 0.925971
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[686]	valid_0's auc: 0.925958
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[687]	valid_0's auc: 0.926051
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[688]	valid_0's auc: 0.927373
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[689]	valid_0's auc: 0.928199
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[690]	valid_0's auc: 0.92733
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[691]	valid_0's auc: 0.927237
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[692]	valid_0's auc: 0.927113
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[693]	valid_0's auc: 0.927783
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[694]	valid_0's auc: 0.927783
+[695]	valid_0's auc: 0.926871
+[696]	valid_0's auc: 0.926194
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[697]	valid_0's auc: 0.926213
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[698]	valid_0's auc: 0.924767
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[699]	valid_0's auc: 0.924879
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[700]	valid_0's auc: 0.924866
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[701]	valid_0's auc: 0.92486
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[702]	valid_0's auc: 0.925071
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[703]	valid_0's auc: 0.92522
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[704]	valid_0's auc: 0.925282
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[705]	valid_0's auc: 0.925301
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[706]	valid_0's auc: 0.924965
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[707]	valid_0's auc: 0.924934
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[708]	valid_0's auc: 0.924152
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[709]	valid_0's auc: 0.924376
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[710]	valid_0's auc: 0.92437
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[711]	valid_0's auc: 0.92437
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[712]	valid_0's auc: 0.92437
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[713]	valid_0's auc: 0.924388
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[714]	valid_0's auc: 0.924401
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[715]	valid_0's auc: 0.924401
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[716]	valid_0's auc: 0.924388
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[717]	valid_0's auc: 0.924394
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[718]	valid_0's auc: 0.924444
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[719]	valid_0's auc: 0.924531
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[720]	valid_0's auc: 0.924897
+[721]	valid_0's auc: 0.91122
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[722]	valid_0's auc: 0.911238
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[723]	valid_0's auc: 0.914211
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[724]	valid_0's auc: 0.921819
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[725]	valid_0's auc: 0.922582
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[726]	valid_0's auc: 0.922638
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[727]	valid_0's auc: 0.922663
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[728]	valid_0's auc: 0.923631
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[729]	valid_0's auc: 0.923724
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[730]	valid_0's auc: 0.923724
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[731]	valid_0's auc: 0.923724
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[732]	valid_0's auc: 0.92373
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[733]	valid_0's auc: 0.922253
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[734]	valid_0's auc: 0.922322
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[735]	valid_0's auc: 0.922495
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[736]	valid_0's auc: 0.922551
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[737]	valid_0's auc: 0.922589
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[738]	valid_0's auc: 0.922638
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[739]	valid_0's auc: 0.922427
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[740]	valid_0's auc: 0.922793
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[741]	valid_0's auc: 0.923662
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[742]	valid_0's auc: 0.927106
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[743]	valid_0's auc: 0.927094
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[744]	valid_0's auc: 0.927088
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[745]	valid_0's auc: 0.926926
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[746]	valid_0's auc: 0.926951
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[747]	valid_0's auc: 0.926914
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[748]	valid_0's auc: 0.927106
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[749]	valid_0's auc: 0.927106
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[750]	valid_0's auc: 0.927156
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[751]	valid_0's auc: 0.927206
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[752]	valid_0's auc: 0.927789
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[753]	valid_0's auc: 0.927783
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[754]	valid_0's auc: 0.927659
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[755]	valid_0's auc: 0.927653
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[756]	valid_0's auc: 0.927659
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[757]	valid_0's auc: 0.927876
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[758]	valid_0's auc: 0.928478
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[759]	valid_0's auc: 0.927168
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[760]	valid_0's auc: 0.927162
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[761]	valid_0's auc: 0.926411
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[762]	valid_0's auc: 0.926523
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[763]	valid_0's auc: 0.926523
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[764]	valid_0's auc: 0.926498
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[765]	valid_0's auc: 0.926498
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[766]	valid_0's auc: 0.926262
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[767]	valid_0's auc: 0.926337
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[768]	valid_0's auc: 0.929552
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[769]	valid_0's auc: 0.929583
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[770]	valid_0's auc: 0.929614
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[771]	valid_0's auc: 0.929614
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[772]	valid_0's auc: 0.92962
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[773]	valid_0's auc: 0.929868
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[774]	valid_0's auc: 0.929911
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[775]	valid_0's auc: 0.930327
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[776]	valid_0's auc: 0.930309
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[777]	valid_0's auc: 0.930309
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[778]	valid_0's auc: 0.930253
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[779]	valid_0's auc: 0.925816
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[780]	valid_0's auc: 0.925803
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[781]	valid_0's auc: 0.927795
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[782]	valid_0's auc: 0.927423
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[783]	valid_0's auc: 0.927423
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[784]	valid_0's auc: 0.927423
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[785]	valid_0's auc: 0.927541
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[786]	valid_0's auc: 0.927559
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[787]	valid_0's auc: 0.927646
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[788]	valid_0's auc: 0.927299
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[789]	valid_0's auc: 0.927299
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[790]	valid_0's auc: 0.927249
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[791]	valid_0's auc: 0.927336
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[792]	valid_0's auc: 0.927491
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[793]	valid_0's auc: 0.927429
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[794]	valid_0's auc: 0.927324
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[795]	valid_0's auc: 0.927175
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[796]	valid_0's auc: 0.926877
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[797]	valid_0's auc: 0.92782
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[798]	valid_0's auc: 0.927808
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[799]	valid_0's auc: 0.927808
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[800]	valid_0's auc: 0.927845
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[801]	valid_0's auc: 0.865005
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[802]	valid_0's auc: 0.864968
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[803]	valid_0's auc: 0.864961
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[804]	valid_0's auc: 0.864955
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[805]	valid_0's auc: 0.864949
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[806]	valid_0's auc: 0.864949
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[807]	valid_0's auc: 0.864949
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[808]	valid_0's auc: 0.864949
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[809]	valid_0's auc: 0.864936
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[810]	valid_0's auc: 0.864949
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[811]	valid_0's auc: 0.864968
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[812]	valid_0's auc: 0.864949
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[813]	valid_0's auc: 0.864949
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[814]	valid_0's auc: 0.864843
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[815]	valid_0's auc: 0.866078
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[816]	valid_0's auc: 0.866054
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[817]	valid_0's auc: 0.866165
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[818]	valid_0's auc: 0.866184
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[819]	valid_0's auc: 0.866202
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[820]	valid_0's auc: 0.866202
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[821]	valid_0's auc: 0.866184
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[822]	valid_0's auc: 0.86606
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[823]	valid_0's auc: 0.866066
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[824]	valid_0's auc: 0.866066
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[825]	valid_0's auc: 0.866134
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[826]	valid_0's auc: 0.866134
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[827]	valid_0's auc: 0.866153
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[828]	valid_0's auc: 0.866165
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[829]	valid_0's auc: 0.866171
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[830]	valid_0's auc: 0.866171
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[831]	valid_0's auc: 0.866171
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[832]	valid_0's auc: 0.866171
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[833]	valid_0's auc: 0.866165
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[834]	valid_0's auc: 0.866122
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[835]	valid_0's auc: 0.866116
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[836]	valid_0's auc: 0.866116
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[837]	valid_0's auc: 0.866085
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[838]	valid_0's auc: 0.865973
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[839]	valid_0's auc: 0.865973
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[840]	valid_0's auc: 0.865973
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[841]	valid_0's auc: 0.865973
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[842]	valid_0's auc: 0.865973
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[843]	valid_0's auc: 0.865725
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[844]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[845]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[846]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[847]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[848]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[849]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[850]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[851]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[852]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[853]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[854]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[855]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[856]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[857]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[858]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[859]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[860]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[861]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[862]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[863]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[864]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[865]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[866]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[867]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[868]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[869]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[870]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[871]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[872]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[873]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[874]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[875]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[876]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[877]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[878]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[879]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[880]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[881]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[882]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[883]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[884]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[885]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[886]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[887]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[888]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[889]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[890]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[891]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[892]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[893]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[894]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[895]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[896]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[897]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[898]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[899]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[900]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[901]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[902]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[903]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[904]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[905]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[906]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[907]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[908]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[909]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[910]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[911]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[912]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[913]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[914]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[915]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[916]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[917]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[918]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[919]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[920]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[921]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[922]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[923]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[924]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[925]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[926]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[927]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[928]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[929]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[930]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[931]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[932]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[933]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[934]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[935]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[936]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[937]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[938]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[939]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[940]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[941]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[942]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[943]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[944]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[945]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[946]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[947]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[948]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[949]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[950]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[951]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[952]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[953]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[954]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[955]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[956]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[957]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[958]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[959]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[960]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[961]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[962]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[963]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[964]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[965]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[966]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[967]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[968]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[969]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[970]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[971]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[972]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[973]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[974]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[975]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[976]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[977]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[978]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[979]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[980]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[981]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[982]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[983]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[984]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[985]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[986]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[987]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[988]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[989]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[990]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[991]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[992]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[993]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[994]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[995]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[996]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[997]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[998]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[999]	valid_0's auc: 0.752561
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+[1000]	valid_0's auc: 0.752561
+Test score: 0.46893546941695285
+Training...
+preparing validation datasets
+[LightGBM] [Warning] Auto-choosing row-wise multi-threading, the overhead of testing was 0.008272 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+Training until validation scores don't improve for 30 rounds
+[10]	train's auc: 0.875705	valid's auc: 0.749803
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[20]	train's auc: 0.848244	valid's auc: 0.750582
+[30]	train's auc: 0.825244	valid's auc: 0.728346
+Early stopping, best iteration is:
+[1]	train's auc: 0.940892	valid's auc: 0.909178
+Model Report
+n_estimators :  1
+auc: 0.9091777906031439
+[0.2566239833831787]: model training time
+Test score: 0.9583988412951711
+[LightGBM] [Info] Number of positive: 76326, number of negative: 76326
+[LightGBM] [Warning] Auto-choosing row-wise multi-threading, the overhead of testing was 0.019458 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 2261
+[LightGBM] [Info] Number of data points in the train set: 152652, number of used features: 39
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+[1]	valid_0's auc: 0.851724
+/home/mohamedaminebenslama/anaconda3/envs/dsa2/lib/python3.7/site-packages/lightgbm/callback.py:186: UserWarning: Early stopping is not available in dart mode
+  warnings.warn('Early stopping is not available in dart mode')
+[2]	valid_0's auc: 0.857998
+[3]	valid_0's auc: 0.879461
+[4]	valid_0's auc: 0.873708
+[5]	valid_0's auc: 0.886945
+[6]	valid_0's auc: 0.882623
+[7]	valid_0's auc: 0.937737
+[8]	valid_0's auc: 0.931993
+[9]	valid_0's auc: 0.931522
+[10]	valid_0's auc: 0.928791
+[11]	valid_0's auc: 0.929716
+[12]	valid_0's auc: 0.929204
+[13]	valid_0's auc: 0.934615
+[14]	valid_0's auc: 0.925366
+[15]	valid_0's auc: 0.924872
+[16]	valid_0's auc: 0.919479
+[17]	valid_0's auc: 0.918654
+[18]	valid_0's auc: 0.925148
+[19]	valid_0's auc: 0.925099
+[20]	valid_0's auc: 0.925297
+[21]	valid_0's auc: 0.923966
+[22]	valid_0's auc: 0.925654
+[23]	valid_0's auc: 0.925586
+[24]	valid_0's auc: 0.925549
+[25]	valid_0's auc: 0.92423
+[26]	valid_0's auc: 0.923957
+[27]	valid_0's auc: 0.922722
+[28]	valid_0's auc: 0.922455
+[29]	valid_0's auc: 0.922945
+[30]	valid_0's auc: 0.921558
+[31]	valid_0's auc: 0.921074
+[32]	valid_0's auc: 0.921254
+[33]	valid_0's auc: 0.92069
+[34]	valid_0's auc: 0.921673
+[35]	valid_0's auc: 0.922046
+[36]	valid_0's auc: 0.921288
+[37]	valid_0's auc: 0.92055
+[38]	valid_0's auc: 0.920314
+[39]	valid_0's auc: 0.922648
+[40]	valid_0's auc: 0.92055
+[41]	valid_0's auc: 0.920516
+[42]	valid_0's auc: 0.919026
+[43]	valid_0's auc: 0.921589
+[44]	valid_0's auc: 0.902119
+[45]	valid_0's auc: 0.904886
+[46]	valid_0's auc: 0.91324
+[47]	valid_0's auc: 0.913302
+[48]	valid_0's auc: 0.907462
+[49]	valid_0's auc: 0.897024
+[50]	valid_0's auc: 0.897384
+[51]	valid_0's auc: 0.898842
+[52]	valid_0's auc: 0.897849
+[53]	valid_0's auc: 0.898805
+[54]	valid_0's auc: 0.886728
+[55]	valid_0's auc: 0.871474
+[56]	valid_0's auc: 0.870941
+[57]	valid_0's auc: 0.874621
+[58]	valid_0's auc: 0.874528
+[59]	valid_0's auc: 0.874735
+[60]	valid_0's auc: 0.874605
+[61]	valid_0's auc: 0.87427
+[62]	valid_0's auc: 0.871453
+[63]	valid_0's auc: 0.872508
+[64]	valid_0's auc: 0.873817
+[65]	valid_0's auc: 0.872489
+[66]	valid_0's auc: 0.876774
+[67]	valid_0's auc: 0.876327
+[68]	valid_0's auc: 0.876557
+[69]	valid_0's auc: 0.914841
+[70]	valid_0's auc: 0.907288
+[71]	valid_0's auc: 0.910037
+[72]	valid_0's auc: 0.915138
+[73]	valid_0's auc: 0.913606
+[74]	valid_0's auc: 0.910782
+[75]	valid_0's auc: 0.905364
+[76]	valid_0's auc: 0.903422
+[77]	valid_0's auc: 0.9039
+[78]	valid_0's auc: 0.901576
+[79]	valid_0's auc: 0.900539
+[80]	valid_0's auc: 0.90049
+[81]	valid_0's auc: 0.896496
+[82]	valid_0's auc: 0.890967
+[83]	valid_0's auc: 0.875595
+[84]	valid_0's auc: 0.878003
+[85]	valid_0's auc: 0.877916
+[86]	valid_0's auc: 0.878183
+[87]	valid_0's auc: 0.878313
+[88]	valid_0's auc: 0.877271
+[89]	valid_0's auc: 0.87701
+[90]	valid_0's auc: 0.876067
+[91]	valid_0's auc: 0.877308
+[92]	valid_0's auc: 0.874974
+[93]	valid_0's auc: 0.86134
+[94]	valid_0's auc: 0.873783
+[95]	valid_0's auc: 0.874689
+[96]	valid_0's auc: 0.868644
+[97]	valid_0's auc: 0.871934
+[98]	valid_0's auc: 0.87598
+[99]	valid_0's auc: 0.877004
+[100]	valid_0's auc: 0.87652
+[101]	valid_0's auc: 0.877717
+[102]	valid_0's auc: 0.882651
+[103]	valid_0's auc: 0.883731
+[104]	valid_0's auc: 0.883843
+[105]	valid_0's auc: 0.883799
+[106]	valid_0's auc: 0.881298
+[107]	valid_0's auc: 0.881838
+[108]	valid_0's auc: 0.881881
+[109]	valid_0's auc: 0.882254
+[110]	valid_0's auc: 0.882415
+[111]	valid_0's auc: 0.883452
+[112]	valid_0's auc: 0.881646
+[113]	valid_0's auc: 0.886309
+[114]	valid_0's auc: 0.886744
+[115]	valid_0's auc: 0.885329
+[116]	valid_0's auc: 0.884423
+[117]	valid_0's auc: 0.884603
+[118]	valid_0's auc: 0.881034
+[119]	valid_0's auc: 0.881165
+[120]	valid_0's auc: 0.881742
+[121]	valid_0's auc: 0.883945
+[122]	valid_0's auc: 0.885099
+[123]	valid_0's auc: 0.885521
+[124]	valid_0's auc: 0.887836
+[125]	valid_0's auc: 0.888376
+[126]	valid_0's auc: 0.888506
+[127]	valid_0's auc: 0.88868
+[128]	valid_0's auc: 0.886576
+[129]	valid_0's auc: 0.886316
+[130]	valid_0's auc: 0.886285
+[131]	valid_0's auc: 0.886185
+[132]	valid_0's auc: 0.886421
+[133]	valid_0's auc: 0.884621
+[134]	valid_0's auc: 0.884876
+[135]	valid_0's auc: 0.903406
+[136]	valid_0's auc: 0.904393
+[137]	valid_0's auc: 0.90394
+[138]	valid_0's auc: 0.904604
+[139]	valid_0's auc: 0.883492
+[140]	valid_0's auc: 0.892621
+[141]	valid_0's auc: 0.893291
+[142]	valid_0's auc: 0.906199
+[143]	valid_0's auc: 0.904995
+[144]	valid_0's auc: 0.906336
+[145]	valid_0's auc: 0.909798
+[146]	valid_0's auc: 0.909383
+[147]	valid_0's auc: 0.909848
+[148]	valid_0's auc: 0.909364
+[149]	valid_0's auc: 0.908446
+[150]	valid_0's auc: 0.908545
+[151]	valid_0's auc: 0.908477
+[152]	valid_0's auc: 0.908818
+[153]	valid_0's auc: 0.909327
+[154]	valid_0's auc: 0.909445
+[155]	valid_0's auc: 0.910109
+[156]	valid_0's auc: 0.910282
+[157]	valid_0's auc: 0.90986
+[158]	valid_0's auc: 0.909339
+[159]	valid_0's auc: 0.908657
+[160]	valid_0's auc: 0.908179
+[161]	valid_0's auc: 0.920721
+[162]	valid_0's auc: 0.922706
+[163]	valid_0's auc: 0.920143
+[164]	valid_0's auc: 0.91884
+[165]	valid_0's auc: 0.916879
+[166]	valid_0's auc: 0.922266
+[167]	valid_0's auc: 0.92064
+[168]	valid_0's auc: 0.916997
+[169]	valid_0's auc: 0.914993
+[170]	valid_0's auc: 0.914968
+[171]	valid_0's auc: 0.919864
+[172]	valid_0's auc: 0.915948
+[173]	valid_0's auc: 0.919318
+[174]	valid_0's auc: 0.913851
+[175]	valid_0's auc: 0.914372
+[176]	valid_0's auc: 0.914025
+[177]	valid_0's auc: 0.913423
+[178]	valid_0's auc: 0.914031
+[179]	valid_0's auc: 0.914049
+[180]	valid_0's auc: 0.913565
+[181]	valid_0's auc: 0.913286
+[182]	valid_0's auc: 0.909445
+[183]	valid_0's auc: 0.908675
+[184]	valid_0's auc: 0.912634
+[185]	valid_0's auc: 0.911232
+[186]	valid_0's auc: 0.91225
+[187]	valid_0's auc: 0.911859
+[188]	valid_0's auc: 0.911964
+[189]	valid_0's auc: 0.911536
+[190]	valid_0's auc: 0.911108
+[191]	valid_0's auc: 0.913379
+[192]	valid_0's auc: 0.913379
+[193]	valid_0's auc: 0.913317
+[194]	valid_0's auc: 0.921745
+[195]	valid_0's auc: 0.914782
+[196]	valid_0's auc: 0.915092
+[197]	valid_0's auc: 0.915011
+[198]	valid_0's auc: 0.915222
+[199]	valid_0's auc: 0.915309
+[200]	valid_0's auc: 0.915681
+[201]	valid_0's auc: 0.915775
+[202]	valid_0's auc: 0.916166
+[203]	valid_0's auc: 0.916358
+[204]	valid_0's auc: 0.916507
+[205]	valid_0's auc: 0.915415
+[206]	valid_0's auc: 0.915371
+[207]	valid_0's auc: 0.913298
+[208]	valid_0's auc: 0.913826
+[209]	valid_0's auc: 0.913783
+[210]	valid_0's auc: 0.914378
+[211]	valid_0's auc: 0.914416
+[212]	valid_0's auc: 0.914937
+[213]	valid_0's auc: 0.915092
+[214]	valid_0's auc: 0.915855
+[215]	valid_0's auc: 0.915911
+[216]	valid_0's auc: 0.914862
+[217]	valid_0's auc: 0.913658
+[218]	valid_0's auc: 0.914018
+[219]	valid_0's auc: 0.914236
+[220]	valid_0's auc: 0.912274
+[221]	valid_0's auc: 0.913329
+[222]	valid_0's auc: 0.916643
+[223]	valid_0's auc: 0.916612
+[224]	valid_0's auc: 0.917109
+[225]	valid_0's auc: 0.914943
+[226]	valid_0's auc: 0.914533
+[227]	valid_0's auc: 0.916941
+[228]	valid_0's auc: 0.91462
+[229]	valid_0's auc: 0.913882
+[230]	valid_0's auc: 0.91364
+[231]	valid_0's auc: 0.913205
+[232]	valid_0's auc: 0.917779
+[233]	valid_0's auc: 0.917903
+[234]	valid_0's auc: 0.921409
+[235]	valid_0's auc: 0.922775
+[236]	valid_0's auc: 0.921416
+[237]	valid_0's auc: 0.921391
+[238]	valid_0's auc: 0.921596
+[239]	valid_0's auc: 0.923085
+[240]	valid_0's auc: 0.923352
+[241]	valid_0's auc: 0.923755
+[242]	valid_0's auc: 0.922843
+[243]	valid_0's auc: 0.920708
+[244]	valid_0's auc: 0.918803
+[245]	valid_0's auc: 0.918586
+[246]	valid_0's auc: 0.917512
+[247]	valid_0's auc: 0.917754
+[248]	valid_0's auc: 0.915142
+[249]	valid_0's auc: 0.917605
+[250]	valid_0's auc: 0.917264
+[251]	valid_0's auc: 0.914856
+[252]	valid_0's auc: 0.914856
+[253]	valid_0's auc: 0.911772
+[254]	valid_0's auc: 0.912634
+[255]	valid_0's auc: 0.912721
+[256]	valid_0's auc: 0.913069
+[257]	valid_0's auc: 0.915533
+[258]	valid_0's auc: 0.913876
+[259]	valid_0's auc: 0.91305
+[260]	valid_0's auc: 0.912219
+[261]	valid_0's auc: 0.911567
+[262]	valid_0's auc: 0.911722
+[263]	valid_0's auc: 0.91171
+[264]	valid_0's auc: 0.911821
+[265]	valid_0's auc: 0.911722
+[266]	valid_0's auc: 0.911722
+[267]	valid_0's auc: 0.911716
+[268]	valid_0's auc: 0.911697
+[269]	valid_0's auc: 0.910841
+[270]	valid_0's auc: 0.910822
+[271]	valid_0's auc: 0.91009
+[272]	valid_0's auc: 0.910028
+[273]	valid_0's auc: 0.909389
+[274]	valid_0's auc: 0.909383
+[275]	valid_0's auc: 0.909234
+[276]	valid_0's auc: 0.909215
+[277]	valid_0's auc: 0.909085
+[278]	valid_0's auc: 0.909662
+[279]	valid_0's auc: 0.913578
+[280]	valid_0's auc: 0.911846
+[281]	valid_0's auc: 0.910121
+[282]	valid_0's auc: 0.909172
+[283]	valid_0's auc: 0.909289
+[284]	valid_0's auc: 0.909463
+[285]	valid_0's auc: 0.909581
+[286]	valid_0's auc: 0.907918
+[287]	valid_0's auc: 0.90793
+[288]	valid_0's auc: 0.907937
+[289]	valid_0's auc: 0.911406
+[290]	valid_0's auc: 0.913038
+[291]	valid_0's auc: 0.913162
+[292]	valid_0's auc: 0.913187
+[293]	valid_0's auc: 0.916283
+[294]	valid_0's auc: 0.91503
+[295]	valid_0's auc: 0.914856
+[296]	valid_0's auc: 0.915135
+[297]	valid_0's auc: 0.91449
+[298]	valid_0's auc: 0.914378
+[299]	valid_0's auc: 0.914862
+[300]	valid_0's auc: 0.913727
+[301]	valid_0's auc: 0.915197
+[302]	valid_0's auc: 0.915253
+[303]	valid_0's auc: 0.915129
+[304]	valid_0's auc: 0.913534
+[305]	valid_0's auc: 0.913379
+[306]	valid_0's auc: 0.913671
+[307]	valid_0's auc: 0.913572
+[308]	valid_0's auc: 0.911555
+[309]	valid_0's auc: 0.911493
+[310]	valid_0's auc: 0.910555
+[311]	valid_0's auc: 0.910555
+[312]	valid_0's auc: 0.910655
+[313]	valid_0's auc: 0.910555
+[314]	valid_0's auc: 0.91063
+[315]	valid_0's auc: 0.909817
+[316]	valid_0's auc: 0.910264
+[317]	valid_0's auc: 0.910543
+[318]	valid_0's auc: 0.910568
+[319]	valid_0's auc: 0.910574
+[320]	valid_0's auc: 0.910636
+[321]	valid_0's auc: 0.909575
+[322]	valid_0's auc: 0.909823
+[323]	valid_0's auc: 0.909916
+[324]	valid_0's auc: 0.909805
+[325]	valid_0's auc: 0.909817
+[326]	valid_0's auc: 0.907291
+[327]	valid_0's auc: 0.90749
+[328]	valid_0's auc: 0.907539
+[329]	valid_0's auc: 0.906807
+[330]	valid_0's auc: 0.906981
+[331]	valid_0's auc: 0.90775
+[332]	valid_0's auc: 0.907595
+[333]	valid_0's auc: 0.907595
+[334]	valid_0's auc: 0.907788
+[335]	valid_0's auc: 0.907626
+[336]	valid_0's auc: 0.907856
+[337]	valid_0's auc: 0.907856
+[338]	valid_0's auc: 0.907117
+[339]	valid_0's auc: 0.907347
+[340]	valid_0's auc: 0.908439
+[341]	valid_0's auc: 0.908383
+[342]	valid_0's auc: 0.908365
+[343]	valid_0's auc: 0.908601
+[344]	valid_0's auc: 0.908731
+[345]	valid_0's auc: 0.908663
+[346]	valid_0's auc: 0.907372
+[347]	valid_0's auc: 0.907602
+[348]	valid_0's auc: 0.906776
+[349]	valid_0's auc: 0.906211
+[350]	valid_0's auc: 0.909463
+[351]	valid_0's auc: 0.90955
+[352]	valid_0's auc: 0.908241
+[353]	valid_0's auc: 0.908421
+[354]	valid_0's auc: 0.908638
+[355]	valid_0's auc: 0.906627
+[356]	valid_0's auc: 0.906801
+[357]	valid_0's auc: 0.906906
+[358]	valid_0's auc: 0.905659
+[359]	valid_0's auc: 0.905684
+[360]	valid_0's auc: 0.905107
+[361]	valid_0's auc: 0.904927
+[362]	valid_0's auc: 0.90803
+[363]	valid_0's auc: 0.907527
+[364]	valid_0's auc: 0.907409
+[365]	valid_0's auc: 0.907564
+[366]	valid_0's auc: 0.907204
+[367]	valid_0's auc: 0.906311
+[368]	valid_0's auc: 0.905603
+[369]	valid_0's auc: 0.903282
+[370]	valid_0's auc: 0.906093
+[371]	valid_0's auc: 0.906075
+[372]	valid_0's auc: 0.905616
+[373]	valid_0's auc: 0.905492
+[374]	valid_0's auc: 0.905709
+[375]	valid_0's auc: 0.905721
+[376]	valid_0's auc: 0.905721
+[377]	valid_0's auc: 0.904958
+[378]	valid_0's auc: 0.90695
+[379]	valid_0's auc: 0.907161
+[380]	valid_0's auc: 0.905882
+[381]	valid_0's auc: 0.90515
+[382]	valid_0's auc: 0.905113
+[383]	valid_0's auc: 0.904914
+[384]	valid_0's auc: 0.907378
+[385]	valid_0's auc: 0.907502
+[386]	valid_0's auc: 0.907533
+[387]	valid_0's auc: 0.907633
+[388]	valid_0's auc: 0.909916
+[389]	valid_0's auc: 0.910003
+[390]	valid_0's auc: 0.910096
+[391]	valid_0's auc: 0.910189
+[392]	valid_0's auc: 0.913081
+[393]	valid_0's auc: 0.913652
+[394]	valid_0's auc: 0.911704
+[395]	valid_0's auc: 0.911089
+[396]	valid_0's auc: 0.910735
+[397]	valid_0's auc: 0.910611
+[398]	valid_0's auc: 0.908936
+[399]	valid_0's auc: 0.908644
+[400]	valid_0's auc: 0.908681
+[401]	valid_0's auc: 0.908675
+[402]	valid_0's auc: 0.907068
+[403]	valid_0's auc: 0.908228
+[404]	valid_0's auc: 0.908117
+[405]	valid_0's auc: 0.908172
+[406]	valid_0's auc: 0.906894
+[407]	valid_0's auc: 0.904958
+[408]	valid_0's auc: 0.905287
+[409]	valid_0's auc: 0.90533
+[410]	valid_0's auc: 0.903741
+[411]	valid_0's auc: 0.905094
+[412]	valid_0's auc: 0.906013
+[413]	valid_0's auc: 0.905963
+[414]	valid_0's auc: 0.905895
+[415]	valid_0's auc: 0.905882
+[416]	valid_0's auc: 0.905194
+[417]	valid_0's auc: 0.905107
+[418]	valid_0's auc: 0.904399
+[419]	valid_0's auc: 0.90358
+[420]	valid_0's auc: 0.903549
+[421]	valid_0's auc: 0.902265
+[422]	valid_0's auc: 0.903419
+[423]	valid_0's auc: 0.902854
+[424]	valid_0's auc: 0.902935
+[425]	valid_0's auc: 0.901334
+[426]	valid_0's auc: 0.901228
+[427]	valid_0's auc: 0.90129
+[428]	valid_0's auc: 0.900949
+[429]	valid_0's auc: 0.899559
+[430]	valid_0's auc: 0.899546
+[431]	valid_0's auc: 0.89967
+[432]	valid_0's auc: 0.899472
+[433]	valid_0's auc: 0.901483
+[434]	valid_0's auc: 0.902128
+[435]	valid_0's auc: 0.90178
+[436]	valid_0's auc: 0.90103
+[437]	valid_0's auc: 0.90121
+[438]	valid_0's auc: 0.903108
+[439]	valid_0's auc: 0.906857
+[440]	valid_0's auc: 0.907397
+[441]	valid_0's auc: 0.907254
+[442]	valid_0's auc: 0.908514
+[443]	valid_0's auc: 0.90852
+[444]	valid_0's auc: 0.909569
+[445]	valid_0's auc: 0.911977
+[446]	valid_0's auc: 0.91207
+[447]	valid_0's auc: 0.913094
+[448]	valid_0's auc: 0.913106
+[449]	valid_0's auc: 0.913261
+[450]	valid_0's auc: 0.914664
+[451]	valid_0's auc: 0.913826
+[452]	valid_0's auc: 0.91377
+[453]	valid_0's auc: 0.913671
+[454]	valid_0's auc: 0.912454
+[455]	valid_0's auc: 0.911282
+[456]	valid_0's auc: 0.911263
+[457]	valid_0's auc: 0.911393
+[458]	valid_0's auc: 0.911443
+[459]	valid_0's auc: 0.911586
+[460]	valid_0's auc: 0.91076
+[461]	valid_0's auc: 0.910562
+[462]	valid_0's auc: 0.912361
+[463]	valid_0's auc: 0.912448
+[464]	valid_0's auc: 0.912337
+[465]	valid_0's auc: 0.911387
+[466]	valid_0's auc: 0.910996
+[467]	valid_0's auc: 0.909265
+[468]	valid_0's auc: 0.910369
+[469]	valid_0's auc: 0.908731
+[470]	valid_0's auc: 0.908694
+[471]	valid_0's auc: 0.908706
+[472]	valid_0's auc: 0.908756
+[473]	valid_0's auc: 0.908123
+[474]	valid_0's auc: 0.90713
+[475]	valid_0's auc: 0.907142
+[476]	valid_0's auc: 0.906987
+[477]	valid_0's auc: 0.905547
+[478]	valid_0's auc: 0.906677
+[479]	valid_0's auc: 0.910127
+[480]	valid_0's auc: 0.910053
+[481]	valid_0's auc: 0.908899
+[482]	valid_0's auc: 0.907186
+[483]	valid_0's auc: 0.907695
+[484]	valid_0's auc: 0.907763
+[485]	valid_0's auc: 0.907608
+[486]	valid_0's auc: 0.907924
+[487]	valid_0's auc: 0.908892
+[488]	valid_0's auc: 0.908625
+[489]	valid_0's auc: 0.908594
+[490]	valid_0's auc: 0.90821
+[491]	valid_0's auc: 0.90708
+[492]	valid_0's auc: 0.907198
+[493]	valid_0's auc: 0.906031
+[494]	valid_0's auc: 0.905907
+[495]	valid_0's auc: 0.904567
+[496]	valid_0's auc: 0.903952
+[497]	valid_0's auc: 0.903804
+[498]	valid_0's auc: 0.903723
+[499]	valid_0's auc: 0.905076
+[500]	valid_0's auc: 0.907459
+[501]	valid_0's auc: 0.907539
+[502]	valid_0's auc: 0.905374
+[503]	valid_0's auc: 0.907999
+[504]	valid_0's auc: 0.907031
+[505]	valid_0's auc: 0.90574
+[506]	valid_0's auc: 0.906379
+[507]	valid_0's auc: 0.906677
+[508]	valid_0's auc: 0.908892
+[509]	valid_0's auc: 0.908694
+[510]	valid_0's auc: 0.908861
+[511]	valid_0's auc: 0.907757
+[512]	valid_0's auc: 0.907881
+[513]	valid_0's auc: 0.9078
+[514]	valid_0's auc: 0.90672
+[515]	valid_0's auc: 0.907893
+[516]	valid_0's auc: 0.90785
+[517]	valid_0's auc: 0.907726
+[518]	valid_0's auc: 0.908774
+[519]	valid_0's auc: 0.908805
+[520]	valid_0's auc: 0.908793
+[521]	valid_0's auc: 0.90875
+[522]	valid_0's auc: 0.909078
+[523]	valid_0's auc: 0.908992
+[524]	valid_0's auc: 0.908979
+[525]	valid_0's auc: 0.908886
+[526]	valid_0's auc: 0.91022
+[527]	valid_0's auc: 0.909215
+[528]	valid_0's auc: 0.909184
+[529]	valid_0's auc: 0.909302
+[530]	valid_0's auc: 0.910357
+[531]	valid_0's auc: 0.908905
+[532]	valid_0's auc: 0.908992
+[533]	valid_0's auc: 0.908961
+[534]	valid_0's auc: 0.910798
+[535]	valid_0's auc: 0.911437
+[536]	valid_0's auc: 0.912206
+[537]	valid_0's auc: 0.911511
+[538]	valid_0's auc: 0.911828
+[539]	valid_0's auc: 0.91045
+[540]	valid_0's auc: 0.910835
+[541]	valid_0's auc: 0.910953
+[542]	valid_0's auc: 0.909271
+[543]	valid_0's auc: 0.908024
+[544]	valid_0's auc: 0.908607
+[545]	valid_0's auc: 0.908719
+[546]	valid_0's auc: 0.908805
+[547]	valid_0's auc: 0.909252
+[548]	valid_0's auc: 0.908309
+[549]	valid_0's auc: 0.908359
+[550]	valid_0's auc: 0.908756
+[551]	valid_0's auc: 0.908812
+[552]	valid_0's auc: 0.90883
+[553]	valid_0's auc: 0.908824
+[554]	valid_0's auc: 0.908855
+[555]	valid_0's auc: 0.908719
+[556]	valid_0's auc: 0.908334
+[557]	valid_0's auc: 0.90834
+[558]	valid_0's auc: 0.908334
+[559]	valid_0's auc: 0.908439
+[560]	valid_0's auc: 0.907775
+[561]	valid_0's auc: 0.907757
+[562]	valid_0's auc: 0.907781
+[563]	valid_0's auc: 0.905175
+[564]	valid_0's auc: 0.905088
+[565]	valid_0's auc: 0.903946
+[566]	valid_0's auc: 0.903884
+[567]	valid_0's auc: 0.903946
+[568]	valid_0's auc: 0.903959
+[569]	valid_0's auc: 0.905262
+[570]	valid_0's auc: 0.905318
+[571]	valid_0's auc: 0.90533
+[572]	valid_0's auc: 0.905628
+[573]	valid_0's auc: 0.904343
+[574]	valid_0's auc: 0.904337
+[575]	valid_0's auc: 0.904337
+[576]	valid_0's auc: 0.904089
+[577]	valid_0's auc: 0.904207
+[578]	valid_0's auc: 0.904157
+[579]	valid_0's auc: 0.905175
+[580]	valid_0's auc: 0.905305
+[581]	valid_0's auc: 0.905312
+[582]	valid_0's auc: 0.90538
+[583]	valid_0's auc: 0.90564
+[584]	valid_0's auc: 0.905845
+[585]	valid_0's auc: 0.907906
+[586]	valid_0's auc: 0.907881
+[587]	valid_0's auc: 0.907788
+[588]	valid_0's auc: 0.907763
+[589]	valid_0's auc: 0.907757
+[590]	valid_0's auc: 0.906733
+[591]	valid_0's auc: 0.905485
+[592]	valid_0's auc: 0.905318
+[593]	valid_0's auc: 0.904294
+[594]	valid_0's auc: 0.904381
+[595]	valid_0's auc: 0.904406
+[596]	valid_0's auc: 0.904461
+[597]	valid_0's auc: 0.905734
+[598]	valid_0's auc: 0.905603
+[599]	valid_0's auc: 0.906584
+[600]	valid_0's auc: 0.90731
+[601]	valid_0's auc: 0.907148
+[602]	valid_0's auc: 0.907142
+[603]	valid_0's auc: 0.906298
+[604]	valid_0's auc: 0.906286
+[605]	valid_0's auc: 0.906249
+[606]	valid_0's auc: 0.906199
+[607]	valid_0's auc: 0.906
+[608]	valid_0's auc: 0.906969
+[609]	valid_0's auc: 0.906993
+[610]	valid_0's auc: 0.906956
+[611]	valid_0's auc: 0.905814
+[612]	valid_0's auc: 0.905858
+[613]	valid_0's auc: 0.905156
+[614]	valid_0's auc: 0.903506
+[615]	valid_0's auc: 0.903487
+[616]	valid_0's auc: 0.903437
+[617]	valid_0's auc: 0.904561
+[618]	valid_0's auc: 0.904424
+[619]	valid_0's auc: 0.904195
+[620]	valid_0's auc: 0.90448
+[621]	valid_0's auc: 0.904418
+[622]	valid_0's auc: 0.903723
+[623]	valid_0's auc: 0.903686
+[624]	valid_0's auc: 0.904139
+[625]	valid_0's auc: 0.904101
+[626]	valid_0's auc: 0.902724
+[627]	valid_0's auc: 0.902755
+[628]	valid_0's auc: 0.902823
+[629]	valid_0's auc: 0.901619
+[630]	valid_0's auc: 0.901687
+[631]	valid_0's auc: 0.901588
+[632]	valid_0's auc: 0.902966
+[633]	valid_0's auc: 0.902209
+[634]	valid_0's auc: 0.902196
+[635]	valid_0's auc: 0.90152
+[636]	valid_0's auc: 0.901526
+[637]	valid_0's auc: 0.902308
+[638]	valid_0's auc: 0.902296
+[639]	valid_0's auc: 0.902258
+[640]	valid_0's auc: 0.901265
+[641]	valid_0's auc: 0.901203
+[642]	valid_0's auc: 0.901197
+[643]	valid_0's auc: 0.901234
+[644]	valid_0's auc: 0.901203
+[645]	valid_0's auc: 0.90121
+[646]	valid_0's auc: 0.901315
+[647]	valid_0's auc: 0.901731
+[648]	valid_0's auc: 0.90008
+[649]	valid_0's auc: 0.899912
+[650]	valid_0's auc: 0.901476
+[651]	valid_0's auc: 0.900502
+[652]	valid_0's auc: 0.900589
+[653]	valid_0's auc: 0.900626
+[654]	valid_0's auc: 0.900241
+[655]	valid_0's auc: 0.900341
+[656]	valid_0's auc: 0.901588
+[657]	valid_0's auc: 0.902184
+[658]	valid_0's auc: 0.902165
+[659]	valid_0's auc: 0.902351
+[660]	valid_0's auc: 0.902246
+[661]	valid_0's auc: 0.90304
+[662]	valid_0's auc: 0.90165
+[663]	valid_0's auc: 0.90237
+[664]	valid_0's auc: 0.902823
+[665]	valid_0's auc: 0.903866
+[666]	valid_0's auc: 0.903828
+[667]	valid_0's auc: 0.903853
+[668]	valid_0's auc: 0.903884
+[669]	valid_0's auc: 0.90484
+[670]	valid_0's auc: 0.904834
+[671]	valid_0's auc: 0.905845
+[672]	valid_0's auc: 0.905926
+[673]	valid_0's auc: 0.906075
+[674]	valid_0's auc: 0.906168
+[675]	valid_0's auc: 0.90605
+[676]	valid_0's auc: 0.906156
+[677]	valid_0's auc: 0.905672
+[678]	valid_0's auc: 0.905057
+[679]	valid_0's auc: 0.90484
+[680]	valid_0's auc: 0.904803
+[681]	valid_0's auc: 0.904424
+[682]	valid_0's auc: 0.90448
+[683]	valid_0's auc: 0.906578
+[684]	valid_0's auc: 0.906646
+[685]	valid_0's auc: 0.90695
+[686]	valid_0's auc: 0.9069
+[687]	valid_0's auc: 0.906931
+[688]	valid_0's auc: 0.90803
+[689]	valid_0's auc: 0.908042
+[690]	valid_0's auc: 0.908061
+[691]	valid_0's auc: 0.908024
+[692]	valid_0's auc: 0.907701
+[693]	valid_0's auc: 0.906249
+[694]	valid_0's auc: 0.906286
+[695]	valid_0's auc: 0.906404
+[696]	valid_0's auc: 0.906584
+[697]	valid_0's auc: 0.90605
+[698]	valid_0's auc: 0.905026
+[699]	valid_0's auc: 0.905287
+[700]	valid_0's auc: 0.90525
+[701]	valid_0's auc: 0.905262
+[702]	valid_0's auc: 0.90461
+[703]	valid_0's auc: 0.905653
+[704]	valid_0's auc: 0.904902
+[705]	valid_0's auc: 0.905007
+[706]	valid_0's auc: 0.905107
+[707]	valid_0's auc: 0.904548
+[708]	valid_0's auc: 0.904561
+[709]	valid_0's auc: 0.90453
+[710]	valid_0's auc: 0.904623
+[711]	valid_0's auc: 0.904629
+[712]	valid_0's auc: 0.904592
+[713]	valid_0's auc: 0.904548
+[714]	valid_0's auc: 0.904697
+[715]	valid_0's auc: 0.904691
+[716]	valid_0's auc: 0.904679
+[717]	valid_0's auc: 0.904641
+[718]	valid_0's auc: 0.904095
+[719]	valid_0's auc: 0.904083
+[720]	valid_0's auc: 0.903307
+[721]	valid_0's auc: 0.902854
+[722]	valid_0's auc: 0.902761
+[723]	valid_0's auc: 0.903171
+[724]	valid_0's auc: 0.902345
+[725]	valid_0's auc: 0.902302
+[726]	valid_0's auc: 0.902233
+[727]	valid_0's auc: 0.902308
+[728]	valid_0's auc: 0.901576
+[729]	valid_0's auc: 0.901725
+[730]	valid_0's auc: 0.901706
+[731]	valid_0's auc: 0.901663
+[732]	valid_0's auc: 0.901619
+[733]	valid_0's auc: 0.901265
+[734]	valid_0's auc: 0.90116
+[735]	valid_0's auc: 0.902016
+[736]	valid_0's auc: 0.900775
+[737]	valid_0's auc: 0.900769
+[738]	valid_0's auc: 0.9008
+[739]	valid_0's auc: 0.900744
+[740]	valid_0's auc: 0.90085
+[741]	valid_0's auc: 0.900868
+[742]	valid_0's auc: 0.902897
+[743]	valid_0's auc: 0.902246
+[744]	valid_0's auc: 0.902333
+[745]	valid_0's auc: 0.902345
+[746]	valid_0's auc: 0.902345
+[747]	valid_0's auc: 0.901545
+[748]	valid_0's auc: 0.901445
+[749]	valid_0's auc: 0.901358
+[750]	valid_0's auc: 0.902773
+[751]	valid_0's auc: 0.902792
+[752]	valid_0's auc: 0.9025
+[753]	valid_0's auc: 0.9025
+[754]	valid_0's auc: 0.9025
+[755]	valid_0's auc: 0.902562
+[756]	valid_0's auc: 0.902804
+[757]	valid_0's auc: 0.902823
+[758]	valid_0's auc: 0.902885
+[759]	valid_0's auc: 0.904275
+[760]	valid_0's auc: 0.904207
+[761]	valid_0's auc: 0.904201
+[762]	valid_0's auc: 0.904815
+[763]	valid_0's auc: 0.904815
+[764]	valid_0's auc: 0.904821
+[765]	valid_0's auc: 0.904896
+[766]	valid_0's auc: 0.905473
+[767]	valid_0's auc: 0.905498
+[768]	valid_0's auc: 0.904548
+[769]	valid_0's auc: 0.904486
+[770]	valid_0's auc: 0.904548
+[771]	valid_0's auc: 0.904511
+[772]	valid_0's auc: 0.904474
+[773]	valid_0's auc: 0.904461
+[774]	valid_0's auc: 0.904536
+[775]	valid_0's auc: 0.903977
+[776]	valid_0's auc: 0.904021
+[777]	valid_0's auc: 0.904077
+[778]	valid_0's auc: 0.904114
+[779]	valid_0's auc: 0.902848
+[780]	valid_0's auc: 0.902922
+[781]	valid_0's auc: 0.902873
+[782]	valid_0's auc: 0.9025
+[783]	valid_0's auc: 0.902575
+[784]	valid_0's auc: 0.90111
+[785]	valid_0's auc: 0.901135
+[786]	valid_0's auc: 0.901073
+[787]	valid_0's auc: 0.901098
+[788]	valid_0's auc: 0.90111
+[789]	valid_0's auc: 0.901166
+[790]	valid_0's auc: 0.901092
+[791]	valid_0's auc: 0.903195
+[792]	valid_0's auc: 0.903071
+[793]	valid_0's auc: 0.902004
+[794]	valid_0's auc: 0.902103
+[795]	valid_0's auc: 0.902159
+[796]	valid_0's auc: 0.90273
+[797]	valid_0's auc: 0.90273
+[798]	valid_0's auc: 0.901886
+[799]	valid_0's auc: 0.901855
+[800]	valid_0's auc: 0.901731
+[801]	valid_0's auc: 0.900359
+[802]	valid_0's auc: 0.900297
+[803]	valid_0's auc: 0.90031
+[804]	valid_0's auc: 0.900322
+[805]	valid_0's auc: 0.901632
+[806]	valid_0's auc: 0.901638
+[807]	valid_0's auc: 0.902786
+[808]	valid_0's auc: 0.902736
+[809]	valid_0's auc: 0.9026
+[810]	valid_0's auc: 0.901216
+[811]	valid_0's auc: 0.89972
+[812]	valid_0's auc: 0.89972
+[813]	valid_0's auc: 0.899726
+[814]	valid_0's auc: 0.900614
+[815]	valid_0's auc: 0.902171
+[816]	valid_0's auc: 0.901296
+[817]	valid_0's auc: 0.902395
+[818]	valid_0's auc: 0.900775
+[819]	valid_0's auc: 0.901228
+[820]	valid_0's auc: 0.901234
+[821]	valid_0's auc: 0.901172
+[822]	valid_0's auc: 0.900756
+[823]	valid_0's auc: 0.900837
+[824]	valid_0's auc: 0.901445
+[825]	valid_0's auc: 0.901346
+[826]	valid_0's auc: 0.903419
+[827]	valid_0's auc: 0.903431
+[828]	valid_0's auc: 0.903425
+[829]	valid_0's auc: 0.902488
+[830]	valid_0's auc: 0.902457
+[831]	valid_0's auc: 0.901867
+[832]	valid_0's auc: 0.901811
+[833]	valid_0's auc: 0.901905
+[834]	valid_0's auc: 0.901874
+[835]	valid_0's auc: 0.901905
+[836]	valid_0's auc: 0.90134
+[837]	valid_0's auc: 0.90134
+[838]	valid_0's auc: 0.901545
+[839]	valid_0's auc: 0.901514
+[840]	valid_0's auc: 0.901743
+[841]	valid_0's auc: 0.901638
+[842]	valid_0's auc: 0.90134
+[843]	valid_0's auc: 0.901389
+[844]	valid_0's auc: 0.901495
+[845]	valid_0's auc: 0.901495
+[846]	valid_0's auc: 0.900217
+[847]	valid_0's auc: 0.90021
+[848]	valid_0's auc: 0.899844
+[849]	valid_0's auc: 0.899323
+[850]	valid_0's auc: 0.898479
+[851]	valid_0's auc: 0.896996
+[852]	valid_0's auc: 0.894917
+[853]	valid_0's auc: 0.894904
+[854]	valid_0's auc: 0.893781
+[855]	valid_0's auc: 0.893713
+[856]	valid_0's auc: 0.89375
+[857]	valid_0's auc: 0.893731
+[858]	valid_0's auc: 0.893682
+[859]	valid_0's auc: 0.894755
+[860]	valid_0's auc: 0.895624
+[861]	valid_0's auc: 0.895686
+[862]	valid_0's auc: 0.895699
+[863]	valid_0's auc: 0.895426
+[864]	valid_0's auc: 0.894638
+[865]	valid_0's auc: 0.894551
+[866]	valid_0's auc: 0.893738
+[867]	valid_0's auc: 0.893731
+[868]	valid_0's auc: 0.893688
+[869]	valid_0's auc: 0.893756
+[870]	valid_0's auc: 0.892453
+[871]	valid_0's auc: 0.892509
+[872]	valid_0's auc: 0.892515
+[873]	valid_0's auc: 0.892546
+[874]	valid_0's auc: 0.890753
+[875]	valid_0's auc: 0.89079
+[876]	valid_0's auc: 0.891473
+[877]	valid_0's auc: 0.891435
+[878]	valid_0's auc: 0.891442
+[879]	valid_0's auc: 0.891957
+[880]	valid_0's auc: 0.891913
+[881]	valid_0's auc: 0.891957
+[882]	valid_0's auc: 0.891957
+[883]	valid_0's auc: 0.891919
+[884]	valid_0's auc: 0.891864
+[885]	valid_0's auc: 0.890771
+[886]	valid_0's auc: 0.890784
+[887]	valid_0's auc: 0.891572
+[888]	valid_0's auc: 0.891051
+[889]	valid_0's auc: 0.890449
+[890]	valid_0's auc: 0.890722
+[891]	valid_0's auc: 0.890697
+[892]	valid_0's auc: 0.89079
+[893]	valid_0's auc: 0.890728
+[894]	valid_0's auc: 0.890728
+[895]	valid_0's auc: 0.890653
+[896]	valid_0's auc: 0.890548
+[897]	valid_0's auc: 0.890989
+[898]	valid_0's auc: 0.891398
+[899]	valid_0's auc: 0.89146
+[900]	valid_0's auc: 0.891466
+[901]	valid_0's auc: 0.89146
+[902]	valid_0's auc: 0.892106
+[903]	valid_0's auc: 0.890877
+[904]	valid_0's auc: 0.890858
+[905]	valid_0's auc: 0.891348
+[906]	valid_0's auc: 0.891274
+[907]	valid_0's auc: 0.890784
+[908]	valid_0's auc: 0.891429
+[909]	valid_0's auc: 0.891522
+[910]	valid_0's auc: 0.891597
+[911]	valid_0's auc: 0.891913
+[912]	valid_0's auc: 0.891864
+[913]	valid_0's auc: 0.89187
+[914]	valid_0's auc: 0.892006
+[915]	valid_0's auc: 0.891299
+[916]	valid_0's auc: 0.891293
+[917]	valid_0's auc: 0.891249
+[918]	valid_0's auc: 0.891262
+[919]	valid_0's auc: 0.890325
+[920]	valid_0's auc: 0.890275
+[921]	valid_0's auc: 0.890225
+[922]	valid_0's auc: 0.892472
+[923]	valid_0's auc: 0.893198
+[924]	valid_0's auc: 0.89326
+[925]	valid_0's auc: 0.893229
+[926]	valid_0's auc: 0.893117
+[927]	valid_0's auc: 0.893781
+[928]	valid_0's auc: 0.894153
+[929]	valid_0's auc: 0.894091
+[930]	valid_0's auc: 0.893942
+[931]	valid_0's auc: 0.893099
+[932]	valid_0's auc: 0.89308
+[933]	valid_0's auc: 0.893961
+[934]	valid_0's auc: 0.893918
+[935]	valid_0's auc: 0.893837
+[936]	valid_0's auc: 0.89303
+[937]	valid_0's auc: 0.893092
+[938]	valid_0's auc: 0.89218
+[939]	valid_0's auc: 0.891597
+[940]	valid_0's auc: 0.893055
+[941]	valid_0's auc: 0.893036
+[942]	valid_0's auc: 0.892832
+[943]	valid_0's auc: 0.893123
+[944]	valid_0's auc: 0.893092
+[945]	valid_0's auc: 0.893142
+[946]	valid_0's auc: 0.893086
+[947]	valid_0's auc: 0.891305
+[948]	valid_0's auc: 0.892844
+[949]	valid_0's auc: 0.892552
+[950]	valid_0's auc: 0.892838
+[951]	valid_0's auc: 0.892819
+[952]	valid_0's auc: 0.894718
+[953]	valid_0's auc: 0.895246
+[954]	valid_0's auc: 0.895134
+[955]	valid_0's auc: 0.894743
+[956]	valid_0's auc: 0.894786
+[957]	valid_0's auc: 0.894762
+[958]	valid_0's auc: 0.894768
+[959]	valid_0's auc: 0.893278
+[960]	valid_0's auc: 0.893353
+[961]	valid_0's auc: 0.892006
+[962]	valid_0's auc: 0.892056
+[963]	valid_0's auc: 0.892478
+[964]	valid_0's auc: 0.894383
+[965]	valid_0's auc: 0.894389
+[966]	valid_0's auc: 0.894414
+[967]	valid_0's auc: 0.894079
+[968]	valid_0's auc: 0.892906
+[969]	valid_0's auc: 0.891615
+[970]	valid_0's auc: 0.890517
+[971]	valid_0's auc: 0.891212
+[972]	valid_0's auc: 0.891255
+[973]	valid_0's auc: 0.891336
+[974]	valid_0's auc: 0.891311
+[975]	valid_0's auc: 0.891361
+[976]	valid_0's auc: 0.890647
+[977]	valid_0's auc: 0.890461
+[978]	valid_0's auc: 0.889685
+[979]	valid_0's auc: 0.889648
+[980]	valid_0's auc: 0.889716
+[981]	valid_0's auc: 0.889735
+[982]	valid_0's auc: 0.890691
+[983]	valid_0's auc: 0.890554
+[984]	valid_0's auc: 0.889257
+[985]	valid_0's auc: 0.888643
+[986]	valid_0's auc: 0.888202
+[987]	valid_0's auc: 0.889406
+[988]	valid_0's auc: 0.889418
+[989]	valid_0's auc: 0.889381
+[990]	valid_0's auc: 0.888655
+[991]	valid_0's auc: 0.888605
+[992]	valid_0's auc: 0.888159
+[993]	valid_0's auc: 0.887675
+[994]	valid_0's auc: 0.88773
+[995]	valid_0's auc: 0.887699
+[996]	valid_0's auc: 0.887606
+[997]	valid_0's auc: 0.8876
+[998]	valid_0's auc: 0.886694
+[999]	valid_0's auc: 0.886738
+[1000]	valid_0's auc: 0.886632
+Test score: 0.9730821234012782
+
+/home/mohamedaminebenslama/anaconda3/envs/dsa2/bin/python /home/mohamedaminebenslama/.local/share/JetBrains/Toolbox/apps/PyCharm-P/ch-0/193.7288.30/plugins/python/helpers/pydev/pydevconsole.py --mode=client --port=40521
+import sys; print('Python %s on %s' % (sys.version, sys.platform))
+sys.path.extend(['/home/mohamedaminebenslama/projects/dsa2-amine'])
+Python 3.7.9 | packaged by conda-forge | (default, Dec  9 2020, 21:08:20)
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.19.0 -- An enhanced Interactive Python. Type '?' for help.
+PyDev console: using IPython 7.19.0
+Python 3.7.9 | packaged by conda-forge | (default, Dec  9 2020, 21:08:20)
+[GCC 9.3.0] on linux
+In[2]: runfile('/home/mohamedaminebenslama/projects/dsa2-amine/data/input/adfraud/Adfraud3.py', wdir='/home/mohamedaminebenslama/projects/dsa2-amine/data/input/adfraud')
+Let's divide the day in four section ,See in which section click has happend
+Let's see new clicks count features
+Computing the number of clicks associated with a given app per hour...
+Computing the number of channels associated with a given IP address within each hour...
+Let's divide the day in four section ,See in which section click has happend
+Computing the number of channels associated with
+Let's see new clicks count features
+Computing the number of channels associated with
+Computing the number of clicks associated with a given app per hour...
+Computing the number of channels associated with a given IP address within each hour...
+Computing the number of channels associated with
+Computing the number of channels associated with
+Grouping by ['ip', 'day', 'hour'], and aggregating channel with count
+Grouping by ['ip', 'app'], and aggregating channel with count
+Grouping by ['ip', 'app', 'os'], and aggregating channel with count
+Grouping by ['ip', 'app', 'day', 'hour'], and aggregating channel with count
+Grouping by ['ip', 'app', 'channel'], and aggregating hour with mean
+Grouping by ['app'], and aggregating ip with AvgViewPerDistinct
+Grouping by ['app'], and aggregating channel with count
+Grouping by ['channel'], and aggregating app with count
+Grouping by ['ip'], and aggregating channel with nunique
+Grouping by ['ip'], and aggregating app with nunique
+Grouping by ['ip', 'day'], and aggregating hour with nunique
+Grouping by ['ip', 'app'], and aggregating os with nunique
+Grouping by ['ip'], and aggregating device with nunique
+Grouping by ['app'], and aggregating channel with nunique
+Grouping by ['ip', 'device', 'os'], and aggregating app with nunique
+Grouping by ['ip', 'device', 'os'], and aggregating app with cumcount
+Grouping by ['ip'], and aggregating app with cumcount
+Grouping by ['ip'], and aggregating os with cumcount
+Preparing data for GeFs Random forest model
+Starting the GeFs Random Forest Training
+/home/mohamedaminebenslama/anaconda3/envs/dsa2/lib/python3.7/site-packages/numba/np/ufunc/parallel.py:363: NumbaWarning: The TBB threading layer requires TBB version 2019.5 or later i.e., TBB_INTERFACE_VERSION >= 11005. Found TBB_INTERFACE_VERSION = 9107. The TBB threading layer is disabled.
+  warnings.warn(problem)
+Converting Random Forest to GeF
+100%|██████████| 30/30 [01:52<00:00,  3.76s/it]
+Making predictions on test data
+Test score: 0.5

@@ -27,7 +27,34 @@ See the [Skeleton Example](#example), for a combination of multiple methods that
 ### Function Glossary
 
 **Transformation**
-```python
+"""
+#### Add path for python import  #######################################
+import os, sys
+path_repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + "/"
+print("path_repo_root", path_repo_root)
+sys.path.append( path_repo_root)
+from util_feature import  save, load_function_uri, load 		
+########################################################################
+
+"""### Data and Package Load"""
+import pandas as pd
+import numpy as np
+
+from source.bin.deltapy import transform, interact, mapper, extract
+import warnings
+warnings.filterwarnings('ignore')
+
+def data_copy():
+  df = pd.read_csv("https://github.com/firmai/random-assets-two/raw/master/numpy/tsla.csv")
+  df["Close_1"] = df["Close"].shift(-1)
+  df = df.dropna()
+  df["Date"] = pd.to_datetime(df["Date"])
+  df = df.set_index("Date")
+  return df
+df = data_copy(); df.head()
+
+
+
 df_out = transform.robust_scaler(df.copy(), drop=["Close_1"]); df_out.head()
 df_out = transform.standard_scaler(df.copy(), drop=["Close"]); df_out.head()           
 df_out = transform.fast_fracdiff(df.copy(), ["Close","Open"],0.5); df_out.head()
@@ -47,9 +74,9 @@ df_out = transform.modify(df.copy(),["Close"]); df_out.head()
 df_out = transform.multiple_rolling(df, columns=["Close"]); df_out.head()
 df_out = transform.multiple_lags(df, start=1, end=3, columns=["Close"]); df_out.head()
 df_out  = transform.prophet_feat(df.copy().reset_index(),["Close","Open"],"Date", "D"); df_out.head()
-```
+"""
 **Interaction**
-```python
+"""
 df_out = interact.lowess(df.copy(), ["Open","Volume"], df["Close"], f=0.25, iter=3); df_out.head()
 df_out = interact.autoregression(df.copy()); df_out.head()
 df_out = interact.muldiv(df.copy(), ["Close","Open"]); df_out.head()
@@ -57,9 +84,9 @@ df_out = interact.decision_tree_disc(df.copy(), ["Close"]); df_out.head()
 df_out = interact.quantile_normalize(df.copy(), drop=["Close"]); df_out.head()
 df_out = interact.tech(df.copy()); df_out.head()
 df_out = interact.genetic_feat(df.copy()); df_out.head()
-```
+"""
 **Mapping**
-```python
+"""
 df_out = mapper.pca_feature(df.copy(),variance_or_components=0.80,drop_cols=["Close_1"]); df_out.head()
 df_out = mapper.cross_lag(df.copy()); df_out.head()
 df_out = mapper.a_chi(df.copy()); df_out.head()
@@ -67,10 +94,10 @@ df_out = mapper.encoder_dataset(df.copy(), ["Close_1"], 15); df_out.head()
 df_out = mapper.lle_feat(df.copy(),["Close_1"],4); df_out.head()
 df_out = mapper.feature_agg(df.copy(),["Close_1"],4 ); df_out.head()
 df_out = mapper.neigh_feat(df.copy(),["Close_1"],4 ); df_out.head()
-```
+"""
 
 **Extraction**
-```python
+"""
 extract.abs_energy(df["Close"])
 extract.cid_ce(df["Close"], True)
 extract.mean_abs_change(df["Close"])
@@ -115,46 +142,31 @@ extract.range_cum_s(df["Close"])
 extract.structure_func(df["Close"])
 extract.kurtosis(df["Close"])
 extract.stetson_k(df["Close"])
-```
+"""
 
 Test sets should ideally not be preprocessed with the training data, as in such a way one could be peaking ahead in the training data. The preprocessing parameters should be identified on the test set and then applied on the test set, i.e., the test set should not have an impact on the transformation applied. As an example, you would learn the parameters of PCA decomposition on the training set and then apply the parameters to both the train and the test set. 
 
 The benefit of pipelines become clear when one wants to apply multiple augmentation methods. It makes it easy to learn the parameters and then apply them widely. For the most part, this notebook does not concern itself with 'peaking ahead' or pipelines, for some functions, one might have to restructure to code and make use of open source pacakages to create your preferred solution.
 
 **Notebook Dependencies**
-!pip install deltapy
+# !pip install deltapy
 
-!pip install pykalman
-!pip install tsaug
-!pip install ta
-!pip install tsaug
-!pip install pandasvault
-!pip install gplearn
-!pip install ta
-!pip install seasonal
-!pip install pandasvault
+# !pip install pykalman
+# !pip install tsaug
+# !pip install ta
+# !pip install tsaug
+# !pip install pandasvault
+# !pip install gplearn
+# !pip install ta
+# !pip install seasonal
+# !pip install pandasvault
 
 
 """
 
 
 
-"""### Data and Package Load"""
 
-import pandas as pd
-import numpy as np
-from deltapy import transform, interact, mapper, extract 
-import warnings
-warnings.filterwarnings('ignore')
-
-def data_copy():
-  df = pd.read_csv("https://github.com/firmai/random-assets-two/raw/master/numpy/tsla.csv")
-  df["Close_1"] = df["Close"].shift(-1)
-  df = df.dropna()
-  df["Date"] = pd.to_datetime(df["Date"])
-  df = df.set_index("Date")
-  return df
-df = data_copy(); df.head()
 
 """Some of these categories are fluid and some techniques could fit into multiple buckets. This is an attempt to find an exhaustive number of techniques, but not an exhuastive list of implementations of the techniques. For example, there are thousands of ways to smooth a time-series, but we have only includes 1-2 techniques of interest under each category.
 
@@ -707,7 +719,7 @@ There are a range of time series model that can be implemented like AR, MA, ARMA
 
 (i) Prophet
 
-Prophet is a procedure for forecasting time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality. You can apply additive models to your training data but also interactive models like deep learning models. The problem is that because these models have learned from future observations, there would this be a need to recalculate the time series on a running basis, or to only include the predicted as opposed to fitted values in future training and test sets. In this example, I train on 150 data points to illustrate how the remaining or so 100 datapoints can be used in a new prediction problem. You can plot with ```df["PROPHET"].plot()``` to see the effect.
+Prophet is a procedure for forecasting time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality. You can apply additive models to your training data but also interactive models like deep learning models. The problem is that because these models have learned from future observations, there would this be a need to recalculate the time series on a running basis, or to only include the predicted as opposed to fitted values in future training and test sets. In this example, I train on 150 data points to illustrate how the remaining or so 100 datapoints can be used in a new prediction problem. You can plot with """df["PROPHET"].plot()""" to see the effect.
 
 You can apply additive models to your training data but also interactive models like deep learning models. The problem is that these models have learned from future observations, there would this be a need to recalculate the time series on a running basis, or to only include the predicted as opposed to fitted values in future training and test sets.
 """
@@ -2527,7 +2539,7 @@ def model(df_final):
   val = mean_squared_error(test["Close_1"],preds); 
   return val
 
-!pip install ctgan
+# !pip install ctgan
 
 from ctgan import CTGANSynthesizer
 
@@ -2689,7 +2701,7 @@ extract.var_index(df["Close"].values,var_index_param)
 
 """**Time Series Extraction**"""
 
-!pip install git+git://github.com/firmai/tsfresh.git
+# !pip install git+git://github.com/firmai/tsfresh.git
 
 #Construct the preferred input dataframe.
 from tsfresh.utilities.dataframe_functions import roll_time_series
@@ -2706,7 +2718,9 @@ settings_dict = CustomFCParameters()
 settings_dict["var_index"] = {"PCA_1":None, "PCA_2": None}
 df_feat = extract_features(df_ts.drop(["Close_1"],axis=1),default_fc_parameters=settings_dict,column_id="ID",column_sort="Date")
 
+
 # Cleaning operations
+"""
 import pandasvault as pv
 df_feat2 = df_feat.copy()
 df_feat = df_feat.dropna(thresh = len(df_feat)*0.50, axis = "columns")
@@ -2716,6 +2730,7 @@ df_feat = df_feat.ffill()
 df_feat = pd.merge(df_feat,df[["Close_1"]],left_index=True,right_index=True,how="left")
 print(df_feat.shape)
 model(df_feat) #noisy
+"""
 
 from tsfresh import select_features
 from tsfresh.utilities.dataframe_functions import impute
@@ -2725,7 +2740,8 @@ df_feat_2 = select_features(df_feat.drop(["Close_1"],axis=1),df_feat["Close_1"],
 df_feat_2["Close_1"] = df_feat["Close_1"]
 model(df_feat_2) #improvement (b/ not an augmentation method)
 
-"""**(3) (6) (i) Feature Agglomoration; &nbsp; (1)(2)(i) Standard Scaler.**
+"""
+**(3) (6) (i) Feature Agglomoration; &nbsp; (1)(2)(i) Standard Scaler.**
 
 Like in this step, after (1), (2), (3), (4) and (5), you can often circle back to the initial steps to normalise the data and dimensionally reduce the data for the final model.
 """
@@ -2767,19 +2783,10 @@ model(df_best)
 
 There are countless ways in which the current model can be improved, this can take on an automated process where all techniques are tested against a hold out set, for example, we can perform the operation below, and even though it improves the score here, there is a need for more robust tests. The skeleton example above is not meant to highglight the performance of the package. It simply serves as an example of how one can go about applying augmentation methods. 
 
-Quite naturally this example suffers from dimensionality issues with array shapes reaching ```(208, 48)```, furthermore you would need a sample that is at least 50-100 times larger before machine learning methods start to make sense.
+Quite naturally this example suffers from dimensionality issues with array shapes reaching """(208, 48)""", furthermore you would need a sample that is at least 50-100 times larger before machine learning methods start to make sense.
 
 Nonetheless, in this example, *Transformation, Interactions* and *Mappings* (applied to exraction output) performed fairly well. *Extraction* augmentation was overkill, but created a reasonable model when dimensionally reduced. A better selection of one of the 50+ augmentation methods and the order of augmentation could further help improve the outcome if robustly tested against development sets.
 
-## Citation
-
-```
-@software{deltapy,
-  title = {{DeltaPy}: Tabular Data Augmentation Interactive Notebook},
-  author = {Snow, Derek},
-  url = {https://colab.research.google.com/drive/1-uJqGeKZfJegX0TmovhsO90iasyxZYiT},
-  version = {0.1.0},
-  date = {2020-04-11},
-}
-```
 """
+
+

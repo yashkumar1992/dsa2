@@ -4,9 +4,9 @@ pwd
 which python
 ls .
 
-# python titanic_classifier.py  preprocess  ;
-# python titanic_classifier.py  train    --nsample 1000     ;
-# python titanic_classifier.py  predict  --nsample 1000   ;
+# python outlier_predict.py  preprocess  ;
+# python outlier_predict.py  train    --nsample 1000     ;
+# python outlier_predict.py  predict  --nsample 1000   ;
 
 # python multi_classifier.py  train    --nsample 10000   ;
 
@@ -23,6 +23,10 @@ python airbnb_regression.py  predict  --nsample 5000
 
 
 
+
+
+python income_classifier.py  train    --nsample 1000   ;
+python income_classifier.py  predict  --nsample 1000   ;
 
 
 
