@@ -320,28 +320,26 @@ def pd_colnum_normalize(df, col, pars):
 
 def pd_colnum_quantile_norm(df, col, pars={}):
   """
-     Distribution normalization
+     colnum normalization by quantile
   """
-  prefix= "colnum_quantile_norm"
-
+  prefix  = "colnum_quantile_norm"
   df      = df[col]
   num_col = col
 
+  ##### Grab previous computed params  ################################################    
   pars2 = {}
   if  'path_pipeline' in pars :   #### Load existing column list
        colnum_quantile_norm = load( pars['path_pipeline']  +f'/{prefix}.pkl')
        model                = load( pars['path_pipeline']  +f'/{prefix}_model.pkl')
        pars2                = load( pars['path_pipeline']  +f'/{prefix}_pars.pkl')
 
-  ##### Grab previous computed params
   lower_bound_sparse = pars2.get('lower_bound_sparse', None)
   upper_bound_sparse = pars2.get('upper_bound_sparse', None)
   lower_bound        = pars2.get('lower_bound_sparse', None)
   upper_bound        = pars2.get('upper_bound_sparse', None)
   sparse_col         = pars2.get('colsparse', ['capital-gain', 'capital-loss'] )
 
-
-  ####### Find IQR and implement to numericals and sparse columns seperately
+  ####### Find IQR and implement to numericals and sparse columns seperately ##########
   Q1  = df.quantile(0.25)
   Q3  = df.quantile(0.75)
   IQR = Q3 - Q1
@@ -368,7 +366,6 @@ def pd_colnum_quantile_norm(df, col, pars={}):
       else:
         upper_bound_sparse = df_nosparse[col].quantile(0.75)
 
-
       n_outliers = len(df[(df[col] < lower_bound_sparse) | (df[col] > upper_bound_sparse)][col])
 
       if n_outliers > 0:
@@ -383,24 +380,22 @@ def pd_colnum_quantile_norm(df, col, pars={}):
       df[col] = np.where(df[col] > upper_bound, 1.25 * upper_bound, df[col])
       df[col] = np.where(df[col] < lower_bound, 0.75 * lower_bound, df[col])
 
-
   df.columns = [ t + "_qt_norm" for t in df.columns ]
   pars_new   = {'lower_bound' : lower_bound, 'upper_bound': upper_bound,
-                'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse
-               }
+                'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse  }
   dfnew    = df
   model    = None
   colnew   = list(df.columns)
 
-  ###################################################################################
+  ##### Export ##############################################################################
   if 'path_features_store' in pars and 'path_pipeline_export' in pars:
       save_features(df,  prefix, pars['path_features_store'])
-      save(model,      pars['path_pipeline_export']  + f"/{prefix}_model.pkl" )
       save(colnew,     pars['path_pipeline_export']  + f"/{prefix}.pkl" )
       save(pars_new,   pars['path_pipeline_export']  + f"/{prefix}_pars.pkl" )
+      save(model,      pars['path_pipeline_export']  + f"/{prefix}_model.pkl" )
 
 
-  col_pars = {'model' : model, 'pars': pars_new}
+  col_pars = {'prefix' : prefix, 'path': pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
   col_pars['cols_new'] = {
     prefix :  colnew  ### list
   }
