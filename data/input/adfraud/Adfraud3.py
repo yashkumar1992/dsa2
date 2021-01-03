@@ -223,7 +223,7 @@ def train_baseline_model():
 # ## 1) scale_pos_weight': 99  # because training data is extremely unbalanced
 # ### Since the data is highly imbalanced we use lightgbm scale_pos_weight
 #
-def train_lgb_class_imblanace():
+def train_lgb_class_imbalance():
     dtrain = lgb.Dataset(train_X, train_y)
     dvalid = lgb.Dataset(val_X, val_y)
 
@@ -547,20 +547,17 @@ def train_gefs_model():
     y_pred_avg = gef.classify_avg(X_test, classcol=data.shape[1] - 1)
     y_pred_mixture = gef.classify(X_test, classcol=data.shape[1] - 1)
 
+    _, y_prob = gef.classify(X_test, classcol=data.shape[1] - 1, return_prob=True)
+    y_prob = np.max(y_prob, axis=1)
     from sklearn import metrics
-    score = metrics.roc_auc_score(y_test, y_pred_avg)
+    score = metrics.roc_auc_score(y_test, y_prob)
     print(f"Test score for GeFs Model: {score}")
-
-    ### Computing Robustness Values
-    ##  Robustness values can be computed with the `compute_rob_class` function.
-    from gefs import compute_rob_class
-    pred, rob = compute_rob_class(gef.root, X_test, data.shape[1] - 1, int(ncat[-1]))
 
 
 # in order to get rid of the ../lib/python3.6/site-packages/numba/np/ufunc/parallel.py:355: NumbaWarning: The TBB threading layer requires TBB version 2019.5 or later i.e., TBB_INTERFACE_VERSION >= 11005. Found TBB_INTERFACE_VERSION = 9107. The TBB threading layer is disabled.
 #   warnings.warn(problem) run `conda install tbb`
 if __name__ == '__main__':
-    train_baseline_model()
-    train_lgb_class_imblanace()
-    train_model_with_smote_oversampling()
+    #train_baseline_model()
+    #train_lgb_class_imbalance()
+    #train_model_with_smote_oversampling()
     train_gefs_model()
