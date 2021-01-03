@@ -278,7 +278,7 @@ def data_profile(path_data_train="", path_model="", n_sample= 5000):
 ###################################################################################
 ########## Preprocess #############################################################
 ### def preprocess(config='', nsample=1000):
-from run import preprocess
+from core_run import preprocess
 
 """
 def preprocess(config=None, nsample=None):
@@ -300,7 +300,7 @@ def preprocess(config=None, nsample=None):
 
 ##################################################################################
 ########## Train #################################################################
-from run import train
+from core_run import train
 """
 def train(config=None, nsample=None):
 
@@ -329,7 +329,7 @@ def check():
 ####################################################################################
 ####### Inference ##################################################################
 # predict(config='', nsample=10000)
-from run import predict
+from core_run import predict
 
 """
 def predict(config=None, nsample=None):
