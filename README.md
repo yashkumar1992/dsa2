@@ -32,10 +32,10 @@ Preprocessors
 
 ### Basic usage 2
     cd dsa2
-    python run.py data_profile --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
-    python run.py preprocess   --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
-    python run.py train        --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
-    python run.py predict      --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py data_profile --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py preprocess   --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py train        --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py predict      --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
 
 
 

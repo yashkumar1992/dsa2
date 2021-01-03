@@ -97,7 +97,8 @@ jobs:
 
     - name: test_import
       run: |
-           python -c "import run,os, numpy ; print(numpy); print(os)"
+           python -c "import core_run;   print(core_run)"
+           python -c "import os, numpy ; print(os)"
            # python -c "import tensorflow, torch ; print(tensorflow); print(torch)"
 
 
