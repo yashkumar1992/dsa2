@@ -78,7 +78,7 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
 
     if engine_pars.get("study_name") is not None:
         study_name = engine_pars['study_name']
-        storage    =  engine_pars.get('storage', 'optunadb.db"'
+        storage    =  engine_pars.get('storage', 'optunadb.db')
         # study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
         try:
             study = optuna.load_study(study_name, storage)
