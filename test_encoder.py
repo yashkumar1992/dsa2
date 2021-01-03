@@ -82,7 +82,7 @@ def titanic1(path_model_out="") :
     config_name  = os_get_function_name()
     data_name    = "titanic"         ### in data/input/
     model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
-    n_sample     = 1000
+    n_sample     = 500
 
     def post_process_fun(y):
         return  int(y)
@@ -111,14 +111,14 @@ def titanic1(path_model_out="") :
         # {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'},
 
 
-        #  {'uri': 'source/preprocessors.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
 
 
         # {'uri': 'source/preprocessors.py::pd_coltext_universal_google',   'pars': {}, 'cols_family': 'coltext',     'cols_out': 'coltext_universal_google',     'type': ''    },
 
 
-        #{'uri': 'source/preprocessors.py::pd_col_genetic_transform',       'pars': {'coly' :  "Survived" },
-        # 'cols_family': 'colgen',     'cols_out': 'col_genetic',     'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_col_genetic_transform',       'pars': {'coly' :  "Survived" },
+                'cols_family': 'colgen',     'cols_out': 'col_genetic',     'type': ''             },
 
 
         {'uri': 'source/preprocessors.py::pd_colnum_quantile_norm',       'pars': {'colsparse' :  [] },
@@ -150,7 +150,10 @@ def titanic1(path_model_out="") :
                             # 'colcat_onehot',
                             # 'coltext_universal_google'
 
-                            # 'col_genetic',
+
+                            'colcat_minhash',
+
+                            'col_genetic',
 
                             'colnum_quantile_norm'
 
