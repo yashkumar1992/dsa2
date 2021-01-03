@@ -343,6 +343,25 @@ def train_model_with_smote_oversampling():
 
 
 ####################################################################################################
+# Train a baseline RandomForest
+
+def train_RF():
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.metrics import roc_auc_score
+    # Create a Gaussian Classifier
+    clf = RandomForestClassifier(n_estimators=1000)
+
+    # Train the model using the training sets y_pred=clf.predict(X_test)
+    clf.fit(train_X, train_y)
+
+    y_pred = clf.predict(test_X)
+    y_prob = clf.predict_proba(test_X)
+
+    score = roc_auc_score(test_y, y_prob[:, 1])
+    print(f"Test score for RandomForst Model: {score}")
+
+
+
 ####################################################################################################
 
 ## Now we will use the GeFS Model on our data
@@ -553,11 +572,11 @@ def train_gefs_model():
     score = metrics.roc_auc_score(y_test, y_prob)
     print(f"Test score for GeFs Model: {score}")
 
-
 # in order to get rid of the ../lib/python3.6/site-packages/numba/np/ufunc/parallel.py:355: NumbaWarning: The TBB threading layer requires TBB version 2019.5 or later i.e., TBB_INTERFACE_VERSION >= 11005. Found TBB_INTERFACE_VERSION = 9107. The TBB threading layer is disabled.
 #   warnings.warn(problem) run `conda install tbb`
 if __name__ == '__main__':
-    #train_baseline_model()
-    #train_lgb_class_imbalance()
-    #train_model_with_smote_oversampling()
+    train_baseline_model()
+    train_lgb_class_imbalance()
+    train_model_with_smote_oversampling()
     train_gefs_model()
+    train_RF()
