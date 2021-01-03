@@ -29,17 +29,15 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
 						'importance_type':'split', 'learning_rate':0.001, 'max_depth':10,
 						'n_estimators': 50, 'n_jobs':-1, 'num_leaves':31 }
 
-	  pars_dict_range =   {  'boosting_type':  ( 'list',  ['gbdt', 'gbdt']      ) ,
+	  pars_dict_range =   {  'boosting_type':  ( 'categorical',  ['gbdt', 'gbdt']      ) ,
 						 'importance_type':'split',
-						 'learning_rate':  ('float' , 0.001, 0.1, 'uniform' ),
+						 'learning_rate':  ('log_uniform' , 0.001, 0.1,  ),
 						 'max_depth':      ('int',  1, 10, 'uniform')
 						 'n_estimators':   ('int', 0, 10,  'uniform' )
 						 'n_jobs':-1,
 						 'num_leaves':31 }
 
-
       obj_fun(pars_dict) :  Objective function
-
       engine_pars :    {   }  optuna parameters
 
     """
@@ -52,53 +50,86 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
                 pres = parse_dict(p, trial)
 
             else :
+                # 'learning_rate':  ('log_uniform' , 0.001, 0.1,  ),
                 pres  = None
-                dtype = p[0]
-                x     = p[1]
-                if   x == 'log_uniform':      pres = trial.suggest_loguniform(t, p[2], p[3])
-                elif x == 'int':              pres = trial.suggest_int(t, p[2], p[3])
-                elif x == 'categorical':      pres = trial.suggest_categorical(t, p[2])
-                elif x == 'discrete_uniform': pres = trial.suggest_discrete_uniform(t, p[4], p[2], p[3])
-                elif x == 'uniform':          pres = trial.suggest_uniform(t, p[2], p[3])
+                x     = p[0]
+                if   x == 'log_uniform':      pres = trial.suggest_loguniform(t, p[1], p[2])
+                elif x == 'int':              pres = trial.suggest_int(t,        p[1], p[2])
+                elif x == 'uniform':          pres = trial.suggest_uniform(t,    p[1], p[2])
+                elif x == 'categorical':      pres = trial.suggest_categorical(t, p[3])
+                elif x == 'discrete_uniform': pres = trial.suggest_discrete_uniform(t, p[1], p[2], p[3])
                 else:
-                    raise Exception(f'Not supported type {x}')
+                    print(f'Not supported type {t}, {p}')
 
             mnew[t] = pres
         return mnew
 
+
     def obj_custom(trial) :
         model_pars = copy.deepcopy( pars_dict_init )
-        model_pars = parse_dict(model_pars, trial)
-        score = obj_fun(model_pars)
+        model_add  = parse_dict(pars_dict_range, trial)
+        model_pars = {**model_pars, **model_add}  ### Merge overwrite
+        score      = obj_fun(model_pars)
         return score
 
 
     log("###### Hyper-optimization through study   ##################################")
     pruner = optuna.pruners.MedianPruner() if engine_pars.get("method", '') == 'prune' else None
 
-    if engine_pars.get("distributed") is not None:
+    if engine_pars.get("study_name") is not None:
         study_name = engine_pars['study_name']
-        storage=  engine_pars['storage']
+        storage    =  engine_pars.get('storage', 'optunadb.db')
         # study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
         try:
             study = optuna.load_study(study_name, storage)
         except:
-            study = optuna.create_study(study_name, storage,
-                                        pruner=pruner)
+            study = optuna.create_study(study_name, storage, pruner=pruner)
     else:
         study = optuna.create_study(pruner=pruner)
 
 
     study.optimize(obj_custom, n_trials=ntrials)  # Invoke optimization of the objective function.
-    log("Optim, finished", n=35)
-    pars_best   = study.best_params
-    score_nest = study.best_value
-    ##############################################################
+    log("Optim, finished", ntrials)
+    pars_best  = study.best_params
+    score_best = study.best_value
+
+    log("####  Save on disk ##########################################################")
+
 
     return pars_best, score_best
 
 
 
+
+
+
+"""
+### Distributed
+https://optuna.readthedocs.io/en/latest/tutorial/distributed.html
+  { 'distributed' : 1,
+   'study_name' : 'ok' ,
+  'storage' : 'sqlite'
+ }
+
+ ###### 1st engine is optuna
+ https://optuna.readthedocs.io/en/stable/installation.html
+https://github.com/pfnet/optuna/blob/master/examples/tensorflow_estimator_simple.py
+https://github.com/pfnet/optuna/tree/master/examples
+Interface layer to Optuna  for hyperparameter optimization
+optuna create-study --study-name "distributed-example" --storage "sqlite:///example.db"
+https://optuna.readthedocs.io/en/latest/tutorial/distributed.html
+study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
+study.optimize(objective, n_trials=100)
+
+weight_decay = trial.suggest_loguniform('weight_decay', 1e-10, 1e-3)
+optimizer = trial.suggest_categorical('optimizer', ['MomentumSGD', 'Adam']) # Categorical parameter
+num_layers = trial.suggest_int('num_layers', 1, 3)      # Int parameter
+dropout_rate = trial.suggest_uniform('dropout_rate', 0.0, 1.0)      # Uniform parameter
+learning_rate = trial.suggest_loguniform('learning_rate', 1e-5, 1e-2)      # Loguniform parameter
+drop_path_rate = trial.suggest_discrete_uniform('drop_path_rate', 0.0, 1.0, 0.1) # Discrete-uniform parameter
+
+"""
+"""
 
 
 
@@ -109,32 +140,7 @@ def optim_optuna_old(model_uri="model_tf.1_lstm.py",
                  data_pars       = {},
                  compute_pars    = {},  # only Model pars
                  out_pars        = {}):
-    """
-    ### Distributed
-    https://optuna.readthedocs.io/en/latest/tutorial/distributed.html
-      { 'distributed' : 1,
-       'study_name' : 'ok' ,
-      'storage' : 'sqlite'
-     }
 
-     ###### 1st engine is optuna
-     https://optuna.readthedocs.io/en/stable/installation.html
-    https://github.com/pfnet/optuna/blob/master/examples/tensorflow_estimator_simple.py
-    https://github.com/pfnet/optuna/tree/master/examples
-    Interface layer to Optuna  for hyperparameter optimization
-    optuna create-study --study-name "distributed-example" --storage "sqlite:///example.db"
-    https://optuna.readthedocs.io/en/latest/tutorial/distributed.html
-    study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
-    study.optimize(objective, n_trials=100)
-
-    weight_decay = trial.suggest_loguniform('weight_decay', 1e-10, 1e-3)
-    optimizer = trial.suggest_categorical('optimizer', ['MomentumSGD', 'Adam']) # Categorical parameter
-    num_layers = trial.suggest_int('num_layers', 1, 3)      # Int parameter
-    dropout_rate = trial.suggest_uniform('dropout_rate', 0.0, 1.0)      # Uniform parameter
-    learning_rate = trial.suggest_loguniform('learning_rate', 1e-5, 1e-2)      # Loguniform parameter
-    drop_path_rate = trial.suggest_discrete_uniform('drop_path_rate', 0.0, 1.0, 0.1) # Discrete-uniform parameter
-
-    """
     import optuna
     # these parameters should be inside the key "engine_pars" which should be inside "hypermodel_pars" of the config json
     engine_pars   = hypermodel_pars['engine_pars']
@@ -482,6 +488,6 @@ def objective(values):
     return  auc
 
 
-
+"""
 
 

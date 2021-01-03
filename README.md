@@ -13,6 +13,11 @@ Multi
    ![test_full](https://github.com/arita37/dsa2/workflows/test_full/badge.svg?branch=multi)
 
 
+Preprocessors
+![test_preprocess](https://github.com/arita37/dsa2/workflows/test_preprocess/badge.svg?branch=multi)
+
+
+
 ### Install 
      pip install -r zrequirements.txt
 
