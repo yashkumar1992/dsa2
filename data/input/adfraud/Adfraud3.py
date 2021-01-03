@@ -215,74 +215,7 @@ def train_baseline_model():
     ypred = bst.predict(test_X)
     score = metrics.roc_auc_score(test_y, ypred)
     print(
-        f"Test score: {score}")  # Best Test score: 0.9798680931680435 Other executions: score: 0.9199833347745086 Test score: 0.9577218165095787
-
-
-# ####################################################################################################
-# ## The following experiment with Genetic algorithm for categorical feature encoding
-#
-def train_genetic_algo_model():
-    from gplearn.genetic import SymbolicTransformer
-
-    def pd_col_genetic_transform(df=None, col=None, pars=None):
-        num_gen = 20
-        num_comp = 10
-        function_set = ['add', 'sub', 'mul', 'div',
-                        'sqrt', 'log', 'abs', 'neg', 'inv', 'tan']
-
-        gp = SymbolicTransformer(generations=num_gen, population_size=200,
-                                 hall_of_fame=100, n_components=num_comp,
-                                 function_set=function_set,
-                                 parsimony_coefficient=0.0005,
-                                 max_samples=0.9, verbose=1,
-                                 random_state=0, n_jobs=6)
-
-        gen_feats = gp.fit_transform(train_X, train_y)
-        gen_feats = pd.DataFrame(gen_feats, columns=["gen_" + str(a) for a in range(gen_feats.shape[1])])
-        gen_feats.index = train_X.index
-        train_X_all = pd.concat((train_X, gen_feats), axis=1)
-        gen_feats = gp.transform(test_X)
-        gen_feats = pd.DataFrame(gen_feats, columns=["gen_" + str(a) for a in range(gen_feats.shape[1])])
-        gen_feats.index = test_X.index
-        test_X_all = pd.concat((test_X, gen_feats), axis=1)
-
-        gen_feats = gp.transform(val_X)
-        gen_feats = pd.DataFrame(gen_feats, columns=["gen_" + str(a) for a in range(gen_feats.shape[1])])
-        gen_feats.index = val_X.index
-        val_X_all = pd.concat((val_X, gen_feats), axis=1)
-        return train_X_all, test_X_all, val_X_all
-
-    train_X_all, test_X_all, val_X_all = pd_col_genetic_transform(df, col=list(df.columns),
-                                                                  pars={'mode': 'transform'})
-
-    import lightgbm as lgb
-
-    dtrain_genetic = lgb.Dataset(train_X_all, train_y)
-    dvalid_genetic = lgb.Dataset(val_X_all, val_y)
-
-    param = {'num_leaves': 63, 'objective': 'binary', "seed": 1, 'boosting_type': 'dart',
-             # Use boosting_type="gbrt" for large dataset
-             'metric': 'auc',
-             'learning_rate': 0.1,
-             'max_depth': -1,
-             'min_child_samples': 100,
-             'max_bin': 100,
-             'subsample': 0.9,  # Was 0.7
-             'subsample_freq': 1,
-             'colsample_bytree': 0.7,
-             'min_child_weight': 0,
-             'min_split_gain': 0,
-             'reg_alpha': 0,
-             'reg_lambda': 0, }
-    num_round = 1000
-    bst = lgb.train(param, dtrain_genetic, num_round, valid_sets=[dvalid_genetic], early_stopping_rounds=20)
-
-    from sklearn import metrics
-
-    ypred = bst.predict(test_X_all)
-    score = metrics.roc_auc_score(test_y, ypred)
-    print(
-        f"Test score: {score}")  # Best test score: Test score: 0.9802690018944903 Other executions : Test score: 0.9790603799985851 Test score: 0.954113637971559
+        f"Test score: {score}")
 
 
 # ####################################################################################################
@@ -628,7 +561,6 @@ def train_gefs_model():
 #   warnings.warn(problem) run `conda install tbb`
 if __name__ == '__main__':
     train_baseline_model()
-    train_genetic_algo_model()
     train_lgb_class_imblanace()
     train_model_with_smote_oversampling()
     train_gefs_model()
