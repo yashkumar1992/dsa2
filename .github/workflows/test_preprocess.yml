@@ -65,8 +65,6 @@ jobs:
         key: ${{ runner.os }}-pipenv-${{ hashFiles('**/install/py36.txt') }}
 
 
-          
-
     - name: Install numpy
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
       run: pip install numpy==1.18.2   pillow==6.2.1  scipy
