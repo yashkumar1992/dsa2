@@ -4,16 +4,16 @@
 Run template
 
 
-python run.py data_profile --config outlier_predict.py::titanic_lightgbm
+python core_run.py data_profile --config outlier_predict.py::titanic_lightgbm
 
                                                                                      
-python run.py preprocess --config outlier_predict.py::titanic_lightgbm
+python core_run.py preprocess --config outlier_predict.py::titanic_lightgbm
 
 
-python run.py train --config outlier_predict.py::titanic_lightgbm
+python core_run.py train --config outlier_predict.py::titanic_lightgbm
 
 
-python run.py predict --config outlier_predict.py::titanic_lightgbm
+python core_run.py predict --config outlier_predict.py::titanic_lightgbm
 
 
 

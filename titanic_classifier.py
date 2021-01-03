@@ -114,7 +114,7 @@ def titanic_lightgbm(path_model_out="") :
         ### LightGBM API model   #######################################
          'model_class': model_class
         ,'model_pars' : {'objective': 'binary',
-                           'n_estimators':50,
+                           'n_estimators': 10,
                            'learning_rate':0.001,
                            'boosting_type':'gbdt',     ### Model hyperparameters
                            'early_stopping_rounds': 5
@@ -170,10 +170,119 @@ def titanic_lightgbm(path_model_out="") :
     model_dict        = global_pars_update(model_dict, data_name, config_name )
     return model_dict
 
-  
-#######################################################################################
-########## Examepl of custom processor ################################################  
 
+
+
+
+
+
+#####################################################################################
+########## Profile data #############################################################
+def data_profile(path_data_train="", path_model="", n_sample= 5000):
+   from source.run_feature_profile import run_profile
+   run_profile(path_data   = path_data_train,
+               path_output = path_model + "/profile/",
+               n_sample    = n_sample,
+              )
+
+
+###################################################################################
+########## Preprocess #############################################################
+### def preprocess(config='', nsample=1000):
+from core_run import preprocess
+
+"""
+def preprocess(config=None, nsample=None):
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(mdict)
+
+    from source import run_preprocess
+    run_preprocess.run_preprocess(config_name   =  config_name,
+                                  config_path   =  m['config_path'],
+                                  n_sample      =  nsample if nsample is not None else m['n_sample'],
+
+                                  ### Optonal
+                                  mode          =  'run_preprocess')
+"""
+
+
+
+##################################################################################
+########## Train #################################################################
+from core_run import train
+"""
+def train(config=None, nsample=None):
+
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+    print(mdict)
+
+    from source import run_train
+    run_train.run_train(config_name       =  config_name,
+                        config_path       =  m['config_path'],
+                        n_sample          =  nsample if nsample is not None else m['n_sample'],
+                        )
+"""
+
+
+
+###################################################################################
+######### Check data ##############################################################
+def check():
+   pass
+
+
+
+
+####################################################################################
+####### Inference ##################################################################
+# predict(config='', nsample=10000)
+from core_run import predict
+
+"""
+def predict(config=None, nsample=None):
+    config_name  = config  if config is not None else config_default
+    mdict        = globals()[config_name]()
+    m            = mdict['global_pars']
+
+
+    from source import run_inference
+    run_inference.run_predict(config_name = config_name,
+                              config_path = m['config_path'],
+                              n_sample    = nsample if nsample is not None else m['n_sample'],
+
+                              #### Optional
+                              path_data   = m['path_pred_data'],
+                              path_output = m['path_pred_output'],
+                              model_dict  = None
+                              )
+"""
+
+
+###########################################################################################################
+###########################################################################################################
+"""
+python  titanic_classifier.py  data_profile
+python  titanic_classifier.py  preprocess  --nsample 100
+python  titanic_classifier.py  train       --nsample 200
+python  titanic_classifier.py  check
+python  titanic_classifier.py  predict
+
+
+"""
+if __name__ == "__main__":
+    import fire
+    fire.Fire()
+    
+
+
+
+
+#######################################################################################
+########## Examepl of custom processor ################################################
 def pd_colnum_quantile_norm(df, col, pars={}):
   """
      colnum normalization by quantile
@@ -184,14 +293,12 @@ def pd_colnum_quantile_norm(df, col, pars={}):
   df      = df[col]
   num_col = col
 
-  ##### Grab previous computed params  ################################################    
+  ##### Grab previous computed params  ################################################
   pars2 = {}
   if  'path_pipeline' in pars :   #### Load existing column list
        colnum_quantile_norm = load( pars['path_pipeline']  +f'/{prefix}.pkl')
        model                = load( pars['path_pipeline']  +f'/{prefix}_model.pkl')
        pars2                = load( pars['path_pipeline']  +f'/{prefix}_pars.pkl')
-
-
 
   ########### Compute #################################################################
   lower_bound_sparse = pars2.get('lower_bound_sparse', None)
@@ -199,7 +306,7 @@ def pd_colnum_quantile_norm(df, col, pars={}):
   lower_bound        = pars2.get('lower_bound_sparse', None)
   upper_bound        = pars2.get('upper_bound_sparse', None)
   sparse_col         = pars2.get('colsparse', ['capital-gain', 'capital-loss'] )
-  
+
   ####### Find IQR and implement to numericals and sparse columns seperately ##########
   Q1  = df.quantile(0.25)
   Q3  = df.quantile(0.75)
@@ -262,108 +369,7 @@ def pd_colnum_quantile_norm(df, col, pars={}):
     prefix :  colnew  ### list
   }
   return dfnew,  col_pars
-  
-
-
-#####################################################################################
-########## Profile data #############################################################
-def data_profile(path_data_train="", path_model="", n_sample= 5000):
-   from source.run_feature_profile import run_profile
-   run_profile(path_data   = path_data_train,
-               path_output = path_model + "/profile/",
-               n_sample    = n_sample,
-              )
-
-
-###################################################################################
-########## Preprocess #############################################################
-### def preprocess(config='', nsample=1000):
-from run import preprocess
-
-"""
-def preprocess(config=None, nsample=None):
-    config_name  = config  if config is not None else config_default
-    mdict        = globals()[config_name]()
-    m            = mdict['global_pars']
-    print(mdict)
-
-    from source import run_preprocess
-    run_preprocess.run_preprocess(config_name   =  config_name,
-                                  config_path   =  m['config_path'],
-                                  n_sample      =  nsample if nsample is not None else m['n_sample'],
-
-                                  ### Optonal
-                                  mode          =  'run_preprocess')
-"""
 
 
 
-##################################################################################
-########## Train #################################################################
-from run import train
-"""
-def train(config=None, nsample=None):
-
-    config_name  = config  if config is not None else config_default
-    mdict        = globals()[config_name]()
-    m            = mdict['global_pars']
-    print(mdict)
-
-    from source import run_train
-    run_train.run_train(config_name       =  config_name,
-                        config_path       =  m['config_path'],
-                        n_sample          =  nsample if nsample is not None else m['n_sample'],
-                        )
-"""
-
-
-
-###################################################################################
-######### Check data ##############################################################
-def check():
-   pass
-
-
-
-
-####################################################################################
-####### Inference ##################################################################
-# predict(config='', nsample=10000)
-from run import predict
-
-"""
-def predict(config=None, nsample=None):
-    config_name  = config  if config is not None else config_default
-    mdict        = globals()[config_name]()
-    m            = mdict['global_pars']
-
-
-    from source import run_inference
-    run_inference.run_predict(config_name = config_name,
-                              config_path = m['config_path'],
-                              n_sample    = nsample if nsample is not None else m['n_sample'],
-
-                              #### Optional
-                              path_data   = m['path_pred_data'],
-                              path_output = m['path_pred_output'],
-                              model_dict  = None
-                              )
-"""
-
-
-###########################################################################################################
-###########################################################################################################
-"""
-python  titanic_classifier.py  data_profile
-python  titanic_classifier.py  preprocess  --nsample 100
-python  titanic_classifier.py  train       --nsample 200
-python  titanic_classifier.py  check
-python  titanic_classifier.py  predict
-
-
-"""
-if __name__ == "__main__":
-    import fire
-    fire.Fire()
-    
 

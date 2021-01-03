@@ -264,12 +264,12 @@ def run_all():
 ###########################################################################################################
 ###########################################################################################################
 """
-python  test_encoder.py  data_profile
-python  test_encoder.py  preprocess  --nsample 100
-python  test_encoder.py  train       --nsample 200
-python  test_encoder.py  check
-python  test_encoder.py  predict
-python  test_encoder.py  run_all
+python  core_test_encoder.py  data_profile
+python  core_test_encoder.py  preprocess  --nsample 100
+python  core_test_encoder.py  train       --nsample 200
+python  core_test_encoder.py  check
+python  core_test_encoder.py  predict
+python  core_test_encoder.py  run_all
 """
 if __name__ == "__main__":
     import fire

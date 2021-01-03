@@ -11,6 +11,7 @@ tqdm
 numba==0.50.1
 scipy>=0.19.1
 cloudpickle
+gplearn
 #pyod==0.3.0
 #featuretools==0.13.3
 #featuretools-sklearn-transformer==0.1.0

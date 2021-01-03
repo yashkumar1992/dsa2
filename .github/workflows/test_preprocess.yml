@@ -65,8 +65,6 @@ jobs:
         key: ${{ runner.os }}-pipenv-${{ hashFiles('**/install/py36.txt') }}
 
 
-          
-
     - name: Install numpy
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
       run: pip install numpy==1.18.2   pillow==6.2.1  scipy
@@ -94,11 +92,12 @@ jobs:
 
     - name: test_import
       run: |
-           python -c "import run,os, numpy ; print(numpy); print(os)"
+           python -c "import core_run;   print(core_run)"
+           python -c "import os, numpy ; print(os)"
            # python -c "import tensorflow, torch ; print(tensorflow); print(torch)"
     ########  Test running 
     - name: run_all
-      run: chmod -R 777 . && python test_encoder.py train  # 2>&1 | tee   /home/runner/work/mlmodels/mlmodels_store/log_dsa2/log_encoder.py
+      run: chmod -R 777 . && python core_test_encoder.py train  # 2>&1 | tee   /home/runner/work/mlmodels/mlmodels_store/log_dsa2/log_encoder.py
 
 
 

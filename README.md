@@ -13,7 +13,7 @@ Multi
    ![test_full](https://github.com/arita37/dsa2/workflows/test_full/badge.svg?branch=multi)
 
 
-Preprocessors
+Preprocessors Check
 ![test_preprocess](https://github.com/arita37/dsa2/workflows/test_preprocess/badge.svg?branch=multi)
 
 
@@ -32,10 +32,10 @@ Preprocessors
 
 ### Basic usage 2
     cd dsa2
-    python run.py data_profile --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
-    python run.py preprocess   --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
-    python run.py train        --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
-    python run.py predict      --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py data_profile --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py preprocess   --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py train        --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py predict      --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
 
 
 
@@ -58,8 +58,6 @@ Preprocessors
 
 ###  Model, train, inference :
    All are defined in a single model_dictionnary containing all
-
-
 
 
 ###  Column Group for model preprocessing / training/inference :
@@ -94,7 +92,7 @@ Preprocessors
     
 
      
-    (2) Columns feature family for model training  :   "cols_model_group"
+    (2) Some Columns feature family for model training  :   "cols_model_group"
         "cols_model_group" --> column family used for Model Training 
 
       "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns                        
@@ -105,11 +103,10 @@ Preprocessors
 
 
 
-###  Preprocessing pipeline dataframe ( in source/run_preprocess.py)   :
+###  Preprocessing pipeline in the config model  :
 
-
-    *Preprocessing as follow    in  source/run_preprocess.py
-         Raw Columns   --->  Feature columns family
+    Preprocessing as follow    in  source/run_preprocess.py
+        Columns family input ---> Preprocess   --->  Feature columns family output
 
         "colnum"    --> "colnum_bin" --> "colnum_onehot" ---------------> 
             |--------------------------> "colnum_onehot" ---------------> 
@@ -151,41 +148,31 @@ Preprocessors
 
 
 ### Command line usage advanced
-    cd dsa2
-    source activate py36 
     python source/run_train.py  run_train   --n_sample 100  --model_name lightgbm  --path_config_model source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/    
 
-
-    source activate py36 
     python source/run_inference.py  run_predict  --n_sample 1000  --model_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
 
 
 
 
 
-
-
-
-### source/  : code source CLI to train/predict.
+### source/  : core part
 ```
-   run_feature_profile.py : CLI Pandas profiling
-   run_preprocess.py      : CLI for feature preprocessing
-   run_train.py :           CLI to train any model, any data (model  data agnostic )
-   run_inference.py :       CLI to predict with any model, any data (model  data agnostic )
-
-
-
+   source/run_feature_profile.py : CLI Pandas profiling
+   source/run_preprocess.py      : CLI for feature preprocessing
+   source/run_train.py :           CLI to train any model, any data (model  data agnostic )
+   source/run_inference.py :       CLI to predict with any model, any data (model  data agnostic )
 
 ```
 
 
 
-### source/models/  : Generic API to access models.
+### source/models/  : Custom models.
 ```
    One file python file per model.
 
-   models/model_sklearn.py      :   generic module as class, which wraps any sklearn API type model.
-   models/model_bayesian_pyro.py :  generic model as class, which wraps Bayesian regression in Pyro/Pytorch.
+   source/models/model_sklearn.py      :   generic module as class, which wraps any sklearn API type model.
+   source/models/model_bayesian_pyro.py :  generic model as class, which wraps Bayesian regression in Pyro/Pytorch.
 
    Method of the moddule/class
        .init

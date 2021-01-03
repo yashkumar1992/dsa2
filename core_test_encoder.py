@@ -178,20 +178,20 @@ def titanic1(path_model_out="") :
 ###################################################################################
 ########## Preprocess #############################################################
 ### def preprocess(config='', nsample=1000):
-from run import preprocess
+from core_run import preprocess
 
 
 
 ##################################################################################
 ########## Train #################################################################
-from run import train
+from core_run import train
 
 
 
 ####################################################################################
 ####### Inference ##################################################################
 # predict(config='', nsample=10000)
-from run import predict
+from core_run import predict
 
 
 
@@ -199,12 +199,12 @@ from run import predict
 ###########################################################################################################
 ###########################################################################################################
 """
-python  test_encoder.py  data_profile
-python  test_encoder.py  preprocess  --nsample 100
-python  test_encoder.py  train       --nsample 200
-python  test_encoder.py  check
-python  test_encoder.py  predict
-python  test_encoder.py  run_all
+python  core_test_encoder.py  data_profile
+python  core_test_encoder.py  preprocess  --nsample 100
+python  core_test_encoder.py  train       --nsample 200
+python  core_test_encoder.py  check
+python  core_test_encoder.py  predict
+python  core_test_encoder.py  run_all
 
 
 """
