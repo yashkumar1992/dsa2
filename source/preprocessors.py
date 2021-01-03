@@ -674,7 +674,8 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     train_X  = df[colX]
     train_y  = df[ coly ]
 
-    function_set = ['add', 'sub', 'mul', 'div',  'sqrt', 'log', 'abs', 'neg', 'inv','tan']
+    function_set = pars.get('function_set',
+                            ['add', 'sub', 'mul', 'div',  'sqrt', 'log', 'abs', 'neg', 'inv','tan'])
     pars_genetic =  pars.get('pars_genetic',
                              { 'generations' : 20, 'n_components': 10, 'population_size' : 200 } )
 
@@ -685,19 +686,19 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
                             random_state=0, n_jobs=6, **pars_genetic)
 
     gp.fit(train_X, train_y)
-    df_genetic = gp.transform(train_X)
-    df_genetic = pd.DataFrame(df_genetic, columns=["gen_"+str(a) for a in range(df_genetic.shape[1])])
+    df_genetic       = gp.transform(train_X)
+    df_genetic       = pd.DataFrame(df_genetic, columns=["gen_"+str(a) for a in range(df_genetic.shape[1])])
     df_genetic.index = train_X.index
 
     col_genetic = list(df_genetic.columns)
     ###################################################################################
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
-       save_features(df_genetic, 'df_genetic', pars['path_features_store'])
+       save_features(df_genetic, prefix, pars['path_features_store'])
        save(col_genetic,  pars['path_pipeline_export'] + f"/{prefix}.pkl" )
        save(pars_genetic, pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
        save(gp,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
 
-    col_pars = {'model' : gp , 'pars' : pars_genetic}
+    col_pars = {'prefix' : prefix , 'path' :   pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
     col_pars['cols_new'] = {
      'col_genetic' :  col_genetic  ### list
     }
@@ -749,15 +750,13 @@ def pd_colcat_encoder_generic(df, col, pars):
 
 
     ###################################################################################
-    model_uri = None
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
        save_features(dfcat_encoder, 'dfcat_encoder', pars['path_features_store'])
        save(model,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
        save(pars_model,      pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
        save(colcat_encoder,  pars['path_pipeline_export'] + f"/{prefix}.pkl" )
-       model_uri           = pars['path_pipeline_export'] + f"/{prefix}_model.pkl"
 
-    col_pars = {'model_uri' : model_uri, 'pars' : pars_model}
+    col_pars = { 'prefix' : prefix,  'path' :   pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
     col_pars['cols_new'] = {
      'colcat_encoder_generic' :  colcat_encoder  ### list
     }
