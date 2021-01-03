@@ -13,7 +13,7 @@ Multi
    ![test_full](https://github.com/arita37/dsa2/workflows/test_full/badge.svg?branch=multi)
 
 
-Preprocessors
+Preprocessors Check
 ![test_preprocess](https://github.com/arita37/dsa2/workflows/test_preprocess/badge.svg?branch=multi)
 
 

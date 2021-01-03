@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 All test are located here
-ml_test --do test_json --config_file test/pullrequest.json
-ml_test --do test_all  --config_file  mlmdodels/config/test_config.json"
+python  core_test_auto.py    test_json --config_file test/pullrequest.json
+python  core_test_auto.py   test_all  --config_file  mlmdodels/config/test_config.json"
+
+
 """
 import copy
 import math
@@ -11,16 +13,13 @@ from collections import Counter, OrderedDict
 #from jsoncomment import JsonComment ; json = JsonComment()
 from pathlib import Path
 import numpy as np
+import json
 from time import sleep
-####################################################################################################
 
 
 ####################################################################################################
-
 from source.util_feature import get_recursive_files, log, os_package_root_path, model_get_list, os_get_file
-from mlmodels.util import get_recursive_files2, path_norm, path_norm_dict
-
-
+from source.util import get_recursive_files2, path_norm, path_norm_dict
 
 
 ####################################################################################################
@@ -49,7 +48,6 @@ def log_info_repo(arg=None):
    # repo = arg.repo
    # sha  = arg.sha
 
-
    repo      =  os_bash(  "echo $GITHUB_REPOSITORY" )
    sha       =  os_bash(  "echo $GITHUB_SHA" )
    workflow  =  os_bash(  "echo $GITHUB_WORKFLOW" )
@@ -67,7 +65,6 @@ def log_info_repo(arg=None):
    url_branch_file2 = f"https://github.com/{repo}/tree/{branch}/"
 
    url_debugger     = f"https://gitpod.io/#https://github.com/{repo}/tree/{sha}"
-
 
    # print(locals()["github_repo_url"] )
    ### Export
@@ -88,13 +85,7 @@ def log_info_repo(arg=None):
 
    # os.system("pip3 list ")
    # print("\n" * 1, "*" * 120 )
-
    return dd
-
-
-
-
-
 
 
 def to_logfile(prefix="", dateformat='+%Y-%m-%d_%H:%M:%S,%3N' ) :
@@ -103,7 +94,6 @@ def to_logfile(prefix="", dateformat='+%Y-%m-%d_%H:%M:%S,%3N' ) :
            return  f"  2>&1 | tee -a  cd log_{prefix}.txt"
 
     return  f"  2>&1 | tee -a  cd log_{prefix}_$(date {dateformat}).txt"
-
 
 
 def os_file_current_path():
@@ -133,7 +123,7 @@ def json_load(path) :
 ####################################################################################################
 def log_remote_start(arg=None):
    ## Download remote log on disk
-   s = """ cd /home/runner/work/mlmodels/  && git clone git@github.com:arita37/mlmodels_store.git  &&  ls && pwd
+   s = """ cd /home/runner/work/dsa2/  && git clone git@github.com:arita37/logs.git  &&  ls && pwd
        """
 
    cmd = " ; ".join(s.split("\n"))
@@ -141,19 +131,18 @@ def log_remote_start(arg=None):
    os.system(cmd)
 
 
-
 def log_remote_push(arg=None):
-   ### Pushing to mlmodels_store   with --force
+   ### Pushing to dsa2_store   with --force
    # tag ="ml_store" & arg.name
    tag = "m_" + str(arg.name)
-   s = f""" cd /home/runner/work/mlmodels/mlmodels_store/
+   s = f""" cd /home/runner/work/dsa2/dsa2_store/
            pip3 freeze > deps.txt
            ls
            git config --local user.email "noelkev0@gmail.com" && git config --local user.name "arita37"        
            git add --all &&  git commit -m "{tag}" 
            git pull --all     
            git push --all -f
-           cd /home/runner/work/mlmodels/mlmodels/
+           cd /home/runner/work/dsa2/dsa2/
        """
 
    cmd = " ; ".join(s.split("\n"))
@@ -161,11 +150,9 @@ def log_remote_push(arg=None):
    os.system(cmd)
 
 
-
-
 ####################################################################################################
 def test_functions(arg=None):
-  from mlmodels.util import load_function_uri
+  from dsa2.util import load_function_uri
 
   path = path_norm("dataset/test_json/test_functions.json")
   dd   = json.load(open( path ))['test']
@@ -193,15 +180,11 @@ def test_functions(arg=None):
         log(e, p )
 
 
-
-
-
-
 def test_model_structure():
     log("os.getcwd", os.getcwd())
-    log(mlmodels)
+    log(dsa2)
 
-    path = mlmodels.__path__[0]
+    path = dsa2.__path__[0]
 
     log("############Check structure ############################")
     cmd = f"ztest_structure.py"
@@ -215,7 +198,7 @@ def test_import(arg=None):
     #log(np, np.__version__)
     #log(tf, tf.__version__)    #### Import internally Create Issues
     #log(torch, torch.__version__)
-    #log(mlmodels)
+    #log(dsa2)
 
     from importlib import import_module
 
@@ -230,7 +213,7 @@ def test_import(arg=None):
 
     for f in file_list:
         try:
-            f = "mlmodels." + f.replace("\\", ".").replace(".py", "").replace("/", ".")
+            f = "dsa2." + f.replace("\\", ".").replace(".py", "").replace("/", ".")
 
             import_module(f)
             print(f)
@@ -241,7 +224,7 @@ def test_import(arg=None):
 
 def test_jupyter(arg=None, config_mode="test_all"):
     """
-      Tests files in mlmodels/example/
+      Tests files in dsa2/example/
     """
     #log("os.getcwd", os.getcwd())
     git = log_info_repo(arg)
@@ -277,7 +260,7 @@ def test_jupyter(arg=None, config_mode="test_all"):
     for file in test_list:
         try :
           log_separator()
-          print( file.replace("/home/runner/work/mlmodels/mlmodels/", git.get("url_branch_file", "")), "\n", flush=True)
+          print( file.replace("/home/runner/work/dsa2/dsa2/", git.get("url_branch_file", "")), "\n", flush=True)
           if ".ipynb" in file :
             os.system( f"jupyter nbconvert --to script  {file}")
 
@@ -311,7 +294,7 @@ def test_benchmark(arg=None):
     log_info_repo(arg)
     # log("os.getcwd", os.getcwd())
 
-    path = mlmodels.__path__[0]
+    path = dsa2.__path__[0]
     log("############Check model ################################")
     path = path.replace("\\", "//")
     test_list = [ f"python {path}/benchmark.py --do timeseries "   ,
@@ -334,8 +317,8 @@ def test_cli(arg=None):
     log("# Testing Command Line System  ")
     log_info_repo(arg)
 
-    import mlmodels, os
-    path = mlmodels.__path__[0]   ### Root Path
+    import dsa2, os
+    path = dsa2.__path__[0]   ### Root Path
     # if arg is None :
     #  fileconfig = path_norm( f"{path}/config/cli_test_list.md" )
     # else :
@@ -376,7 +359,7 @@ def test_pullrequest(arg=None):
 
     from pathlib import Path
     # log("os.getcwd", os.getcwd())
-    path = str( os.path.join(Path(mlmodels.__path__[0] ).parent , "pullrequest/") )
+    path = str( os.path.join(Path(dsa2.__path__[0] ).parent , "pullrequest/") )
     log(path)
 
     log("############Check model ################################")
@@ -393,7 +376,7 @@ def test_pullrequest(arg=None):
     test_import(arg=None)
     sleep(20)
     os.system("ml_optim")
-    os.system("ml_mlmodels")
+    os.system("ml_dsa2")
 
 
 
@@ -421,7 +404,7 @@ def test_pullrequest(arg=None):
 def test_dataloader(arg=None):
     log_info_repo(arg)
     # log("os.getcwd", os.getcwd())
-    path = mlmodels.__path__[0]
+    path = dsa2.__path__[0]
     cfg  = json_load(path_norm(arg.config_file))
 
     log("############Check model ################################")
@@ -437,9 +420,6 @@ def test_dataloader(arg=None):
           log_separator()
           log( cmd)
           os.system(cmd)
-
-
-
 
 
 def test_json_all(arg):
@@ -469,16 +449,12 @@ def test_json_all(arg):
             os.system(cmd)
 
 
-
-
-
-
 def test_all(arg=None):
     log_info_repo(arg)
     from time import sleep
     # log("os.getcwd", os.getcwd())
 
-    path = mlmodels.__path__[0]
+    path = dsa2.__path__[0]
     log("############Check model ################################")
     model_list = model_get_list(folder=None, block_list=[])
     log(model_list)
@@ -501,13 +477,11 @@ def test_all(arg=None):
         sleep(5)
 
 
-
-
 def test_json(arg):
     log_info_repo(arg)
     log("os.getcwd", os.getcwd())
 
-    path = mlmodels.__path__[0]
+    path = dsa2.__path__[0]
     cfg = json.load(open(arg.config_file, mode='r'))
 
     mlist = cfg['model_list']
@@ -520,11 +494,10 @@ def test_json(arg):
           os.system(cmd)
 
 
-
 def test_list(mlist):
     #log("os.getcwd", os.getcwd())
 
-    path = mlmodels.__path__[0]
+    path = dsa2.__path__[0]
     # mlist = str_list.split(",")
     test_list = [f"python {path}/{model}" for model in mlist]
 
@@ -532,8 +505,6 @@ def test_list(mlist):
           log_separator()
           log( cmd)
           os.system(cmd)
-
-
 
 
 def test_custom():
@@ -563,9 +534,6 @@ def test_custom():
     test_list(test_list0)
 
 
-
-
-
 def test_fast_linux():
     test_list0 = [
         ### Tflow
@@ -577,13 +545,22 @@ def test_fast_linux():
 
 
 
+if __name__ == "__main__":
+    import fire
+    fire.Fire()
+
+
+
+
+
+
 
 #################################################################################################################
 #################################################################################################################
 def cli_load_arguments(config_file=None):
     #Load CLI input, load config.toml , overwrite config.toml by CLI Input
     import argparse
-    from mlmodels.util import load_config, path_norm
+    from dsa2.util import load_config, path_norm
 
     config_file = "config/test_config.json" if config_file is None  else config_file
     config_file = path_norm( config_file)
@@ -644,7 +621,3 @@ def main():
     else:
         log("ml_test --do " + arg.do)
         globals()[arg.do](arg)
-
-
-if __name__ == "__main__":
-    main()
