@@ -99,7 +99,7 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
 
 
 
-=======
+
 
 def pd_read_file(path_glob="*.pkl", ignore_index=True,  cols=None,
                   verbose=False, nrows=-1, concat_sort=True, n_pool=1, 
@@ -131,7 +131,7 @@ def pd_read_file(path_glob="*.pkl", ignore_index=True,  cols=None,
   # print("ok", verbose)
   dfall = pd.DataFrame()
 
-  if verbose : log_time(n_file,  n_file // n_pool )
+  if verbose : log(n_file,  n_file // n_pool )
   for j in range(n_file // n_pool +1 ) :
       log("Pool", j)  
       job_list =[]   
@@ -159,7 +159,7 @@ def pd_read_file(path_glob="*.pkl", ignore_index=True,  cols=None,
         
         if len(dfall) > nmax : return dfall
         
-  if verbose : log_time(n_file, j * n_file//n_pool )
+  if verbose : log(n_file, j * n_file//n_pool )
   gc.collect()
   return dfall  
 
