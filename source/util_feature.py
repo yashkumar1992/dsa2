@@ -132,7 +132,7 @@ def pd_read_file(path_glob="*.pkl", ignore_index=True,  cols=None,
 
   if verbose : log_time(n_file,  n_file // n_pool )
   for j in range(n_file // n_pool +1 ) :
-      log("Pool", j, end=",")  
+      log("Pool", j)  
       job_list =[]   
       for i in range(n_pool):  
          if n_pool*j + i >= n_file  : break 
