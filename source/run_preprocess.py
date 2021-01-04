@@ -186,6 +186,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        else:
            df_           = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
 
+
        dfi, col_pars = pipe_fun(df_, cols_list, pars= pars)
 
        ### Concatenate colnum, colnum_bin into cols_family_all

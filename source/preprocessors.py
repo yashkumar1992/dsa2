@@ -672,6 +672,7 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
                               'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
                               'p_point_mutation': 0.01, 'p_point_replace': 0.05})
 
+
     gp = SymbolicTransformer(hall_of_fame=100,
                             function_set=function_set,
                             parsimony_coefficient=0.0005,
