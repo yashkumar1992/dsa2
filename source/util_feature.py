@@ -3,9 +3,6 @@
 """
 Methods for feature extraction and preprocessing
 util_feature: input/output is pandas
-
-
-
 """
 import copy
 import os
@@ -59,6 +56,7 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
     flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] and ntpath.basename(f)[:8] in ['features'] ]
     assert len(flist) > 0 , " No file: " +path_data_x
 
+    log("###### Load dfX target values #####################################")
     print(flist)
     df    = None
     for fi in flist :
@@ -70,11 +68,16 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
 
 
     # df = pd.read_csv(path_data_x) # + "/features.zip")
-    df = df.set_index(colid)
+    if colid in list(df.columns ):
+      df = df.set_index(colid)
+    else :
+      df[colid] = np.arange(0, len(df))
+      df        = df.set_index(colid)
+        
     if n_sample > 0: 
         df = df.iloc[:n_sample, :]
 
-    ###### Load dfy target values ###################################
+    log("###### Load dfy target values ###################################")
     try:
         flist = glob.glob( ntpath.dirname(path_data_y)+"/*" )
         flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] and ntpath.basename(f)[:6] in ['target']]
@@ -85,20 +88,85 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
             if ".zip" in fi  :     dfi = pd.read_csv(fi) # + "/features.zip")
             dfy = pd.concat((dfy, dfi)) 
 
-        log("dfy", dfy.head(5))
+        log("dfy", dfy.head(4).T)        
+        if colid not in list(dfy.columns) :
+            dfy[colid] = np.arange(0, len(dfy))
+        
         df = df.join(dfy.set_index(colid), on=colid, how='left', )
     except Exception as e :
-        log("dfy not loaded", path_data_y, e
-            )
+        log("dfy not loaded", path_data_y, e  )
+        
     return df
 
+
+
+def pd_read_file(path_glob="*.pkl", ignore_index=True,  cols=None,
+                  verbose=False, nrows=-1, concat_sort=True, n_pool=1, 
+                  drop_duplicates=None, shop_id=None, nmax= 1000000000,  **kw):
+  """
+     "*.pkl, *.parquet"
+  
+  """ 
+  # os.environ["MODIN_ENGINE"] = "dask"   
+  # import modin.pandas as pd  
+  import glob, gc,  pandas as pd, os
+  readers = {
+          ".pkl"     : pd.read_pickle,
+          ".parquet" : pd.read_parquet,
+          ".csv"     : pd.read_csv,           
+          ".txt"     : pd.read_csv,
+   }
+  from multiprocessing.pool import ThreadPool
+  pool = ThreadPool(processes=n_pool)
+  
+  path_glob_list = [ t.strip() for t in  path_glob.split(",") ]
+  file_list = []
+  for pg in path_glob_list : 
+    file_list = file_list + glob.glob(pg)     
+  file_list.sort()
+  n_file = len(file_list)
+  if n_file < 1: raise Exception("No file exist", path_glob)  
+  
+  # print("ok", verbose)
+  dfall = pd.DataFrame()
+
+  if verbose : log_time(n_file,  n_file // n_pool )
+  for j in range(n_file // n_pool +1 ) :
+      log("Pool", j, end=",")  
+      job_list =[]   
+      for i in range(n_pool):  
+         if n_pool*j + i >= n_file  : break 
+         filei         = file_list[n_pool*j + i]
+         ext           = os.path.splitext(filei)[1]
+         pd_reader_obj = readers[ext]                            
+         job_list.append( pool.apply_async(pd_reader_obj, (filei, )))  
+         if verbose : log(j, filei)
+    
+      for i in range(n_pool):  
+        if i >= len(job_list): break  
+        dfi   = job_list[i].get()
+
+        if shop_id is not None and "shop_id" in  dfi.columns : dfi = dfi[ dfi['shop_id'] == shop_id ]         
+        if cols is not None :    dfi = dfi[cols] 
+        if nrows > 0        :    dfi = dfi.iloc[:nrows,:]
+        if drop_duplicates is not None  : dfi = dfi.drop_duplicates(drop_duplicates) 
+        gc.collect()            
+            
+        dfall = pd.concat( (dfall, dfi), ignore_index=ignore_index, sort= concat_sort)        
+        #log("Len", n_pool*j + i, len(dfall))
+        del dfi; gc.collect()
+        
+        if len(dfall) > nmax : return dfall
+        
+  if verbose : log_time(n_file, j * n_file//n_pool )
+  gc.collect()
+  return dfall  
 
 
 def load_function_uri(uri_name="myfolder/myfile.py::myFunction"):
     """
     #load dynamically function from URI pattern
     #"dataset"        : "mlmodels.preprocess.generic:pandasDataset"
-
     ###### External File processor :
     #"dataset"        : "MyFolder/preprocess/myfile.py:pandasDataset"
     """
@@ -286,7 +354,6 @@ def estimator_bootstrap(err, custom_stat=None, alpha=0.05, n_iter=10000):
       # stat_val = np.std(np.asmatrix(values),axis=axis)p.mean
       stat_val = np.sqrt(np.mean(np.asmatrix(values*values),axis=axis))
       return stat_val
-
     """
     import bootstrapped.bootstrap as bs
     res = bs.bootstrap(err, stat_func=custom_stat, alpha=alpha, num_iterations=n_iter)
@@ -433,7 +500,6 @@ def feature_correlation_cat(df, colused):
 def pd_feature_generate_cross(df, cols, cols_cross_input=None, pct_threshold=0.2, m_combination=2):
     """
        Generate Xi.Xj features and filter based on stats threshold
-
     """
     import itertools
 
@@ -725,7 +791,6 @@ def pd_colnum_tocat(  df, colname=None, colexclude=None, colbinmap=None, bins=5,
 
 def pd_colnum_normalize(df0, colname, pars, suffix="_norm", return_val='dataframe,param'):
     """
-
     :param df:
     :param colnum_log:
     :param colproba:
@@ -809,7 +874,6 @@ def pd_col_fillna(
         df:            dataframe
         colname:      list of columns to remove text
         value:         value to replace NaNs with
-
     Returns:
         df:            new dataframe with filled values
     """
@@ -849,7 +913,6 @@ def pd_pipeline_apply(df, pipeline):
     , (pd_colnum_tocat, {"colname": None, "colbinmap": colnum_binmap, 'bins': 5,
                          "method": "uniform", "suffix": "_bin",
                          "return_val": "dataframe"})
-
     , (pd_col_to_onehot, {"colname": None, "colonehot": colnum_onehot,
                           "return_val": "dataframe"})
       ]
@@ -874,7 +937,6 @@ def pd_stat_correl_pair(df, coltarget=None, colname=None):
     :param df:
     :param colname: list of columns
     :param coltarget : target column
-
     :return:
     """
     from scipy.stats import pearsonr
@@ -904,8 +966,6 @@ def pd_stat_pandas_profile(df, savefile="report.html", title="Pandas Profile"):
 
 def pd_stat_distribution_colnum(df):
     """ Describe the tables
-
-
    """
     coldes = ["col", "coltype", "dtype", "count", "min", "max", "nb_na", "pct_na", "median", "mean", "std", "25%", "75%", "outlier",]
 
@@ -1184,5 +1244,3 @@ def np_conv_to_one_col(np_array, sep_char="_"):
 
     np_array_=np.apply_along_axis(row2string,1,np_array)
     return np_array_[:,None]
-
-
