@@ -176,20 +176,26 @@ def pd_colall_preprocess(df, col=None, pars=None):
     return df, col_pars
 
 
-df, col_pars = pd_colall_preprocess(df)
+
+from generate_train import generate_train
+
+df, col_pars = generate_train(df)
+
 df["is_attributed"] = df["is_attributed"].astype("uint8")
 df_X = df.drop("is_attributed", axis=1)
 df_y = df["is_attributed"]
 
-train_X, test_X, train_y, test_y = train_test_split(df_X, df_y, stratify=df_y, test_size=0.15)
 
-train_X, val_X, train_y, val_y = train_test_split(train_X, train_y, stratify=train_y, test_size=0.1)
+
+##### Split  
+train_X, test_X, train_y, test_y = train_test_split(df_X, df_y, stratify=df_y, test_size=0.15)
+train_X, val_X, train_y, val_y   = train_test_split(train_X, train_y, stratify=train_y, test_size=0.1)
+
 
 
 ####################################################################################################
 ####################################################################################################
 ## Now we will use the GeFS Model on our data
-
 from gefs import RandomForest
 
 
