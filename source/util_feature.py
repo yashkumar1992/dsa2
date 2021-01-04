@@ -59,6 +59,7 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
     flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] and ntpath.basename(f)[:8] in ['features'] ]
     assert len(flist) > 0 , " No file: " +path_data_x
 
+    log("###### Load dfX target values #####################################")
     print(flist)
     df    = None
     for fi in flist :
@@ -70,11 +71,14 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
 
 
     # df = pd.read_csv(path_data_x) # + "/features.zip")
-    df = df.set_index(colid)
+    if colid not in list(df.columns ):
+      df[colid] = np.arange(0, len(df))
+    df        = df.set_index(colid)
+        
     if n_sample > 0: 
         df = df.iloc[:n_sample, :]
 
-    ###### Load dfy target values ###################################
+    log("###### Load dfy target values ###################################")
     try:
         flist = glob.glob( ntpath.dirname(path_data_y)+"/*" )
         flist = [ f for f in flist if os.path.splitext(f)[1][1:].strip().lower() in [ 'zip', 'parquet'] and ntpath.basename(f)[:6] in ['target']]
@@ -85,13 +89,15 @@ def load_dataset(path_data_x, path_data_y='',  colid="jobId", n_sample=-1):
             if ".zip" in fi  :     dfi = pd.read_csv(fi) # + "/features.zip")
             dfy = pd.concat((dfy, dfi)) 
 
-        log("dfy", dfy.head(5))
+        log("dfy", dfy.head(4).T)        
+        if colid not in list(dfy.columns) :
+            dfy[colid] = np.arange(0, len(dfy))
+        
         df = df.join(dfy.set_index(colid), on=colid, how='left', )
     except Exception as e :
-        log("dfy not loaded", path_data_y, e
-            )
+        log("dfy not loaded", path_data_y, e  )
+        
     return df
-
 
 
 def load_function_uri(uri_name="myfolder/myfile.py::myFunction"):
