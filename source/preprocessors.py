@@ -842,17 +842,16 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     from gplearn.genetic import SymbolicTransformer
     from sympy import sympify
     coly     = pars['coly']
-    train_X  = df [col]
+    train_X  = df [col].fillna(method='ffill')
     train_y  = df [coly]
 
     function_set = pars.get('function_set',
                             ['add', 'sub', 'mul', 'div',  'sqrt', 'log', 'abs', 'neg', 'inv','tan'])
     pars_genetic =  pars.get('pars_genetic',
-                             {'generations': 20, 'n_components': 1, 'population_size': 200,
+                             {'generations': 5, 'n_components': 1, 'population_size': 5,
                               'tournament_size': 20, 'stopping_criteria': 1.0, 'const_range': (-1., 1.),
                               'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
                               'p_point_mutation': 0.01, 'p_point_replace': 0.05})
-
 
     gp = SymbolicTransformer(hall_of_fame=100,
                             function_set=function_set,
@@ -864,7 +863,7 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     train_X_ = train_X[~train_X.isna().any(axis=1)]
 
     gp.fit(train_X_, train_y_)
-    df_genetic = gp.transform(train_X.fillna(method='ffill'))
+    df_genetic = gp.transform(train_X)
     df_genetic = pd.DataFrame(df_genetic, columns=["gen_"+str(a) for a in range(df_genetic.shape[1])])
 
     df_genetic.index = train_X.index
