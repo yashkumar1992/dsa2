@@ -660,14 +660,17 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     prefix = 'col_genetic'
     ######################################################################################
     from gplearn.genetic import SymbolicTransformer
+    from sympy import sympify
     coly     = pars['coly']
-    colX     = [t for t in col if t not in  [ coly]]
-    train_X  = df[colX]
-    train_y  = df[ coly ]
+    train_X  = df [col]
+    train_y  = df [coly]
 
     function_set = ['add', 'sub', 'mul', 'div',  'sqrt', 'log', 'abs', 'neg', 'inv','tan']
     pars_genetic =  pars.get('pars_genetic',
-                             { 'generations' : 20, 'n_components': 10, 'population_size' : 200 } )
+                             {'generations': 20, 'n_components': 1, 'population_size': 200,
+                              'tournament_size': 20, 'stopping_criteria': 1.0, 'const_range': (-1., 1.),
+                              'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
+                              'p_point_mutation': 0.01, 'p_point_replace': 0.05})
 
     gp = SymbolicTransformer(hall_of_fame=100,
                             function_set=function_set,
@@ -675,16 +678,30 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
                             max_samples=0.9, verbose=1,
                             random_state=0, n_jobs=6, **pars_genetic)
 
-    gp.fit(train_X, train_y)
-    df_genetic = gp.transform(train_X)
+    train_y_ = train_y[~train_X.isna().any(axis=1)]
+    train_X_ = train_X[~train_X.isna().any(axis=1)]
+
+    gp.fit(train_X_, train_y_)
+    df_genetic = gp.transform(train_X.fillna(method='ffill'))
     df_genetic = pd.DataFrame(df_genetic, columns=["gen_"+str(a) for a in range(df_genetic.shape[1])])
     df_genetic.index = train_X.index
+
+    converter = {
+        'sub': lambda x, y: x - y,
+        'div': lambda x, y: x / y,
+        'mul': lambda x, y: x * y,
+        'add': lambda x, y: x + y,
+        'neg': lambda x: -x,
+        'pow': lambda x, y: x ** y
+    }
+    formula = sympify(str(gp), locals=converter)
 
     col_genetic = list(df_genetic.columns)
     ###################################################################################
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
        save_features(df_genetic, 'df_genetic', pars['path_features_store'])
        save(gp,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+       save(formula,      pars['path_pipeline_export'] + f"/{prefix}_formula.pkl")
        save(col_genetic,  pars['path_pipeline_export'] + f"/{prefix}.pkl" )
        save(pars_genetic, pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
 

@@ -178,8 +178,13 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            pars['colid']           = colid
            pars['colcross_single'] = cols_group.get('colcross', [])
 
+
        cols_list     = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
-       df_           = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
+       if col_type == 'symbolic_transformer':
+           pars['coly'] = cols_group['coly']
+           df_ = df
+       else:
+           df_           = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
 
        dfi, col_pars = pipe_fun(df_, cols_list, pars= pars)
 
