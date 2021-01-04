@@ -18,15 +18,6 @@ df.drop(columns=["attributed_time"], inplace=True)
 def pd_colall_preprocess(df, col=None, pars=None):
    df = copy.deepcopy(df)
 
-
-   ##Let's divide the day in four section ,See in which section click has happend ")
-   day_section = 0
-   for start_time, end_time in zip([0, 6, 12, 18], [6, 12, 18, 24]):
-              df.loc[(df['hour'] >= start_time) & (df['hour'] < end_time), 'day_section'] = day_section
-              day_section += 1
-
-   print( "Let's see new clicks count features")
-   df["n_ip_clicks"]  = df[['ip', 'channel']].groupby(by=["ip"])[["channel"]].transform("count").astype("uint8")
    ## Let's see on which hour the click was happend
    df["click_time"]   = pd.to_datetime(df["click_time"])
 
@@ -36,6 +27,15 @@ def pd_colall_preprocess(df, col=None, pars=None):
    df["day"]          = df["click_time"].dt.day.astype("uint8")
    df["day_of_week"]  = df["click_time"].dt.dayofweek.astype("uint8")
 
+   ##Let's divide the day in four section ,See in which section click has happend ")
+   day_section = 0
+   for start_time, end_time in zip([0, 6, 12, 18], [6, 12, 18, 24]):
+              df.loc[(df['hour'] >= start_time) & (df['hour'] < end_time), 'day_section'] = day_section
+              day_section += 1
+
+   print( "Let's see new clicks count features")
+   df["n_ip_clicks"]  = df[['ip', 'channel']].groupby(by=["ip"])[["channel"]].transform("count").astype("uint8")
+   
 
    ##Computing the number of clicks associated with a given app per hour...')
    df["n_app_clicks"] = df[['app', 'day', 'hour', 'channel']].groupby(by=['app', 'day', 'hour'])[['channel']].transform("count").astype("uint8")
