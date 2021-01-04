@@ -173,6 +173,26 @@ def titanic1(path_model_out="") :
 
 
 
+def check1():
+    """  python core_test_encoder.py check1
+
+    """
+    import pandas as pd
+    from sklearn.datasets import load_boston
+    d = load_boston(return_X_y=False)
+    col = d['feature_names']
+    df = pd.DataFrame( d['data'], columns=col)
+
+
+    from source.preprocessors import pd_col_genetic_transform
+    pars = { 'path_pipeline_export' : ''}
+    dfnew, col_pars = pd_col_genetic_transform(df, col, pars)
+    print(dfnew.head(3).T,  col_pars)
+
+
+
+
+
 
 
 ###################################################################################
@@ -202,9 +222,7 @@ from core_run import predict
 python  core_test_encoder.py  data_profile
 python  core_test_encoder.py  preprocess  --nsample 100
 python  core_test_encoder.py  train       --nsample 200
-python  core_test_encoder.py  check
 python  core_test_encoder.py  predict
-python  core_test_encoder.py  run_all
 
 
 """
