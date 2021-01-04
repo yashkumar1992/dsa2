@@ -465,74 +465,7 @@ def train_baseline_model():
     ypred = bst.predict(test_X)
     score = metrics.roc_auc_score(test_y, ypred)
     print(
-        f"Test score: {score}")  # Best Test score: 0.9798680931680435 Other executions: score: 0.9199833347745086 Test score: 0.9577218165095787
-
-
-# ####################################################################################################
-# ## The following experiment with Genetic algorithm for categorical feature encoding
-#
-def train_genetic_algo_model():
-    from gplearn.genetic import SymbolicTransformer
-
-    def pd_col_genetic_transform(df=None, col=None, pars=None):
-        num_gen = 20
-        num_comp = 10
-        function_set = ['add', 'sub', 'mul', 'div',
-                        'sqrt', 'log', 'abs', 'neg', 'inv', 'tan']
-
-        gp = SymbolicTransformer(generations=num_gen, population_size=200,
-                                 hall_of_fame=100, n_components=num_comp,
-                                 function_set=function_set,
-                                 parsimony_coefficient=0.0005,
-                                 max_samples=0.9, verbose=1,
-                                 random_state=0, n_jobs=6)
-
-        gen_feats = gp.fit_transform(train_X, train_y)
-        gen_feats = pd.DataFrame(gen_feats, columns=["gen_" + str(a) for a in range(gen_feats.shape[1])])
-        gen_feats.index = train_X.index
-        train_X_all = pd.concat((train_X, gen_feats), axis=1)
-        gen_feats = gp.transform(test_X)
-        gen_feats = pd.DataFrame(gen_feats, columns=["gen_" + str(a) for a in range(gen_feats.shape[1])])
-        gen_feats.index = test_X.index
-        test_X_all = pd.concat((test_X, gen_feats), axis=1)
-
-        gen_feats = gp.transform(val_X)
-        gen_feats = pd.DataFrame(gen_feats, columns=["gen_" + str(a) for a in range(gen_feats.shape[1])])
-        gen_feats.index = val_X.index
-        val_X_all = pd.concat((val_X, gen_feats), axis=1)
-        return train_X_all, test_X_all, val_X_all
-
-    train_X_all, test_X_all, val_X_all = pd_col_genetic_transform(df, col=list(df.columns),
-                                                                  pars={'mode': 'transform'})
-
-    import lightgbm as lgb
-
-    dtrain_genetic = lgb.Dataset(train_X_all, train_y)
-    dvalid_genetic = lgb.Dataset(val_X_all, val_y)
-
-    param = {'num_leaves': 63, 'objective': 'binary', "seed": 1, 'boosting_type': 'dart',
-             # Use boosting_type="gbrt" for large dataset
-             'metric': 'auc',
-             'learning_rate': 0.1,
-             'max_depth': -1,
-             'min_child_samples': 100,
-             'max_bin': 100,
-             'subsample': 0.9,  # Was 0.7
-             'subsample_freq': 1,
-             'colsample_bytree': 0.7,
-             'min_child_weight': 0,
-             'min_split_gain': 0,
-             'reg_alpha': 0,
-             'reg_lambda': 0, }
-    num_round = 1000
-    bst = lgb.train(param, dtrain_genetic, num_round, valid_sets=[dvalid_genetic], early_stopping_rounds=20)
-
-    from sklearn import metrics
-
-    ypred = bst.predict(test_X_all)
-    score = metrics.roc_auc_score(test_y, ypred)
-    print(
-        f"Test score: {score}")  # Best test score: Test score: 0.9802690018944903 Other executions : Test score: 0.9790603799985851 Test score: 0.954113637971559
+        f"Test score: {score}")
 
 
 # ####################################################################################################
@@ -540,7 +473,7 @@ def train_genetic_algo_model():
 # ## 1) scale_pos_weight': 99  # because training data is extremely unbalanced
 # ### Since the data is highly imbalanced we use lightgbm scale_pos_weight
 #
-def train_lgb_class_imblanace():
+def train_lgb_class_imbalance():
     dtrain = lgb.Dataset(train_X, train_y)
     dvalid = lgb.Dataset(val_X, val_y)
 
@@ -660,6 +593,25 @@ def train_model_with_smote_oversampling():
 
 
 ####################################################################################################
+# Train a baseline RandomForest
+
+def train_RF():
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.metrics import roc_auc_score
+    # Create a Gaussian Classifier
+    clf = RandomForestClassifier(n_estimators=1000)
+
+    # Train the model using the training sets y_pred=clf.predict(X_test)
+    clf.fit(train_X, train_y)
+
+    y_pred = clf.predict(test_X)
+    y_prob = clf.predict_proba(test_X)
+
+    score = roc_auc_score(test_y, y_prob[:, 1])
+    print(f"Test score for RandomForst Model: {score}")
+
+
+
 ####################################################################################################
 
 ## Now we will use the GeFS Model on our data
@@ -864,21 +816,17 @@ def train_gefs_model():
     y_pred_avg = gef.classify_avg(X_test, classcol=data.shape[1] - 1)
     y_pred_mixture = gef.classify(X_test, classcol=data.shape[1] - 1)
 
+    _, y_prob = gef.classify(X_test, classcol=data.shape[1] - 1, return_prob=True)
+    y_prob = np.max(y_prob, axis=1)
     from sklearn import metrics
-    score = metrics.roc_auc_score(y_test, y_pred_avg)
+    score = metrics.roc_auc_score(y_test, y_prob)
     print(f"Test score for GeFs Model: {score}")
-
-    ### Computing Robustness Values
-    ##  Robustness values can be computed with the `compute_rob_class` function.
-    from gefs import compute_rob_class
-    pred, rob = compute_rob_class(gef.root, X_test, data.shape[1] - 1, int(ncat[-1]))
-
 
 # in order to get rid of the ../lib/python3.6/site-packages/numba/np/ufunc/parallel.py:355: NumbaWarning: The TBB threading layer requires TBB version 2019.5 or later i.e., TBB_INTERFACE_VERSION >= 11005. Found TBB_INTERFACE_VERSION = 9107. The TBB threading layer is disabled.
 #   warnings.warn(problem) run `conda install tbb`
 if __name__ == '__main__':
     train_baseline_model()
-    train_genetic_algo_model()
-    train_lgb_class_imblanace()
+    train_lgb_class_imbalance()
     train_model_with_smote_oversampling()
     train_gefs_model()
+    train_RF()
