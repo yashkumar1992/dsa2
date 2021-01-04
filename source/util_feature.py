@@ -15,12 +15,12 @@ import pandas as pd
 #############################################################################################
 print("os.getcwd", os.getcwd())
 
-def log(*s, n=0, m=1):
+def log(*s, n=0, m=1, **kw):
     sspace = "#" * n
     sjump = "\n" * m
 
     ### Implement Logging
-    print(sjump, sspace, s, sspace, flush=True)
+    print(sjump, sspace, s, sspace, flush=True, **kw)
 
 class dict2(object):
     def __init__(self, d):
