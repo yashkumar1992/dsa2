@@ -320,28 +320,26 @@ def pd_colnum_normalize(df, col, pars):
 
 def pd_colnum_quantile_norm(df, col, pars={}):
   """
-     Distribution normalization
+     colnum normalization by quantile
   """
-  prefix= "colnum_quantile_norm"
-
+  prefix  = "colnum_quantile_norm"
   df      = df[col]
   num_col = col
 
+  ##### Grab previous computed params  ################################################    
   pars2 = {}
   if  'path_pipeline' in pars :   #### Load existing column list
        colnum_quantile_norm = load( pars['path_pipeline']  +f'/{prefix}.pkl')
        model                = load( pars['path_pipeline']  +f'/{prefix}_model.pkl')
        pars2                = load( pars['path_pipeline']  +f'/{prefix}_pars.pkl')
 
-  ##### Grab previous computed params
   lower_bound_sparse = pars2.get('lower_bound_sparse', None)
   upper_bound_sparse = pars2.get('upper_bound_sparse', None)
   lower_bound        = pars2.get('lower_bound_sparse', None)
   upper_bound        = pars2.get('upper_bound_sparse', None)
   sparse_col         = pars2.get('colsparse', ['capital-gain', 'capital-loss'] )
 
-
-  ####### Find IQR and implement to numericals and sparse columns seperately
+  ####### Find IQR and implement to numericals and sparse columns seperately ##########
   Q1  = df.quantile(0.25)
   Q3  = df.quantile(0.75)
   IQR = Q3 - Q1
@@ -368,7 +366,6 @@ def pd_colnum_quantile_norm(df, col, pars={}):
       else:
         upper_bound_sparse = df_nosparse[col].quantile(0.75)
 
-
       n_outliers = len(df[(df[col] < lower_bound_sparse) | (df[col] > upper_bound_sparse)][col])
 
       if n_outliers > 0:
@@ -383,23 +380,22 @@ def pd_colnum_quantile_norm(df, col, pars={}):
       df[col] = np.where(df[col] > upper_bound, 1.25 * upper_bound, df[col])
       df[col] = np.where(df[col] < lower_bound, 0.75 * lower_bound, df[col])
 
-
-  colnew   = [ t + "_qt_norm" for t in df.columns ]
-  pars_new = {'lower_bound' : lower_bound, 'upper_bound': upper_bound,
-              'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse
-              }
+  df.columns = [ t + "_qt_norm" for t in df.columns ]
+  pars_new   = {'lower_bound' : lower_bound, 'upper_bound': upper_bound,
+                'lower_bound_sparse' : lower_bound_sparse, 'upper_bound_sparse' : upper_bound_sparse  }
   dfnew    = df
   model    = None
+  colnew   = list(df.columns)
 
-  ###################################################################################
+  ##### Export ##############################################################################
   if 'path_features_store' in pars and 'path_pipeline_export' in pars:
       save_features(df,  prefix, pars['path_features_store'])
-      save(model,      pars['path_pipeline_export']  + f"/{prefix}_model.pkl" )
       save(colnew,     pars['path_pipeline_export']  + f"/{prefix}.pkl" )
       save(pars_new,   pars['path_pipeline_export']  + f"/{prefix}_pars.pkl" )
+      save(model,      pars['path_pipeline_export']  + f"/{prefix}_model.pkl" )
 
 
-  col_pars = {'model' : model, 'pars': pars_new}
+  col_pars = {'prefix' : prefix, 'path': pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
   col_pars['cols_new'] = {
     prefix :  colnew  ### list
   }
@@ -474,9 +470,11 @@ def pd_colnum_binto_onehot(df, col=None, pars=None):
 
 
 def pd_colcat_to_onehot(df, col=None, pars=None):
-    dfbum_bin = df[col]
-    if len(col)==1:
+    """
 
+    """
+    log("#### colcat to onehot")
+    if len(col)==1:
         colnew       = [col[0] + "_onehot"]
         df[ colnew ] =  df[col]
         col_pars     = {}
@@ -487,18 +485,19 @@ def pd_colcat_to_onehot(df, col=None, pars=None):
         }
         return df[colnew], col_pars
 
-    path_pipeline = pars.get('path_pipeline', False)
-    colcat_onehot = load(f'{path_pipeline}/colcat_onehot.pkl') if  path_pipeline else None
+    colcat_onehot = None
+    if  'path_pipeline' in pars :
+       colcat_onehot = load( pars['path_pipeline'] + '/colcat_onehot.pkl')
 
+    ######################################################################################
     colcat = col
-    log("#### colcat to onehot")
     dfcat_hot, colcat_onehot = util_feature.pd_col_to_onehot(df[colcat], colname=colcat,
                                                 colonehot=colcat_onehot, return_val="dataframe,param")
     log(dfcat_hot[colcat_onehot].head(5))
 
+    ######################################################################################
     if 'path_features_store' in pars :
-        path_features_store = pars['path_features_store']
-        save_features(dfcat_hot, 'colcat_onehot', path_features_store)
+        save_features(dfcat_hot, 'colcat_onehot', pars['path_features_store'])
         save(colcat_onehot,  pars['path_pipeline_export'] + "/colcat_onehot.pkl" )
         save(colcat,         pars['path_pipeline_export'] + "/colcat.pkl" )
 
@@ -548,6 +547,11 @@ def pd_colcat_bin(df, col=None, pars=None):
 
 
 def pd_colcross(df, col, pars):
+    """
+
+
+    """
+    prefix = 'colcross_onehot'
     log("#####  Cross Features From OneHot Features   ######################################")
     from util_feature import pd_feature_generate_cross
 
@@ -561,39 +565,43 @@ def pd_colcross(df, col, pars):
        df_onehot = copy.deepcopy(dfcat_hot)
 
     colcross_single = pars['colcross_single']
+    pars_model      = { 'pct_threshold' :0.02,  'm_combination': 2 }
     if  'path_pipeline' in pars :   #### Load existing column list
-       colcross_single = load( pars['path_pipeline']  +f'/colcross_single_onehot_select.pkl')
+       colcross_single = load( pars['path_pipeline']  + f'/{prefix}_select.pkl')
+       # pars_model      = load( pars['path_pipeline']  + f'/{prefix}_pars.pkl')
 
-    colcross_single_onehot_select = []
+    colcross_single_onehot_select = []  ## Select existing columns
     for t in list(df_onehot.columns):
        for c1 in colcross_single:
            if c1 in t:
                colcross_single_onehot_select.append(t)
 
-
     df_onehot = df_onehot[colcross_single_onehot_select ]
     dfcross_hot, colcross_pair = pd_feature_generate_cross(df_onehot, colcross_single_onehot_select,
-                                                           pct_threshold=0.02,  m_combination=2)
+                                                           **pars_model)
     log(dfcross_hot.head(2).T)
     colcross_pair_onehot = list(dfcross_hot.columns)
 
+    model = None
+    ##############################################################################
     if 'path_features_store' in pars:
         save_features(dfcross_hot, 'colcross_onehot', pars['path_features_store'])
-        save(colcross_single_onehot_select, pars['path_pipeline_export'] + '/colcross_single_onehot_select.pkl')
-        save(colcross_pair,                 pars['path_pipeline_export'] + '/colcross_pair.pkl')
+        save(colcross_single_onehot_select, pars['path_pipeline_export'] + f'/{prefix}_select.pkl')
+        save(colcross_pair,                 pars['path_pipeline_export'] + f'/{prefix}_stats.pkl')
+        save(colcross_pair_onehot,          pars['path_pipeline_export'] + f'/{prefix}_pair.pkl')
+        save(model,                         pars['path_pipeline_export'] + f'/{prefix}_pars.pkl')
 
-    col_pars = {}
-    col_pars['colcross_pair'] = colcross_pair
+    col_pars = {'model': model, 'stats' : colcross_pair }
     col_pars['cols_new'] = {
      # 'colcross_single'     :  col ,    ###list
-     'colcross_pair' :  colcross_pair       ### list
+     'colcross_pair' :  colcross_pair_onehot       ### list
     }
     return dfcross_hot, col_pars
 
 
 
 def pd_coldate(df, col, pars):
-    log("##### Coldate processing   #############################################################")
+    log("##### Coldate processing   ##########################################")
     from utils import util_date
     coldate = col
     dfdate  = None
@@ -615,104 +623,110 @@ def pd_coldate(df, col, pars):
     return dfdate, col_pars
 
 
-def pd_colcat_minhash(df, col, pars):
+
+
+
+def pd_colcat_symbolic(df, col, pars):
     """
-       MinHash Algo for category
-       https://booking.ai/dont-be-tricked-by-the-hashing-trick-192a6aae3087
+       https://github.com/arita37/deltapy
+
+       pip install deltapy
 
     """
-    colcat              = col
-
-    pars_minhash = {'n_component' : [4, 2], 'model_pretrain_dict' : None,}
+    pars_encoder         = pars
+    pars_encoder['cols'] = col
     if 'path_pipeline_export' in pars :
         try :
-            pars_minhash = load( pars['path_pipeline_export'] + '/colcat_minhash_pars.pkl')
+            pars_encoder  = load( pars['path_pipeline_export'] + '/col_genetic_pars.pkl')
+            model_encoder = load( pars['path_pipeline_export'] + '/col_genetic_model.pkl')
+            col_encoder   = load( pars['path_pipeline_export'] + '/col_genetic.pkl')
         except : pass
 
-    log("#### Colcat to Hash encoding #############################################")
-    from utils import util_text
-    dfcat_bin, col_hash_model= util_text.pd_coltext_minhash(df[colcat], colcat,
-                                                            return_val="dataframe,param", **pars_minhash )
-    colcat_minhash = list(dfcat_bin.columns)
-    log(col_hash_model)
+
     ###################################################################################
-    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
-       save_features(dfcat_bin, 'dfcat_minhash', pars['path_features_store'])
-       save(col_hash_model, pars['path_pipeline_export'] + "/colcat_minhash_model.pkl" )
-       save(colcat_minhash, pars['path_pipeline_export'] + "/colcat_minhash.pkl" )
-       save(pars_minhash,   pars['path_pipeline_export'] + "/colcat_minhash_pars.pkl" )
-
-
-    col_pars = {}
-    col_pars['col_hash_model'] = col_hash_model
-    col_pars['cols_new'] = {
-     'colcat_minhash' :  colcat_minhash  ### list
-    }
-    return dfcat_bin, col_pars
-
-
-
-def pd_col_genetic_transform(df=None, col=None, pars=None):
-    """
-        Find Symbolic formulae for faeture engineering
-
-    """
-    prefix = 'col_genetic'
-    ######################################################################################
+    coly = pars['coly']
     from gplearn.genetic import SymbolicTransformer
-    from sympy import sympify
-    coly     = pars['coly']
-    train_X  = df [col]
-    train_y  = df [coly]
+    function_set = ['add', 'sub', 'mul', 'div',
+                      'sqrt', 'log', 'abs', 'neg', 'inv','tan']
 
-    function_set = ['add', 'sub', 'mul', 'div',  'sqrt', 'log', 'abs', 'neg', 'inv','tan']
-    pars_genetic =  pars.get('pars_genetic',
-                             {'generations': 20, 'n_components': 1, 'population_size': 200,
-                              'tournament_size': 20, 'stopping_criteria': 1.0, 'const_range': (-1., 1.),
-                              'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
-                              'p_point_mutation': 0.01, 'p_point_replace': 0.05})
+    gp = SymbolicTransformer(generations=20, population_size=200,
+                              hall_of_fame=100, n_components=10,
+                              function_set=function_set,
+                              parsimony_coefficient=0.0005,
+                              max_samples=0.9, verbose=1,
+                              random_state=0, n_jobs=6)
 
+    gen_feats = gp.fit_transform(df[col], df[ coly ])
+    gen_feats = pd.DataFrame(gen_feats, columns=["gen_"+str(a) for a in range(gen_feats.shape[1])])
+    gen_feats.index = df.index
+    dfnew = gen_feats
+    dfnew.columns = [  t for t in dfnew.columns ]
 
-    gp = SymbolicTransformer(hall_of_fame=100,
-                            function_set=function_set,
-                            parsimony_coefficient=0.0005,
-                            max_samples=0.9, verbose=1,
-                            random_state=0, n_jobs=6, **pars_genetic)
-
-    train_y_ = train_y[~train_X.isna().any(axis=1)]
-    train_X_ = train_X[~train_X.isna().any(axis=1)]
-
-    gp.fit(train_X_, train_y_)
-    df_genetic = gp.transform(train_X.fillna(method='ffill'))
-    df_genetic = pd.DataFrame(df_genetic, columns=["gen_"+str(a) for a in range(df_genetic.shape[1])])
-    df_genetic.index = train_X.index
-
-    converter = {
-        'sub': lambda x, y: x - y,
-        'div': lambda x, y: x / y,
-        'mul': lambda x, y: x * y,
-        'add': lambda x, y: x + y,
-        'neg': lambda x: -x,
-        'pow': lambda x, y: x ** y
-    }
-    formula = sympify(str(gp), locals=converter)
-
-    col_genetic = list(df_genetic.columns)
     ###################################################################################
+    colnew        = list(dfnew.columns)
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
-       save_features(df_genetic, 'df_genetic', pars['path_features_store'])
-       save(gp,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
-       save(formula,      pars['path_pipeline_export'] + f"/{prefix}_formula.pkl")
-       save(col_genetic,  pars['path_pipeline_export'] + f"/{prefix}.pkl" )
-       save(pars_genetic, pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+       save_features(dfnew, 'dfgen', pars['path_features_store'])
+       save(gp,             pars['path_pipeline_export'] + "/col_genetic_model.pkl" )
+       save(pars_encoder,   pars['path_pipeline_export'] + "/col_genetic_pars.pkl" )
+       save(colnew,         pars['path_pipeline_export'] + "/col_genetic.pkl" )
 
 
-    col_pars = {'model' : gp , 'pars' : pars_genetic}
+    col_pars = {'model' : gp}
     col_pars['cols_new'] = {
-     'col_genetic' :  col_genetic  ### list
+     'col_genetic' :  colnew  ### list
     }
-    return df_genetic, col_pars
+    return dfnew, col_pars
 
+
+
+def pd_autoencoder(df, col, pars):
+    """"
+    (4) Autoencoder
+An autoencoder is a type of artificial neural network used to learn efficient data codings in an unsupervised manner. The aim of an autoencoder is to learn a representation (encoding) for a set of data, typically for dimensionality reduction, by training the network to ignore noise.
+
+(i) Feed Forward
+
+The simplest form of an autoencoder is a feedforward, non-recurrent neural network similar to single layer perceptrons that participate in multilayer perceptrons
+
+from sklearn.preprocessing import minmax_scale
+import tensorflow as tf
+import numpy as np
+
+def encoder_dataset(df, drop=None, dimesions=20):
+
+  if drop:
+    train_scaled = minmax_scale(df.drop(drop,axis=1).values, axis = 0)
+  else:
+    train_scaled = minmax_scale(df.values, axis = 0)
+
+  # define the number of encoding dimensions
+  encoding_dim = dimesions
+  # define the number of features
+  ncol = train_scaled.shape[1]
+  input_dim = tf.keras.Input(shape = (ncol, ))
+
+  # Encoder Layers
+  encoded1 = tf.keras.layers.Dense(3000, activation = 'relu')(input_dim)
+  encoded2 = tf.keras.layers.Dense(2750, activation = 'relu')(encoded1)
+  encoded3 = tf.keras.layers.Dense(2500, activation = 'relu')(encoded2)
+  encoded4 = tf.keras.layers.Dense(750, activation = 'relu')(encoded3)
+  encoded5 = tf.keras.layers.Dense(500, activation = 'relu')(encoded4)
+  encoded6 = tf.keras.layers.Dense(250, activation = 'relu')(encoded5)
+  encoded7 = tf.keras.layers.Dense(encoding_dim, activation = 'relu')(encoded6)
+
+  encoder = tf.keras.Model(inputs = input_dim, outputs = encoded7)
+  encoded_input = tf.keras.Input(shape = (encoding_dim, ))
+
+  encoded_train = pd.DataFrame(encoder.predict(train_scaled),index=df.index)
+  encoded_train = encoded_train.add_prefix('encoded_')
+  if drop:
+    encoded_train = pd.concat((df[drop],encoded_train),axis=1)
+
+  return encoded_train
+
+df_out = mapper.encoder_dataset(df.copy(), ["Close_1"], 15); df_out.head()
+
+    """
 
 
 def pd_colcat_encoder_generic(df, col, pars):
@@ -773,6 +787,182 @@ encoder = ce.WOEEncoder(cols=[...])
 
 
 
+
+
+
+
+
+
+
+def pd_colcat_minhash(df, col, pars):
+    """
+       MinHash Algo for category
+       https://booking.ai/dont-be-tricked-by-the-hashing-trick-192a6aae3087
+
+    """
+    prefix = 'colcat_minhash'
+    colcat              = col
+
+    pars_minhash = {'n_component' : [4, 2], 'model_pretrain_dict' : None,}
+    if 'path_pipeline_export' in pars :
+        try :
+            pars_minhash = load( pars['path_pipeline_export'] + '/colcat_minhash_pars.pkl')
+        except : pass
+
+    log("#### Colcat to Hash encoding #############################################")
+    from utils import util_text
+    dfcat_bin, col_hash_model= util_text.pd_coltext_minhash(df[colcat], colcat,
+                                                            return_val="dataframe,param", **pars_minhash )
+    colcat_minhash = list(dfcat_bin.columns)
+    log(col_hash_model)
+
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(dfcat_bin, prefix, pars['path_features_store'])
+       save(colcat_minhash, pars['path_pipeline_export'] + f"/{prefix}.pkl" )
+       save(pars_minhash,   pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+       save(col_hash_model, pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+
+    col_pars = {}
+    col_pars['col_hash_model'] = col_hash_model
+    col_pars['cols_new'] = {
+     'colcat_minhash' :  colcat_minhash  ### list
+    }
+    return dfcat_bin, col_pars
+
+
+
+def pd_col_genetic_transform(df=None, col=None, pars=None):
+    """
+        Find Symbolic formulae for faeture engineering
+
+    """
+    prefix = 'col_genetic'
+    ######################################################################################
+    from gplearn.genetic import SymbolicTransformer
+    from sympy import sympify
+    coly     = pars['coly']
+    train_X  = df [col]
+    train_y  = df [coly]
+
+    function_set = pars.get('function_set',
+                            ['add', 'sub', 'mul', 'div',  'sqrt', 'log', 'abs', 'neg', 'inv','tan'])
+    pars_genetic =  pars.get('pars_genetic',
+                             {'generations': 20, 'n_components': 1, 'population_size': 200,
+                              'tournament_size': 20, 'stopping_criteria': 1.0, 'const_range': (-1., 1.),
+                              'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
+                              'p_point_mutation': 0.01, 'p_point_replace': 0.05})
+
+
+    gp = SymbolicTransformer(hall_of_fame=100,
+                            function_set=function_set,
+                            parsimony_coefficient=0.0005,
+                            max_samples=0.9, verbose=1,
+                            random_state=0, n_jobs=6, **pars_genetic)
+
+    train_y_ = train_y[~train_X.isna().any(axis=1)]
+    train_X_ = train_X[~train_X.isna().any(axis=1)]
+
+    gp.fit(train_X_, train_y_)
+    df_genetic = gp.transform(train_X.fillna(method='ffill'))
+    df_genetic = pd.DataFrame(df_genetic, columns=["gen_"+str(a) for a in range(df_genetic.shape[1])])
+
+    df_genetic.index = train_X.index
+
+    converter = {
+        'sub': lambda x, y: x - y,
+        'div': lambda x, y: x / y,
+        'mul': lambda x, y: x * y,
+        'add': lambda x, y: x + y,
+        'neg': lambda x: -x,
+        'pow': lambda x, y: x ** y
+    }
+    formula = sympify(str(gp), locals=converter)
+
+    col_genetic = list(df_genetic.columns)
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(df_genetic, 'df_genetic', pars['path_features_store'])
+       save(gp,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+       save(formula,      pars['path_pipeline_export'] + f"/{prefix}_formula.pkl")
+
+       save(col_genetic,  pars['path_pipeline_export'] + f"/{prefix}.pkl" )
+       save(pars_genetic, pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+       save(gp,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+
+    col_pars = {'prefix' : prefix , 'path' :   pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
+    col_pars['cols_new'] = {
+     'col_genetic' :  col_genetic  ### list
+    }
+    return df_genetic, col_pars
+
+
+
+def pd_colcat_encoder_generic(df, col, pars):
+    """
+        Create a Class or decorator
+        https://pypi.org/project/category-encoders/
+        encoder = ce.BackwardDifferenceEncoder(cols=[...])
+        encoder = ce.BaseNEncoder(cols=[...])
+        encoder = ce.BinaryEncoder(cols=[...])
+        encoder = ce.CatBoostEncoder(cols=[...])
+        encoder = ce.CountEncoder(cols=[...])
+        encoder = ce.GLMMEncoder(cols=[...])
+        encoder = ce.HashingEncoder(cols=[...])
+        encoder = ce.HelmertEncoder(cols=[...])
+        encoder = ce.JamesSteinEncoder(cols=[...])
+        encoder = ce.LeaveOneOutEncoder(cols=[...])
+        encoder = ce.MEstimateEncoder(cols=[...])
+        encoder = ce.OneHotEncoder(cols=[...])
+        encoder = ce.OrdinalEncoder(cols=[...])
+        encoder = ce.SumEncoder(cols=[...])
+        encoder = ce.PolynomialEncoder(cols=[...])
+        encoder = ce.TargetEncoder(cols=[...])
+        encoder = ce.WOEEncoder(cols=[...])
+    """
+    prefix     = "colcat_encoder_generic"
+    pars_model = None
+    if 'path_pipeline' in  pars  :   ### Load during Inference
+       colcat_encoder = load( pars['path_pipeline'] + f"/{prefix}.pkl" )
+       pars_model     = load( pars['path_pipeline'] + f"/{prefix}_pars.pkl" )
+       #model         = load( pars['path_pipeline'] + f"/{prefix}_model.pkl" )
+
+    ####### Custom Code ###############################################################
+    from category_encoders import HashingEncoder, WOEEncoder
+    pars_model         = pars.get('model_pars', {})  if pars_model is None else pars_model
+    pars_model['cols'] = col
+    model_name         = pars.get('model_name', 'HashingEncoder')
+
+    model_class        = { 'HashingEncoder' : HashingEncoder  }[model_name]
+    model              = model_class(**pars_model)
+    dfcat_encoder      = model.fit_transform(df[col])
+
+    dfcat_encoder.columns = [t + "_cod" for t in dfcat_encoder.columns ]
+    colcat_encoder        = list(dfcat_encoder.columns)
+
+
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(dfcat_encoder, 'dfcat_encoder', pars['path_features_store'])
+       save(model,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+       save(pars_model,      pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+       save(colcat_encoder,  pars['path_pipeline_export'] + f"/{prefix}.pkl" )
+
+    col_pars = { 'prefix' : prefix,  'path' :   pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
+    col_pars['cols_new'] = {
+     'colcat_encoder_generic' :  colcat_encoder  ### list
+    }
+    return dfcat_encoder, col_pars
+
+
+
+
+
+
+
+
+
+
 def pd_coltext_universal_google(df, col, pars={}):
     """
      # Universal sentence encoding from Tensorflow
@@ -780,7 +970,6 @@ def pd_coltext_universal_google(df, col, pars={}):
     from source.preprocessors import  pd_coltext_universal_google
     https://tfhub.dev/google/universal-sentence-encoder-multilingual/3
 
-    #@title Setup Environment
     #latest Tensorflow that supports sentencepiece is 1.13.1
     !pip uninstall --quiet --yes tensorflow
     !pip install --quiet tensorflow-gpu==1.13.1
@@ -792,25 +981,29 @@ def pd_coltext_universal_google(df, col, pars={}):
     # col : list of text colnum names
     pars
     """
+    prefix = "coltext_universal_google"
+    if 'path_pipeline' in  pars  :   ### Load during Inference
+       coltext_embed = load( pars['path_pipeline'] + "/{prefix}.pkl" )
+       pars_model    = load( pars['path_pipeline'] + "/{prefix}_pars.pkl" )
+
+    ####### Custom Code ###############################################################
     import tensorflow as tf
     import tensorflow_hub as hub
     import tensorflow_text
     #from tqdm import tqdm #progress bar
     uri_list = [
-
-
-
     ]
-    uri_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual/3"
-    uri         = pars.get("url_model", uri_default )
-    use    = hub.load( uri )
-    dfall  = None
+    url_default = "https://tfhub.dev/google/universal-sentence-encoder-multilingual/3"
+    url         = pars.get("model_uri", url_default )
+    model       = hub.load( url )
+    pars_model  = {}
+    dfall       = None
     for coli in col[:1] :
         X = []
         for r in (df[coli]):
             if pd.isnull(r)==True :
                 r=""
-            emb = use(r)
+            emb = model(r)
             review_emb = tf.reshape(emb, [-1]).numpy()
             X.append(review_emb)
 
@@ -820,20 +1013,90 @@ def pd_coltext_universal_google(df, col, pars={}):
 
     coltext_embed = list(dfall.columns)
 
-    ###################################################################################
+
+    ##### Export ####################################################################
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
        save_features(dfall, 'dftext_embed', pars['path_features_store'])
-       save(coltext_embed, pars['path_pipeline_export'] + "/coltext_universal_google.pkl" )
+       save(coltext_embed,  pars['path_pipeline_export'] + "/{prefix}.pkl" )
+       save(pars_model,     pars['path_pipeline_export'] + "/{prefix}_pars.pkl" )
+       save(model,          pars['path_pipeline_export'] + "/{prefix}_model.pkl" )
+       model_uri = pars['path_pipeline_export'] + "/{prefix}_model.pkl"
 
-    col_pars = {'model_encoder' : uri}
+
+    col_pars = {'model_uri' :  model_uri, 'pars': pars_model}
     col_pars['cols_new']      = {
-     'coltext_universal_google' :  coltext_embed ### list
+       'coltext_universal_google' :  coltext_embed ### list
     }
     return dfall, col_pars
 
 
 
 
+def pd_col_covariate_shift_adjustment():
+   """
+    https://towardsdatascience.com/understanding-dataset-shift-f2a5a262a766
+
+     Covariate shift has been extensively studied in the literature, and a number of proposals to work under it have been published. Some of the most important ones include:
+        Weighting the log-likelihood function (Shimodaira, 2000)
+        Importance weighted cross-validation (Sugiyama et al, 2007 JMLR)
+        Integrated optimization problem. Discriminative learning. (Bickel et al, 2009 JMRL)
+        Kernel mean matching (Gretton et al., 2009)
+        Adversarial search (Globerson et al, 2009)
+        Frank-Wolfe algorithm (Wen et al., 2015)
+
+import numpy as np
+from scipy import sparse
+
+# .. for plotting ..
+import pylab as plt
+# .. to generate a synthetic dataset ..
+from sklearn import datasets
+
+n_samples, n_features = 1000, 10000
+A, b = datasets.make_regression(n_samples, n_features)
+
+def FW(alpha, max_iter=200, tol=1e-8):
+    # .. initial estimate, could be any feasible point ..
+    x_t = sparse.dok_matrix((n_features, 1))
+    trace = []  # to keep track of the gap
+
+    # .. some quantities can be precomputed ..
+    Atb = A.T.dot(b)
+    for it in range(max_iter):
+        # .. compute gradient. Slightly more involved than usual because ..
+        # .. of the use of sparse matrices ..
+        Ax = x_t.T.dot(A.T).ravel()
+        grad = (A.T.dot(Ax) - Atb)
+
+        # .. the LMO results in a vector that is zero everywhere except for ..
+        # .. a single index. Of this vector we only store its index and magnitude ..
+        idx_oracle = np.argmax(np.abs(grad))
+        mag_oracle = alpha * np.sign(-grad[idx_oracle])
+        g_t = x_t.T.dot(grad).ravel() - grad[idx_oracle] * mag_oracle
+        trace.append(g_t)
+        if g_t <= tol:
+            break
+        q_t = A[:, idx_oracle] * mag_oracle - Ax
+        step_size = min(q_t.dot(b - Ax) / q_t.dot(q_t), 1.)
+        x_t = (1. - step_size) * x_t
+        x_t[idx_oracle] = x_t[idx_oracle] + step_size * mag_oracle
+    return x_t, np.array(trace)
+
+# .. plot evolution of FW gap ..
+sol, trace = FW(.5 * n_features)
+plt.plot(trace)
+plt.yscale('log')
+plt.xlabel('Number of iterations')
+plt.ylabel('FW gap')
+plt.title('FW on a Lasso problem')
+plt.grid()
+plt.show()
+
+sparsity = np.mean(sol.toarray().ravel() != 0)
+print('Sparsity of solution: %s%%' % (sparsity * 100))
+
+   """
+   pass
 
 if __name__ == "__main__":
     import fire

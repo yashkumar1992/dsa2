@@ -46,8 +46,11 @@ def pd_normalize_quantile(df, col=['age', 'final_weight', 'capital-gain', 'capit
   """
      Processor for DSA@
   """
+  prefix= "col_quantile_norm"
+
   df      = df[col]
   num_col = col
+
 
   sparse_col         = pars.get('colsparse', ['capital-gain', 'capital-loss'] )
 
@@ -113,10 +116,9 @@ def pd_normalize_quantile(df, col=['age', 'final_weight', 'capital-gain', 'capit
     
   ###################################################################################
   if 'path_features_store' in pars and 'path_pipeline_export' in pars:
-      #pass
-      #save_features(df, 'dfcat_encoder', pars['path_features_store'])
-      #save(colnew,    pars['path_pipeline_export']  + "/colnum_encoder_model.pkl" )
-      save(pars_new,  pars['path_pipeline_export']   + "/colnum_quantile_norm_new.pkl" )
+      save_features(df, 'dfcat_encoder', pars['path_features_store'])
+      save(colnew,    pars['path_pipeline_export']  + "/colnum_encoder_model.pkl" )
+      save(pars_new,  pars['path_pipeline_export']   + f"/{prefix}_pars.pkl" )
 
 
   col_pars = {}

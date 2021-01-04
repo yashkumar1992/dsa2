@@ -199,9 +199,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ######  Merge AlL int dfXy  ##################################################################
     dfXy = df[ [coly] + colnum + colcat ]
+    #dfXy = df[ [coly]  ]
 
     for t in dfi_all.keys():
-        if t not in [ 'coly', 'colnum', 'colcat'] :
+        if t not in [ 'coly', 'colnum', 'colcat' ] :
            dfXy = pd.concat((dfXy, dfi_all[t] ), axis=1)
     save_features(dfXy, 'dfX', path_features_store)
 
@@ -310,7 +311,7 @@ def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", c
 
     from source.util_feature import load
 
-    dfXy        = pd.read_parquet(path_features_store + "/dfX/features.parquet")
+    dfXy    = pd.read_parquet(path_features_store + "/dfX/features.parquet")
 
     try :
        dfy  = pd.read_parquet(path_features_store + "/dfy/features.parquet")

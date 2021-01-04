@@ -87,7 +87,7 @@ def main():
         os.mkdir(out_dir)
 
     did = args.dataset
-    f_dataset = "../data/%d/%d.arff" % (did,did)
+    f_dataset = "data/%d/%d.arff" % (did,did)
     dataset, meta, tasktype = load(f_path=f_dataset)
 
 

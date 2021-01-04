@@ -146,7 +146,11 @@ def generate_train(df, col=None, pars=None):
    df.drop(columns=["click_time"], axis=1, inplace=True)
 
 
-   #### coly  genereate
+
+
+
+   ###############################################################################
+   #### coly  genereate  #########################################################
    df['is_attributed'].value_counts(normalize=True)  ### ?
    df["is_attributed"]=df["is_attributed"].astype("uint8")
 
@@ -158,13 +162,75 @@ def generate_train(df, col=None, pars=None):
 
 
 
+def generateAggregateFeatures(df):
+    ### New Agg features
+    df2 = pd.DataFrame([], index= df.index)
+    aggregateFeatures = [
+        # How popular is the app in channel?
+        {'name': 'app-popularity', 'groupBy': ['app'], 'select': 'channel', 'agg': 'count'},
+        # How popular is the channel in app?
+        {'name': 'channel-popularity', 'groupBy': ['channel'], 'select': 'app', 'agg': 'count'},
+        # Average clicks on app by distinct users; is it an app they return to?
+        {'name': 'avg-clicks-on-app', 'groupBy': ['app'], 'select': 'ip', 'agg': lambda x: float(len(x)) / len(x.unique())}
+    ]
+
+    for spec in aggregateFeatures:
+        print("Generating aggregate feature {} group by {}, and aggregating {} with {}".format(spec['name'], spec['groupBy'], spec['select'], spec['agg']))
+        gp = df[spec['groupBy'] + [spec['select']]] \
+            .groupby(by=spec['groupBy'])[spec['select']] \
+            .agg(spec['agg']) \
+            .reset_index() \
+            .rename(index=str, columns={spec['select']: spec['name']})
+        df2 = df2.merge(gp, on=spec['groupBy'], how='left')
+        del gp
+        gc.collect()
+
+    return df2
+
+
+
+
+
+def generatePastClickFeatures(df):
+    # Time between past clicks
+    df2 = pd.DataFrame([], index= df.index)  
+    pastClickAggregateFeatures = [
+        {'groupBy': ['ip', 'channel']},
+        {'groupBy': ['ip', 'os']}
+    ]
+    for spec in pastClickAggregateFeatures:
+        feature_name = '{}-past-click'.format('_'.join(spec['groupBy']))   
+        df[feature_name] = df[spec['groupBy'] + ['click_time']].groupby(['ip']).click_time.transform(lambda x: x.diff().shift(1)).dt.seconds
+    return df2
+
+
+
+
+
+
+
+
+###### Load data
+dtypes = {'ip': np.uint32, 'app': np.uint16, 'device': np.uint8, 'os': np.uint8, 'channel': np.uint8, 'is_attributed': np.bool}
+df = pd.read_csv('raw/train_sample.csv', sep=',', dtype=dtypes, parse_dates=['click_time', 'attributed_time'])
+
+
+df2 = generateAggregateFeatures(df)
+df3 = generatePastClickFeatures(df)
+
+
+df  = df.join(  df2, how='left' )
+df  = df.join(  df3, how='left' )
+
+
+#####################################################################
 ##### Train sample data ##############################################
 coly = "is_attributed"
 df   = pd.read_csv("raw/train_100k.zip")
 
 df, col_pars = generate_train(df)
-df_X = df.drop(coly, axis=1)
-df_y = df[[coly]]
+df_X         = df.drop(coly, axis=1)
+df_y         = df[[coly]]
 
 
 path = "train_100k/"
@@ -176,10 +242,10 @@ os.makedirs(path, exist_ok=True)
 
 
 ##### Train data  ############################################
-df = pd.read_csv("raw/train_200m.zip")
+df           = pd.read_csv("raw/train_200m.zip")
 df, col_pars = generate_train(df)
-df_X = df.drop(coly, axis=1)
-df_y = df[[coly]]
+df_X         = df.drop(coly, axis=1)
+df_y         = df[[coly]]
 
 
 path = "train/"

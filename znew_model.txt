@@ -1,5 +1,19 @@
 
 
+
+Export formulae
+
+https://stackoverflow.com/questions/48404263/how-to-export-the-output-of-gplearn-as-a-sympy-expression-or-some-other-readable
+
+#### New Gradient Boosting
+https://github.com/arita37/snapboost-neurips
+
+
+## Field Wise Learning
+https://github.com/arita37/Field-wise-Learning
+
+
+
 ### Features hashing
 
 https://booking.ai/dont-be-tricked-by-the-hashing-trick-192a6aae3087

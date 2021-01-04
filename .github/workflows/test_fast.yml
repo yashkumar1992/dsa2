@@ -70,14 +70,14 @@ jobs:
 
     - name: Install numpy
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
-      run: pip install numpy==1.18.2   pillow==6.2.1  
+      run: pip install numpy==1.18.2   pillow==6.2.1  scipy
       
 
     - name: Install repo requirements  1
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
       run: |
-
            pip install -r   install/py36.txt
+           pip install pyod==0.8.5
 
     - name: Install repo requirements   2
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
@@ -97,7 +97,8 @@ jobs:
 
     - name: test_import
       run: |
-           python -c "import run,os, numpy ; print(numpy); print(os)"
+           python -c "import core_run;   print(core_run)"
+           python -c "import os, numpy ; print(os)"
            # python -c "import tensorflow, torch ; print(tensorflow); print(torch)"
 
 

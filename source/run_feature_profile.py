@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*- 
 """
-
 python adfraud.py  data_profile  --path_data_train data/input/adfraud/raw/test_10m.zip
-
-
 """
 import gc, os, logging
 from datetime import datetime
@@ -35,7 +32,6 @@ def log(*s, n=0, m=0):
 def run_profile(path_data=None,  path_output="data/out/ztmp/", n_sample=5000):
     """
       Use folder , filename are fixed.
-
     """
     path_output = path_output
     os.makedirs(path_output, exist_ok=True)
@@ -45,10 +41,8 @@ def run_profile(path_data=None,  path_output="data/out/ztmp/", n_sample=5000):
         path_train_X   = path_data
         path_train_y   = ""
     else :
-        path_train_X   = path_data   + "/features.zip"
-        path_train_y   = path_data   + "/target.zip"
-
-
+        path_train_X   = path_data   + "/features*"
+        path_train_y   = path_data   + "/target*"
 
     try :
         log("#### load input column family  ###################################################")
@@ -72,7 +66,8 @@ def run_profile(path_data=None,  path_output="data/out/ztmp/", n_sample=5000):
 
     except :
         log("######## Generating cols_json   ############################")
-        df     = pd.read_csv( path_train_X )
+        from util_feature import pd_read_file
+        df     = pd_read_file( path_train_X )
         colall = list( df.columns)
         dtype = df.dtypes
 
@@ -119,19 +114,13 @@ if __name__ == "__main__":
 
 
 """
-
-
     #### Test dataset  ################################################
     df = pd.read_csv(path + f"/new_data/Titanic_test.csv")
     df = df.set_index(colid)
     for x in colcat:
         df[x] = df[x].factorize()[0]
-
     profile = df.profile_report(title='Profile Test data')
     profile.to_file(output_file=path + "/analysis/00_features_test_report.html")
-
-
-
     log("#### Preprocess  #################################################################")
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
     filter_pars     = model_dict['data_pars']['filter_pars']    
@@ -139,17 +128,13 @@ if __name__ == "__main__":
                             preprocess_pars, filter_pars)
     model_dict['data_pars']['coly'] = cols['coly']
     
-
-
     log("######### export #################################", )
     os.makedirs(path_check_out, exist_ok=True)
     colexport = [cols['colid'], cols['coly'], cols['coly'] + "_pred"]
     dfXy[colexport].to_csv(path_check_out + "/pred_check.csv")  # Only results
     #dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data
     dfXy.to_csv(path_check_out + "/dfX.csv")  # train input data
-
     #dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data
     dfXytest.to_csv(path_check_out + "/dfXtest.csv")  # Test input data
-
  
 """

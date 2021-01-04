@@ -89,7 +89,8 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     ival   = int(0.8 * len(dfX))
     colsX  = data_pars['cols_model']
     coly   = data_pars['coly']
-    log('colsX',colsX)
+    log('Model colsX',colsX)
+    log('Model coly', coly)
 
     data_pars['data_type'] = 'ram'
     data_pars['train'] = {'Xtrain' : dfX[colsX].iloc[:itrain, :],
@@ -192,7 +193,7 @@ def run_train(config_name, path_data_train=None, path_output=None, config_path="
     log(path_output)
 
 
-    log("#### load input column family  ####################################################")
+    log("#### load input column family  ##################################################")
     try :
         cols_group = model_dict['data_pars']['cols_input_type']  ### the model config file
     except :
@@ -200,7 +201,7 @@ def run_train(config_name, path_data_train=None, path_output=None, config_path="
     log(cols_group)
 
 
-    log("#### Preprocess  #################################################################")
+    log("#### Preprocess  ################################################################")
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
     #filter_pars     = model_dict['data_pars']['filter_pars']
      
@@ -212,22 +213,18 @@ def run_train(config_name, path_data_train=None, path_output=None, config_path="
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline, cols_group, n_sample,
                                      preprocess_pars,  path_features_store=path_features_store)
 
-    ### Actual column for label
-    model_dict['data_pars']['coly'] = cols['coly']
+    ### Actual column for label y and Input X (colnum , colcat
+    model_dict['data_pars']['coly']       = cols['coly']
+    model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])
 
-    
-    ### Get actual column names from colum groups : colnum , colcat
-    model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])                
-    log("used columns",  model_dict['data_pars']['cols_model'] , model_dict['data_pars']['coly'])
-    
    
-    log("##### Train model: #############################################################")
+    log("#### Train model: #############################################################")
     log(str(model_dict)[:1000])
     post_process_fun = model_dict['model_pars']['post_process_fun']
     dfXy, dfXytest   = train(model_dict, dfXy, cols, post_process_fun)
 
 
-    log("###### Export ##################################################################")
+    log("#### Export ##################################################################")
     os.makedirs(path_check_out, exist_ok=True)
     colexport = [cols['colid'], cols['coly'], cols['coly'] + "_pred"]
     dfXy[colexport].reset_index().to_csv(path_check_out + "/pred_check.csv")  # Only results
@@ -235,7 +232,7 @@ def run_train(config_name, path_data_train=None, path_output=None, config_path="
     #dfXy.to_csv(path_check_out + "/dfX.csv")  # train input data generate csv
     dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data  generate parquet
     #dfXytest.to_csv(path_check_out + "/dfXtest.csv")  # Test input data  generate csv
-    log("######### finish #################################", )
+    log("######### Finish ##########################################################", )
 
 
 

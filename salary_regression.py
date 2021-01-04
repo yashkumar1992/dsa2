@@ -1,23 +1,22 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-You can put hardcode here, specific to titatinic dataet
-All in one file config
+
   python salary_regression.py  train
   python salary_regression.py  check
   python salary_regression.py  predict
 
 
 """
-import warnings, copy
+import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
-import os, sys
 
-############################################################################
-from source import util_feature
+####################################################################################
+###### Path ########################################################################
+from source.util_feature import save
 
+config_file  = os.path.basename(__file__)
 
-###### Path ################################################################
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
@@ -27,35 +26,45 @@ dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
 
-def global_pars_update(model_dict,  data_name, model_class):
-    m                      = {}
-    model_name             = model_dict['model_pars']['model_class']
-    m['config_path'] = root + f"/{config_file}"
-    m['model_class']       = model_class
-
-    m['path_data_train']   = f'data/input/{data_name}/train/'
-    m['path_data_test']    = f'data/input/{data_name}/test/'
-
-    m['path_model']        = f'data/output/{data_name}/{model_class}/'
-    m['path_output_pred']  = f'data/output/{data_name}/pred_{model_class}/'
-    m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
-
-    model_dict[ 'global_pars'] = m
-    return model_dict
-
-
 def os_get_function_name():
     import sys
     return sys._getframe(1).f_code.co_name
 
 
+def global_pars_update(model_dict,  data_name, config_name):
+    m                      = {}
+    m['config_path']       = root + f"/{config_file}"
+    m['config_name']       = config_name
+
+    ##### run_Preoprocess ONLY
+    m['path_data_preprocess'] = root + f'/data/input/{data_name}/train/'
+
+    ##### run_Train  ONLY
+    m['path_data_train']   = root + f'/data/input/{data_name}/train/'
+    m['path_data_test']    = root + f'/data/input/{data_name}/test/'
+    #m['path_data_val']    = root + f'/data/input/{data_name}/test/'
+    m['path_train_output']    = root + f'/data/output/{data_name}/{config_name}/'
+    m['path_train_model']     = root + f'/data/output/{data_name}/{config_name}/model/'
+    m['path_features_store']  = root + f'/data/output/{data_name}/{config_name}/features_store/'
+    m['path_pipeline']        = root + f'/data/output/{data_name}/{config_name}/pipeline/'
+
+
+    ##### Prediction
+    m['path_pred_data']    = root + f'/data/input/{data_name}/test/'
+    m['path_pred_pipeline']= root + f'/data/output/{data_name}/{config_name}/pipeline/'
+    m['path_pred_model']   = root + f'/data/output/{data_name}/{config_name}/model/'
+    m['path_pred_output']  = root + f'/data/output/{data_name}/pred_{config_name}/'
+
+
+    #####  Generic
+    m['n_sample']             = model_dict['data_pars'].get('n_sample', 5000)
+
+    model_dict[ 'global_pars'] = m
+    return model_dict
+
 
 ####################################################################################
-config_file     = "salary_regression.py"
-data_name       = "salary"
 config_default  = 'salary_lightgbm'
-
-config_name  = 'salary_lightgbm'
 n_sample     = 1000
 
 
@@ -112,9 +121,9 @@ def salary_lightgbm(path_model_out="") :
         Huber Loss includes L1  regurarlization
         We test different features combinaison, default params is optimal
     """
-    data_name         = "salary"
-    model_name        = 'LGBMRegressor'
-    n_sample          = 10**5
+    data_name     = "salary"
+    model_class   = 'LGBMRegressor'
+    n_sample      = 10**5
 
     def post_process_fun(y):
         return y_norm(y, inverse=True, mode='boxcox')
@@ -124,7 +133,7 @@ def salary_lightgbm(path_model_out="") :
 
 
     model_dict = {'model_pars':
-        {'model_class': model_name
+        {'model_class': model_class
         ,'model_path':  path_model_out
         ,'model_pars':  {'objective': 'huber',
 
@@ -144,7 +153,6 @@ def salary_lightgbm(path_model_out="") :
         ],
                }
         },
-
 
 
     'compute_pars': { 'metric_list': ['root_mean_squared_error', 'mean_absolute_error',
@@ -320,9 +328,10 @@ def salary_glm( path_model_out="") :
 
 
 
+
 #####################################################################################
 ########## Profile data #############################################################
-def data_profile(n_sample= 5000):
+def data_profile(path_data_train="", path_model="", n_sample= 5000):
    from source.run_feature_profile import run_profile
    run_profile(path_data   = path_data_train,
                path_output = path_model + "/profile/",
@@ -330,48 +339,19 @@ def data_profile(n_sample= 5000):
               )
 
 
-
 ###################################################################################
 ########## Preprocess #############################################################
-def preprocess(config=None, nsample=None):
-    config_name  = config  if config is not None else  config_default
-    mdict        = globals()[config_name]()
-    print(mdict)
-
-    from source import run_preprocess_old, run_preprocess
-    run_preprocess_old.run_preprocess(model_name      =  config_name,
-                                      path_data         =  path_data_train,
-                                      path_output       =  path_model,
-                                      path_config_model =  path_config_model,
-                                      n_sample          =  nsample if nsample is not None else n_sample,
-                                      mode              =  'run_preprocess')
+### def preprocess(config='', nsample=1000):
+from core_run import preprocess
 
 
 
-    
-    
-    
-    
-    
 ##################################################################################
 ########## Train #################################################################
-def train(config=None, nsample=None):
-
-    config_name  = config  if config is not None else config_default
-    mdict        = globals()[config_name]()
-    print(mdict)
-
-    from source import run_train
-    run_train.run_train(config_name=  config_name,
-                        path_data_train=  path_data_train,
-                        path_output       =  path_model,
-                        config_path=  path_config_model,
-                        n_sample          =  nsample if nsample is not None else n_sample)
+from core_run import train
 
 
-    
-    
-    
+
 
 ###################################################################################
 ######### Check data ##############################################################
@@ -379,32 +359,11 @@ def check():
    pass
 
 
-  
-  
-  
-  
+
 ####################################################################################
 ####### Inference ##################################################################
-def predict(config=None, nsample=None):
-    config_name  =  config  if config is not None else config_default
-    mdict        = globals()[config_name]()
-    print(mdict)
-
-    from source import run_inference, run_inference
-    run_inference.run_predict(model_name,
-                              path_model  = path_model,
-                              path_data   = path_data_test,
-                              path_output = path_output_pred,
-                              cols_group  = mdict['data_pars']['cols_input_type'],
-                              n_sample    = nsample if nsample is not None else n_sample)
-
-
-def run_all():
-    data_profile()
-    preprocess()
-    train()
-    check()
-    predict()
+# predict(config='', nsample=10000)
+from core_run import predict
 
 
 
