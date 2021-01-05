@@ -69,8 +69,7 @@ cols_input_type_2 = {
     ,"coldate" :  []
     ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
 
-    ,'colgen'  : [
-                    "Pclass", "Age","SibSp", "Parch","Fare" ]
+    ,'colgen'  : [   "Pclass", "Age","SibSp", "Parch","Fare" ]
 }
 
 
@@ -105,7 +104,7 @@ def titanic1(path_model_out="") :
     ### Pipeline for data processing ##############################
     'pipe_list': [
         {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
-        # {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
         # {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
         # {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
         # {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
@@ -123,14 +122,14 @@ def titanic1(path_model_out="") :
         'pars': {'pars_generic' :{
 
          ### Issue with Binary 1 or 0  : need to pass with Logistic
-
+        'metric': 'spearman',
         'generations': 100, 'population_size': 100,  ### Higher than nb_features
         'tournament_size': 20, 'stopping_criteria': 1.0, 'const_range': (-1., 1.),
         'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
         'p_point_mutation': 0.01, 'p_point_replace': 0.05,
         'parsimony_coefficient' : 0.0005,   ####   0.00005 Control Complexity
         'max_samples' : 0.9, 'verbose' : 1,
-        #'n_components'      ### Control number of outtput features  : n_components
+        #'n_components'      ###    'metric': 'spearman', Control number of outtput features  : n_components
         'random_state' :0, 'n_jobs' : 4,
 
                      }
@@ -191,6 +190,18 @@ def titanic1(path_model_out="") :
     ##### Filling Global parameters    ############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name )
     return model_dict
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -207,10 +207,9 @@ def generatePastClickFeatures(df):
 
 
 
-
-###### Load data
+###### Load data  #############################################################
 dtypes = {'ip': np.uint32, 'app': np.uint16, 'device': np.uint8, 'os': np.uint8, 'channel': np.uint8, 'is_attributed': np.bool}
-df = pd.read_csv('raw/train_sample.csv', sep=',', dtype=dtypes, parse_dates=['click_time', 'attributed_time'])
+df     = pd.read_csv('raw/train_100k.csv', sep=',', dtype=dtypes, parse_dates=['click_time', 'attributed_time'])
 
 
 df2 = generateAggregateFeatures(df)
@@ -221,10 +220,10 @@ df  = df.join(  df2, how='left' )
 df  = df.join(  df3, how='left' )
 
 
-#####################################################################
-##### Train sample data ##############################################
+#################################################################################
+##### Train sample data #########################################################
 coly = "is_attributed"
-df   = pd.read_csv("raw/train_100k.zip")
+df   = pd.read_csv("raw/train_100k.csv")
 
 df, col_pars = generate_train(df)
 df_X         = df.drop(coly, axis=1)
@@ -233,10 +232,10 @@ df_y         = df[[coly]]
 
 path = "train_100k/"
 os.makedirs(path, exist_ok=True)
-# df_X.to_parquet( f"{path}features.parquet")
-# df_y.to_parquet( f"{path}/target.parquet")
+df_X.to_parquet( f"{path}features.parquet")
+df_y.to_parquet( f"{path}/target.parquet")
 
-
+sys.exit()
 
 
 ##### Train data  ############################################
@@ -255,7 +254,7 @@ df_y.to_parquet( f"{path}/target.parquet")
 
 
 ##### Test Data  #############################################
-df = pd.read_csv("raw/test_10m.zip")
+df = pd.read_csv("raw/raw_10m.zip")
 df, col_pars = generate_train(df)
 df_X = df.drop(coly, axis=1)
 df_y = df[[coly]]

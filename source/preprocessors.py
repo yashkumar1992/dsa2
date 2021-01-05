@@ -861,11 +861,13 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
                             ['add', 'sub', 'mul', 'div',  'sqrt', 'log', 'abs', 'neg', 'inv','tan', square_])
     pars_genetic = pars.get('pars_genetic',
                              {'generations': 5, 'population_size': 10,  ### Higher than nb_features
+                              'metric': 'spearman',
                               'tournament_size': 20, 'stopping_criteria': 1.0, 'const_range': (-1., 1.),
                               'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
                               'p_point_mutation': 0.01, 'p_point_replace': 0.05,
                               'parsimony_coefficient' : 0.005,   ####   0.00005 Control Complexity
                               'max_samples' : 0.9, 'verbose' : 1,
+
                               #'n_components'      ### Control number of outtput features  : n_components
                               'random_state' :0, 'n_jobs' : 4,
                               })

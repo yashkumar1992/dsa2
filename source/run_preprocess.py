@@ -153,6 +153,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     #####  Processors  ###############################################################################
+    dfi_all[ 'coly' ] = df[ cols_group['coly'] ]
     #for colg, colg_list in cols_group.items() :
     #   if colg not in  ['colid']:
     #      dfi_all[colg]   = df[colg_list]   ## colnum colcat, coly
@@ -176,7 +177,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
        elif col_type == 'add_coly':
            pars['coly'] = cols_group['coly']
-           pars['dfy']  = df[ cols_group['coly'] ]
+           pars['dfy']  = dfi_all[ 'coly' ]  ### Transformed dfy
 
        ### Input columns or prevously Computed Columns ( colnum_bin )
        cols_list  = cols_group[cols_name] if cols_name in cols_group else list(dfi_all[cols_name].columns)
@@ -192,7 +193,7 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
           ### Merge sub-family
           cols_family_all[colj] = cols_family_all.get(colj, []) + colist
           dfi_all[colj]         = pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
-          save_features(dfi_all[colj], colj, path_features_store)
+          # save_features(dfi_all[colj], colj, path_features_store)
 
 
     ######  Merge AlL int dfXy  ##################################################################
