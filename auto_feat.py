@@ -123,6 +123,7 @@ def titanic1(path_model_out="") :
         'pars': {'pars_generic' :{
 
          ### Issue with Binary 1 or 0  : need to pass with Logistic
+
         'generations': 100, 'population_size': 100,  ### Higher than nb_features
         'tournament_size': 20, 'stopping_criteria': 1.0, 'const_range': (-1., 1.),
         'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
