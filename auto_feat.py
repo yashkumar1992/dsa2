@@ -120,7 +120,7 @@ def titanic1(path_model_out="") :
 
         {'uri': 'source/preprocessors.py::pd_col_genetic_transform',
 
-        'pars': {'coly' :  "Survived" , 'pars_generic' :{
+        'pars': {'pars_generic' :{
 
          ### Issue with Binary 1 or 0  : need to pass with Logistic
         'generations': 100, 'population_size': 100,  ### Higher than nb_features
