@@ -184,7 +184,6 @@ def get_test_data(name='boston'):
 
 def check1():
     #### python core_test_encoder.py check1
-
     df, col = get_test_data(name='boston')
     #############################################################
     from source.preprocessors import pd_col_genetic_transform  as pd_prepro
