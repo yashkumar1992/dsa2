@@ -153,8 +153,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     #####  Processors  ###############################################################################
-    dfi_all['colnum'] = df[colnum]
-    dfi_all['colcat'] = df[colcat]
+    #for colg, colg_list in cols_group.items() :
+    #   if colg not in  ['colid']:
+    #      dfi_all[colg]   = df[colg_list]   ## colnum colcat, coly
 
 
     for pipe_i in pipe_list_X :
@@ -164,13 +165,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        col_type    = pipe_i['type']
 
        pars        = pipe_i.get('pars', {})
-       pars['path_features_store']  = path_features_store
-       pars['path_pipeline_export'] = path_pipeline_export
-
-
-       cols_list   = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
-       df_         = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
-       logs(df_)
+       pars['path_features_store']  = path_features_store    ### intermdiate dataframe
+       pars['path_pipeline_export'] = path_pipeline_export   ### Store pipeline
 
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
@@ -178,18 +174,20 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            pars['colid']           = colid
            pars['colcross_single'] = cols_group.get('colcross', [])
 
-
-       cols_list     = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
-       if col_type == 'symbolic_transformer':
+       elif col_type == 'add_coly':
            pars['coly'] = cols_group['coly']
-           df_ = df
-       else:
-           df_           = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
+           pars['dfy']  = df[ cols_group['coly'] ]
 
+       ### Input columns or prevously Computed Columns ( colnum_bin )
+       cols_list  = cols_group[cols_name] if cols_name in cols_group else list(dfi_all[cols_name].columns)
+       df_        = df[ cols_list]        if cols_name in cols_group else dfi_all[cols_name]
+       #cols_list  = list(dfi_all[cols_name].columns)
+       #df_        = dfi_all[cols_name]
 
        dfi, col_pars = pipe_fun(df_, cols_list, pars= pars)
 
-       ### Concatenate colnum, colnum_bin into cols_family_all
+
+       ### Concatenate colnum, colnum_bin into cols_family_all , dfi_all  ###########################
        for colj, colist in  col_pars['cols_new'].items() :
           ### Merge sub-family
           cols_family_all[colj] = cols_family_all.get(colj, []) + colist
@@ -260,6 +258,11 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
 
     #####  Processors  #############################################################################
+    #for colg, colg_list in cols_group.items() :
+    #   if colg not in  ['colid', 'coly' ]:
+    #      dfi_all[colg]   = df[colg_list]   ## colnum colcat, coly
+
+
     for pipe_i in pipe_list_X :
        log("###################", pipe_i, "#######################################################")
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
@@ -272,14 +275,17 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
        cols_list  = cols_group[cols_name]       if cols_name in cols_group else  cols_family_full[cols_name]
        df_        = df[ cols_group[cols_name]]  if cols_name in cols_group else  dfi_all[cols_name]
-       logs(df, cols_list)
+       # cols_list  = list(dfi_all[cols_name].columns)
+       # df_        = dfi_all[cols_name]
+       logs(df_, cols_list)
 
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
            pars['dfcat_hot']       = dfi_all['colcat_onehot']
            pars['colid']           = colid
            pars['colcross_single'] = cols_group.get('colcross', [])
-
+       elif col_type == 'add_coly':
+           pass
 
        dfi, col_pars             = pipe_fun(df_, cols_list, pars= pars)
 
