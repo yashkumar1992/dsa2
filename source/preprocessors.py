@@ -832,6 +832,27 @@ def pd_colcat_minhash(df, col, pars):
 
 
 
+def os_convert_topython_code(txt):
+    # from sympy import sympify
+    # converter = {
+    #     'sub': lambda x, y: x - y,
+    #     'div': lambda x, y: x / y,
+    #     'mul': lambda x, y: x * y,
+    #     'add': lambda x, y: x + y,
+    #     'neg': lambda x: -x,
+    #     'pow': lambda x, y: x ** y
+    # }
+    # formula = sympify( txt, locals=converter)
+    # print(formula)
+    pass
+
+
+def save_json(js, pfile, mode='a'):
+    import  json
+    with open(pfile, mode=mode) as fp :
+        json.dump(js, fp)
+
+
 def pd_col_genetic_transform(df=None, col=None, pars=None):
     """
         Find Symbolic formulae for faeture engineering
@@ -840,58 +861,74 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     prefix = 'col_genetic'
     ######################################################################################
     from gplearn.genetic import SymbolicTransformer
-    from sympy import sympify
+    from gplearn.functions import make_function
+    import random
     coly     = pars['coly']
-    train_X  = df [col].fillna(method='ffill')
-    train_y  = df [coly]
+    colX     = [col_ for col_ in col if col_ not in coly]
+    train_X  = df [colX].fillna(method='ffill')
+    #feature_name_ = [f'X{ii_}' for ii_ in range(train_X.shape[1])]
+    feature_name_ = colX
+
+    log(pars)
+
+    def squaree(x):  return x * x
+    square_ = make_function(function=squaree, name='square_', arity=1)
 
     function_set = pars.get('function_set',
-                            ['add', 'sub', 'mul', 'div',  'sqrt', 'log', 'abs', 'neg', 'inv','tan'])
-    pars_genetic =  pars.get('pars_genetic',
-                             {'generations': 5, 'n_components': 1, 'population_size': 5,
+                            ['add', 'sub', 'mul', 'div',  'sqrt', 'log', 'abs', 'neg', 'inv','tan', square_])
+    pars_genetic = pars.get('pars_genetic',
+                             {'generations': 5, 'population_size': 10,  ### Higher than nb_features
                               'tournament_size': 20, 'stopping_criteria': 1.0, 'const_range': (-1., 1.),
                               'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
-                              'p_point_mutation': 0.01, 'p_point_replace': 0.05})
+                              'p_point_mutation': 0.01, 'p_point_replace': 0.05,
+                              'parsimony_coefficient' : 0.005,   ####   0.00005 Control Complexity
+                              'max_samples' : 0.9, 'verbose' : 1,
+                              #'n_components'      ### Control number of outtput features  : n_components
+                              'random_state' :0, 'n_jobs' : 4,
+                              })
 
-    gp = SymbolicTransformer(hall_of_fame=100,
-                            function_set=function_set,
-                            parsimony_coefficient=0.0005,
-                            max_samples=0.9, verbose=1,
-                            random_state=0, n_jobs=6, **pars_genetic)
+    if 'path_pipeline' in pars :   #### Inference time
+        gp = load(pars['path_pipeline'] + f"/{prefix}_model.pkl" )
 
-    train_y_ = train_y[~train_X.isna().any(axis=1)]
-    train_X_ = train_X[~train_X.isna().any(axis=1)]
+    else :     ### Training time
+        train_y  = df [coly]
+        gp = SymbolicTransformer(hall_of_fame  = train_X.shape[1] + 1,  ### Buggy
+                                 n_components  = pars_genetic.get('n_components', train_X.shape[1] ),
+                                 feature_names = feature_name_,
+                                 function_set  = function_set,
+                                 **pars_genetic)
+        gp.fit(train_X, train_y)
 
-    gp.fit(train_X_, train_y_)
     df_genetic = gp.transform(train_X)
-    df_genetic = pd.DataFrame(df_genetic, columns=["gen_"+str(a) for a in range(df_genetic.shape[1])])
-
+    tag = random.randint(0,10)   #### UNIQUE TAG
+    col_genetic  = [ f"gen_{tag}_{i}" for i in range(df_genetic.shape[1])]
+    df_genetic   = pd.DataFrame(df_genetic, columns= col_genetic)
     df_genetic.index = train_X.index
+    pars_gen_all = {'pars_genetic'  : pars_genetic , 'function_set' : function_set }
 
-    converter = {
-        'sub': lambda x, y: x - y,
-        'div': lambda x, y: x / y,
-        'mul': lambda x, y: x * y,
-        'add': lambda x, y: x + y,
-        'neg': lambda x: -x,
-        'pow': lambda x, y: x ** y
-    }
-    formula = sympify(str(gp), locals=converter)
+    ##### Formulae Exrraction #####################################
+    formula   = str(gp)
+    flist     = formula.split(",")
+    form_dict = {  flist[i] : x for i,x in enumerate(col_genetic) }
+    pars_gen_all['formulae_dict'] = form_dict
+    log(form_dict)
+    # col_pars['map_dict'] = dict(zip(train_X.columns.to_list(), feature_name_))
 
-    col_genetic = list(df_genetic.columns)
+    col_new = col_genetic
+
     ###################################################################################
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
        save_features(df_genetic, 'df_genetic', pars['path_features_store'])
-       save(gp,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
-       save(formula,      pars['path_pipeline_export'] + f"/{prefix}_formula.pkl")
+       save(gp,             pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+       save(col_genetic,    pars['path_pipeline_export'] + f"/{prefix}.pkl" )
+       save(pars_gen_all,   pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+       # save(form_dict,      pars['path_pipeline_export'] + f"/{prefix}_formula.pkl")
+       save_json(form_dict, pars['path_pipeline_export'] + f"/{prefix}_formula.json")   ### Human readable
 
-       save(col_genetic,  pars['path_pipeline_export'] + f"/{prefix}.pkl" )
-       save(pars_genetic, pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
-       save(gp,           pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
 
     col_pars = {'prefix' : prefix , 'path' :   pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
     col_pars['cols_new'] = {
-     'col_genetic' :  col_genetic  ### list
+       prefix :  col_new  ### list
     }
     return df_genetic, col_pars
 
