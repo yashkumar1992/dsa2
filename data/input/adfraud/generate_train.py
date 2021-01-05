@@ -189,8 +189,6 @@ def generateAggregateFeatures(df):
 
 
 
-
-
 def generatePastClickFeatures(df):
     # Time between past clicks
     df2 = pd.DataFrame([], index= df.index)  

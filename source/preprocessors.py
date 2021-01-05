@@ -224,7 +224,7 @@ def pd_filter_rows(df, col, pars):
     coly = col
     filter_pars =  pars
     def isfloat(x):
-        x = re.sub("[!@,#$+%*:()'-]", "", x)
+        #x = re.sub("[!@,#$+%*:()'-]", "", str(x))
         try :
             a= float(x)
             return 1
@@ -240,6 +240,54 @@ def pd_filter_rows(df, col, pars):
     del df['_isfloat']
 
     return df, col
+
+
+def pd_filter_resample(df=None, col=None, pars=None):
+    """
+        Over-sample, Under-sample
+    """
+    prefix = 'col_imbalance'
+    ######################################################################################
+    from imblearn.over_sampling import SMOTE
+
+    model_resample = { 'SMOTE' : SMOTE}[  pars.get("model_name", 'SMOTE') ]
+
+    pars_resample  = pars.get('pars_resample',
+                             {'sampling_strategy' : 'auto', 'random_state':0, 'k_neighbors':5, 'n_jobs': 2})
+
+    if 'path_pipeline' in pars :   #### Inference time
+        return df, {'col_new': col }
+        #gp   = load(pars['path_pipeline'] + f"/{prefix}_model.pkl" )
+        #pars = load(pars['path_pipeline'] + f"/{prefix}_pars.pkl" )
+
+    else :     ### Training time
+        colX          = col # [col_ for col_ in col if col_ not in coly]
+        train_X       = df[colX].fillna(method='ffill')
+        coly     = pars['coly']
+        train_y  = pars['dfy']
+        gp       = model_resample( **pars_resample)
+        X_resample, y_resample = gp.fit_resample(train_X, train_y)
+
+        df2       = pd.DataFrame(X_resample, columns = col, index=train_X.index)
+        df2[coly] = y_resample
+
+
+    col_new = col
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(df2, 'df_resample', pars['path_features_store'])
+       save(gp,             pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+       save(col,            pars['path_pipeline_export'] + f"/{prefix}.pkl" )
+       save(pars_resample,   pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+
+
+    col_pars = {'prefix' : prefix , 'path' :   pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
+    col_pars['cols_new'] = {
+       prefix :  col_new  ### list
+    }
+    return df2, col_pars
+
+
 
 
 
@@ -869,6 +917,10 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
        prefix :  col_new  ### list
     }
     return df_genetic, col_pars
+
+
+
+
 
 
 
