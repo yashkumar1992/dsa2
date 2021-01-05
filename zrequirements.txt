@@ -8,7 +8,7 @@ matplotlib
 pyarrow
 pyod
 fire
-tensorflow_text
+# tensorflow_text
 tensorflow_text>=2.0.0rc0
 #cycler==0.10.0
 #joblib==0.16.0
