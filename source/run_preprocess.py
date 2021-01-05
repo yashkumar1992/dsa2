@@ -164,13 +164,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        col_type    = pipe_i['type']
 
        pars        = pipe_i.get('pars', {})
-       pars['path_features_store']  = path_features_store
-       pars['path_pipeline_export'] = path_pipeline_export
-
-
-       cols_list   = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
-       df_         = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
-       logs(df_)
+       pars['path_features_store']  = path_features_store    ### intermdiate dataframe
+       pars['path_pipeline_export'] = path_pipeline_export   ### Store pipeline
 
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
@@ -178,18 +173,18 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            pars['colid']           = colid
            pars['colcross_single'] = cols_group.get('colcross', [])
 
-
-       cols_list     = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
-       if col_type == 'symbolic_transformer':
+       elif col_type == 'add_coly':
            pars['coly'] = cols_group['coly']
-           df_ = df
-       else:
-           df_           = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
+           pars['dfy']  = df[ cols_group['coly'] ]
 
+       ### Input columns or Computed Columns 
+       cols_list  = cols_group[cols_name] if cols_name in cols_group else list(dfi_all[cols_name].columns)
+       df_        = df[ cols_list]        if cols_name in cols_group else dfi_all[cols_name]
 
        dfi, col_pars = pipe_fun(df_, cols_list, pars= pars)
 
-       ### Concatenate colnum, colnum_bin into cols_family_all
+
+       ### Concatenate colnum, colnum_bin into cols_family_all  ###########################
        for colj, colist in  col_pars['cols_new'].items() :
           ### Merge sub-family
           cols_family_all[colj] = cols_family_all.get(colj, []) + colist
