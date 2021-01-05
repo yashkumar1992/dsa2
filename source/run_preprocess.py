@@ -153,9 +153,9 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     #####  Processors  ###############################################################################
-    for colg, colg_list in cols_group.items() :
-       if colg not in  ['colid']:
-          dfi_all[colg]   = df[colg_list]   ## colnum colcat, coly
+    #for colg, colg_list in cols_group.items() :
+    #   if colg not in  ['colid']:
+    #      dfi_all[colg]   = df[colg_list]   ## colnum colcat, coly
 
 
     for pipe_i in pipe_list_X :
@@ -179,10 +179,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            pars['dfy']  = df[ cols_group['coly'] ]
 
        ### Input columns or prevously Computed Columns ( colnum_bin )
-       #cols_list  = cols_group[cols_name] if cols_name in cols_group else list(dfi_all[cols_name].columns)
-       #df_        = df[ cols_list]        if cols_name in cols_group else dfi_all[cols_name]
-       cols_list  = list(dfi_all[cols_name].columns)
-       df_        = dfi_all[cols_name]
+       cols_list  = cols_group[cols_name] if cols_name in cols_group else list(dfi_all[cols_name].columns)
+       df_        = df[ cols_list]        if cols_name in cols_group else dfi_all[cols_name]
+       #cols_list  = list(dfi_all[cols_name].columns)
+       #df_        = dfi_all[cols_name]
 
        dfi, col_pars = pipe_fun(df_, cols_list, pars= pars)
 
