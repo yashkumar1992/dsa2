@@ -863,13 +863,10 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     from gplearn.genetic import SymbolicTransformer
     from gplearn.functions import make_function
     import random
-    coly     = pars['coly']
-    colX     = [col_ for col_ in col if col_ not in coly]
-    train_X  = df [colX].fillna(method='ffill')
-    #feature_name_ = [f'X{ii_}' for ii_ in range(train_X.shape[1])]
-    feature_name_ = colX
 
-    log(pars)
+    colX          = col # [col_ for col_ in col if col_ not in coly]
+    train_X       = df[colX].fillna(method='ffill')
+    feature_name_ = colX
 
     def squaree(x):  return x * x
     square_ = make_function(function=squaree, name='square_', arity=1)
@@ -891,7 +888,8 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
         gp = load(pars['path_pipeline'] + f"/{prefix}_model.pkl" )
 
     else :     ### Training time
-        train_y  = df [coly]
+        coly     = pars['coly']
+        train_y  = pars['dfy']
         gp = SymbolicTransformer(hall_of_fame  = train_X.shape[1] + 1,  ### Buggy
                                  n_components  = pars_genetic.get('n_components', train_X.shape[1] ),
                                  feature_names = feature_name_,
@@ -899,6 +897,7 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
                                  **pars_genetic)
         gp.fit(train_X, train_y)
 
+    ##### Transform Data  #########################################
     df_genetic = gp.transform(train_X)
     tag = random.randint(0,10)   #### UNIQUE TAG
     col_genetic  = [ f"gen_{tag}_{i}" for i in range(df_genetic.shape[1])]
@@ -907,11 +906,11 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     pars_gen_all = {'pars_genetic'  : pars_genetic , 'function_set' : function_set }
 
     ##### Formulae Exrraction #####################################
-    formula   = str(gp)
-    flist     = formula.split(",")
-    form_dict = {  flist[i] : x for i,x in enumerate(col_genetic) }
+    formula   = str(gp).replace("[","").replace("]","")
+    flist     = formula.split(",\n")
+    form_dict = {  x: flist[i]  for i,x in enumerate(col_genetic) }
     pars_gen_all['formulae_dict'] = form_dict
-    log(form_dict)
+    log("########## Formulae ", form_dict)
     # col_pars['map_dict'] = dict(zip(train_X.columns.to_list(), feature_name_))
 
     col_new = col_genetic
