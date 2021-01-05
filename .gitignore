@@ -140,4 +140,12 @@ dmypy.json
 /ztmp/talkingdata-adtracking-fraud-detection
 /ztmp
 /data/input/adfraud/train
-/data/input/adfraud/test
+/data/input/adfraud/test./.git/objects/pack/pack-02361b52b4017b148e06b4921cfd31366c47f4ee.pack
+./source/bin/cross_feature_rl_CAFEM.zip
+./source/bin/reinforcement_feature_CAFEM/data/40910/40910.arff
+./.git/objects/pack/pack-02361b52b4017b148e06b4921cfd31366c47f4ee.pack
+./source/bin/cross_feature_rl_CAFEM.zip
+./source/bin/reinforcement_feature_CAFEM/data/40910/40910.arff
+./.git/objects/pack/pack-02361b52b4017b148e06b4921cfd31366c47f4ee.pack
+./source/bin/cross_feature_rl_CAFEM.zip
+./source/bin/reinforcement_feature_CAFEM/data/40910/40910.arff
