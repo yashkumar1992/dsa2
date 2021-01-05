@@ -69,7 +69,8 @@ cols_input_type_2 = {
     ,"coldate" :  []
     ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
 
-    ,'colgen'  : [  'Survived', "Pclass", "Age","SibSp", "Parch","Fare" ]
+    ,'colgen'  : [
+                    "Pclass", "Age","SibSp", "Parch","Fare" ]
 }
 
 
@@ -94,7 +95,7 @@ def titanic1(path_model_out="") :
     model_dict = {'model_pars': {
     ### LightGBM API model   #######################################
      'model_class': model_class
-    ,'model_pars' : {'objective': 'binary', 'n_estimators':10,
+    ,'model_pars' : {'objective': 'binary', 'n_estimators':100,
                     }
 
     , 'post_process_fun' : post_process_fun
@@ -117,26 +118,27 @@ def titanic1(path_model_out="") :
         # {'uri': 'source/preprocessors.py::pd_coltext_universal_google',   'pars': {}, 'cols_family': 'coltext',     'cols_out': 'coltext_universal_google',     'type': ''    },
 
 
-        {'uri': 'source/preprocessors.py::pd_col_genetic_transform',       
+        {'uri': 'source/preprocessors.py::pd_col_genetic_transform',
 
-                'pars': {'coly' :  "Survived" , 'pars_generic' :{
+        'pars': {'pars_generic' :{
 
-'generations': 100, 'population_size': 100,  ### Higher than nb_features
-                              'tournament_size': 20, 'stopping_criteria': 1.0, 'const_range': (-1., 1.),
-                              'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
-                              'p_point_mutation': 0.01, 'p_point_replace': 0.05,
-                              'parsimony_coefficient' : 0.005,   ####   0.00005 Control Complexity
-                              'max_samples' : 0.9, 'verbose' : 1,
-                              #'n_components'      ### Control number of outtput features  : n_components
-                              'random_state' :0, 'n_jobs' : 4,
-                              
+         ### Issue with Binary 1 or 0  : need to pass with Logistic
+        'generations': 100, 'population_size': 100,  ### Higher than nb_features
+        'tournament_size': 20, 'stopping_criteria': 1.0, 'const_range': (-1., 1.),
+        'p_crossover': 0.9, 'p_subtree_mutation': 0.01, 'p_hoist_mutation': 0.01,
+        'p_point_mutation': 0.01, 'p_point_replace': 0.05,
+        'parsimony_coefficient' : 0.0005,   ####   0.00005 Control Complexity
+        'max_samples' : 0.9, 'verbose' : 1,
+        #'n_components'      ### Control number of outtput features  : n_components
+        'random_state' :0, 'n_jobs' : 4,
+
                      }
 
 
 
                 },
 
-                'cols_family': 'colgen',     'cols_out': 'col_genetic',     'type': ''             },
+                'cols_family': 'colgen',     'cols_out': 'col_genetic',     'type': 'add_coly'             },
 
 
 
@@ -160,7 +162,7 @@ def titanic1(path_model_out="") :
       #  'coldate',
       #  'coltext',
       'cols_model_group': [ #'colnum',  ### should be optional 'colcat'
-          
+
                             #'colcat_bin',
                             # 'colcat_bin',
                             # 'colnum_onehot',
@@ -230,5 +232,5 @@ python  core_test_encoder.py  run_all
 if __name__ == "__main__":
     import fire
     fire.Fire()
-    
+
 
