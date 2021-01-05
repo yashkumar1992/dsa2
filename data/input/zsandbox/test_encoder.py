@@ -23,10 +23,14 @@ print("data path", dir_data,"\n")
 print("current path", os.getcwd())
 print( "\n\n" )
 
-
-
 ###### Import ########################################################################
 from source import util_feature
+from source.run_preprocessor import pd_colnum_bin
+print(pd_colnum_bin)
+
+
+
+###### Custom ########################################################################
 config_file  =  root2 + "/" + os.path.basename(__file__)  ### name of file which contains data configuration
 
 
