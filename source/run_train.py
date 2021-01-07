@@ -39,6 +39,14 @@ def save_features(df, name, path):
 
 
 def model_dict_load(model_dict, config_path, config_name, verbose=True):
+    """
+       load the model dict from the python config file.
+    :param model_dict:
+    :param config_path:
+    :param config_name:
+    :param verbose:
+    :return:
+    """
     if model_dict is None :
        log("#### Model Params Dynamic loading  ###############################################")
        model_dict_fun = load_function_uri(uri_name=config_path + "::" + config_name)
@@ -51,18 +59,20 @@ def model_dict_load(model_dict, config_path, config_name, verbose=True):
 ##### train    #####################################################################################
 def map_model(model_name):
     """
-      hacky way
-      model_file.py / mode_namel
+      Get the Class of the object stored in source/models/
+    :param model_name:   model_sklearn.py
+    :return: model module
     """
     model_file = model_name
     if  'optuna' in model_name : model_file = 'model_optuna'
+
     try :
        ##  'models.model_bayesian_pyro'   'model_widedeep'
        mod    = f'models.{model_file}'
        modelx = importlib.import_module(mod)
 
     except :
-        ### Al SKLEARN API
+        ### All SKLEARN API
         #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
        mod    = 'models.model_sklearn'
        modelx = importlib.import_module(mod)
@@ -70,12 +80,12 @@ def map_model(model_name):
 
 
 def train(model_dict, dfX, cols_family, post_process_fun):
-    """
-    :param model_dict:
-    :param dfX:
-    :param cols_family:
+    """  Train the model using model_dict, save model, save prediction
+    :param model_dict:  dict containing params
+    :param dfX:  pd.DataFrame
+    :param cols_family: dict of list containing column names
     :param post_process_fun:
-    :return:
+    :return: dfXtrain , dfXval  DataFrame containing prediction.
     """
     model_pars, compute_pars = model_dict['model_pars'], model_dict['compute_pars']
     data_pars                = model_dict['data_pars']
@@ -232,11 +242,16 @@ def run_train(config_name, path_data_train=None, path_output=None, config_path="
     #dfXy.to_csv(path_check_out + "/dfX.csv")  # train input data generate csv
     dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data  generate parquet
     #dfXytest.to_csv(path_check_out + "/dfXtest.csv")  # Test input data  generate csv
-    log("######### Finish ##########################################################", )
+    log("######### Finish #############################################################", )
 
 
 
-def run_data_check(path_output, scoring):
+def run_model_check(path_output, scoring):
+    """
+    :param path_output:
+    :param scoring:
+    :return:
+    """
     import pandas as pd
     try :
         #### Load model
