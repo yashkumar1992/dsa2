@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 random.seed(100)
 
 ## load df
-df = pd.read_csv("raw/train_sample.csv")
+df = pd.read_csv("raw/train_100k.csv")
 
 
 ############  Feature Engineering  ###################################################################

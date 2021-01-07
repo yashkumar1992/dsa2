@@ -117,8 +117,9 @@ def titanic1(path_model_out="") :
         # {'uri': 'source/preprocessors.py::pd_coltext_universal_google',   'pars': {}, 'cols_family': 'coltext',     'cols_out': 'coltext_universal_google',     'type': ''    },
 
 
-        {'uri': 'source/preprocessors.py::pd_col_genetic_transform',       'pars': {'coly' :  "Survived" },
-                'cols_family': 'colgen',     'cols_out': 'col_genetic',     'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_col_genetic_transform',       'pars': {  ## 'pars_genetic' : {}
+                                                                                   },
+                'cols_family': 'colgen',     'cols_out': 'col_genetic',     'type': 'add_coly'             },
 
 
         {'uri': 'source/preprocessors.py::pd_colnum_quantile_norm',       'pars': {'colsparse' :  [] },
@@ -172,6 +173,38 @@ def titanic1(path_model_out="") :
 
 
 
+def get_test_data(name='boston'):
+    import pandas as pd
+    if name == 'boston' :
+        from sklearn.datasets import load_boston
+        d = load_boston(return_X_y=False)
+        col = d['feature_names']
+        df = pd.DataFrame( d['data'], columns=col)
+    return df, col
+
+
+def check1():
+    #### python core_test_encoder.py check1
+    #############################################################
+    from source.preprocessors import pd_col_genetic_transform  as pd_prepro
+    pars = { 'path_pipeline_export' : ''
+
+    }
+
+
+    ############################################################
+    for name in  ['boston'] :
+        df, col = get_test_data(name)
+        dfnew, col_pars = pd_prepro(df, col, pars)
+        print(pd_prepro, name)
+        print(dfnew[col].head(3).T,  col)
+        print(dfnew.head(3).T,  col_pars)
+
+
+
+
+
+
 
 
 
@@ -202,9 +235,7 @@ from core_run import predict
 python  core_test_encoder.py  data_profile
 python  core_test_encoder.py  preprocess  --nsample 100
 python  core_test_encoder.py  train       --nsample 200
-python  core_test_encoder.py  check
 python  core_test_encoder.py  predict
-python  core_test_encoder.py  run_all
 
 
 """

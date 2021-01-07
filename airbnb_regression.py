@@ -151,7 +151,6 @@ def airbnb_lightgbm(path_model_out="") :
         ### Pipeline for data processing ########################
         'pipe_list': [
             {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
-            {'uri': 'source/preprocessors.py::pd_col_genetic_transform','pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_gt',      'type': 'symbolic_transformer'             },
             {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
             {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },

@@ -131,7 +131,7 @@ def plot_model_information(bst, validation_metrics, my_own_metrics):
 
 
 # Create features from   timestamps
-click_data = pd.read_csv('../input/feature-engineering-data/train_sample.csv', 
+click_data = pd.read_csv('../input/feature-engineering-data/train_100k.csv',
                          parse_dates=['click_time'])
 click_times = click_data['click_time']
 clicks = click_data.assign(day=click_times.dt.day.astype('uint8'),

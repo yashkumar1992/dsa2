@@ -46,7 +46,7 @@ from util_feature import  save, load_function_uri, load_dataset
 ####################################################################################################
 ####################################################################################################
 def save_features(df, name, path=None):
-    """
+    """ Save dataframe on disk
     :param df:
     :param name:
     :param path:
@@ -74,6 +74,14 @@ def load_features(name, path):
 
 
 def model_dict_load(model_dict, config_path, config_name, verbose=True):
+    """
+
+    :param model_dict:
+    :param config_path:
+    :param config_name:
+    :param verbose:
+    :return:
+    """
     if model_dict is None :
        log("#### Model Params Dynamic loading  ###############################################")
        model_dict_fun = load_function_uri(uri_name=config_path + "::" + config_name)
@@ -87,6 +95,9 @@ def model_dict_load(model_dict, config_path, config_name, verbose=True):
 def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={}, path_features_store=None):
     """
+      Used for trainiing only
+      Save params on disk
+
     :param path_train_X:
     :param path_train_y:
     :param path_pipeline_export:
@@ -153,8 +164,10 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 
     #####  Processors  ###############################################################################
-    dfi_all['colnum'] = df[colnum]
-    dfi_all['colcat'] = df[colcat]
+    dfi_all[ 'coly' ] = df[ cols_group['coly'] ]
+    #for colg, colg_list in cols_group.items() :
+    #   if colg not in  ['colid']:
+    #      dfi_all[colg]   = df[colg_list]   ## colnum colcat, coly
 
 
     for pipe_i in pipe_list_X :
@@ -164,13 +177,8 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
        col_type    = pipe_i['type']
 
        pars        = pipe_i.get('pars', {})
-       pars['path_features_store']  = path_features_store
-       pars['path_pipeline_export'] = path_pipeline_export
-
-
-       cols_list   = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
-       df_         = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
-       logs(df_)
+       pars['path_features_store']  = path_features_store    ### intermdiate dataframe
+       pars['path_pipeline_export'] = path_pipeline_export   ### Store pipeline
 
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
@@ -178,23 +186,25 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
            pars['colid']           = colid
            pars['colcross_single'] = cols_group.get('colcross', [])
 
-
-       cols_list     = cols_group[cols_name]  if cols_name in cols_group else list(dfi_all[cols_name].columns)
-       if col_type == 'symbolic_transformer':
+       elif col_type == 'add_coly':
            pars['coly'] = cols_group['coly']
-           df_ = df
-       else:
-           df_           = df[ cols_list]         if cols_name in cols_group else dfi_all[cols_name]
+           pars['dfy']  = dfi_all[ 'coly' ]  ### Transformed dfy
 
+       ### Input columns or prevously Computed Columns ( colnum_bin )
+       cols_list  = cols_group[cols_name] if cols_name in cols_group else list(dfi_all[cols_name].columns)
+       df_        = df[ cols_list]        if cols_name in cols_group else dfi_all[cols_name]
+       #cols_list  = list(dfi_all[cols_name].columns)
+       #df_        = dfi_all[cols_name]
 
        dfi, col_pars = pipe_fun(df_, cols_list, pars= pars)
 
-       ### Concatenate colnum, colnum_bin into cols_family_all
+
+       ### Concatenate colnum, colnum_bin into cols_family_all , dfi_all  ###########################
        for colj, colist in  col_pars['cols_new'].items() :
           ### Merge sub-family
           cols_family_all[colj] = cols_family_all.get(colj, []) + colist
           dfi_all[colj]         = pd.concat((dfi_all[colj], dfi), axis=1)  if colj in dfi_all else dfi
-          save_features(dfi_all[colj], colj, path_features_store)
+          # save_features(dfi_all[colj], colj, path_features_store)
 
 
     ######  Merge AlL int dfXy  ##################################################################
@@ -222,7 +232,14 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
 def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_pars={}, cols_group=None):
     """
-      At inference time
+       At Inference time, load model, params and preprocess data.
+       Not saving the data, only output final dataframe
+    :param df: input dataframe
+    :param path_pipeline:  path where processors are stored
+    :param preprocess_pars: dict of params specific to preprocessing
+    :param cols_group:  dict of column family
+    :return: dfXy  Final dataframe,
+             cols_family_full : dict of column family
     """
     from util_feature import load, load_function_uri, load_dataset
 
@@ -260,6 +277,11 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
 
     #####  Processors  #############################################################################
+    #for colg, colg_list in cols_group.items() :
+    #   if colg not in  ['colid', 'coly' ]:
+    #      dfi_all[colg]   = df[colg_list]   ## colnum colcat, coly
+
+
     for pipe_i in pipe_list_X :
        log("###################", pipe_i, "#######################################################")
        pipe_fun    = load_function_uri(pipe_i['uri'])    ### Load the code definition  into pipe_fun
@@ -272,14 +294,17 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
        cols_list  = cols_group[cols_name]       if cols_name in cols_group else  cols_family_full[cols_name]
        df_        = df[ cols_group[cols_name]]  if cols_name in cols_group else  dfi_all[cols_name]
-       logs(df, cols_list)
+       # cols_list  = list(dfi_all[cols_name].columns)
+       # df_        = dfi_all[cols_name]
+       logs(df_, cols_list)
 
        if col_type == 'cross':
            pars['dfnum_hot']       = dfi_all['colnum_onehot']  ### dfnum_hot --> dfcross
            pars['dfcat_hot']       = dfi_all['colcat_onehot']
            pars['colid']           = colid
            pars['colcross_single'] = cols_group.get('colcross', [])
-
+       elif col_type == 'add_coly':
+           pass
 
        dfi, col_pars             = pipe_fun(df_, cols_list, pars= pars)
 
@@ -302,13 +327,22 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
         cols_family_full['colid']=colid
     cols_family_full['colX'] = colXy
 
-
     return dfXy, cols_family_full
 
 
 def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={},  path_features_store=None):
-
+    """
+        Load pre-computed dataframe
+    :param path_train_X:
+    :param path_train_y:
+    :param path_pipeline_export:
+    :param cols_group:
+    :param n_sample:
+    :param preprocess_pars:
+    :param path_features_store:
+    :return:
+    """
     from source.util_feature import load
 
     dfXy    = pd.read_parquet(path_features_store + "/dfX/features.parquet")
@@ -330,9 +364,16 @@ def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", c
 ############CLI Command ############################################################################
 def run_preprocess(config_name, config_path, n_sample=5000,
                    mode='run_preprocess', model_dict=None):     #prefix "pre" added, in order to make if loop possible
+
     """
-      Configuration of the model is in config_model.py file
+    :param config_name:   titanic_lightgbm
+    :param config_path:   titanic_classifier.py
+    :param n_sample:     nb of rows used
+    :param mode:     'run_preprocess'  / 'load_prerocess'
+    :param model_dict:  Optional provide the dict model
+    :return: None,  only show and save dataframe
     """
+
     model_dict = model_dict_load(model_dict, config_path, config_name, verbose=True)
 
     m = model_dict['global_pars']
@@ -369,6 +410,12 @@ def run_preprocess(config_name, config_path, n_sample=5000,
     ### Generate actual column names from colum groups : colnum , colcat
     model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])
     log(  model_dict['data_pars']['cols_model'] , model_dict['data_pars']['coly'])
+
+
+    log("#### Save data on disk #############################")
+    dfXy.to_parquet( path_output  +"/dfXy.parquet"  )
+    save(model_dict, path_output  +"/model_dict.pkl")
+
 
     log("######### finish #################################", )
 

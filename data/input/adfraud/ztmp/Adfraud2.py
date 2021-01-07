@@ -5,7 +5,7 @@ import copy
 random.seed(100)
 
 
-df=pd.read_csv("raw/train_sample.csv")
+df=pd.read_csv("raw/train_100k.csv")
 df.head()
 
 df.drop(columns=["attributed_time"], inplace=True)

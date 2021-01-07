@@ -31,6 +31,19 @@ def log(*s, n=0, m=1):
 from util_feature import load, load_function_uri, load_dataset
 ####################################################################################################
 def model_dict_load(model_dict, config_path, config_name, verbose=True):
+    """model_dict_load 
+
+    [extended_summary]
+
+    Args:
+        model_dict ([type]): [description]
+        config_path ([type]): [description]
+        config_name ([type]): [description]
+        verbose (bool, optional): [description]. Defaults to True.
+
+    Returns:
+        [type]: [description]
+    """
     if model_dict is None :
        log("#### Model Params Dynamic loading  ###############################################")
        model_dict_fun = load_function_uri(uri_name=config_path + "::" + config_name)
@@ -56,7 +69,18 @@ def map_model(model_name):
 
 def predict(model_name, path_model, dfX, cols_family):
     """
+
+    Arguments:
+        model_name {[str]} -- [description]
+        path_model {[str]} -- [description]
+        dfX {[DataFrame]} -- [description]
+        cols_family {[dict]} -- [description]
+
+    Returns: ypred
+        [numpy.array] -- [vector of prediction]
     """
+
+
     modelx = map_model(model_name)
     modelx.reset()
     log(modelx, path_model)

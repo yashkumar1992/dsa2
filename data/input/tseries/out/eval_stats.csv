@@ -1,0 +1,7 @@
+run_id, feat_name, feat_name_long, feat_type, model_params, metric_name, metric_val
+3,roling_demand,Mean of the variable estimates,lag_features,params = {"objective" : "poisson","metric" :"rmse","force_row_wise" : True,"learning_rate" : 0.075,
+"sub_row" : 0.75,"bagging_freq" : 1,"lambda_l2" : 0.1,"metric": ["rmse"],'verbosity': 1,'num_iterations' : 250,
+},rmse,1.16548
+3,roling_price,Mean of the price estimates,lag_features,params = {"objective" : "poisson","metric" :"rmse","force_row_wise" : True,"learning_rate" : 0.075,
+"sub_row" : 0.75,"bagging_freq" : 1,"lambda_l2" : 0.1,"metric": ["rmse"],'verbosity': 1,'num_iterations' : 250,
+},rmse,1.00693
