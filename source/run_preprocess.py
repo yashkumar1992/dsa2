@@ -315,7 +315,16 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
 def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", cols_group=None, n_sample=5000,
                preprocess_pars={},  path_features_store=None):
-
+    """
+    :param path_train_X:
+    :param path_train_y:
+    :param path_pipeline_export:
+    :param cols_group:
+    :param n_sample:
+    :param preprocess_pars:
+    :param path_features_store:
+    :return:
+    """
     from source.util_feature import load
 
     dfXy    = pd.read_parquet(path_features_store + "/dfX/features.parquet")
@@ -338,7 +347,19 @@ def preprocess_load(path_train_X="", path_train_y="", path_pipeline_export="", c
 def run_preprocess(config_name, config_path, n_sample=5000,
                    mode='run_preprocess', model_dict=None):     #prefix "pre" added, in order to make if loop possible
     """
-      Configuration of the model is in config_model.py file
+       Run preprocessor  and  save data on disk  and print on screen the results.
+
+       Input : config function name
+          tiatanic_classifier.py
+          titanic_lightgbm
+
+
+       Output :
+           Data final are saved        in path_output
+           Data Intermediate are saved in path_features_store,
+           Pipelins params are saved   in path_features_store
+
+
     """
     model_dict = model_dict_load(model_dict, config_path, config_name, verbose=True)
 
@@ -376,6 +397,12 @@ def run_preprocess(config_name, config_path, n_sample=5000,
     ### Generate actual column names from colum groups : colnum , colcat
     model_dict['data_pars']['cols_model'] = sum([  cols[colgroup] for colgroup in model_dict['data_pars']['cols_model_group'] ]   , [])
     log(  model_dict['data_pars']['cols_model'] , model_dict['data_pars']['coly'])
+
+
+    log("#### Save data on disk #############################")
+    dfXy.to_parquet( path_output  +"/dfXy.parquet"  )
+    save(model_dict, path_output  +"/model_dict.pkl")
+
 
     log("######### finish #################################", )
 

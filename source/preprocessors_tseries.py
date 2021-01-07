@@ -119,7 +119,7 @@ warnings.filterwarnings('ignore')
 import pandas as pd
 import numpy as np
 
-from deltapy import transform, interact, mapper, # extract
+from deltapy import transform, interact, mapper, extract
 
 try :
   import pandasvault
@@ -138,6 +138,7 @@ def data_copy():
   df["Date"] = pd.to_datetime(df["Date"])
   df = df.set_index("Date")
   return df
+
 
 def test_prepro_all():
   df = data_copy(); df.head()
@@ -187,7 +188,7 @@ def test_prepro_all():
   extract.mean_abs_change(df["Close"])
   extract.mean_second_derivative_central(df["Close"])
   extract.variance_larger_than_standard_deviation(df["Close"])
-  extract.var_index(df["Close"].values,var_index_param)
+  # extract.var_index(df["Close"].values,var_index_param)
   extract.symmetry_looking(df["Close"])
   extract.has_duplicate_max(df["Close"])
   extract.partial_autocorrelation(df["Close"])
