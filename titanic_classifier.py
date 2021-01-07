@@ -157,7 +157,7 @@ def titanic_lightgbm(path_model_out="") :
                                 'colcross_pair',
                                
                                ### example of custom
-                               'colnum_quantile_norm'
+                               # 'colnum_quantile_norm'
                               ]
 
           ### Filter data rows   ##################################################################
