@@ -21,13 +21,7 @@ Preprocessors Check
 ### Install 
      pip install -r zrequirements.txt
 
-
-
 ### Basic usage 
-    python  titanic_classifier.py  data_profile
-    python  titanic_classifier.py  preprocess
-    python  titanic_classifier.py  train
-    python  titanic_classifier.py  predict
 
 
 ### Basic usage 2
@@ -37,6 +31,35 @@ Preprocessors Check
     python core_run.py train        --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
     python core_run.py predict      --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
 
+
+
+### How to train a new dataset ?
+    1) Put your data in      data/input/mydata/raw/
+    2) Create a script  in  data/input/mydata/clean.py
+    3) Run your script clean.py which generates train data and test data in :    python  titanic_classifier.py  data_profile  --path_data
+    python  titanic_classifier.py  preprocess
+    python  titanic_classifier.py  train
+    python  titanic_classifier.py  predict
+
+        data/input/mydata/train/features.zip    target.zip  (y label)
+        data/input/mydata/test/features.zip    target.zip   (y label)
+                
+        data/input/mydata/cols_group.json  : Colum names by data type category.
+        
+        
+    4) Copy Paste titanic_classifier.py  into  mydata_classifier.py
+    
+    5) Modify the script     mydata_classifier.py
+      to match your dataset and the models you want to test.
+      
+      
+    6) Run 
+        python  mydata_classifier.py  data_profile  --path_data  data/input/mydata/train/
+        python  mydata_classifier.py  train
+        python  mydata_classifier.py  predict
+
+        
+   
 
 
 
