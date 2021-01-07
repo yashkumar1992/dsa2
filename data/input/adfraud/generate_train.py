@@ -96,14 +96,14 @@ def generate_train(df, col=None, pars=None):
 
         #################### V3 - GroupBy Features                                              #
         # https://www.kaggle.com/bk0000/non-blending-lightgbm-model-lb-0-977 #
-        {'groupby': ['ip'], 'select': 'channel', 'agg': 'nunique'},
-        {'groupby': ['ip'], 'select': 'app', 'agg': 'nunique'},
-        {'groupby': ['ip','day'], 'select': 'hour', 'agg': 'nunique'},
-        {'groupby': ['ip','app'], 'select': 'os', 'agg': 'nunique'},
-        {'groupby': ['ip'], 'select': 'device', 'agg': 'nunique'},
+        {'groupby': ['ip'],  'select': 'channel', 'agg': 'nunique'},
+        {'groupby': ['ip'],  'select': 'app', 'agg': 'nunique'},
+        {'groupby': ['ip',   'day'], 'select': 'hour', 'agg': 'nunique'},
+        {'groupby': ['ip',   'app'], 'select': 'os', 'agg': 'nunique'},
+        {'groupby': ['ip'],  'select': 'device', 'agg': 'nunique'},
         {'groupby': ['app'], 'select': 'channel', 'agg': 'nunique'},
-        {'groupby': ['ip', 'device', 'os'], 'select': 'app', 'agg': 'nunique'},
-        {'groupby': ['ip','device','os'], 'select': 'app', 'agg': 'cumcount'},
+        {'groupby': ['ip',  'device', 'os'], 'select': 'app', 'agg': 'nunique'},
+        {'groupby': ['ip',  'device','os'], 'select': 'app', 'agg': 'cumcount'},
         {'groupby': ['ip'], 'select': 'app', 'agg': 'cumcount'},
         {'groupby': ['ip'], 'select': 'os', 'agg': 'cumcount'}
   ]
