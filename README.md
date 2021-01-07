@@ -34,14 +34,12 @@ Preprocessors Check
 
 
 ### How to train a new dataset ?
-    1) Put your data in      data/input/mydata/raw/
-    2) Create a script  in  data/input/mydata/clean.py
-    3) Run your script clean.py which generates train data and test data in :    python  titanic_classifier.py  data_profile  --path_data
-    python  titanic_classifier.py  preprocess
-    python  titanic_classifier.py  train
-    python  titanic_classifier.py  predict
+    1) Put your data   in   data/input/mydata/raw/
+    2) Create a script in   data/input/mydata/clean.py
+    3) Run your script clean.py which generates train data and test data in :   
 
         data/input/mydata/train/features.zip    target.zip  (y label)
+        
         data/input/mydata/test/features.zip    target.zip   (y label)
                 
         data/input/mydata/cols_group.json  : Colum names by data type category.
