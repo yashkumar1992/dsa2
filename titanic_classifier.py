@@ -12,37 +12,30 @@ warnings.filterwarnings('ignore')
 
 ####################################################################################
 ###### Path ########################################################################
-from source.util_feature import save
-
-config_file  = os.path.basename(__file__)
-
-
-print( os.getcwd())
-root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
-print(root)
-
-dir_data  = root + "/data/"  + "/"
-dir_data  = dir_data.replace("\\", "/")
-print(dir_data)
+root_repo      =  os.path.abspath(os.getcwd()).replace("\\", "/") + "/"     ; print(root_repo)
+THIS_FILENAME  =  os.path.basename(__file__) 
+THIS_FILEPATH  =  os.path.abspath(__file__) 
 
 
-def os_get_function_name():
-    import sys
-    return sys._getframe(1).f_code.co_name
+sys.path.append(root_repo)
+from source.util_feature import save,os_get_function_name
 
 
 def global_pars_update(model_dict,  data_name, config_name):
+    print("config_name", config_name)
+    dir_data  = root_repo + "/data/"  ; print("dir_data", dir_data)
+
     m                      = {}
-    m['config_path']       = root + f"/{config_file}"
+    m['config_path']       = THIS_FILEPATH  
     m['config_name']       = config_name
 
     #### peoprocess input path
     m['path_data_preprocess'] = dir_data + f'/input/{data_name}/train/'
 
     #### train input path
-    m['path_data_train']   = dir_data + f'/input/{data_name}/train/'
-    m['path_data_test']    = dir_data + f'/input/{data_name}/test/'
-    #m['path_data_val']    = dir_data + f'/input/{data_name}/test/'
+    m['path_data_train']      = dir_data + f'/input/{data_name}/train/'
+    m['path_data_test']       = dir_data + f'/input/{data_name}/test/'
+    #m['path_data_val']       = dir_data + f'/input/{data_name}/test/'
 
     #### train output path
     m['path_train_output']    = dir_data + f'/output/{data_name}/{config_name}/'
@@ -52,18 +45,19 @@ def global_pars_update(model_dict,  data_name, config_name):
 
 
     #### predict  input path
-    m['path_pred_data']    = dir_data + f'/input/{data_name}/test/'
-    m['path_pred_pipeline']= dir_data + f'/output/{data_name}/{config_name}/pipeline/'
-    m['path_pred_model']   = dir_data + f'/output/{data_name}/{config_name}/model/'
+    m['path_pred_data']       = dir_data + f'/input/{data_name}/test/'
+    m['path_pred_pipeline']   = dir_data + f'/output/{data_name}/{config_name}/pipeline/'
+    m['path_pred_model']      = dir_data + f'/output/{data_name}/{config_name}/model/'
 
     #### predict  output path
-    m['path_pred_output']  = dir_data + f'/output/{data_name}/pred_{config_name}/'
+    m['path_pred_output']     = dir_data + f'/output/{data_name}/pred_{config_name}/'
 
     #####  Generic
-    m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
+    m['n_sample']             = model_dict['data_pars'].get('n_sample', 5000)
 
     model_dict[ 'global_pars'] = m
     return model_dict
+
 
 
 ####################################################################################
@@ -79,7 +73,7 @@ cols_input_type_1 = {
     ,"colnum" :   ["Pclass", "Age","SibSp", "Parch","Fare"]
     ,"coltext" :  []
     ,"coldate" :  []
-    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", ]
+    ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age", "SibSp", ]
 }
 
 
@@ -100,7 +94,6 @@ def titanic_lightgbm(path_model_out="") :
        Contains all needed informations for Light GBM Classifier model,
        used for titanic classification task
     """
-    config_name  = os_get_function_name()
     data_name    = "titanic"         ### in data/input/
     model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
     n_sample     = 1000
@@ -128,7 +121,6 @@ def titanic_lightgbm(path_model_out="") :
 
         ### Pipeline for data processing ##############################
         'pipe_list': [
-
         #### coly target prorcessing
         {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
 
@@ -140,18 +132,21 @@ def titanic_lightgbm(path_model_out="") :
         {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
         {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
 
+
         ### Cross_feat = feat1 X feat2
         {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair',  'type': 'cross'},
 
-            #### Example of Custom processor
-            #{'uri':  root + 'titanic_classifier.py::pd_col_myfun,   'pars': {}, 'cols_family': 'colnum',   'cols_out': 'colnum_quantile_norm',  'type': '' },
-          
+
+        #### Example of Custom processor
+        {'uri':  THIS_FILEPATH + '::pd_col_myfun',   'pars': {}, 'cols_family': 'colnum',   'cols_out': 'col_myfun',  'type': '' },                
+
+
         ],
                }
         },
 
       'compute_pars': { 'metric_list': ['accuracy_score','average_precision_score']
-                        },
+                      },
 
       'data_pars': { 'n_sample' : n_sample,
           'cols_input_type' : cols_input_type_1,
@@ -177,21 +172,57 @@ def titanic_lightgbm(path_model_out="") :
       }
 
     ##### Filling Global parameters    ############################################################
-    model_dict        = global_pars_update(model_dict, data_name, config_name )
+    model_dict        = global_pars_update(model_dict, data_name, config_name=os_get_function_name() )
     return model_dict
 
+
+
+def pd_col_myfun(df=None, col=None, pars={}):
+    """
+         Example of custom
+    """
+
+    from source.util_feature import save, load
+    prefix = 'col_myfun`'
+    if 'path_pipeline' in pars :   #### Inference time LOAD previous pars
+        prepro   = load(pars['path_pipeline'] + f"/{prefix}_model.pkl" )
+        pars     = load(pars['path_pipeline'] + f"/{prefix}_pars.pkl" )
+        pars     = {} if pars is None else  pars
+    #### Do something #################################################################
+    df_new         = df[col]  ### Do nithi
+    df_new.columns = [  col + "_myfun"  for col in df.columns ]
+    cols_new       = list(df_new.columns)
+
+    prepro   = None
+    pars_new = None
+
+
+
+    ###################################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save(prepro,         pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+       save(cols_new,       pars['path_pipeline_export'] + f"/{prefix}.pkl" )
+       save(pars_new,       pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+
+    col_pars = {'prefix' : prefix , 'path' :   pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
+    col_pars['cols_new'] = {
+        'col_myfun' :  cols_new  ### list
+    }
+    return df_new, col_pars
 
 
 
 
 #####################################################################################
 ########## Profile data #############################################################
-def data_profile(path_data_train="", path_model="", n_sample= 5000):
+def data_profile(path_data="", path_output="", n_sample= 5000):
    from source.run_feature_profile import run_profile
-   run_profile(path_data   = path_data_train,
-               path_output = path_model + "/profile/",
+   run_profile(path_data   = path_data,
+               path_output = path_output + "/profile/",
                n_sample    = n_sample,
               )
+
+
 
 
 ###################################################################################
@@ -286,10 +317,5 @@ if __name__ == "__main__":
     fire.Fire()
     
 
-
-
-
-#######################################################################################
-########## Examepl of custom processor ################################################
 
 
