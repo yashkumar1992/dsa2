@@ -26,6 +26,17 @@ class dict2(object):
     def __init__(self, d):
         self.__dict__ = d
 
+def os_get_function_name():
+    import sys
+    return sys._getframe(1).f_code.co_name
+
+
+def os_getcwd():
+    root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
+    return  root
+
+
+
 
 #############################################################################################
 def save_list(path, name_list, glob):
