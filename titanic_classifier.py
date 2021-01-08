@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 
-
   python titanic_classifier.py  train    > zlog/log_titanic_train.txt 2>&1
   python titanic_classifier.py  predict  > zlog/log_titanic_predict.txt 2>&1
 
@@ -16,13 +15,13 @@ warnings.filterwarnings('ignore')
 from source.util_feature import save
 
 config_file  = os.path.basename(__file__)
-# config_file      = "titanic_classifier.py"   ### name of file which contains data configuration
+
 
 print( os.getcwd())
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
 
-dir_data  = os.path.abspath( root + "/data/" ) + "/"
+dir_data  = root + "/data/"  + "/"
 dir_data  = dir_data.replace("\\", "/")
 print(dir_data)
 
@@ -37,28 +36,31 @@ def global_pars_update(model_dict,  data_name, config_name):
     m['config_path']       = root + f"/{config_file}"
     m['config_name']       = config_name
 
-    ##### run_Preoprocess ONLY
-    m['path_data_preprocess'] = root + f'/data/input/{data_name}/train/'
+    #### peoprocess input path
+    m['path_data_preprocess'] = dir_data + f'/input/{data_name}/train/'
 
-    ##### run_Train  ONLY
-    m['path_data_train']   = root + f'/data/input/{data_name}/train/'
-    m['path_data_test']    = root + f'/data/input/{data_name}/test/'
-    #m['path_data_val']    = root + f'/data/input/{data_name}/test/'
-    m['path_train_output']    = root + f'/data/output/{data_name}/{config_name}/'
-    m['path_train_model']     = root + f'/data/output/{data_name}/{config_name}/model/'
-    m['path_features_store']  = root + f'/data/output/{data_name}/{config_name}/features_store/'
-    m['path_pipeline']        = root + f'/data/output/{data_name}/{config_name}/pipeline/'
+    #### train input path
+    m['path_data_train']   = dir_data + f'/input/{data_name}/train/'
+    m['path_data_test']    = dir_data + f'/input/{data_name}/test/'
+    #m['path_data_val']    = dir_data + f'/input/{data_name}/test/'
+
+    #### train output path
+    m['path_train_output']    = dir_data + f'/output/{data_name}/{config_name}/'
+    m['path_train_model']     = dir_data + f'/output/{data_name}/{config_name}/model/'
+    m['path_features_store']  = dir_data + f'/output/{data_name}/{config_name}/features_store/'
+    m['path_pipeline']        = dir_data + f'/output/{data_name}/{config_name}/pipeline/'
 
 
-    ##### Prediction
-    m['path_pred_data']    = root + f'/data/input/{data_name}/test/'
-    m['path_pred_pipeline']= root + f'/data/output/{data_name}/{config_name}/pipeline/'
-    m['path_pred_model']   = root + f'/data/output/{data_name}/{config_name}/model/'
-    m['path_pred_output']  = root + f'/data/output/{data_name}/pred_{config_name}/'
+    #### predict  input path
+    m['path_pred_data']    = dir_data + f'/input/{data_name}/test/'
+    m['path_pred_pipeline']= dir_data + f'/output/{data_name}/{config_name}/pipeline/'
+    m['path_pred_model']   = dir_data + f'/output/{data_name}/{config_name}/model/'
 
+    #### predict  output path
+    m['path_pred_output']  = dir_data + f'/output/{data_name}/pred_{config_name}/'
 
     #####  Generic
-    m['n_sample']             = model_dict['data_pars'].get('n_sample', 5000)
+    m['n_sample']          = model_dict['data_pars'].get('n_sample', 5000)
 
     model_dict[ 'global_pars'] = m
     return model_dict
@@ -66,7 +68,7 @@ def global_pars_update(model_dict,  data_name, config_name):
 
 ####################################################################################
 ##### Params########################################################################
-config_default   = 'titanic_lightgbm'          ### name of function which contains data configuration
+config_default   = 'titanic_lightgbm'    ### name of function which contains data configuration
 
 
 # data_name    = "titanic"     ### in data/input/
@@ -126,15 +128,23 @@ def titanic_lightgbm(path_model_out="") :
 
         ### Pipeline for data processing ##############################
         'pipe_list': [
-            {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
-            {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-            {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair',  'type': 'cross'},
+
+        #### coly target prorcessing
+        {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
+
+
+        {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+
+        #### catcol INTO integer,   colcat into OneHot
+        {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+        {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+
+        ### Cross_feat = feat1 X feat2
+        {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair',  'type': 'cross'},
 
             #### Example of Custom processor
-            #{'uri': 'titanic_classifier.py::pd_colnum_quantile_norm',   'pars': {}, 'cols_family': 'colnum',   'cols_out': 'colnum_quantile_norm',  'type': '' },
+            #{'uri':  root + 'titanic_classifier.py::pd_col_myfun,   'pars': {}, 'cols_family': 'colnum',   'cols_out': 'colnum_quantile_norm',  'type': '' },
           
         ],
                }
@@ -157,7 +167,7 @@ def titanic_lightgbm(path_model_out="") :
                                 'colcross_pair',
                                
                                ### example of custom
-                               'colnum_quantile_norm'
+                               'col_myfun'
                               ]
 
           ### Filter data rows   ##################################################################
@@ -169,8 +179,6 @@ def titanic_lightgbm(path_model_out="") :
     ##### Filling Global parameters    ############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name )
     return model_dict
-
-
 
 
 
