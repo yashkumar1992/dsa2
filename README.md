@@ -21,43 +21,41 @@ Preprocessors Check
 ### Install 
      pip install -r zrequirements.txt
 
+
 ### Basic usage 
-
-
-### Basic usage 2
-    cd dsa2
-    python core_run.py data_profile --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
-    python core_run.py preprocess   --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
-    python core_run.py train        --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
-    python core_run.py predict      --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python  titanic_classifier.py  data_profile
+    python  titanic_classifier.py  preprocess    --nsample 10000
+    python  titanic_classifier.py  train         --nsample 20000
+    python  titanic_classifier.py  predict
 
 
 
 ### How to train a new dataset ?
-    1) Put your data   in   data/input/mydata/raw/
-    2) Create a script in   data/input/mydata/clean.py
-    3) Run your script clean.py which generates train data and test data in :   
+    1) Put your data file   in   data/input/mydata/raw/
 
-        data/input/mydata/train/features.zip    target.zip  (y label)
-        
-        data/input/mydata/test/features.zip    target.zip   (y label)
+    2) Update script        in   data/input/mydata/clean.py
+       to include basic processing
+
+    3) Run  python clean.py profile   and check results
+
+
+    4) run  python clean.py train_test
+        which generates train data and test data in :   
+           data/input/mydata/train/features.parquet   target.parquet  (y label)        
+           data/input/mydata/test/features.parquet    target.parquet   (y label)                
                 
-        data/input/mydata/cols_group.json  : Colum names by data type category.
-        
-        
+
     4) Copy Paste titanic_classifier.py  into  mydata_classifier.py
     
     5) Modify the script     mydata_classifier.py
-      to match your dataset and the models you want to test.
-      
-      
+        to match your dataset and the models you want to test.
+          
     6) Run 
-        python  mydata_classifier.py  data_profile  --path_data  data/input/mydata/train/
         python  mydata_classifier.py  train
         python  mydata_classifier.py  predict
 
         
-   
+###   
 
 
 
@@ -172,6 +170,18 @@ Preprocessors Check
     python source/run_train.py  run_train   --n_sample 100  --model_name lightgbm  --path_config_model source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/    
 
     python source/run_inference.py  run_predict  --n_sample 1000  --model_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
+
+
+
+
+
+
+### Basic usage 2
+    cd dsa2
+    python core_run.py data_profile --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py preprocess   --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py train        --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+    python core_run.py predict      --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
 
 
 

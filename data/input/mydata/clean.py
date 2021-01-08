@@ -4,19 +4,19 @@ python  clean.py
 
 python  clean.py  profile     #### Data Profile
 
-python  clean.py  to_train
-
-python  clean.py  to_test
+python  clean.py  train_test_split
 
 
 
 """
 import pandas as pd, numpy as np
+
+
 #######################################################################################
 
 
 
-##### Load from samples
+##### Load from samples   ##################
 df = pd.read_csv( 'raw/raw.csv', nrows=5000)
 print(df.head(5).T)
 print(df.tail(5).T)
@@ -48,6 +48,7 @@ print('colsX', colsX)
 
 
 #######################################################################################
+#######################################################################################
 def profile() :
 	os.makedirs("profile/", exist_ok=True)
 	for x in colcat:
@@ -60,6 +61,12 @@ def profile() :
 
 
 
+
+
+
+
+
+#######################################################################################
 #######################################################################################
 def create_features(df)
     return df
@@ -67,48 +74,25 @@ def create_features(df)
 
 
 
-#######################################################################################
-def to_train() :
+
+def train_test_split() :
 	os.makedirs("train/", exist_ok=True)
-
+	os.makedirs("test/",  exist_ok=True)
 	df = create_features(df)
 
-	Xcols = []
-	df[Xcols  ].to_parquet( "train/features.parquet"   )
-	df[[ coly ]].to_parquet( "train/target.parquet"   )
+    df   = df.sample(1.0)
+    icol = int( 0.8 * len(df) )
 
+	df[ colsX].iloc[ :icol, : ].to_parquet(   "train/features.parquet"  )
+	df[[ coly ]].iloc[ :icol, : ].to_parquet( "train/target.parquet"    )
 
-
-#######################################################################################
-def to_val() :
-	os.makedirs("test/", exist_ok=True)
-
-	df = create_features(df)
-
-	Xcols = []
-	df[ Xcols  ].to_parquet( "val/features.parquet"   )
-	df[[ coly ]].to_parquet( "val/target.parquet"   )
+	df[ colsX].iloc[   icol:,  : ].to_parquet( "test/features.parquet"  )
+	df[[ coly ]].iloc[ icol: , : ].to_parquet( "test/target.parquet"    )
 
 
 
 
-
-#######################################################################################
-def to_test() :
-	os.makedirs("test/", exist_ok=True)
-
-	df = create_features(df)
-
-	Xcols = []
-	df[ Xcols  ].to_parquet( "test/features.parquet"   )
-	df[[ coly ]].to_parquet( "test/target.parquet"   )
-
-
-
-
-
-
-
+########################################################################################
 """
 python  clean.py
 
@@ -128,4 +112,3 @@ if __name__ == "__main__":
 
 
 
-\
