@@ -66,12 +66,8 @@ Preprocessors Check
     data/input/titanic/raw2/ : the raw files  split manually
 
     data/input/titanic/train/ :   features.zip ,  target.zip, cols_group.json  names are FIXED
-             features.zip or features.parquet  :  csv file of the inputs
-             target.zip   or target.parquet    :  csv file of the label to predict.
-
-
     data/input/titanic/test/ :   
-             features.zip or parquet format  , used for predictions
+   features.zip or parquet format  , used for predictions
 
     File names Are FIXED, please create sub-folder  
 
