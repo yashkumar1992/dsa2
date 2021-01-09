@@ -18,7 +18,6 @@ warnings.filterwarnings('ignore')
 ####################################################################################
 ###### Path ########################################################################
 root_repo      =  os.path.abspath(os.getcwd()).replace("\\", "/") + "/"     ; print(root_repo)
-# THIS_FILENAME  =  os.path.basename(__file__)
 THIS_FILEPATH  =  os.path.abspath(__file__)
 
 
@@ -77,13 +76,13 @@ colnum  = ['length(m)','height(cm)','X1','X2'] # ,'breed_category'
 colcross= ['condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2']  # , 'breed_category'
 
 
-cols_input_type_1 = {  "coly"   :   coly
-                    ,"colid"  :   colid
-                    ,"colcat" :   colcat
-                    ,"colnum" :   colnum
-                    ,"coltext" :  []
-                    ,"coldate" :  []
-                    ,"colcross" : colcross
+cols_input_type_1 = {  "coly"  :   coly
+                    ,"colid"   :   colid
+                    ,"colcat" :    colcat
+                    ,"colnum" :    colnum
+                    ,"coltext" :   []
+                    ,"coldate" :   []
+                    ,"colcross" :  colcross
                    }
 
 
