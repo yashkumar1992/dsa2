@@ -98,10 +98,10 @@ def multi_lightgbm() :
 
 
     model_dict = {'model_pars': {
-        'model_path'       : path_model_out
+        #'model_path'       : path_model_out
 
         ### LightGBM API model  ########################################
-        ,'model_class': model_name    ## ACTUAL Class name for model_sklearn.py
+        'model_class': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'multiclass','num_class':4,'metric':'multi_logloss',
                                 'learning_rate':0.03,'boosting_type':'gbdt'
                               }

@@ -98,10 +98,8 @@ def income_status_lightgbm(path_model_out="") :
 
 
     model_dict = {'model_pars': {
-        'model_path'       : path_model_out
-
         ### LightGBM API model   #######################################
-        ,'model_class': model_class
+        'model_class': model_class
         ,'model_pars' : {'boosting_type':'gbdt', 'class_weight':None, 'colsample_bytree':1.0,
 						'importance_type':'split', 'learning_rate':0.001, 'max_depth':-1,
 						'min_child_samples':20, 'min_child_weight':0.001, 'min_split_gain':0,
