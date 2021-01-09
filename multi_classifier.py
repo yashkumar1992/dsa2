@@ -7,7 +7,6 @@ https://medium.com/@nitin9809/lightgbm-binary-classification-multi-class-classif
 
 
   python multi_classifier.py  train
-  python multi_classifier.py  check
   python multi_classifier.py  predict
 
 
@@ -20,10 +19,8 @@ warnings.filterwarnings('ignore')
 root_repo      =  os.path.abspath(os.getcwd()).replace("\\", "/") + "/"     ; print(root_repo)
 THIS_FILEPATH  =  os.path.abspath(__file__)
 
-
 sys.path.append(root_repo)
 from source.util_feature import save,os_get_function_name
-
 
 def global_pars_update(model_dict,  data_name, config_name):
     print("config_name", config_name)
@@ -67,17 +64,15 @@ def global_pars_update(model_dict,  data_name, config_name):
 ####################################################################################
 config_default  = 'multi_lightgbm'
 
-
-colid   = 'pet_id'
-coly    = 'pet_category'
-coldate = ['issue_date','listing_date']
-colcat  = ['color_type','condition']
-colnum  = ['length(m)','height(cm)','X1','X2'] # ,'breed_category'
-colcross= ['condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2']  # , 'breed_category'
+coly     = 'pet_category'
+coldate  = ['issue_date','listing_date']
+colcat   = ['color_type','condition']
+colnum   = ['length(m)','height(cm)','X1','X2'] # ,'breed_category'
+colcross = ['condition', 'color_type','length(m)', 'height(cm)', 'X1', 'X2']  # , 'breed_category'
 
 
 cols_input_type_1 = {  "coly"  :   coly
-                    ,"colid"   :   colid
+                    ,"colid"   :   'pet_id'
                     ,"colcat" :    colcat
                     ,"colnum" :    colnum
                     ,"coltext" :   []
@@ -85,10 +80,9 @@ cols_input_type_1 = {  "coly"  :   coly
                     ,"colcross" :  colcross
                    }
 
-
 #####################################################################################
 ##### Params ########################################################################
-def multi_lightgbm(path_model_out="") :
+def multi_lightgbm() :
     """
        multiclass
     """
@@ -96,12 +90,10 @@ def multi_lightgbm(path_model_out="") :
     model_name        = 'LGBMClassifier'
     n_sample          = 6000
 
-    def post_process_fun(y):
-        ### After prediction is done
+    def post_process_fun(y):          ### After prediction is done
         return  int(y)
 
-    def pre_process_fun_multi(y):
-        ### Before the prediction is done
+    def pre_process_fun_multi(y):     ### Before the prediction is done
         return  int(y)
 
 
@@ -112,7 +104,6 @@ def multi_lightgbm(path_model_out="") :
         ,'model_class': model_name    ## ACTUAL Class name for model_sklearn.py
         ,'model_pars'       : {'objective': 'multiclass','num_class':4,'metric':'multi_logloss',
                                 'learning_rate':0.03,'boosting_type':'gbdt'
-
                               }
 
         ### After prediction  ##########################################
@@ -244,7 +235,6 @@ python  multi_classifier.py  preprocess
 python  multi_classifier.py  train
 python  multi_classifier.py  check
 python  multi_classifier.py  predict
-python  multi_classifier.py  run_all
 """
 if __name__ == "__main__":
     import fire

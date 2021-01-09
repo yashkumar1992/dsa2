@@ -215,13 +215,17 @@ def pd_col_myfun(df=None, col=None, pars={}):
 
 #####################################################################################
 ########## Profile data #############################################################
+from core_run import  data_profile
+# def data_profile(path_data="", path_output="", n_sample= 5000):
+"""
+
 def data_profile(path_data="", path_output="", n_sample= 5000):
    from source.run_feature_profile import run_profile
    run_profile(path_data   = path_data,
                path_output = path_output + "/profile/",
                n_sample    = n_sample,
               )
-
+"""
 
 
 
