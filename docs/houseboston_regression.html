@@ -9346,7 +9346,7 @@ Licensed under the Apache License, Version 2.0.
 /**
 * TODO: come up with non css-hack solution for showing the busy icon on top
 *  of the close icon
-* CSS for complex behavior of close icon of tabs in the main area tabbar
+* CSS for complex behavior of close icon of tabs in the run_train area tabbar
 */
 .lm-DockPanel-tabBar
   .lm-TabBar-tab.lm-mod-closable.jp-mod-dirty
@@ -9364,11 +9364,11 @@ Licensed under the Apache License, Version 2.0.
 }
 
 /* CSS for icons in status bar */
-#jp-main-statusbar .jp-mod-selected .jp-icon-selectable[fill] {
+#jp-run_train-statusbar .jp-mod-selected .jp-icon-selectable[fill] {
   fill: #fff;
 }
 
-#jp-main-statusbar .jp-mod-selected .jp-icon-selectable-inverse[fill] {
+#jp-run_train-statusbar .jp-mod-selected .jp-icon-selectable-inverse[fill] {
   fill: var(--jp-brand-color1);
 }
 /* special handling for splash icon CSS. While the theme CSS reloads during
@@ -13806,7 +13806,7 @@ body.lm-mod-override-cursor .jp-OutputArea-output.jp-mod-isolated:before {
 |----------------------------------------------------------------------------*/
 
 /*
-The following CSS variables define the main, public API for styling JupyterLab.
+The following CSS variables define the run_train, public API for styling JupyterLab.
 These variables should be used by all plugins wherever possible. In other
 words, plugins should not define custom colors, sizes, etc unless absolutely
 necessary. This enables users to change the visual theme of JupyterLab
@@ -13915,7 +13915,7 @@ all of MD as it is not optimized for dense, information rich UIs.
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 
   /*
-   * Use these font colors against the corresponding main layout colors.
+   * Use these font colors against the corresponding run_train layout colors.
    * In a light theme, these go from dark to light.
    */
 
@@ -13995,7 +13995,7 @@ all of MD as it is not optimized for dense, information rich UIs.
 
   /* Layout
    *
-   * The following are the main layout colors use in JupyterLab. In a light
+   * The following are the run_train layout colors use in JupyterLab. In a light
    * theme these would go from light to dark.
    */
 
@@ -14271,7 +14271,7 @@ a.anchor-link {
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <hr>
-<h2 id="DAGRegressor">DAGRegressor<a class="anchor-link" href="#DAGRegressor">&#182;</a></h2><p>This section demonstrates the performance of the DAGRegressor on a real-world dataset. The main things to note in this section are:</p>
+<h2 id="DAGRegressor">DAGRegressor<a class="anchor-link" href="#DAGRegressor">&#182;</a></h2><p>This section demonstrates the performance of the DAGRegressor on a real-world dataset. The run_train things to note in this section are:</p>
 <ul>
 <li>The scale sensitivity of the algorithm</li>
 <li>Interpretability of nonlinear <code>.coef_</code>

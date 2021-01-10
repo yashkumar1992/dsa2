@@ -16,7 +16,7 @@ G-measure, which is the geometric mean of precision and recall. Compared to F1, 
 Jaccard index, which you can think of as the TP/(TP+FP+FN). This is actually the metric that has worked for me the best.
 Note: For imbalanced datasets, it is best to have your metrics be macro-averaged.
 Final intuition to metric selection
-Use precision and recall to focus on small positive class — When the positive class is smaller and the ability to detect correctly positive samples is our main focus (correct detection of negatives examples is less important to the problem) we should use precision and recall.
+Use precision and recall to focus on small positive class — When the positive class is smaller and the ability to detect correctly positive samples is our run_train focus (correct detection of negatives examples is less important to the problem) we should use precision and recall.
 Use ROC when both classes detection is equally important — When we want to give equal weight to both classes prediction ability we should look at the ROC curve.
 Use ROC when the positives are the majority or switch the labels and use precision and recall — When the positive class is larger we should probably use the ROC metrics because the precision and recall would reflect mostly the ability of prediction of the positive class and not the negative class which will naturally be harder to detect due to the smaller number of samples. If the negative class (the minority in this case) is more important, we can switch the labels and use precision and recall (As we saw in the examples above — switching the labels can change everything).
 Towards Data Science
@@ -1108,4 +1108,4 @@ df_metrics.replace({'feat_type': r'^rolling.*'}, {'feat_type': 'rolling'}, regex
 df_metrics['parameter'] = pd.Series(best_lg, index=dataframe.index) 
 df_metrics['metric_name'] ="MSE" 
 df_metrics['metric_val'] = pd.Series(pred_mse[:300], index=dataframe.index) 
-df_metrics.to_csv("run_eval.csv")
+df_metrics.to_csv("train.csv")

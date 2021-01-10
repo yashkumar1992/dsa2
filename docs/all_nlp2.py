@@ -715,7 +715,7 @@ model.fit(xtrain_pad, y=ytrain_enc, batch_size=512, epochs=100,
 # In[ ]:
 
 
-# this is the main ensembling class. how to use it is in the next cell!
+# this is the run_train ensembling class. how to use it is in the next cell!
 import numpy as np
 from sklearn.metrics import roc_auc_score
 from sklearn.preprocessing import LabelEncoder
