@@ -296,7 +296,7 @@ def boston_causalnex(path_model_out="") :
 
 # ___
 # ## DAGRegressor
-# This section demonstrates the performance of the DAGRegressor on a real-world dataset. The main things to note in this section are:
+# This section demonstrates the performance of the DAGRegressor on a real-world dataset. The run_train things to note in this section are:
 # - The scale sensitivity of the algorithm
 # - Interpretability of nonlinear `.coef_`
 # ### The Data: Boston Housing

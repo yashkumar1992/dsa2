@@ -816,7 +816,7 @@ def updateTarget(op_holder, sess):
 
 
 
-# def main():
+# def run_train():
 #
 #     use_multiprocessing = True
 #     num_process = 4

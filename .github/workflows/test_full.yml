@@ -5,7 +5,7 @@ name: test_full
 on:
   push:
     branches:
-      - main
+      - run_train
       - multi
 
 
