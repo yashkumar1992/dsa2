@@ -23,6 +23,9 @@ import os
 from args import args
 
 from utils import *
+
+
+
 def one_mse_func():
     def one_relative_abs(y_true,y_pred):
         mae = mean_absolute_error(y_true,y_pred)
@@ -32,6 +35,10 @@ def one_mse_func():
         
     scorefunc = make_scorer(one_relative_abs, greater_is_better=False)
     return scorefunc
+
+
+
+
 
 class Evaluater(object):
     """docstring for Evaluater"""
@@ -134,21 +141,21 @@ class Env():
         if  opt_type=='o2':
             maxdepth = 1
         #print(feature)
-        self.opt_type = opt_type
-        self.historysize = historysize
-        self.maxdepth=maxdepth
+        self.opt_type     = opt_type
+        self.historysize  = historysize
+        self.maxdepth     = maxdepth
         self.globalreward = globalreward
-        self.action= ['fs','square','tanh','round','log','sqrt','mmn','sigmoid','zscore'] \
+        self.action       = ['fs','square','tanh','round','log','sqrt','mmn','sigmoid','zscore'] \
             if opt_type == 'o1' else ['fs','sum','diff','product','divide']
-        self.one_hot = np.array([0] * len(self.action))
-        self.action_size = len(self.action)
-        self.tasktype=tasktype
-        self.evaluatertype=evaluatertype
-        self.evalcount=evalcount
-        self.random_state = random_state
+        self.one_hot        = np.array([0] * len(self.action))
+        self.action_size    = len(self.action)
+        self.tasktype       = tasktype
+        self.evaluatertype  = evaluatertype
+        self.evalcount      = evalcount
+        self.random_state   = random_state
 
         self.origin_dataset = dataset
-        self.origin_feat = feature
+        self.origin_feat    = feature
 
         self._pretrf_mapper = [i for i in range(self.origin_dataset.shape[1])]
         if pretransform is not None:
@@ -199,18 +206,19 @@ class Env():
                                      [0]*len(self.action),[0]*len(self.action),\
                                      [0,0,1,0]],axis=None)
 
-        #self.perform = [self._init_pfm]
-        self.tg = {0:{'p':self._init_pfm,'d':0}}
-        self.nodeid = 0
-        self.countnode = 1
-        self.action_mask = np.array([0]*len(self.action))
-        self.best_seq = []
-        self.action_count = [0]*len(self.action)
-        self.action_gain = [0.0]*len(self.action)
-        self.node_visit = [0]*self.evalcount
-        self.node_visit[0] = 1
-        self.current_f = self.origin_feat
+        #self.perform               = [self._init_pfm]
+        self.tg                     = {0:{'p':self._init_pfm,'d':0}}
+        self.nodeid                 = 0
+        self.countnode              = 1
+        self.action_mask            = np.array([0]*len(self.action))
+        self.best_seq               = []
+        self.action_count           = [0]*len(self.action)
+        self.action_gain            = [0.0]*len(self.action)
+        self.node_visit             = [0]*self.evalcount
+        self.node_visit[0]          = 1
+        self.current_f              = self.origin_feat
         self.tg[self.nodeid]['fid'] = self.current_f
+
     def node2root(self,adict,node):
         current_node = node
         apath = [node]
@@ -250,12 +258,13 @@ class Env():
 
             # feature was generated alreadly
             if operator in self.tg[self.nodeid]:
-                newnode = self.tg[self.nodeid][operator]
-                performance = self.tg[newnode]['p']
-                self.nodeid = newnode
+                newnode        = self.tg[self.nodeid][operator]
+                performance    = self.tg[newnode]['p']
+                self.nodeid    = newnode
                 self.current_f = self.tg[self.nodeid]['fid']
-                reward = performance - self.now_pfm
-                self.now_pfm = performance
+                reward         = performance - self.now_pfm
+                self.now_pfm   = performance
+
             else:
                 newfeature = feature = self.dataset[:,self.current_f]
                 if self.opt_type == 'o1':
@@ -400,8 +409,8 @@ class Env():
 
 
 
-        allperf = np.array([self.tg[i]['p'] for i in range(self.countnode)])
-        startnode = allperf.argmax()
+        allperf       = np.array([self.tg[i]['p'] for i in range(self.countnode)])
+        startnode     = allperf.argmax()
         self.best_pfm = allperf.max()
 
         #print('best-----------',self.best_pfm)
@@ -478,6 +487,8 @@ class Env():
         self.dataset = self.origin_dataset
         self.feature = self.origin_feat
         self._init()
+
+
     def fe(self,operators,feat_id):
         #target = self.dataset[:,-1]
         #self.dataset = pd.DataFrame(np.copy(self.dataset[:, :-1]))
@@ -588,26 +599,27 @@ class Buffer():
             experience_buffer = self.buffer * size
         return np.copy(np.reshape(np.array(random.sample(experience_buffer,size)),[size,5]))
 
-# Simple feed forward neural network
 
+
+# Simple feed forward neural network
 class Model():
     def __init__(self, opt_size, input_size, name, meta=False,update_lr=1e-3,meta_lr=0.001,num_updates=1,maml=True,qsasize=200):
         self.input_size = input_size
-        self.opt_size = self.dim_output =  opt_size
+        self.opt_size   = self.dim_output =  opt_size
         self.dim_hidden = [128,128,64]
-        self.skip=1
-        self.qsasize = qsasize
-        self.inputs = tf.placeholder(shape=[None, self.input_size], dtype=tf.float32)
-        self.Q_next = tf.placeholder(shape=None, dtype=tf.float32)
-        self.action = tf.placeholder(shape=None, dtype=tf.int32)
+        self.skip       = 1
+        self.qsasize    = qsasize
+        self.inputs     = tf.placeholder(shape=[None, self.input_size], dtype=tf.float32)
+        self.Q_next     = tf.placeholder(shape=None, dtype=tf.float32)
+        self.action     = tf.placeholder(shape=None, dtype=tf.int32)
         #print(self.input_size)
         #print(self.qsasize)
-        self.inputsa = tf.placeholder(shape=[None,None, self.input_size], dtype=tf.float32)
-        self.inputsb = tf.placeholder(shape=[None,None, self.input_size], dtype=tf.float32)
-        self.Q_nexta = tf.placeholder(shape=[None,None], dtype=tf.float32)
-        self.Q_nextb = tf.placeholder(shape=[None,None], dtype=tf.float32)
-        self.actiona = tf.placeholder(shape=[None,None], dtype=tf.int32)
-        self.actionb = tf.placeholder(shape=[None,None], dtype=tf.int32)
+        self.inputsa    = tf.placeholder(shape=[None,None, self.input_size], dtype=tf.float32)
+        self.inputsb    = tf.placeholder(shape=[None,None, self.input_size], dtype=tf.float32)
+        self.Q_nexta    = tf.placeholder(shape=[None,None], dtype=tf.float32)
+        self.Q_nextb    = tf.placeholder(shape=[None,None], dtype=tf.float32)
+        self.actiona    = tf.placeholder(shape=[None,None], dtype=tf.int32)
+        self.actionb    = tf.placeholder(shape=[None,None], dtype=tf.int32)
         self.update_lr = update_lr
         self.meta_lr = meta_lr
         self.num_updates = num_updates
@@ -705,7 +717,6 @@ class Model():
         #TODO optimizer can be only one
 
     def construct_model(self):
-
         with tf.variable_scope('mamlmodel', reuse=None) as training_scope:
 
             #if 'weight' in dir(self):
@@ -965,6 +976,9 @@ def updateTarget(op_holder, sess):
 #                     print("Success!")
 #                     break
 #             raw_input("Press enter...")
+
+
+
 import pandas as pd
 def performance(did,maxfeat,step):
     d_path = "../data/%d/%d.arff" % (did,did)

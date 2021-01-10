@@ -7,6 +7,9 @@ parm = argparse.ArgumentParser()
 parm.add_argument('--multiprocessing'    , type=int   , default=0             , help='multiprocessing or not')
 
 parm.add_argument('--cuda'               , type=str   , default='0'           , help='cuda id')
+
+
+
 #meta learning train
 parm.add_argument('--meta_batch_size'    , type=int   , default=30            , help='number of task sampled per meta-update')
 parm.add_argument('--meta_lr'            , type=float , default=0.001         , help='the base learning rate of the generator')
@@ -15,7 +18,9 @@ parm.add_argument('--update_lr'          , type=float , default=1e-3          , 
 parm.add_argument('--num_updates'        , type=int   , default=1             , help='number of inner gradient updates during training.')
 parm.add_argument('--out_dir'            , type=str   , default='../out/795/' , help='out dir')
 parm.add_argument('--save_interval'      , type=int   , default=100           , help='round to save model')
-#fe
+
+
+# Feature Engineering
 parm.add_argument('--opt_type'           , type=str   , default='o1'          , help='o1 / o2')
 parm.add_argument('--qsa_size'           , type=int   , default=100           , help='number of QSA bins for each class')
 parm.add_argument('--history_size'       , type=int   , default=5             , help='number of history steps')
@@ -24,6 +29,8 @@ parm.add_argument('--depth'              , type=int   , default=5             , 
 parm.add_argument('--budget'             , type=int   , default=10            , help='max features to generate for each feature')
 parm.add_argument('--n_jobs'             , type=int   , default=1             , help='n_jobs')
 parm.add_argument('--evaluatertype'      , type=str   , default='rf'          , help='rf or lr')
+
+
 #train
 parm.add_argument('--buffer_size'        , type=int   , default=1000          , help="buffer_size")
 parm.add_argument('--gamestep'           , type=int   , default=15            , help='max search step for each feature')
@@ -43,4 +50,6 @@ parm.add_argument('--load_weight'        , type=str   , default=''            , 
 parm.add_argument('--sample'             , type=int   , default=100           , help='number o2 sample')
 parm.add_argument('--o2ono1'             , type=int   , default=1             , help='number o2 sample')
 args = parm.parse_args()
+
+
 
