@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 
 dtypes = {'ip': np.uint32, 'app': np.uint16, 'device': np.uint8, 'os': np.uint8, 'channel': np.uint8, 'is_attributed': np.bool}
-df = pd.read_csv('raw/train_sample.csv', sep=',', dtype=dtypes, parse_dates=['click_time', 'attributed_time'])
+df = pd.read_csv('raw/train_100k.csv', sep=',', dtype=dtypes, parse_dates=['click_time', 'attributed_time'])
 df.head()
 
 def generateAggregateFeatures(df, aggregateFeatures):

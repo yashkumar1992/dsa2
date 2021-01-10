@@ -155,7 +155,7 @@ def titanic1(path_model_out="") :
       #  'coldate',
       #  'coltext',
       'cols_model_group': [ 'colnum',  ### should be optional 'colcat'
-          
+
                             'colcat_bin',
                             # 'colcat_bin',
                             # 'colnum_onehot',
@@ -225,5 +225,5 @@ python  core_test_encoder.py  run_all
 if __name__ == "__main__":
     import fire
     fire.Fire()
-    
+
 

@@ -96,14 +96,14 @@ def generate_train(df, col=None, pars=None):
 
         #################### V3 - GroupBy Features                                              #
         # https://www.kaggle.com/bk0000/non-blending-lightgbm-model-lb-0-977 #
-        {'groupby': ['ip'], 'select': 'channel', 'agg': 'nunique'},
-        {'groupby': ['ip'], 'select': 'app', 'agg': 'nunique'},
-        {'groupby': ['ip','day'], 'select': 'hour', 'agg': 'nunique'},
-        {'groupby': ['ip','app'], 'select': 'os', 'agg': 'nunique'},
-        {'groupby': ['ip'], 'select': 'device', 'agg': 'nunique'},
+        {'groupby': ['ip'],  'select': 'channel', 'agg': 'nunique'},
+        {'groupby': ['ip'],  'select': 'app', 'agg': 'nunique'},
+        {'groupby': ['ip',   'day'], 'select': 'hour', 'agg': 'nunique'},
+        {'groupby': ['ip',   'app'], 'select': 'os', 'agg': 'nunique'},
+        {'groupby': ['ip'],  'select': 'device', 'agg': 'nunique'},
         {'groupby': ['app'], 'select': 'channel', 'agg': 'nunique'},
-        {'groupby': ['ip', 'device', 'os'], 'select': 'app', 'agg': 'nunique'},
-        {'groupby': ['ip','device','os'], 'select': 'app', 'agg': 'cumcount'},
+        {'groupby': ['ip',  'device', 'os'], 'select': 'app', 'agg': 'nunique'},
+        {'groupby': ['ip',  'device','os'], 'select': 'app', 'agg': 'cumcount'},
         {'groupby': ['ip'], 'select': 'app', 'agg': 'cumcount'},
         {'groupby': ['ip'], 'select': 'os', 'agg': 'cumcount'}
   ]
@@ -189,8 +189,6 @@ def generateAggregateFeatures(df):
 
 
 
-
-
 def generatePastClickFeatures(df):
     # Time between past clicks
     df2 = pd.DataFrame([], index= df.index)  
@@ -209,10 +207,9 @@ def generatePastClickFeatures(df):
 
 
 
-
-###### Load data
+###### Load data  #############################################################
 dtypes = {'ip': np.uint32, 'app': np.uint16, 'device': np.uint8, 'os': np.uint8, 'channel': np.uint8, 'is_attributed': np.bool}
-df = pd.read_csv('raw/train_sample.csv', sep=',', dtype=dtypes, parse_dates=['click_time', 'attributed_time'])
+df     = pd.read_csv('raw/train_100k.csv', sep=',', dtype=dtypes, parse_dates=['click_time', 'attributed_time'])
 
 
 df2 = generateAggregateFeatures(df)
@@ -223,10 +220,10 @@ df  = df.join(  df2, how='left' )
 df  = df.join(  df3, how='left' )
 
 
-#####################################################################
-##### Train sample data ##############################################
+#################################################################################
+##### Train sample data #########################################################
 coly = "is_attributed"
-df   = pd.read_csv("raw/train_100k.zip")
+df   = pd.read_csv("raw/train_100k.csv")
 
 df, col_pars = generate_train(df)
 df_X         = df.drop(coly, axis=1)
@@ -235,10 +232,10 @@ df_y         = df[[coly]]
 
 path = "train_100k/"
 os.makedirs(path, exist_ok=True)
-# df_X.to_parquet( f"{path}features.parquet")
-# df_y.to_parquet( f"{path}/target.parquet")
+df_X.to_parquet( f"{path}features.parquet")
+df_y.to_parquet( f"{path}/target.parquet")
 
-
+sys.exit()
 
 
 ##### Train data  ############################################
@@ -257,7 +254,7 @@ df_y.to_parquet( f"{path}/target.parquet")
 
 
 ##### Test Data  #############################################
-df = pd.read_csv("raw/test_10m.zip")
+df = pd.read_csv("raw/raw_10m.zip")
 df, col_pars = generate_train(df)
 df_X = df.drop(coly, axis=1)
 df_y = df[[coly]]

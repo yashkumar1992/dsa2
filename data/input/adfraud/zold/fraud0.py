@@ -12,7 +12,7 @@ import numpy as np
 import random
 random.seed(100)
 
-df=pd.read_csv("raw/train_sample.csv")
+df=pd.read_csv("raw/train_100k.csv")
 df.head()
 
 
