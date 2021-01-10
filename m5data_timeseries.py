@@ -40,7 +40,7 @@ def pd_merge(df_list, cols_join):
     return dfall
 
 
-def train(input_path, max_rows = None, n_experiments = 3, colid = None, coly = None):
+def train(input_path, n_experiments = 3, colid = None, coly = None):
     """
        Generic train
     :param input_path:
@@ -222,9 +222,9 @@ def custom_rawdata_merge( out_path='out/', max_rows=10):
     input_path ="data/input/tseries/tseries_m5/raw"
     index_cols     = [ 'id', 'cat_id_col', 'dept_id_col', 'store_id_col', 'item_id_col', 'state_id_col']
     coly = "demand"
-    raw_merge_cols = ['store_id_col', 'item_id_col', 'wm_yr_wk']
+    colraw_merge = ['store_id_col', 'item_id_col', 'wm_yr_wk']
     merge_cols_mapping = {"left" : "day", "right" : "d"}
-    nan_cols       = ['event_name_1_col', 'event_type_1_col', 'event_name_2_col', 'event_type_2_col']
+    colnan       = ['event_name_1_col', 'event_type_1_col', 'event_name_2_col', 'event_type_2_col']
     colcat       = ['dept_id_col', 'cat_id_col', 'store_id_col', 'state_id_col', 'event_name_1_col', 'event_type_1_col', 'event_name_2_col', 'event_type_2_col']
 
 
@@ -241,9 +241,9 @@ def custom_rawdata_merge( out_path='out/', max_rows=10):
     # df_merged = df_sales_val_melt
     df_calendar.drop(['weekday', 'wday', 'month', 'year'], inplace = True, axis = 1)
     df_merged = pd.merge(df_merged, df_calendar, how = 'left', left_on = [merge_cols_mapping["left"]], right_on = [merge_cols_mapping["right"]])
-    df_merged = df_merged.merge(df_sell_price, on = raw_merge_cols, how = 'left')
+    df_merged = df_merged.merge(df_sell_price, on = colraw_merge, how = 'left')
 
-    df_merged = pd_col_tocat(df_merged, nan_cols = nan_cols, colcat = colcat)
+    df_merged = pd_col_tocat(df_merged, nan_cols = colnan, colcat = colcat)
     # df_merged = add_time_features(df_merged)
 
     os.makedirs(out_path, exist_ok=True)
@@ -258,12 +258,14 @@ def custom_generate_feature_all(input_path = data_path, out_path=".", input_raw_
                                 coldrop = None, colindex = None, merge_cols_mapping = None,
                                 colcat = None, colid = None, coly = None, max_rows = 10):
 
-    featurestore_generate_feature(data_path, input_path, pd_ts_basic, "basic_time", colid = colid)
-    featurestore_generate_feature(data_path, input_path, pd_ts_rolling, "rolling", coly = coly, colid = colid)
-    featurestore_generate_feature(data_path, input_path, pd_ts_lag, "lag", coly = coly, colid = colid)
-    featurestore_generate_feature(data_path, input_path, pd_ts_tsfresh, "tsfresh", input_raw_path, auxiliary_csv_path, coldrop, colindex, merge_cols_mapping, max_rows, step_wise_saving = True, colid = colid)
-    featurestore_generate_feature(data_path, input_path, pd_ts_identity, "identity", colcat = colcat, coldrop = ['d', 'id', 'day', 'wm_yr_wk'])
-
+    featurestore_generate_feature(data_path , input_path , pd_ts_basic    , "basic_time" , colid = colid)
+    featurestore_generate_feature(data_path , input_path , pd_ts_rolling  , "rolling"    , coly = coly     , colid = colid)
+    featurestore_generate_feature(data_path , input_path , pd_ts_lag      , "lag"        , coly = coly     , colid = colid)
+    featurestore_generate_feature(data_path , input_path , pd_ts_tsfresh  , "tsfresh"    , input_raw_path  , 
+                                    auxiliary_csv_path , coldrop , colindex , merge_cols_mapping , max_rows , 
+                                    step_wise_saving = True , colid = colid)
+    featurestore_generate_feature(data_path , input_path , pd_ts_identity , "identity"   , colcat = colcat , 
+                                    coldrop = ['d'     , 'id'    , 'day'    , 'wm_yr_wk'])
 
 
 def run_train(input_path ="data/input/m5/raw", out_path=data_path,
