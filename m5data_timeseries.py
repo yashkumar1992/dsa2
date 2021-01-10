@@ -209,6 +209,94 @@ def featurestore_get_feature_fromcolname(path, selected_cols, colid):
 
 ########################################################################################################################
 ########################################################################################################################
+
+def pd_tsfresh_m5data_sales(df_sales, dir_out, features_group_name, drop_cols, df_calendar, index_cols, merge_cols_mapping, id_cols):
+    """
+
+    :param df_sales:
+    :param dir_out:
+    :param features_group_name:
+    :param drop_cols:
+    :param df_calendar:
+    :param index_cols:
+    :param merge_cols_mapping:
+    :param id_cols:
+    :return:
+    """
+    # X_feat = pd.DataFrame()
+    auxiliary_dropped_cols = [x for x in df_calendar.columns.tolist() if x in drop_cols]
+    df_calendar.drop(auxiliary_dropped_cols, inplace = True, axis = 1)
+
+    for i in range(len(df_sales.index)):
+        single_row_df = df_sales.loc[[i]]
+        X_feat_single_row_df = pd_tsfresh_features_single_row(single_row_df, index_cols)
+        if i % 5 ==0:
+            X_feat = X_feat_single_row_df
+        if (i+1) % 5 == 0 :
+            merged_df = pd.merge(X_feat, df_calendar, how = 'left', left_on = [merge_cols_mapping["left"]], right_on = [merge_cols_mapping["right"]])
+
+            # merged_df = pd.concat([df_sales_val_melt, df_submi_val, df_submi_eval], axis = 0)
+            # selected_cols = [x for x in merged_df.columns.tolist() if x not in drop_cols]
+            selected_cols = [x for x in merged_df.columns.tolist() if x in id_cols or str(x).startswith("val__")]
+            merged_df_selected_cols = merged_df[selected_cols]
+            merged_df_selected_cols.columns = merged_df_selected_cols.columns.astype(str)
+            merged_df_selected_cols.to_parquet(f'{dir_out}/{features_group_name}_{i}.parquet')
+        else:
+            X_feat.append(X_feat_single_row_df, ignore_index = True)
+    return merged_df_selected_cols
+
+
+
+
+def pd_tsfresh_m5data(df):
+    df = df[['snap_CA', 'snap_TX', 'snap_WI', 'sell_price', 'item_id', 'date', 'store_id', 'id']]
+    df = roll_time_series(df, column_id="item_id", column_sort="date")
+    existing_cols = df.columns.tolist()
+    y = df['demand']
+    X_cols = [x for x in existing_cols if not x == "demand"]
+    X = df[X_cols]
+    X = X.fillna(value = {'sell_price' : X['sell_price'].mean(skipna = True)})
+    X = X[['snap_CA', 'snap_TX', 'snap_WI', 'sell_price', 'item_id', 'date']]
+    X_filtered = extract_relevant_features(X, y, column_id='item_id', column_sort='date')
+
+    filtered_col_names = X_filtered.columns.tolist()
+
+    filtered_col_names_mapping = {}
+
+    for filtered_col_name in filtered_col_names:
+        filtered_col_names_mapping[filtered_col_name] = filtered_col_name.replace('"','').replace(',','')
+
+    X_filtered = X_filtered.rename(columns = filtered_col_names_mapping)
+    # This is done because lightgbm can not have features with " in the feature name
+
+    feature_df = pd.concat([X[['item_id', 'date']], X_filtered])
+
+    return feature_df, []
+
+
+
+
+
+def pd_ts_tsfresh(df, input_raw_path, dir_out, features_group_name, auxiliary_csv_path, drop_cols, index_cols, merge_cols_mapping, cat_cols = None, id_cols = None, dep_col = None, max_rows = 10):
+    # df is taken as an argument to make it work in the existing pipeline of saving features in meta_csv
+    df_sales_val              = pd.read_csv(input_raw_path)
+    df_calendar               = pd.read_csv(auxiliary_csv_path)
+
+    merged_df         = pd_tsfresh_m5data_sales(df_sales_val[0:max_rows], dir_out, features_group_name, drop_cols, df_calendar, index_cols, merge_cols_mapping, id_cols)
+    # df_calendar.drop(['weekday', 'wday', 'month', 'year'], inplace = True, axis = 1)
+    # merged_df = pd.merge(df_sales_val_melt, df_calendar, how = 'left', left_on = ['day'], right_on = ['d'])
+    # merged_df = pd.merge(df_sales_val_melt, df_calendar, how = 'left', left_on = [merge_cols_mapping["left"]], right_on = [merge_cols_mapping["right"]])
+
+    # merged_df = pd.concat([df_sales_val_melt, df_submi_val, df_submi_eval], axis = 0)
+    # selected_cols = [x for x in merged_df.columns.tolist() if x not in [ 'id', 'cat_id', 'dept_id', 'store_id', 'variable', 'day', 'demand', 'state_id']]
+    selected_cols = [x for x in merged_df.columns.tolist() if x not in drop_cols]
+    return merged_df[selected_cols], []
+
+
+
+
+
+
 def custom_get_colsname(colid, coly):
     coldrop = colid + [coly]
     meta_csv = pd.read_csv('meta_features.csv')
@@ -261,11 +349,9 @@ def custom_generate_feature_all(input_path = data_path, out_path=".", input_raw_
     featurestore_generate_feature(data_path , input_path , pd_ts_basic    , "basic_time" , colid = colid)
     featurestore_generate_feature(data_path , input_path , pd_ts_rolling  , "rolling"    , coly = coly     , colid = colid)
     featurestore_generate_feature(data_path , input_path , pd_ts_lag      , "lag"        , coly = coly     , colid = colid)
-    featurestore_generate_feature(data_path , input_path , pd_ts_tsfresh  , "tsfresh"    , input_raw_path  , 
-                                    auxiliary_csv_path , coldrop , colindex , merge_cols_mapping , max_rows , 
-                                    step_wise_saving = True , colid = colid)
-    featurestore_generate_feature(data_path , input_path , pd_ts_identity , "identity"   , colcat = colcat , 
-                                    coldrop = ['d'     , 'id'    , 'day'    , 'wm_yr_wk'])
+    featurestore_generate_feature(data_path , input_path , pd_ts_tsfresh  , "tsfresh"    , input_raw_path  , auxiliary_csv_path , coldrop , colindex , merge_cols_mapping , max_rows , step_wise_saving = True , colid = colid)
+    featurestore_generate_feature(data_path , input_path , pd_ts_identity , "identity"   , colcat = colcat , coldrop = ['d'     , 'id'    , 'day'    , 'wm_yr_wk'])
+
 
 
 def run_train(input_path ="data/input/m5/raw", out_path=data_path,
