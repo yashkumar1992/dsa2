@@ -13,7 +13,6 @@ warnings.filterwarnings('ignore')
 ####################################################################################
 ###### Path ########################################################################
 root_repo      =  os.path.abspath(os.getcwd()).replace("\\", "/") + "/"     ; print(root_repo)
-# THIS_FILENAME  =  os.path.basename(__file__) 
 THIS_FILEPATH  =  os.path.abspath(__file__) 
 
 
@@ -89,7 +88,7 @@ cols_input_type_2 = {
 
 
 ####################################################################################
-def titanic_lightgbm(path_model_out="") :
+def titanic_lightgbm() :
     """
        Contains all needed informations for Light GBM Classifier model,
        used for titanic classification task
@@ -179,9 +178,8 @@ def titanic_lightgbm(path_model_out="") :
 
 def pd_col_myfun(df=None, col=None, pars={}):
     """
-         Example of custom
+         Example of custom Processor
     """
-
     from source.util_feature import save, load
     prefix = 'col_myfun`'
     if 'path_pipeline' in pars :   #### Inference time LOAD previous pars
@@ -317,8 +315,9 @@ python  titanic_classifier.py  predict
 
 """
 if __name__ == "__main__":
+    d = { 'data_profile': data_profile,  'train' : train, 'predict' : predict, 'config' : config_default }
     import fire
-    fire.Fire()
+    fire.Fire(d)
     
 
 

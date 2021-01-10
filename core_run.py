@@ -77,7 +77,8 @@ def get_config_path(config=''):
 ########## Profile data #############################################################
 def data_profile2(config=''):
     """
-
+    :param config:
+    :return:
     """
     config_uri, config_name = get_config_path(config)
     from source.run_feature_profile import run_profile
@@ -91,7 +92,7 @@ def data_profile2(config=''):
               ) 
 
 
-def data_profile(path_data="", path_output="", n_sample= 5000):
+def data_profile(path_data="NO PATH", path_output="NO PATH@", n_sample= 5000):
    from source.run_feature_profile import run_profile
    run_profile(path_data   = path_data,
                path_output = path_output + "/profile/",
@@ -103,7 +104,9 @@ def data_profile(path_data="", path_output="", n_sample= 5000):
 def preprocess(config='', nsample=None):
     """
 
-
+    :param config:
+    :param nsample:
+    :return:
     """
     config_uri, config_name = get_config_path(config)
     mdict = get_global_pars( config_uri)
@@ -122,6 +125,11 @@ def preprocess(config='', nsample=None):
 ####################################################################################
 ########## Train ###################################################################
 def train(config='', nsample=None):
+    """  train a model with  confi_name  and nsample
+    :param config:
+    :param nsample:
+    :return:
+    """
 
     config_uri, config_name = get_config_path(config)
 
@@ -149,6 +157,11 @@ def check(config='outlier_predict.py::titanic_lightgbm'):
 ########################################################################################
 ####### Inference ######################################################################
 def predict(config='', nsample=None):
+    """
+    :param config:
+    :param nsample:
+    :return:
+    """
 
     config_uri, config_name = get_config_path(config)
 
