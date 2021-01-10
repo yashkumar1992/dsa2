@@ -64,7 +64,6 @@ def train(input_path, n_experiments = 3, colid = None, coly = None):
         X 	               = df[ colsX ]
         y            	   = df[coly]
 
-
         ############## ALready in DSA 2 ##########################################################
         X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.33, random_state=42)
         # Y_test = np.zeros(X_test.shape[0])

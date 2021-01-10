@@ -47,10 +47,10 @@ class Evaluater(object):
         # tasktype = "C" or "R" for classification or regression
         # evaluatertype = 'rf', 'svm', 'lr' for random forest, SVM, logisticregression
         self.random_state = random_state
-        self.cv = cv
-        self.stratified = stratified
-        self.n_jobs = n_jobs
-        self.tasktype = tasktype
+        self.cv           = cv
+        self.stratified   = stratified
+        self.n_jobs       = n_jobs
+        self.tasktype     = tasktype
         if self.tasktype == "C":
             self.kf = StratifiedKFold(n_splits=self.cv, random_state=self.random_state, shuffle=True)
         else:
@@ -182,10 +182,10 @@ class Env():
         #print(self.origin_dataset[:,:-1].shape)
         #print(self.origin_dataset[0])
 
-        self._init_pfm =self.evaluater.CV(self.origin_dataset[:,:-1],self.origin_dataset[:,-1])
-        self.init_pfm = self._init_pfm
-        self.y = np.copy(self.origin_dataset[:,-1])
-        self.binsize = binsize
+        self._init_pfm = self.evaluater.CV(self.origin_dataset[:,:-1],self.origin_dataset[:,-1])
+        self.init_pfm  = self._init_pfm
+        self.y         = np.copy(self.origin_dataset[:,-1])
+        self.binsize   = binsize
         self._init()
         #print("init performance",self._init_pfm)
 
