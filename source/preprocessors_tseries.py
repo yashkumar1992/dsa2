@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-"""DeltaPy - Tabular Augmentation.ipynb
+"""
+
 Original file is located at    https://colab.research.google.com/drive/1-uJqGeKZfJegX0TmovhsO90iasyxZYiT
 
 ### Introduction
