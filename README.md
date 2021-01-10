@@ -1,7 +1,7 @@
 
 #### Check here if latest commit is working :
 
-[Code for train, predict check](https://github.com/arita37/dsa2/blob/main/ztest/run_fast.sh)
+[Testing code ](https://github.com/arita37/dsa2/blob/main/ztest/run_fast.sh)
 
 Main
 ![Main, test_fast_linux](https://github.com/arita37/dsa2/workflows/test_fast_linux/badge.svg?branch=main)
@@ -18,36 +18,37 @@ Preprocessors Check
 
 
 ### Looking for contributors
-     Maintain and setup roadmap of this excellent repo.
+     Maintain and setup roadmap of this excellent Data Science / ML repo.
+     Goal is to unified Data Science and Machine Learning :
+      REDUCE BOILERPLATE CODE
       
-
 
 ### Install 
      pip install -r zrequirements.txt
 
 
 ### Basic usage 
-    python  titanic_classifier.py  data_profile
-    python  titanic_classifier.py  preprocess    --nsample 10000
-    python  titanic_classifier.py  train         --nsample 20000
+    python  titanic_classifier.py  preprocess    --nsample 1000
+    python  titanic_classifier.py  train         --nsample 2000
     python  titanic_classifier.py  predict
 
 
 
 ### How to train a new dataset ?
-    1) Put your data file   in   data/input/mydata/raw/   (link)[https://github.com/arita37/dsa2/tree/multi/data/input/mydata
+    1) Put your data file   in   data/input/mydata/raw/   
+       [link](https://github.com/arita37/dsa2/tree/multi/data/input/mydata)
        
 
     2) Update script        in   data/input/mydata/clean.py
-       to include basic processing
+       to load column names, basic profile...
 
     3) Run  python clean.py profile   and check results
 
 
     4) run  python clean.py train_test
-        which generates train data and test data in :   
+        which generates train and test data in :   
            data/input/mydata/train/features.parquet   target.parquet  (y label)        
-           data/input/mydata/test/features.parquet    target.parquet   (y label)                
+           data/input/mydata/test/features.parquet    target.parquet  (y label)                
                 
 
     4) Copy Paste titanic_classifier.py  into  mydata_classifier.py
@@ -60,11 +61,11 @@ Preprocessors Check
         python  mydata_classifier.py  predict
 
         
-###   
-
-
 
 ### data/input  : Input data format
+    /raw
+    /train
+    /test
 
     data/input/titanic/raw/  : the raw files
     data/input/titanic/raw2/ : the raw files  split manually
@@ -76,11 +77,15 @@ Preprocessors Check
     File names Are FIXED, please create sub-folder  
 
 
-###  Model, train, inference :
-   All are defined in a single model_dictionnary containing all
+###  Preprocess, Tain, Predict :
+   All are defined in a single model_dictionnary :
+   
+          model_pars  = dict()
+          
 
+###  Column family for model preprocessing / training/inference :
 
-###  Column Group for model preprocessing / training/inference :
+    colnum  --> Preprocess_function -->  colnum_asbininaries
 
     *Titanic dataframe structure (example:
                  Survived  Pclass                                               Name     Sex   Age  SibSp  Parch            Ticket     Fare Cabin Embarked
@@ -90,7 +95,6 @@ Preprocessors Check
     3                   1       3                             Heikkinen, Miss. Laina  female  26.0      0      0  STON/O2. 3101282   7.9250   NaN        S
     4                   1       1       Futrelle, Mrs. Jacques Heath (Lily May Peel)  female  35.0      1      0            113803  53.1000  C123        S
     5                   0       3                           Allen, Mr. William Henry    male  35.0      0      0            373450   8.0500   NaN        S
-
 
     (1) Initial Manual Column Mapping  :   'cols_input_type' 
      From Raw data --> "colid","colnum","colcat","coldate","coltext","coly","colcross"
@@ -110,7 +114,6 @@ Preprocessors Check
        |-"colcross" --> columns to be checked for feature crosses
                         (e.g. ["Name", "Sex", "Ticket", "Embarked", "Pclass", "Age", "SibSp", "Parch", "Fare"])
     
-
      
     (2) Some Columns feature family for model training  :   "cols_model_group"
         "cols_model_group" --> column family used for Model Training 
@@ -120,7 +123,6 @@ Preprocessors Check
       'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns            
       'coldate',
       'coltext',            
-
 
 
 ###  Preprocessing pipeline in the config model  :
@@ -150,11 +152,14 @@ Preprocessors Check
                    ]
 
 
-    {'uri': 'python file address::the function for column processing', 'pars': any parameters to pass to function, 'cols_family': column family name, 'cols_out': *optional, 'type': 'coly' or 'cross'}
+    {'uri': 'python file address::function for column processing', 
+      'pars': any parameters to pass to function, 
+      'cols_family': 'colnum'    # column family name, 
+      'cols_out':    'colnum_out', 
+      'type':         '' , 'coly_add' , 'coly' or 'cross'}
 
 
     '::pd_coly'                => Input:  the target dataframe, returns filtered and labeled dataframe
-
 
     '::pd_colnum_bin'          => Input:  a dataframe with selected numerical columns, creates categorical bins, returns dataframe with new columns (colnum_bin)
     '::pd_colnum_binto_onehot' => Input:  a dataframe dfnum_bin, returns one hot matrix as dataframe colnum_onehot
@@ -163,17 +168,8 @@ Preprocessors Check
     '::pd_colcat_bin'          => Input:  a dataframe with categorical columns, returns dataframe colcat_bin with numerical values
     '::pd_colcat_to_onehot'    => Input:  a dataframe with categorical columns, returns one hot matrix as dataframe colcat_onehot
 
-
+  
     '::pd_colcross'            => Input:  a dataframe of numerical and categorical one hot encoded columns with defined cross columns, returns dataframe colcross_pair_onehot
-
-
-### Command line usage advanced
-    python source/run_train.py  run_train   --n_sample 100  --model_name lightgbm  --path_config_model source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/    
-
-    python source/run_inference.py  run_predict  --n_sample 1000  --model_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
-
-
-
 
 
 
@@ -183,6 +179,14 @@ Preprocessors Check
     python core_run.py preprocess   --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
     python core_run.py train        --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
     python core_run.py predict      --config_uri titanic_classifier.py::titanic_lightgbm   > zlog/log-titanic.txt 2>&1
+
+
+
+
+### Command line usage advanced
+    python source/run_train.py  run_train   --n_sample 100  --model_name lightgbm  --path_config_model source/config_model.py  --path_output /data/output/a01_test/     --path_data /data/input/train/    
+
+    python source/run_inference.py  run_predict  --n_sample 1000  --model_name lightgbm  --path_model /data/output/a01_test/   --path_output /data/output/a01_test_pred/     --path_data /data/input/train/
 
 
 
