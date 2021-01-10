@@ -40,6 +40,58 @@ def pd_merge(df_list, cols_join):
     return dfall
 
 
+def train(input_path, max_rows = None, n_experiments = 3, id_cols = None, coly = None):
+    """
+       Generic train
+    :param input_path:
+    :param max_rows:
+    :param n_experiments:
+    :param id_cols:
+    :param coly:
+    :return:
+    """
+    model_params = {'num_leaves': 555,
+          'min_child_weight' : 0.034, 'feature_fraction' : 0.379, 'bagging_fraction' : 0.418, 'min_data_in_leaf' : 106, 'objective'        : 'regression', 'max_depth'        : -1, 'learning_rate'    : 0.005, "boosting_type"    : "gbdt", "bagging_seed"     : 11, "metric"           : 'rmse', "verbosity"        : -1, 'reg_alpha'        : 0.3899, 'reg_lambda'       : 0.648, 'random_state'     : 222,
+         }
+
+    #coly = 'demand'
+
+    dict_metrics = {'run_id' : [], 'cols' : [], 'metric_name': [], 'model_params': [], 'metrics_val' : []}
+    for ii in range(n_experiments):
+        colsX  = featurestore_filter_features(id_cols = id_cols, coly = coly)
+        df     = featurestore_get_feature_fromcolname(input_path, colsX + [coly], id_cols)
+
+        X 	               = df[ colsX ]
+        y            	   = df[coly]
+
+
+        ############## ALready in DSA 2 ##########################################################
+        X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+        # Y_test = np.zeros(X_test.shape[0])
+
+        dtrain                     = lgb.Dataset(X_train, label=Y_train)
+        dtest                      = lgb.Dataset(X_test, label=Y_test)
+        clf                        = lgb.train(model_params, dtrain, 2500,
+                                               valid_sets = [dtrain, dtest],
+                                               early_stopping_rounds = 50, verbose_eval=100)
+
+        Y_test_pred          	   = clf.predict(X_test,num_iteration=clf.best_iteration)
+        val_score                  = np.sqrt(metrics.mean_squared_error(Y_test_pred, Y_test))
+
+        #### Metrics  ####################################################
+        dict_metrics['run_id'].append(datetime.now())
+        dict_metrics['cols'].append(";".join(X_train.columns.tolist()))
+        dict_metrics['model_params'].append(model_params)
+        dict_metrics['metric_name'].append('rmse')
+        dict_metrics['metrics_val'].append(val_score)
+
+    df_metrics = pd.DataFrame.from_dict(dict_metrics)
+    print("        DF metrics          ")
+    print(df_metrics)
+    df_metrics.to_csv("df_metrics.csv")
+
+
+
 
 ########################################################################################################################
 ########################################################################################################################
@@ -182,7 +234,6 @@ def custom_rawdata_merge(input_path="data/", out_path='out/', index_cols = None,
 
     df_sales_val = df_sales_val if max_rows == -1 else df_sales_val.iloc[:,0:max_rows]
 
-
     df_merged  = pd.melt(df_sales_val, id_vars = index_cols, var_name = 'day', value_name = coly)
     # df_merged = pd.concat([df_sales_val_melt, df_submi_val, df_submi_eval], axis = 0)
     # df_merged = df_sales_val_melt
@@ -200,7 +251,6 @@ def custom_rawdata_merge(input_path="data/", out_path='out/', index_cols = None,
 
 
 
-
 data_path = "data/input/tseries/tseries_m5/processed"
 def custom_generate_feature_all(input_path = data_path, out_path=".", input_raw_path =".", auxiliary_csv_path = None,
                                 drop_cols = None, index_cols = None, merge_cols_mapping = None,
@@ -211,62 +261,6 @@ def custom_generate_feature_all(input_path = data_path, out_path=".", input_raw_
     featurestore_generate_feature(data_path, input_path, pd_ts_lag, "lag", coly = coly, id_cols = id_cols)
     featurestore_generate_feature(data_path, input_path, pd_ts_tsfresh, "tsfresh", input_raw_path, auxiliary_csv_path, drop_cols, index_cols, merge_cols_mapping, max_rows, step_wise_saving = True, id_cols = id_cols)
     featurestore_generate_feature(data_path, input_path, pd_ts_identity, "identity", cat_cols = cat_cols, drop_cols = ['d', 'id', 'day', 'wm_yr_wk'])
-    print("hello")
-
-
-
-
-def train(input_path, max_rows = None, n_experiments = 3, id_cols = None, coly = None):
-    """
-       Generic train
-    :param input_path:
-    :param max_rows:
-    :param n_experiments:
-    :param id_cols:
-    :param coly:
-    :return:
-    """
-    model_params = {'num_leaves': 555,
-          'min_child_weight' : 0.034, 'feature_fraction' : 0.379, 'bagging_fraction' : 0.418, 'min_data_in_leaf' : 106, 'objective'        : 'regression', 'max_depth'        : -1, 'learning_rate'    : 0.005, "boosting_type"    : "gbdt", "bagging_seed"     : 11, "metric"           : 'rmse', "verbosity"        : -1, 'reg_alpha'        : 0.3899, 'reg_lambda'       : 0.648, 'random_state'     : 222,
-         }
-
-    #coly = 'demand'
-
-    dict_metrics = {'run_id' : [], 'cols' : [], 'metric_name': [], 'model_params': [], 'metrics_val' : []}
-    for ii in range(n_experiments):
-        colsX  = featurestore_filter_features(id_cols = id_cols, coly = coly)
-        df     = featurestore_get_feature_fromcolname(input_path, colsX + [coly], id_cols)
-
-        X 	               = df[ colsX ]
-        y            	   = df[coly]
-
-
-        ############## ALready in DSA 2 ##########################################################
-        X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-        # Y_test = np.zeros(X_test.shape[0])
-
-        dtrain                     = lgb.Dataset(X_train, label=Y_train)
-        dtest                      = lgb.Dataset(X_test, label=Y_test)
-        clf                        = lgb.train(model_params, dtrain, 2500,
-                                               valid_sets = [dtrain, dtest],
-                                               early_stopping_rounds = 50, verbose_eval=100)
-
-        Y_test_pred          	   = clf.predict(X_test,num_iteration=clf.best_iteration)
-        val_score                  = np.sqrt(metrics.mean_squared_error(Y_test_pred, Y_test))
-
-        #### Metrics  ####################################################
-        dict_metrics['run_id'].append(datetime.now())
-        dict_metrics['cols'].append(";".join(X_train.columns.tolist()))
-        dict_metrics['model_params'].append(model_params)
-        dict_metrics['metric_name'].append('rmse')
-        dict_metrics['metrics_val'].append(val_score)
-
-    df_metrics = pd.DataFrame.from_dict(dict_metrics)
-    print("        DF metrics          ")
-    print(df_metrics)
-    df_metrics.to_csv("df_metrics.csv")
-
-
 
 
 
@@ -299,7 +293,7 @@ def run_train(input_path ="data/input/m5/raw", out_path=data_path,
 
 
 if __name__ == "__main__":
-	run_train()
+    run_train()
 
 
 
