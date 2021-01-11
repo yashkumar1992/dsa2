@@ -18,8 +18,8 @@ from time import sleep
 
 
 ####################################################################################################
-from source.util_feature import get_recursive_files, log, os_package_root_path, model_get_list, os_get_file
-from source.util import get_recursive_files2, path_norm, path_norm_dict
+# from source.util_feature import get_recursive_files, log, os_package_root_path, model_get_list, os_get_file
+# from source.util import get_recursive_files2, path_norm, path_norm_dict
 
 
 ####################################################################################################
@@ -544,9 +544,12 @@ def test_fast_linux():
     test_list(test_list0)
 
 
-    
+def log(*s):
+  print(*s, flush=True)
+
+  
 def test_all_data():
-    log_info_repo(arg)
+    # log_info_repo(arg)
     log("os.getcwd", os.getcwd())
     import time, glob
     
