@@ -555,7 +555,7 @@ def test_all_data():
     
     block_list =  []  # [ "core_run.py", "core_test_auto.py"  ]
     flist = glob.glob(".py")      
-    flist = [ t for t in t not in block_list ]  
+    flist = [ t for t in flist if t not in block_list ]  
 
     ## Block list
     path = os.getcwd()
