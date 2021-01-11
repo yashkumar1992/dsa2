@@ -5,9 +5,9 @@ name: test_preprocess
 on:
   push:
     branches:
-      - run_train
-      - multi
-
+      #
+      #
+      
 
 jobs:
   build:
