@@ -75,15 +75,6 @@ cols_input_type_1 = {
     , "colcross": ["Recency","Frequency","Monetary","Time" ]
 }
 
-cols_input_type_2 = {
-    "coly": "whether_they_donated_blood"
-    , "colid": "Id"
-    , "colcat": []
-    , "colnum": ["Recency","Frequency","Monetary","Time"]
-    , "coltext": []
-    , "coldate": []
-    , "colcross": ["Recency","Frequency","Monetary","Time" ]
-}
 
 
 ####################################################################################
@@ -115,33 +106,29 @@ def transfusion_lightgbm(path_model_out=""):
         , 'post_process_fun': post_process_fun  ### After prediction  ##########################################
         , 'pre_process_pars': {'y_norm_fun': pre_process_fun,  ### Before training  ##########################
 
-                               ### Pipeline for data processing ##############################
-                               'pipe_list': [
-                                   #### coly target prorcessing
-                                   {'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly',
-                                    'cols_out': 'coly', 'type': 'coly'},
+           ### Pipeline for data processing ##############################
+           'pipe_list': [
+               #### coly target prorcessing
+               {'uri': 'source/preprocessors.py::pd_coly', 'pars': {}, 'cols_family': 'coly',
+                'cols_out': 'coly', 'type': 'coly'},
 
-                                   {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {},
-                                    'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''},
-                                   {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {},
-                                    'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''},
+               {'uri': 'source/preprocessors.py::pd_colnum_bin', 'pars': {},
+                'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''},
+               {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {},
+                'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''},
 
-                                   #### catcol INTO integer,   colcat into OneHot
-                                   {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {},
-                                    'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''},
-                                   {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {},
-                                    'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''},
+               #### catcol INTO integer,   colcat into OneHot
+               {'uri': 'source/preprocessors.py::pd_colcat_bin', 'pars': {},
+                'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''},
+               {'uri': 'source/preprocessors.py::pd_colcat_to_onehot', 'pars': {},
+                'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''},
 
-                                   ### Cross_feat = feat1 X feat2
-                                   {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {},
-                                    'cols_family': 'colcross', 'cols_out': 'colcross_pair', 'type': 'cross'},
+               ### Cross_feat = feat1 X feat2
+               {'uri': 'source/preprocessors.py::pd_colcross', 'pars': {},
+                'cols_family': 'colcross', 'cols_out': 'colcross_pair', 'type': 'cross'},
 
-                                   #### Example of Custom processor
-                                   {'uri': THIS_FILEPATH + '::pd_col_myfun', 'pars': {}, 'cols_family': 'colnum',
-                                    'cols_out': 'col_myfun', 'type': ''},
-
-                               ],
-                               }
+           ],
+       }
     },
 
         'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score']
@@ -159,9 +146,6 @@ def transfusion_lightgbm(path_model_out=""):
                                            # 'coltext',
                                            # 'coldate',
                                            'colcross_pair',
-
-                                           ### example of custom
-                                           'col_myfun'
                                            ]
 
                       ### Filter data rows   ##################################################################
@@ -175,36 +159,7 @@ def transfusion_lightgbm(path_model_out=""):
     return model_dict
 
 
-def pd_col_myfun(df=None, col=None, pars={}):
-    """
-         Example of custom
-    """
 
-    from source.util_feature import save, load
-    prefix = 'col_myfun`'
-    if 'path_pipeline' in pars:  #### Inference time LOAD previous pars
-        prepro = load(pars['path_pipeline'] + f"/{prefix}_model.pkl")
-        pars = load(pars['path_pipeline'] + f"/{prefix}_pars.pkl")
-        pars = {} if pars is None else pars
-    #### Do something #################################################################
-    df_new = df[col]  ### Do nithi
-    df_new.columns = [col + "_myfun" for col in df.columns]
-    cols_new = list(df_new.columns)
-
-    prepro = None
-    pars_new = None
-
-    ###################################################################################
-    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
-        save(prepro, pars['path_pipeline_export'] + f"/{prefix}_model.pkl")
-        save(cols_new, pars['path_pipeline_export'] + f"/{prefix}.pkl")
-        save(pars_new, pars['path_pipeline_export'] + f"/{prefix}_pars.pkl")
-
-    col_pars = {'prefix': prefix, 'path': pars.get('path_pipeline_export', pars.get('path_pipeline', None))}
-    col_pars['cols_new'] = {
-        'col_myfun': cols_new  ### list
-    }
-    return df_new, col_pars
 
 
 #####################################################################################
