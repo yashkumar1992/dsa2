@@ -18,8 +18,8 @@ from time import sleep
 
 
 ####################################################################################################
-from source.util_feature import get_recursive_files, log, os_package_root_path, model_get_list, os_get_file
-from source.util import get_recursive_files2, path_norm, path_norm_dict
+# from source.util_feature import get_recursive_files, log, os_package_root_path, model_get_list, os_get_file
+# from source.util import get_recursive_files2, path_norm, path_norm_dict
 
 
 ####################################################################################################
@@ -544,6 +544,32 @@ def test_fast_linux():
     test_list(test_list0)
 
 
+def log(*s):
+  print(*s, flush=True)
+
+  
+def test_all_data():
+    # log_info_repo(arg)
+    log("os.getcwd", os.getcwd())
+    import time, glob
+    
+    block_list =  []  # [ "core_run.py", "core_test_auto.py"  ]
+    flist = glob.glob(".py")      
+    flist = [ t for t in flist if t not in block_list ]  
+
+    ## Block list
+    path = os.getcwd()
+    path = path.replace("\\", "//")
+    test_list = [f"python {path}/" + t  for t in flist]
+    log("Used", test_list)
+
+    for cmd in test_list:
+        log_separator()
+        log( cmd)
+        os.system(cmd)
+        # log_remote_push()
+        # time.sleep(1)
+    
 
 if __name__ == "__main__":
     import fire

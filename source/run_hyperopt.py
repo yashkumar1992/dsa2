@@ -18,6 +18,8 @@ obj_fun
 
 """
 
+DEBUG = True
+
 def log(*s):
     print(*s)
 
@@ -28,7 +30,6 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
       pars_dict_init =  {  'boosting_type':'gbdt',
 						'importance_type':'split', 'learning_rate':0.001, 'max_depth':10,
 						'n_estimators': 50, 'n_jobs':-1, 'num_leaves':31 }
-
 	  pars_dict_range =   {  'boosting_type':  ( 'categorical',  ['gbdt', 'gbdt']      ) ,
 						 'importance_type':'split',
 						 'learning_rate':  ('log_uniform' , 0.001, 0.1,  ),
@@ -36,10 +37,8 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
 						 'n_estimators':   ('int', 0, 10,  'uniform' )
 						 'n_jobs':-1,
 						 'num_leaves':31 }
-
       obj_fun(pars_dict) :  Objective function
       engine_pars :    {   }  optuna parameters
-
     """
 
     def parse_dict(mdict, trial):
@@ -56,12 +55,13 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
                 if   x == 'log_uniform':      pres = trial.suggest_loguniform(t, p[1], p[2])
                 elif x == 'int':              pres = trial.suggest_int(t,        p[1], p[2])
                 elif x == 'uniform':          pres = trial.suggest_uniform(t,    p[1], p[2])
-                elif x == 'categorical':      pres = trial.suggest_categorical(t, p[3])
+                elif x == 'categorical':      pres = trial.suggest_categorical(t, p[1])
                 elif x == 'discrete_uniform': pres = trial.suggest_discrete_uniform(t, p[1], p[2], p[3])
                 else:
                     print(f'Not supported type {t}, {p}')
 
             mnew[t] = pres
+            if DEBUG : log(t, pres)
         return mnew
 
 
@@ -78,7 +78,7 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
 
     if engine_pars.get("study_name") is not None:
         study_name = engine_pars['study_name']
-        storage    =  engine_pars.get('storage', 'optunadb.db')
+        storage    = engine_pars.get('storage', 'optunadb.db')
         # study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
         try:
             study = optuna.load_study(study_name, storage)
@@ -96,8 +96,91 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
     log("####  Save on disk ##########################################################")
 
 
+
+
+
     return pars_best, score_best
 
+
+
+def test_hyper():
+    import pandas as pd
+    import numpy as np
+
+    #Running the function for quadratic and cubic equations
+    pars = {'x':2,
+                 'y':{'z':3, 't':2}}
+
+
+    pars_range = {'x': ('uniform',  -10,10),
+                  'y': {'z':('int',-10, 10)}
+
+                  }
+
+    def objective1(ddict):
+         x   = ddict['x']
+         z   = ddict['y']['z']
+         obj = ((x - 2)**3 + z**2 )
+         return obj
+
+    engine_pars = {'metric_target':'loss'}
+    result_p = run_hyper_optuna(objective1,pars, pars_range, engine_pars, ntrials= 3)
+    log(result_p)
+
+
+
+
+def test_hyper2():
+    import pandas as pd
+    import numpy as np
+    import sklearn
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import mean_absolute_error
+    from sklearn.metrics import roc_auc_score
+    from sklearn.model_selection import train_test_split
+    from sklearn.model_selection import cross_val_score
+    from sklearn.model_selection import cross_val_predict
+    from sklearn.metrics import accuracy_score
+    param_dict={'n_estimators':100,
+                'max_depth':3,
+                'min_samples_split':2,
+                'min_samples_leaf':2,
+                'min_weight_fraction_leaf':0.0,
+                'criterion':'gini',
+                'max_features':'sqrt'}
+
+    def objective(param_dict):
+      model=RandomForestClassifier(**param_dict)
+      model.fit(X_train,y_train)
+      y_pred=model.predict(X_test)
+      score=model.score(X_test, y_test)
+      return -score
+
+    param_dict_range={'max_depth':('int',  1, 10, 'uniform'),
+                                  'n_estimators':('int', 0, 1000,  'uniform'),
+                      'min_samples_split':('uniform',0,1,'uniform'),
+                      'min_samples_leaf':('int',2,10,'uniform'),
+                      'min_weight_fraction_leaf':('uniform',0.001,0.5,'uniform'),
+                      'criterion':('categorical',['gini','entropy']),
+                      'max_features':('categorical',['auto', 'sqrt', 'log2'])}
+    engine_pars={'metric_target':'roc_auc_score'}
+
+    def objective1(param_dict1):
+         x=param_dict1.get('x')
+         z=param_dict1['y']['z']
+         obj=-((x - 2)**3 + z**2)
+         return obj
+
+    engine_pars1={'metric_target':'loss'}
+    result_p=run_hyper_optuna(objective1, param_dict, param_dict_range, engine_pars,100)
+
+
+
+
+if __name__ == "__main__":
+    import fire
+    fire.Fire()
 
 
 

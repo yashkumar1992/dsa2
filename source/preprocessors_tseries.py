@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-"""DeltaPy - Tabular Augmentation.ipynb
+"""
+
 Original file is located at    https://colab.research.google.com/drive/1-uJqGeKZfJegX0TmovhsO90iasyxZYiT
 
 ### Introduction
@@ -14,17 +15,7 @@ The benefit of pipelines become clear when one wants to apply multiple augmentat
 
 
 **Notebook Dependencies**
-!pip install deltapy
-
-!pip install pykalman
-!pip install tsaug
-!pip install ta
-!pip install tsaug
-!pip install pandasvault
-!pip install gplearn
-!pip install ta
-!pip install seasonal
-!pip install pandasvault
+pip install deltapy pykalman tsaug ta tsaug pandasvault gplearn ta seasonal pandasvault
 
 
 """
@@ -146,43 +137,43 @@ def test_prepro_all():
   from deltapy import transform, interact, mapper, extract
   df = data_copy(); df.head()
 
-  df_out = transform.robust_scaler(df.copy(), drop=["Close_1"]); df_out.head()
-  df_out = transform.standard_scaler(df.copy(), drop=["Close"]); df_out.head()
-  df_out = transform.fast_fracdiff(df.copy(), ["Close","Open"],0.5); df_out.head()
-  df_out = transform.windsorization(df.copy(),"Close",para,strategy='both'); df_out.head()
-  df_out = transform.operations(df.copy(),["Close"]); df_out.head()
-  df_out= transform.triple_exponential_smoothing(df.copy(),["Close"], 12, .2,.2,.2,0);
-  df_out = transform.naive_dec(df.copy(), ["Close","Open"]); df_out.head()
-  df_out = transform.bkb(df.copy(), ["Close"]); df_out.head()
-  df_out = transform.butter_lowpass_filter(df.copy(),["Close"],4); df_out.head()
-  df_out = transform.instantaneous_phases(df.copy(), ["Close"]); df_out.head()
-  df_out = transform.kalman_feat(df.copy(), ["Close"]); df_out.head()
-  df_out = transform.perd_feat(df.copy(),["Close"]); df_out.head()
-  df_out = transform.fft_feat(df.copy(), ["Close"]); df_out.head()
-  df_out = transform.harmonicradar_cw(df.copy(), ["Close"],0.3,0.2); df_out.head()
-  df_out = transform.saw(df.copy(),["Close","Open"]); df_out.head()
-  df_out = transform.modify(df.copy(),["Close"]); df_out.head()
-  df_out = transform.multiple_rolling(df, columns=["Close"]); df_out.head()
-  df_out = transform.multiple_lags(df, start=1, end=3, columns=["Close"]); df_out.head()
-  df_out  = transform.prophet_feat(df.copy().reset_index(),["Close","Open"],"Date", "D"); df_out.head()
+  df_out = transform.robust_scaler(df, drop=["Close_1"])
+  df_out = transform.standard_scaler(df, drop=["Close"])
+  df_out = transform.fast_fracdiff(df, ["Close","Open"],0.5)
+  #df_out = transform.windsorization(df,"Close",para,strategy='both')
+  df_out = transform.operations(df,["Close"])
+  df_out= transform.triple_exponential_smoothing(df,["Close"], 12, .2,.2,.2,0);
+  df_out = transform.naive_dec(df, ["Close","Open"])
+  df_out = transform.bkb(df, ["Close"])
+  df_out = transform.butter_lowpass_filter(df,["Close"],4)
+  df_out = transform.instantaneous_phases(df, ["Close"])
+  df_out = transform.kalman_feat(df, ["Close"])
+  df_out = transform.perd_feat(df,["Close"])
+  df_out = transform.fft_feat(df, ["Close"])
+  df_out = transform.harmonicradar_cw(df, ["Close"],0.3,0.2)
+  df_out = transform.saw(df,["Close","Open"])
+  df_out = transform.modify(df,["Close"])
+  df_out = transform.multiple_rolling(df, columns=["Close"])
+  df_out = transform.multiple_lags(df, start=1, end=3, columns=["Close"])
+  df_out  = transform.prophet_feat(df.reset_index(),["Close","Open"],"Date", "D")
 
   #**Interaction**
-  df_out = interact.lowess(df.copy(), ["Open","Volume"], df["Close"], f=0.25, iter=3); df_out.head()
-  df_out = interact.autoregression(df.copy()); df_out.head()
-  df_out = interact.muldiv(df.copy(), ["Close","Open"]); df_out.head()
-  df_out = interact.decision_tree_disc(df.copy(), ["Close"]); df_out.head()
-  df_out = interact.quantile_normalize(df.copy(), drop=["Close"]); df_out.head()
-  df_out = interact.tech(df.copy()); df_out.head()
-  df_out = interact.genetic_feat(df.copy()); df_out.head()
+  df_out = interact.lowess(df, ["Open","Volume"], df["Close"], f=0.25, iter=3)
+  df_out = interact.autoregression(df)
+  df_out = interact.muldiv(df, ["Close","Open"])
+  df_out = interact.decision_tree_disc(df, ["Close"])
+  df_out = interact.quantile_normalize(df, drop=["Close"])
+  df_out = interact.tech(df)
+  df_out = interact.genetic_feat(df)
 
   #**Mapping**
-  df_out = mapper.pca_feature(df.copy(),variance_or_components=0.80,drop_cols=["Close_1"]); df_out.head()
-  df_out = mapper.cross_lag(df.copy()); df_out.head()
-  df_out = mapper.a_chi(df.copy()); df_out.head()
-  df_out = mapper.encoder_dataset(df.copy(), ["Close_1"], 15); df_out.head()
-  df_out = mapper.lle_feat(df.copy(),["Close_1"],4); df_out.head()
-  df_out = mapper.feature_agg(df.copy(),["Close_1"],4 ); df_out.head()
-  df_out = mapper.neigh_feat(df.copy(),["Close_1"],4 ); df_out.head()
+  df_out = mapper.pca_feature(df,variance_or_components=0.80,drop_cols=["Close_1"])
+  df_out = mapper.cross_lag(df)
+  df_out = mapper.a_chi(df)
+  df_out = mapper.encoder_dataset(df, ["Close_1"], 15)
+  df_out = mapper.lle_feat(df,["Close_1"],4)
+  df_out = mapper.feature_agg(df,["Close_1"],4 )
+  df_out = mapper.neigh_feat(df,["Close_1"],4 )
 
 
   #**Extraction**
@@ -337,89 +328,5 @@ def pd_tsfresh_features_single_row(df_single_row, cols):
 
 
 
-def pd_ts_tsfresh(df, input_raw_path, dir_out, features_group_name, auxiliary_csv_path, drop_cols, index_cols, merge_cols_mapping, cat_cols = None, id_cols = None, dep_col = None, max_rows = 10):
-    # df is taken as an argument to make it work in the existing pipeline of saving features in meta_csv
-    df_sales_val              = pd.read_csv(input_raw_path)
-    df_calendar               = pd.read_csv(auxiliary_csv_path)
-
-    merged_df         = pd_tsfresh_m5data_sales(df_sales_val[0:max_rows], dir_out, features_group_name, drop_cols, df_calendar, index_cols, merge_cols_mapping, id_cols)
-    # df_calendar.drop(['weekday', 'wday', 'month', 'year'], inplace = True, axis = 1)
-    # merged_df = pd.merge(df_sales_val_melt, df_calendar, how = 'left', left_on = ['day'], right_on = ['d'])
-    # merged_df = pd.merge(df_sales_val_melt, df_calendar, how = 'left', left_on = [merge_cols_mapping["left"]], right_on = [merge_cols_mapping["right"]])
-
-    # merged_df = pd.concat([df_sales_val_melt, df_submi_val, df_submi_eval], axis = 0)
-    # selected_cols = [x for x in merged_df.columns.tolist() if x not in [ 'id', 'cat_id', 'dept_id', 'store_id', 'variable', 'day', 'demand', 'state_id']]
-    selected_cols = [x for x in merged_df.columns.tolist() if x not in drop_cols]
-    return merged_df[selected_cols], []
-
-
-
-
-
 ########################################################################################################################
-
-
-def pd_tsfresh_m5data_sales(df_sales, dir_out, features_group_name, drop_cols, df_calendar, index_cols, merge_cols_mapping, id_cols):
-    """
-
-    :param df_sales:
-    :param dir_out:
-    :param features_group_name:
-    :param drop_cols:
-    :param df_calendar:
-    :param index_cols:
-    :param merge_cols_mapping:
-    :param id_cols:
-    :return:
-    """
-    # X_feat = pd.DataFrame()
-    auxiliary_dropped_cols = [x for x in df_calendar.columns.tolist() if x in drop_cols]
-    df_calendar.drop(auxiliary_dropped_cols, inplace = True, axis = 1)
-
-    for i in range(len(df_sales.index)):
-        single_row_df = df_sales.loc[[i]]
-        X_feat_single_row_df = pd_tsfresh_features_single_row(single_row_df, index_cols)
-        if i % 5 ==0:
-            X_feat = X_feat_single_row_df
-        if (i+1) % 5 == 0 :
-            merged_df = pd.merge(X_feat, df_calendar, how = 'left', left_on = [merge_cols_mapping["left"]], right_on = [merge_cols_mapping["right"]])
-
-            # merged_df = pd.concat([df_sales_val_melt, df_submi_val, df_submi_eval], axis = 0)
-            # selected_cols = [x for x in merged_df.columns.tolist() if x not in drop_cols]
-            selected_cols = [x for x in merged_df.columns.tolist() if x in id_cols or str(x).startswith("val__")]
-            merged_df_selected_cols = merged_df[selected_cols]
-            merged_df_selected_cols.columns = merged_df_selected_cols.columns.astype(str)
-            merged_df_selected_cols.to_parquet(f'{dir_out}/{features_group_name}_{i}.parquet')
-        else:
-            X_feat.append(X_feat_single_row_df, ignore_index = True)
-    return merged_df_selected_cols
-
-
-
-
-def pd_tsfresh_m5data(df):
-    df = df[['snap_CA', 'snap_TX', 'snap_WI', 'sell_price', 'item_id', 'date', 'store_id', 'id']]
-    df = roll_time_series(df, column_id="item_id", column_sort="date")
-    existing_cols = df.columns.tolist()
-    y = df['demand']
-    X_cols = [x for x in existing_cols if not x == "demand"]
-    X = df[X_cols]
-    X = X.fillna(value = {'sell_price' : X['sell_price'].mean(skipna = True)})
-    X = X[['snap_CA', 'snap_TX', 'snap_WI', 'sell_price', 'item_id', 'date']]
-    X_filtered = extract_relevant_features(X, y, column_id='item_id', column_sort='date')
-
-    filtered_col_names = X_filtered.columns.tolist()
-
-    filtered_col_names_mapping = {}
-
-    for filtered_col_name in filtered_col_names:
-        filtered_col_names_mapping[filtered_col_name] = filtered_col_name.replace('"','').replace(',','')
-
-    X_filtered = X_filtered.rename(columns = filtered_col_names_mapping)
-    # This is done because lightgbm can not have features with " in the feature name
-
-    feature_df = pd.concat([X[['item_id', 'date']], X_filtered])
-
-    return feature_df, []
-
 

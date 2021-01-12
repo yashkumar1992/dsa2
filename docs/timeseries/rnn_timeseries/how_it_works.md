@@ -2,7 +2,7 @@
 __TL;DR__ this is seq2seq model with some additions to utilize year-to-year
 and quarter-to-quarter seasonality in data.
 ___
-There are two main information sources for prediction:
+There are two run_train information sources for prediction:
 1. Local features. If we see a trend, we expect that it will continue
  (AutoRegressive model), if we see a traffic spike, it will gradually decay (Moving Average model),
  if wee see more traffic on holidays, we expect to have more traffic on
@@ -61,7 +61,7 @@ training code randomly chooses starting point for each timeseries on each
 
 
 ## Model core
-Model has two main parts: encoder and decoder.
+Model has two run_train parts: encoder and decoder.
 
 ![seq2seq](images/encoder-decoder.png "Encoder-decoder")
 

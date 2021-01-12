@@ -14,12 +14,15 @@ import pdb
 from source.preprocessors_tseries import *
 
 
-def features_to_category(df, nan_cols, cat_cols):
+
+########################################################################################################################
+########################################################################################################################
+def pd_col_tocat(df, nan_cols, colcat):
     nan_features = nan_cols
     for feature in nan_features:
         df[feature].fillna('unknown', inplace = True)
 
-    categorical_cols = cat_cols
+    categorical_cols = colcat
     for feature in categorical_cols:
         encoder     = preprocessing.LabelEncoder()
         df[feature] = encoder.fit_transform(df[feature].astype(str))
@@ -27,56 +30,7 @@ def features_to_category(df, nan_cols, cat_cols):
     return df
 
 
-def update_meta_csv(featnames, filename, cat_cols):
-    meta_csv = pd.DataFrame(columns = ['featname', 'filename', 'feattype'])
-    if os.path.exists('meta_features.csv'):
-        meta_csv = pd.read_csv('meta_features.csv')
-    append_data_dict = {'featname' : [], 'filename' : [], 'feattype' : []}
-    for feat in featnames:
-        if feat not in meta_csv['featname'].unique():
-            append_data_dict['filename'].append(filename)
-            append_data_dict['featname'].append(feat)
-            feat_type = "numeric" if feat not in cat_cols else "categorical"
-            append_data_dict['feattype'].append(feat_type)
-        else:
-            meta_csv.loc[meta_csv['featname'] == feat, 'filename'] = filename
-    append_df = pd.DataFrame.from_dict(append_data_dict)
-    meta_csv = meta_csv.append(append_df)
-    meta_csv.to_csv('meta_features.csv', index = False)
-
-
-def get_cat_num_features_from_meta_csv(id_cols, dep_col):
-    drop_cols = id_cols + [dep_col]
-    meta_csv = pd.read_csv('meta_features.csv')
-    num_feats = [ x for x in meta_csv[meta_csv["feattype"] == "numeric"]['featname'].tolist()  if x not in drop_cols]
-    cat_feats = [ x for x in meta_csv[meta_csv["feattype"] == "categorical"]['featname'].tolist() if x not in drop_cols]
-    return cat_feats, num_feats
-
-
-def get_file_feat_from_meta_csv(selected_cols, id_cols):
-    meta_csv = pd.read_csv('meta_features.csv')
-    file_feat_mapping = {k:id_cols for k in meta_csv['filename'].unique().tolist()}
-    for selected_col in selected_cols:
-        selected_col_meta_df = meta_csv[meta_csv["featname"] == selected_col]
-        file_feat_mapping[selected_col_meta_df['filename'].tolist()[0]].append(selected_col)
-    print(id_cols)
-    return {k:list(set(v)) for k,v in file_feat_mapping.items()}
-
-
-def features_generate_file(dir_in, dir_out, my_fun_features, features_group_name, input_raw_path = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols=None, dep_col = None, max_rows = 5, step_wise_saving = False) :
-
-    # from util_feat_m5  import lag_featrues
-    # features_generate_file(dir_in, dir_out, lag_featrues)
-
-    merged_df = pd.read_parquet(dir_in + "/raw_merged.df.parquet")
-    dfnew, cat_cols= my_fun_features(merged_df, input_raw_path, dir_out, features_group_name, auxiliary_csv_path, drop_cols, index_cols, merge_cols_mapping, cat_cols, id_cols, dep_col, max_rows)
-    if not step_wise_saving:
-        dfnew.to_parquet(f'{dir_out}/{features_group_name}.parquet')
-    # num_cols = list(set(dfnew._get_numeric_data().columns))
-    update_meta_csv(dfnew.columns, f'{features_group_name}.parquet', cat_cols)
-
-
-def feature_merge_df(df_list, cols_join):
+def pd_merge(df_list, cols_join):
     print(cols_join)
     dfall = None
     for dfi in df_list :
@@ -86,54 +40,119 @@ def feature_merge_df(df_list, cols_join):
     return dfall
 
 
-def raw_merged_df(input_path="data/", out_path='out/',  index_cols = None, dep_col = None, raw_merge_cols = None, merge_cols_mapping = None, nan_cols = None, cat_cols = None, max_rows=10):
-    df_sales_train            = pd.read_csv(input_path + "/sales_train_gen.csv")
-    df_calendar               = pd.read_csv(input_path + "/calendar_gen.csv")
-    df_sales_val              = pd.read_csv(input_path + "/sales_train_gen.csv")
-    df_sell_price             = pd.read_csv(input_path + "/sell_prices_gen.csv")
-    # df_submi                  = pd.read_csv("data/sample_submi.csv")
+def train(input_path, n_experiments = 3, colid = None, coly = None):
+    """
+       Generic train
+    :param input_path:
+    :param max_rows:
+    :param n_experiments:
+    :param colid:
+    :param coly:
+    :return:
+    """
+    model_params = {'num_leaves': 555,
+          'min_child_weight' : 0.034, 'feature_fraction' : 0.379, 'bagging_fraction' : 0.418, 'min_data_in_leaf' : 106, 'objective'        : 'regression', 'max_depth'        : -1, 'learning_rate'    : 0.005, "boosting_type"    : "gbdt", "bagging_seed"     : 11, "metric"           : 'rmse', "verbosity"        : -1, 'reg_alpha'        : 0.3899, 'reg_lambda'       : 0.648, 'random_state'     : 222,
+         }
 
-    if not max_rows == -1:
-        df_sales_val_melt         = pd.melt(df_sales_val[0:max_rows], id_vars = index_cols, var_name = 'day', value_name = dep_col)
-    else:
-        df_sales_val_melt         = pd.melt(df_sales_val, id_vars = index_cols, var_name = 'day', value_name = dep_col)
-    # val_rows                  = [row for row in df_submi['id'] if 'val' in row]
-    # eval_rows                 = [row for row in df_submi['id'] if 'eval' in row]
-    # df_submi_val              = df_submi[df_submi['id'].isin(val_rows)][0:max_rows]
-    # df_submi_eval             = df_submi[df_submi['id'].isin(eval_rows)][0:max_rows]
+    #coly = 'demand'
 
-    # df_submi_val              = df_submi_val.merge(df_product, how = 'left', on = 'id')
-    # df_submi_eval             = df_submi_eval.merge(df_product, how = 'left', on = 'id')
+    dict_metrics = {'run_id' : [], 'cols' : [], 'metric_name': [], 'model_params': [], 'metrics_val' : []}
+    for ii in range(n_experiments):
+        colsX  = featurestore_filter_features(colid = colid, coly = coly)
+        df     = featurestore_get_feature_fromcolname(input_path, colsX + [coly], colid)
 
-    # df_submi_val              = pd.melt(df_submi_val, id_vars = ['id', 'item_id', 'dept_id', 'cat_id', 'store_id', 'state_id'], var_name = 'day', value_name = 'demand')
-    # df_submi_eval             = pd.melt(df_submi_eval, id_vars = ['id', 'item_id', 'dept_id', 'cat_id', 'store_id', 'state_id'], var_name = 'day', value_name = 'demand')
+        X 	               = df[ colsX ]
+        y            	   = df[coly]
 
-    # df_sales_val_melt['part'] = 'train'
-    # df_submi_val['part']      = 'test1'
-    # df_submi_eval['part']     = 'test2'
+        ############## ALready in DSA 2 ##########################################################
+        X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+        # Y_test = np.zeros(X_test.shape[0])
 
-    # merged_df = pd.concat([df_sales_val_melt, df_submi_val, df_submi_eval], axis = 0)
-    merged_df = df_sales_val_melt
-    df_calendar.drop(['weekday', 'wday', 'month', 'year'], inplace = True, axis = 1)
-    merged_df = pd.merge(merged_df, df_calendar, how = 'left', left_on = [merge_cols_mapping["left"]], right_on = [merge_cols_mapping["right"]])
-    merged_df = merged_df.merge(df_sell_price, on = raw_merge_cols, how = 'left')
+        dtrain                     = lgb.Dataset(X_train, label=Y_train)
+        dtest                      = lgb.Dataset(X_test, label=Y_test)
+        clf                        = lgb.train(model_params, dtrain, 2500,
+                                               valid_sets = [dtrain, dtest],
+                                               early_stopping_rounds = 50, verbose_eval=100)
 
-    merged_df = features_to_category(merged_df, nan_cols = nan_cols, cat_cols = cat_cols)
-    # merged_df = add_time_features(merged_df)
+        Y_test_pred          	   = clf.predict(X_test,num_iteration=clf.best_iteration)
+        val_score                  = np.sqrt(metrics.mean_squared_error(Y_test_pred, Y_test))
 
-    os.makedirs(out_path, exist_ok=True)
-    fname = out_path + "/raw_merged.df.parquet"
-    merged_df.to_parquet(fname)
-    # return merged_df
+        #### Metrics  ####################################################
+        dict_metrics['run_id'].append(datetime.now())
+        dict_metrics['cols'].append(";".join(X_train.columns.tolist()))
+        dict_metrics['model_params'].append(model_params)
+        dict_metrics['metric_name'].append('rmse')
+        dict_metrics['metrics_val'].append(val_score)
+
+    df_metrics = pd.DataFrame.from_dict(dict_metrics)
+    print("        DF metrics          ")
+    print(df_metrics)
+    df_metrics.to_csv("df_metrics.csv")
 
 
 
 
-def features_get_cols(mode = "random", id_cols = None, dep_col = None):
+########################################################################################################################
+########################################################################################################################
+class FeatureStore(object):
+    def __init__(self):
+        pass
+
+
+
+def featurestore_meta_update(featnames, filename, colcat):
+    meta_csv = pd.DataFrame(columns = ['featname', 'filename', 'feattype'])
+    if os.path.exists('meta_features.csv'):
+        meta_csv = pd.read_csv('meta_features.csv')
+    append_data_dict = {'featname' : [], 'filename' : [], 'feattype' : []}
+    for feat in featnames:
+        if feat not in meta_csv['featname'].unique():
+            append_data_dict['filename'].append(filename)
+            append_data_dict['featname'].append(feat)
+            feat_type = "numeric" if feat not in colcat else "categorical"
+            append_data_dict['feattype'].append(feat_type)
+        else:
+            meta_csv.loc[meta_csv['featname'] == feat, 'filename'] = filename
+    append_df = pd.DataFrame.from_dict(append_data_dict)
+    meta_csv = meta_csv.append(append_df)
+    meta_csv.to_csv('meta_features.csv', index = False)
+
+
+def featurestore_get_filelist_fromcolname(selected_cols, colid):
+    meta_csv = pd.read_csv('meta_features.csv')
+    file_feat_mapping = {k:colid for k in meta_csv['filename'].unique().tolist()}
+    for selected_col in selected_cols:
+        selected_col_meta_df = meta_csv[meta_csv["featname"] == selected_col]
+        file_feat_mapping[selected_col_meta_df['filename'].tolist()[0]].append(selected_col)
+    print(colid)
+    return {k:list(set(v)) for k,v in file_feat_mapping.items()}
+
+
+
+def featurestore_generate_feature(dir_in, dir_out, my_fun_features, features_group_name, input_raw_path = None,
+                                  auxiliary_csv_path = None, coldrop = None, index_cols = None,
+                                  merge_cols_mapping = None, colcat = None, colid=None, coly = None,
+                                  max_rows = 5, step_wise_saving = False) :
+
+    # from util_feat_m5  import lag_featrues
+    # featurestore_generate_feature(dir_in, dir_out, lag_featrues)
+
+    df_merged = pd.read_parquet(dir_in + "/raw_merged.df.parquet")
+
+    dfnew, colcat= my_fun_features(df_merged, input_raw_path, dir_out, features_group_name, auxiliary_csv_path,
+                                     coldrop, index_cols, merge_cols_mapping,
+                                     colcat, colid, coly, max_rows)
+    if not step_wise_saving:
+        dfnew.to_parquet(f'{dir_out}/{features_group_name}.parquet')
+    # num_cols = list(set(dfnew._get_numeric_data().columns))
+    featurestore_meta_update(dfnew.columns, f'{features_group_name}.parquet', colcat)
+
+
+def featurestore_filter_features(mode ="random", colid = None, coly = None):
     # categorical_cols = ['item_id', 'dept_id', 'cat_id', 'store_id', 'state_id', 'event_name_1', 'event_type_1', 'event_name_2', 'event_type_2' ]
     # numerical_cols = ['snap_TX',  'sell_price', 'week', 'snap_CA', 'month', 'snap_WI', 'dayofweek', 'year']
 
-    categorical_cols, numerical_cols = get_cat_num_features_from_meta_csv(id_cols = id_cols, dep_col =dep_col)
+    categorical_cols, numerical_cols = custom_get_colsname(colid = colid, coly =coly)
 
     cols_cat = []
     cols_num = []
@@ -151,157 +170,216 @@ def features_get_cols(mode = "random", id_cols = None, dep_col = None):
         cols_num = numerical_cols
         # TODO: Need to update
 
-    return cols_cat, cols_num
+    colall = cols_cat + cols_num
+    return colall
 
 
-def get_file_names_to_load_from(file_name, path):
+def featurestore_get_filename(file_name, path):
     file_name_ext_list = file_name.split(".")
     flist = glob.glob( f'{path}/{file_name_ext_list[0]}' + "*")
     return flist
 
 
-def load_data(path, selected_cols, id_cols):
-    print("**********")
-    selected_cols = id_cols + selected_cols
-    print(id_cols)
+def featurestore_get_feature_fromcolname(path, selected_cols, colid):
+    selected_cols = colid + selected_cols
+    print(colid)
 
-    file_col_mapping = get_file_feat_from_meta_csv(selected_cols = selected_cols, id_cols = id_cols[:])
-    # merged_df = pd.DataFrame()
-    # for file_name,file_cols in file_col_mapping.items():
-    # 	file_df = pd.read_parquet(path + file_name, columns = file_cols)
-    # 	merged_df = pd.concat([merged_df, file_df], axis = 0)
-
-    # for file_name,file_cols in file_col_mapping.items():
-    # 	print(file_name)
-    # 	print(file_cols)
-    # 	pd.read_parquet(f'{path}/{file_name}', columns = file_cols)
-
-    print(id_cols)
+    file_col_mapping = featurestore_get_filelist_fromcolname(selected_cols = selected_cols, colid =colid[:])
 
     feature_dfs = []
     for file_name,file_cols in file_col_mapping.items():
         print(file_name)
         print(file_cols)
         file_name_feature_df = None
-        for x in get_file_names_to_load_from(file_name, path):
+        for x in featurestore_get_filename(file_name, path):
             dfi = pd.read_parquet(f'{x}', columns = file_cols)
             file_name_feature_df = pd.concat((file_name_feature_df, dfi))
         feature_dfs.append(file_name_feature_df)
 
-    print(id_cols)
-    merged_df = feature_merge_df(feature_dfs, id_cols)
+    print(colid)
+    df_merged = pd_merge(feature_dfs, colid)
 
-    merged_df = merged_df.sort_values('date')
-    non_date_col = [x for x in id_cols if not x == "date"]
-    merged_df.drop(non_date_col, inplace = True, axis = 1)
-    return merged_df
-
-
-def X_transform(df, selected_cols):
-    X_df = df[  selected_cols  ]    #.drop(['demand', 'date'], axis =1)
-    return X_df
-
-
-def Y_transform(df, selected_col):
-    Y_df= df[selected_col]
-    return Y_df
-
-
-def run_eval(input_path, max_rows = None, n_experiments = 3, id_cols = None, dep_col = None):
-    model_params = {'num_leaves': 555,
-          'min_child_weight' : 0.034,
-          'feature_fraction' : 0.379,
-          'bagging_fraction' : 0.418,
-          'min_data_in_leaf' : 106,
-          'objective'        : 'regression',
-          'max_depth'        : -1,
-          'learning_rate'    : 0.005,
-          "boosting_type"    : "gbdt",
-          "bagging_seed"     : 11,
-          "metric"           : 'rmse',
-          "verbosity"        : -1,
-          'reg_alpha'        : 0.3899,
-          'reg_lambda'       : 0.648,
-          'random_state'     : 222,
-         }
-
-    print("hello eval")
-
-    dict_metrics = {'run_id' : [], 'cols' : [], 'metric_name': [], 'model_params': [], 'metrics_val' : []}
-
-    for ii in range(n_experiments):
-        cols_cat, cols_num   = features_get_cols(id_cols = id_cols, dep_col = dep_col)
-        df          		 = load_data(input_path, cols_cat + cols_num + [dep_col], id_cols)
-
-        # df_output            = load_data('data/output', cols_cat + cols_num, 'test1')
-
-        X 	               = X_transform(df, cols_cat + cols_num)
-        y            	   = Y_transform(df, 'demand')
-        # X_output 		   = X_transform(df_output, cols_cat + cols_num)
-        # Y_test             = Y_transform(df_test, 'demand')
-
-        # preparing split
-        X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-
-        # Y_test = np.zeros(X_test.shape[0])
-
-        dtrain                     = lgb.Dataset(X_train, label=Y_train)
-        dtest                      = lgb.Dataset(X_test, label=Y_test)
-        clf                        = lgb.train(model_params, dtrain, 2500,
-                                     valid_sets = [dtrain, dtest],
-                                     early_stopping_rounds = 50, verbose_eval=100)
-        Y_test_pred          	   = clf.predict(X_test,num_iteration=clf.best_iteration)
-        val_score                  = np.sqrt(metrics.mean_squared_error(Y_test_pred, Y_test))
-        #print(f'val rmse score is {val_score}')
-
-        # Y_test += clf.predict(X_test, num_iteration=clf.best_iteration)/n_fold
-
-        dict_metrics['run_id'].append(datetime.now())
-        dict_metrics['cols'].append(";".join(X_train.columns.tolist()))
-        dict_metrics['model_params'].append(model_params)
-        dict_metrics['metric_name'].append('rmse')
-        dict_metrics['metrics_val'].append(val_score)
-
-    df_metrics = pd.DataFrame.from_dict(dict_metrics)
-    print("        DF metrics          ")
-    print(df_metrics)
-    df_metrics.to_csv("df_metrics.csv")
+    df_merged = df_merged.sort_values('date')
+    non_date_col = [x for x in colid if not x == "date"]
+    df_merged.drop(non_date_col, inplace = True, axis = 1)
+    return df_merged
 
 
 
-def generate_feature_all( input_path = "data/input/m5/processed", out_path="." , input_raw_path = ".", auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, max_rows = 10):
-    features_generate_file("data/input/m5/processed", input_path, pd_ts_basic, "basic_time", id_cols = id_cols)
-    features_generate_file("data/input/m5/processed", input_path, pd_ts_rolling, "rolling", dep_col = dep_col, id_cols = id_cols)
-    features_generate_file("data/input/m5/processed", input_path, pd_ts_lag, "lag", dep_col = dep_col, id_cols = id_cols)
-    features_generate_file("data/input/m5/processed", input_path, pd_ts_tsfresh, "tsfresh", input_raw_path, auxiliary_csv_path, drop_cols, index_cols, merge_cols_mapping, max_rows, step_wise_saving = True, id_cols = id_cols)
-    features_generate_file("data/input/m5/processed", input_path, pd_ts_identity, "identity", cat_cols = cat_cols, drop_cols = ['d', 'id', 'day', 'wm_yr_wk'])
-    print("hello")
+########################################################################################################################
+########################################################################################################################
+
+def pd_tsfresh_m5data_sales(df_sales, dir_out, features_group_name, drop_cols, df_calendar, index_cols, merge_cols_mapping, id_cols):
+    """
+
+    :param df_sales:
+    :param dir_out:
+    :param features_group_name:
+    :param drop_cols:
+    :param df_calendar:
+    :param index_cols:
+    :param merge_cols_mapping:
+    :param id_cols:
+    :return:
+    """
+    # X_feat = pd.DataFrame()
+    auxiliary_dropped_cols = [x for x in df_calendar.columns.tolist() if x in drop_cols]
+    df_calendar.drop(auxiliary_dropped_cols, inplace = True, axis = 1)
+
+    for i in range(len(df_sales.index)):
+        single_row_df = df_sales.loc[[i]]
+        X_feat_single_row_df = pd_tsfresh_features_single_row(single_row_df, index_cols)
+        if i % 5 ==0:
+            X_feat = X_feat_single_row_df
+        if (i+1) % 5 == 0 :
+            merged_df = pd.merge(X_feat, df_calendar, how = 'left', left_on = [merge_cols_mapping["left"]], right_on = [merge_cols_mapping["right"]])
+
+            # merged_df = pd.concat([df_sales_val_melt, df_submi_val, df_submi_eval], axis = 0)
+            # selected_cols = [x for x in merged_df.columns.tolist() if x not in drop_cols]
+            selected_cols = [x for x in merged_df.columns.tolist() if x in id_cols or str(x).startswith("val__")]
+            merged_df_selected_cols = merged_df[selected_cols]
+            merged_df_selected_cols.columns = merged_df_selected_cols.columns.astype(str)
+            merged_df_selected_cols.to_parquet(f'{dir_out}/{features_group_name}_{i}.parquet')
+        else:
+            X_feat.append(X_feat_single_row_df, ignore_index = True)
+    return merged_df_selected_cols
 
 
-def main( input_path = "data/input/m5/raw", out_path="data/input/m5/processed",
-          do_generate_raw=True, do_generate_feature=True,
-          max_rows = 10):
-    # create_and_save_features(100, ["set1", "set2"])
-    #run_eval(100)
 
-    # To be run once
+
+def pd_tsfresh_m5data(df):
+    df = df[['snap_CA', 'snap_TX', 'snap_WI', 'sell_price', 'item_id', 'date', 'store_id', 'id']]
+    df = roll_time_series(df, column_id="item_id", column_sort="date")
+    existing_cols = df.columns.tolist()
+    y = df['demand']
+    X_cols = [x for x in existing_cols if not x == "demand"]
+    X = df[X_cols]
+    X = X.fillna(value = {'sell_price' : X['sell_price'].mean(skipna = True)})
+    X = X[['snap_CA', 'snap_TX', 'snap_WI', 'sell_price', 'item_id', 'date']]
+    X_filtered = extract_relevant_features(X, y, column_id='item_id', column_sort='date')
+
+    filtered_col_names = X_filtered.columns.tolist()
+
+    filtered_col_names_mapping = {}
+
+    for filtered_col_name in filtered_col_names:
+        filtered_col_names_mapping[filtered_col_name] = filtered_col_name.replace('"','').replace(',','')
+
+    X_filtered = X_filtered.rename(columns = filtered_col_names_mapping)
+    # This is done because lightgbm can not have features with " in the feature name
+
+    feature_df = pd.concat([X[['item_id', 'date']], X_filtered])
+
+    return feature_df, []
+
+
+
+
+
+def pd_ts_tsfresh(df, input_raw_path, dir_out, features_group_name, auxiliary_csv_path, drop_cols, index_cols, merge_cols_mapping, cat_cols = None, id_cols = None, dep_col = None, max_rows = 10):
+    # df is taken as an argument to make it work in the existing pipeline of saving features in meta_csv
+    df_sales_val              = pd.read_csv(input_raw_path)
+    df_calendar               = pd.read_csv(auxiliary_csv_path)
+
+    merged_df         = pd_tsfresh_m5data_sales(df_sales_val[0:max_rows], dir_out, features_group_name, drop_cols, df_calendar, index_cols, merge_cols_mapping, id_cols)
+    # df_calendar.drop(['weekday', 'wday', 'month', 'year'], inplace = True, axis = 1)
+    # merged_df = pd.merge(df_sales_val_melt, df_calendar, how = 'left', left_on = ['day'], right_on = ['d'])
+    # merged_df = pd.merge(df_sales_val_melt, df_calendar, how = 'left', left_on = [merge_cols_mapping["left"]], right_on = [merge_cols_mapping["right"]])
+
+    # merged_df = pd.concat([df_sales_val_melt, df_submi_val, df_submi_eval], axis = 0)
+    # selected_cols = [x for x in merged_df.columns.tolist() if x not in [ 'id', 'cat_id', 'dept_id', 'store_id', 'variable', 'day', 'demand', 'state_id']]
+    selected_cols = [x for x in merged_df.columns.tolist() if x not in drop_cols]
+    return merged_df[selected_cols], []
+
+
+
+
+
+
+def custom_get_colsname(colid, coly):
+    coldrop = colid + [coly]
+    meta_csv = pd.read_csv('meta_features.csv')
+    num_feats = [ x for x in meta_csv[meta_csv["feattype"] == "numeric"]['featname'].tolist()  if x not in coldrop]
+    cat_feats = [ x for x in meta_csv[meta_csv["feattype"] == "categorical"]['featname'].tolist() if x not in coldrop]
+    return cat_feats, num_feats
+
+
+def custom_rawdata_merge( out_path='out/', max_rows=10):
+
+    input_path ="data/input/tseries/tseries_m5/raw"
+    index_cols     = [ 'id', 'cat_id_col', 'dept_id_col', 'store_id_col', 'item_id_col', 'state_id_col']
+    coly = "demand"
+    colraw_merge = ['store_id_col', 'item_id_col', 'wm_yr_wk']
+    merge_cols_mapping = {"left" : "day", "right" : "d"}
+    colnan       = ['event_name_1_col', 'event_type_1_col', 'event_name_2_col', 'event_type_2_col']
+    colcat       = ['dept_id_col', 'cat_id_col', 'store_id_col', 'state_id_col', 'event_name_1_col', 'event_type_1_col', 'event_name_2_col', 'event_type_2_col']
+
+
+    df_sales_train            = pd.read_csv(input_path + "/sales_train_gen.csv")
+    df_calendar               = pd.read_csv(input_path + "/calendar_gen.csv")
+    df_sales_val              = pd.read_csv(input_path + "/sales_train_gen.csv")
+    df_sell_price             = pd.read_csv(input_path + "/sell_prices_gen.csv")
+    # df_submi                  = pd.read_csv("data/sample_submi.csv")
+
+    df_sales_val = df_sales_val if max_rows == -1 else df_sales_val.iloc[:,0:max_rows]
+
+    df_merged  = pd.melt(df_sales_val, id_vars = index_cols, var_name = 'day', value_name = coly)
+    # df_merged = pd.concat([df_sales_val_melt, df_submi_val, df_submi_eval], axis = 0)
+    # df_merged = df_sales_val_melt
+    df_calendar.drop(['weekday', 'wday', 'month', 'year'], inplace = True, axis = 1)
+    df_merged = pd.merge(df_merged, df_calendar, how = 'left', left_on = [merge_cols_mapping["left"]], right_on = [merge_cols_mapping["right"]])
+    df_merged = df_merged.merge(df_sell_price, on = colraw_merge, how = 'left')
+
+    df_merged = pd_col_tocat(df_merged, nan_cols = colnan, colcat = colcat)
+    # df_merged = add_time_features(df_merged)
+
+    os.makedirs(out_path, exist_ok=True)
+    fname = out_path + "/raw_merged.df.parquet"
+    df_merged.to_parquet(fname)
+    # return df_merged
+
+
+
+data_path = "data/input/tseries/tseries_m5/processed"
+def custom_generate_feature_all(input_path = data_path, out_path=".", input_raw_path =".", auxiliary_csv_path = None,
+                                coldrop = None, colindex = None, merge_cols_mapping = None,
+                                colcat = None, colid = None, coly = None, max_rows = 10):
+
+    featurestore_generate_feature(data_path , input_path , pd_ts_basic    , "basic_time" , colid = colid)
+    featurestore_generate_feature(data_path , input_path , pd_ts_rolling  , "rolling"    , coly = coly     , colid = colid)
+    featurestore_generate_feature(data_path , input_path , pd_ts_lag      , "lag"        , coly = coly     , colid = colid)
+    featurestore_generate_feature(data_path , input_path , pd_ts_tsfresh  , "tsfresh"    , input_raw_path  , auxiliary_csv_path , coldrop , colindex , merge_cols_mapping , max_rows , step_wise_saving = True , colid = colid)
+    featurestore_generate_feature(data_path , input_path , pd_ts_identity , "identity"   , colcat = colcat , coldrop = ['d'     , 'id'    , 'day'    , 'wm_yr_wk'])
+
+
+
+def run_train(input_path ="data/input/m5/raw", out_path=data_path,
+              do_generate_raw=True, do_generate_feature=True, do_train=True,
+              max_rows = 10):
 
     if do_generate_raw :
-      raw_merged_df(input_path= input_path, out_path=out_path, max_rows = max_rows, index_cols =
-      [ 'id', 'cat_id_col', 'dept_id_col', 'store_id_col', 'item_id_col', 'state_id_col'], dep_col = "demand",
-      raw_merge_cols = ['store_id_col', 'item_id_col', 'wm_yr_wk'], merge_cols_mapping = {"left" : "day", "right" : "d"},
-      nan_cols = ['event_name_1_col', 'event_type_1_col', 'event_name_2_col', 'event_type_2_col'],
-      cat_cols = ['dept_id_col', 'cat_id_col', 'store_id_col', 'state_id_col', 'event_name_1_col', 'event_type_1_col', 'event_name_2_col', 'event_type_2_col'])
+      custom_rawdata_merge(out_path=out_path, max_rows = max_rows)
+
 
     if do_generate_feature :
-      generate_feature_all(input_path="data/output", out_path="", input_raw_path = input_path + "/sales_train_gen.csv", auxiliary_csv_path = input_path + "/calendar_gen.csv", drop_cols = [ 'id', 'cat_id_col', 'dept_id_col', 'store_id_col', 'variable', 'day', 'demand', 'state_id_col', 'weekday', 'wday', 'month', 'year'], index_cols = [ 'id', 'cat_id_col', 'dept_id_col', 'store_id_col', 'item_id_col', 'state_id_col'], merge_cols_mapping = {"left" : "day", "right" : "d"}, cat_cols = ['item_id_col', 'dept_id_col', 'cat_id_col', 'store_id_col', 'state_id_col', 'event_name_1_col', 'event_type_1_col', 'event_name_2_col', 'event_type_2_col'], id_cols = ["date", "item_id_col"], dep_col = "demand", max_rows = max_rows)
+      custom_generate_feature_all(input_path="data/output", out_path="",
+                                  input_raw_path =input_path + "/sales_train_gen.csv",
+                                  auxiliary_csv_path =input_path + "/calendar_gen.csv",
 
+                                  coldrop   = ['id', 'cat_id_col', 'dept_id_col', 'store_id_col', 'variable', 'day', 'demand', 'state_id_col', 'weekday', 'wday', 'month', 'year'],
+                                  colindex  = ['id', 'cat_id_col', 'dept_id_col', 'store_id_col', 'item_id_col', 'state_id_col'],
+                                  merge_cols_mapping = {"left" : "day", "right" : "d"},
+                                  colcat    = ['item_id_col', 'dept_id_col', 'cat_id_col', 'store_id_col', 'state_id_col', 'event_name_1_col', 'event_type_1_col', 'event_name_2_col', 'event_type_2_col'],
+                                  colid     = ["date", "item_id_col"],
+                                  coly      = "demand",
+                                  max_rows  = max_rows)
 
-    run_eval(input_path="data/output", id_cols = ["date", "item_id_col"], dep_col = "demand")
+    if do_train :
+        train(input_path="data/output", colid = ["date", "item_id_col"], coly ="demand")
 
 
 if __name__ == "__main__":
-	main()
+    run_train()
 
 
 
@@ -329,10 +407,10 @@ import util_feat_m5
 
 
 
-def features_generate_file(dir_in, dir_out, my_fun_features) :
+def featurestore_generate_feature(dir_in, dir_out, my_fun_features) :
 
     # from util_feat_m5  import lag_featrues
-    # features_generate_file(dir_in, dir_out, lag_featrues)
+    # featurestore_generate_feature(dir_in, dir_out, lag_featrues)
 
     train_df = pd.read_csv( dir_in  + "/sales_train_val.csv.zip")
     calendar_df = pd.read_csv(dir_in  + "/calendar.csv")
@@ -345,7 +423,7 @@ def features_generate_file(dir_in, dir_out, my_fun_features) :
 
 
 
- def features_get_cols(mode="random") :
+ def featurestore_filter_features(mode="random") :
     cols_cat0 = [  "feat1", "fewat2" ]
 
     if mode == "random" :
@@ -362,16 +440,16 @@ def features_generate_file(dir_in, dir_out, my_fun_features) :
 
 
 
-def run_eval(model, pars={} ) :
+def train(model, pars={} ) :
 
     data_pars = {}
     model_pars = {}
 
     for ii in range(n_experiments) :
-        cols_cat, cols_num = features_get_cols()
+        cols_cat, cols_num = featurestore_filter_features()
 
-        df     = load_data(path, cols_cat + cols_num, "train")
-        dftest = load_data(path, cols_cat + cols_num, 'test')
+        df     = featurestore_get_feature_fromcolname(path, cols_cat + cols_num, "train")
+        dftest = featurestore_get_feature_fromcolname(path, cols_cat + cols_num, 'test')
 
         X_train = X_transform( df, cols_num, cols_cat, pars) # select sri
         y_train  = y_transform(df, coly)
@@ -516,5 +594,5 @@ def test_old():
     df_metrics['parameter'] = pd.Series(best_lg, index=dataframe.index)
     df_metrics['metric_name'] ="MSE"
     df_metrics['metric_val'] = pd.Series(pred_mse[:300], index=dataframe.index)
-    df_metrics.to_csv("run_eval.csv")
+    df_metrics.to_csv("train.csv")
 """

@@ -119,12 +119,12 @@ def preprocess(path_train_X="", path_train_y="", path_pipeline_export="", cols_g
 
     ### Pipeline Execution ##########################################
     pipe_default = [
-      {'uri' : 'source/preprocessors.py::pd_coly',                'pars': {}, 'cols_family': 'coly',        'type': 'coly'  },
-      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',      'type': ''      },
-      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin',  'type': ''      },
-      {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',      'type': ''      },
-      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin',  'type': ''      },
-      {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',    'type': 'cross' }
+      {'uri' : 'source/prepro.py::pd_coly',                'pars': {}, 'cols_family': 'coly',        'type': 'coly'  },
+      {'uri' : 'source/prepro.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',      'type': ''      },
+      {'uri' : 'source/prepro.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin',  'type': ''      },
+      {'uri':  'source/prepro.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',      'type': ''      },
+      {'uri':  'source/prepro.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin',  'type': ''      },
+      {'uri' : 'source/prepro.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',    'type': 'cross' }
     ]
 
     pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
@@ -245,11 +245,11 @@ def preprocess_inference(df, path_pipeline="data/pipeline/pipe_01/", preprocess_
 
     #### Pipeline Execution  ####################################################
     pipe_default = [
-      {'uri' : 'source/preprocessors.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',     'type': ''      },
-      {'uri' : 'source/preprocessors.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'type': ''      },
-      {'uri':  'source/preprocessors.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',     'type': ''      },
-      {'uri':  'source/preprocessors.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'type': ''      },
-      {'uri' : 'source/preprocessors.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'type': 'cross' }
+      {'uri' : 'source/prepro.py::pd_colnum_bin',          'pars': {}, 'cols_family': 'colnum',     'type': ''      },
+      {'uri' : 'source/prepro.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'type': ''      },
+      {'uri':  'source/prepro.py::pd_colcat_bin',          'pars': {}, 'cols_family': 'colcat',     'type': ''      },
+      {'uri':  'source/prepro.py::pd_colcat_to_onehot',    'pars': {}, 'cols_family': 'colcat_bin', 'type': ''      },
+      {'uri' : 'source/prepro.py::pd_colcross',            'pars': {}, 'cols_family': 'colcross',   'type': 'cross' }
     ]
     pipe_list    = preprocess_pars.get('pipe_list', pipe_default)
     pipe_list_X  = [ task for task in pipe_list  if task.get('type', '')  not in ['coly', 'filter']  ]

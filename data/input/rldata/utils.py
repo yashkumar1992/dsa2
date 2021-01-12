@@ -42,19 +42,24 @@ def normalize(inp, activation, reuse, scope,norm):
     #        return activation(inp)
     #    else:
     #        return inp
+
+    
 def load_pretransform(fdir):
-    pfm = pd.read_csv(os.path.join(fdir,'safem/test_succeed.csv'),header=None)
-    transform = pd.read_csv(os.path.join(fdir,'safem/test_succeed_feat.csv'),header=None)
-    transform = transform.fillna('')
-    index = np.argmax(pfm[1].values)
+    pfm           = pd.read_csv(os.path.join(fdir,'safem/test_succeed.csv'),header=None)
+    transform     = pd.read_csv(os.path.join(fdir,'safem/test_succeed_feat.csv'),header=None)
+    transform     = transform.fillna('')
+    index         = np.argmax(pfm[1].values)
     print(index)
-    index = int(pfm.values[index,0])
+    index         = int(pfm.values[index,0])
 
     print(index,max(pfm[1].values))
     countfeatures = transform[0].max()+1
-    bsttransform = transform.values[index*(countfeatures):(index+1)*countfeatures]
+    bsttransform  = transform.values[index*(countfeatures):(index+1)*countfeatures]
     print(bsttransform)
     return bsttransform
+
+
+
 def get_result(mark,did,plot=True):
     f_path_te = '../out/%s%d/safem/test_succeed.csv'
     f_path_tr = '../out/%s%d/safem/succeed.csv'
@@ -78,6 +83,10 @@ def get_result(mark,did,plot=True):
             print("error",tid)
     res = pd.DataFrame(res,columns=['tid','bstrandom','random','train','round','bstround'])
     return res
+
+
+
+
 def plot(fpath1,fpath2,size=30,name=''):
     import matplotlib.pyplot as plt
     fontsize=17

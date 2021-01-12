@@ -12,7 +12,7 @@ You can read the following tutorials if you want to understand more about it:
 - [Insideops](https://insideops.wordpress.com/2015/07/30/similarity-search-and-hashing-for-text-documents/)
 
 Although LSH is more to duplicated documents than to semantic similar ones, in this approach I make an effort to use LSH 
-to calculate semantic similarity among texts. For that, the algorithm extracts, using TFIDF, the text's main tokens 
+to calculate semantic similarity among texts. For that, the algorithm extracts, using TFIDF, the text's run_train tokens 
 (or you can pre-calculate them and pass as param). Also, in this approach I use MinHash (which uses Jaccard similarity) as the 
 Similarity function.
 

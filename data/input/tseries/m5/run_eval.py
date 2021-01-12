@@ -66,7 +66,7 @@ def get_file_feat_from_meta_csv(selected_cols, id_cols):
 def features_generate_file(dir_in, dir_out, my_fun_features, features_group_name, input_raw_path = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols=None, dep_col = None, max_rows = 5, step_wise_saving = False) :
 
     # from util_feat_m5  import lag_featrues
-    # features_generate_file(dir_in, dir_out, lag_featrues)
+    # featurestore_generate_feature(dir_in, dir_out, lag_featrues)
 
     merged_df = pd.read_parquet(dir_in + "/raw_merged.df.parquet")
     dfnew, cat_cols= my_fun_features(merged_df, input_raw_path, dir_out, features_group_name, auxiliary_csv_path, drop_cols, index_cols, merge_cols_mapping, cat_cols, id_cols, dep_col, max_rows)
@@ -233,7 +233,7 @@ def run_eval(input_path, max_rows = None, n_experiments = 3, id_cols = None, dep
         cols_cat, cols_num   = features_get_cols(id_cols = id_cols, dep_col = dep_col)
         df          		 = load_data(input_path, cols_cat + cols_num + [dep_col], id_cols)
 
-        # df_output            = load_data('data/output', cols_cat + cols_num, 'test1')
+        # df_output            = featurestore_get_feature_fromcolname('data/output', cols_cat + cols_num, 'test1')
 
         X 	               = X_transform(df, cols_cat + cols_num)
         y            	   = Y_transform(df, 'demand')
@@ -282,7 +282,7 @@ def main( input_path = "data/output", out_path="",
           do_generate_raw=True, do_generate_feature=True,
           max_rows = 10):
     # create_and_save_features(100, ["set1", "set2"])
-    #run_eval(100)
+    #train(100)
 
     # To be run once
 
@@ -331,10 +331,10 @@ import util_feat_m5
 
 
 
-def features_generate_file(dir_in, dir_out, my_fun_features) :
+def featurestore_generate_feature(dir_in, dir_out, my_fun_features) :
 
     # from util_feat_m5  import lag_featrues
-    # features_generate_file(dir_in, dir_out, lag_featrues)
+    # featurestore_generate_feature(dir_in, dir_out, lag_featrues)
 
     train_df = pd.read_csv( dir_in  + "/sales_train_val.csv.zip")
     calendar_df = pd.read_csv(dir_in  + "/calendar.csv")
@@ -347,7 +347,7 @@ def features_generate_file(dir_in, dir_out, my_fun_features) :
 
 
 
- def features_get_cols(mode="random") :
+ def featurestore_filter_features(mode="random") :
     cols_cat0 = [  "feat1", "fewat2" ]
 
     if mode == "random" :
@@ -364,16 +364,16 @@ def features_generate_file(dir_in, dir_out, my_fun_features) :
 
 
 
-def run_eval(model, pars={} ) :
+def train(model, pars={} ) :
 
     data_pars = {}
     model_pars = {}
 
     for ii in range(n_experiments) :
-        cols_cat, cols_num = features_get_cols()
+        cols_cat, cols_num = featurestore_filter_features()
 
-        df     = load_data(path, cols_cat + cols_num, "train")
-        dftest = load_data(path, cols_cat + cols_num, 'test')
+        df     = featurestore_get_feature_fromcolname(path, cols_cat + cols_num, "train")
+        dftest = featurestore_get_feature_fromcolname(path, cols_cat + cols_num, 'test')
 
         X_train = X_transform( df, cols_num, cols_cat, pars) # select sri
         y_train  = y_transform(df, coly)
@@ -518,5 +518,5 @@ def test_old():
     df_metrics['parameter'] = pd.Series(best_lg, index=dataframe.index)
     df_metrics['metric_name'] ="MSE"
     df_metrics['metric_val'] = pd.Series(pred_mse[:300], index=dataframe.index)
-    df_metrics.to_csv("run_eval.csv")
+    df_metrics.to_csv("train.csv")
 """

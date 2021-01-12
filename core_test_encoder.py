@@ -103,26 +103,26 @@ def titanic1(path_model_out="") :
 
     ### Pipeline for data processing ##############################
     'pipe_list': [
-        {'uri': 'source/preprocessors.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
-        {'uri': 'source/preprocessors.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
-        # {'uri': 'source/preprocessors.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
-        {'uri': 'source/preprocessors.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
-        # {'uri': 'source/preprocessors.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
-        # {'uri': 'source/preprocessors.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'},
+        {'uri': 'source/prepro.py::pd_coly',                 'pars': {}, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'         },
+        {'uri': 'source/prepro.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
+        # {'uri': 'source/prepro.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
+        {'uri': 'source/prepro.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+        # {'uri': 'source/prepro.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
+        # {'uri': 'source/prepro.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'},
 
 
-        {'uri': 'source/preprocessors.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
+        {'uri': 'source/prepro.py::pd_colcat_minhash',       'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_minhash',     'type': ''             },
 
 
-        # {'uri': 'source/preprocessors.py::pd_coltext_universal_google',   'pars': {}, 'cols_family': 'coltext',     'cols_out': 'coltext_universal_google',     'type': ''    },
+        # {'uri': 'source/prepro.py::pd_coltext_universal_google',   'pars': {}, 'cols_family': 'coltext',     'cols_out': 'coltext_universal_google',     'type': ''    },
 
 
-        {'uri': 'source/preprocessors.py::pd_col_genetic_transform',       'pars': {  ## 'pars_genetic' : {}
+        {'uri': 'source/prepro.py::pd_col_genetic_transform',       'pars': {  ## 'pars_genetic' : {}
                                                                                    },
                 'cols_family': 'colgen',     'cols_out': 'col_genetic',     'type': 'add_coly'             },
 
 
-        {'uri': 'source/preprocessors.py::pd_colnum_quantile_norm',       'pars': {'colsparse' :  [] },
+        {'uri': 'source/prepro.py::pd_colnum_quantile_norm',       'pars': {'colsparse' :  [] },
          'cols_family': 'colnum',     'cols_out': 'colnum_quantile_norm',     'type': ''             },
 
 
@@ -186,7 +186,7 @@ def get_test_data(name='boston'):
 def check1():
     #### python core_test_encoder.py check1
     #############################################################
-    from source.preprocessors import pd_col_genetic_transform  as pd_prepro
+    from source.prepro import pd_col_genetic_transform  as pd_prepro
     pars = { 'path_pipeline_export' : ''
 
     }
