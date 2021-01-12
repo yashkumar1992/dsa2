@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 
-  python3 bank_loan.py  train    > zlog/log_bank_loan_train.txt 2>&1
-  python bank_loan.py  predict  > zlog/log_bank_loan_predict.txt 2>&1
+  python3 classifier_bankloan.py  train    > zlog/log_bank_loan_train.txt 2>&1
+  python classifier_bankloan.py  predict  > zlog/log_bank_loan_predict.txt 2>&1
 
 
 """

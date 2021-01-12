@@ -5,7 +5,7 @@ name: test_full
 on:
   push:
     branches:
-      - run_train
+      - main
       - multi
       - benchmark
       - colab
