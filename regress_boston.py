@@ -3,9 +3,9 @@
 """
 You can put hardcode here, specific to titatinic dataet
 All in one file config
-  python boston_regression.py  train
-  python boston_regression.py  check
-  python boston_regression.py  predict
+  python regress_boston.py  train
+  python regress_boston.py  check
+  python regress_boston.py  predict
 
 
 https://causalnex.readthedocs.io/en/stable/causalnex.structure.DAGRegressor.html
@@ -58,7 +58,7 @@ def os_get_function_name():
 
 
 ####################################################################################
-config_file    = "boston_regression.py"
+config_file    = "regress_boston.py"
 config_default = 'boston_lightgbm'
 
 

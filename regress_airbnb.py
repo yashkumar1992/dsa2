@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 
-  python airbnb_regression.py  preprocess
-  python airbnb_regression.py  train
-  python airbnb_regression.py  predict
+  python regress_airbnb.py  preprocess
+  python regress_airbnb.py  train
+  python regress_airbnb.py  predict
 
 
 """
@@ -62,7 +62,7 @@ def global_pars_update(model_dict,  data_name, config_name):
 
 
 ######################################################################################
-## config_file     = "airbnb_regression.py"
+## config_file     = "regress_airbnb.py"
 config_default  = 'airbnb_lightgbm'
 
 
@@ -273,11 +273,11 @@ def run_all():
 ###########################################################################################################
 ###########################################################################################################
 """
-python  airbnb_regression.py  preprocess
-python  airbnb_regression.py  train
-python  airbnb_regression.py  check
-python  airbnb_regression.py  predict
-python  airbnb_regression.py  run_all
+python  regress_airbnb.py  preprocess
+python  regress_airbnb.py  train
+python  regress_airbnb.py  check
+python  regress_airbnb.py  predict
+python  regress_airbnb.py  run_all
 """
 if __name__ == "__main__":
         import fire

@@ -3,8 +3,8 @@
 """
 You can put hardcode here, specific to titanic dataset (along with optuna)
 All in one file config
-  python optuna_classifier.py  train    > zlog/log_optuna_cls_train.txt 2>&1
-  python optuna_classifier.py  predict  > zlog/log_optuna_cls_predict.txt 2>&1
+  python classifier_optuna.py  train    > zlog/log_optuna_cls_train.txt 2>&1
+  python classifier_optuna.py  predict  > zlog/log_optuna_cls_predict.txt 2>&1
 
 
 """
@@ -266,11 +266,11 @@ def predict(config=None, nsample=None):
 ###########################################################################################################
 ###########################################################################################################
 """
-python  optuna_classifier.py  data_profile
-python  optuna_classifier.py  preprocess  --nsample 100
-python  optuna_classifier.py  train       --nsample 200
-python  optuna_classifier.py  check
-python  optuna_classifier.py  predict
+python  classifier_optuna.py  data_profile
+python  classifier_optuna.py  preprocess  --nsample 100
+python  classifier_optuna.py  train       --nsample 200
+python  classifier_optuna.py  check
+python  classifier_optuna.py  predict
 
 
 """

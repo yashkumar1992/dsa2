@@ -1,8 +1,8 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-    python airline_classifier.py train
-	python airline_classifier.py predict
+    python classifier_airline.py train
+	python classifier_airline.py predict
 """
 from core_run import predict
 from core_run import train
@@ -193,12 +193,12 @@ def check():
 ###########################################################################################################
 ###########################################################################################################
 """
-python  income_classifier.py  data_profile
-python  income_classifier.py  preprocess
-python  income_classifier.py  train   --nsample 1000
-python  income_classifier.py  check
-python  income_classifier.py  predict
-python  income_classifier.py  run_all
+python  classifier_income.py  data_profile
+python  classifier_income.py  preprocess
+python  classifier_income.py  train   --nsample 1000
+python  classifier_income.py  check
+python  classifier_income.py  predict
+python  classifier_income.py  run_all
 """
 if __name__ == "__main__":
     import fire

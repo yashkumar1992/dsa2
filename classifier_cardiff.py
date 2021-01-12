@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 All in one file config
-  python cardif_classifier.py  preprocess
-  python cardif_classifier.py  train
-  python cardif_classifier.py  predict
+  python classifier_cardiff.py  preprocess
+  python classifier_cardiff.py  train
+  python classifier_cardiff.py  predict
 """
 import warnings, copy
 warnings.filterwarnings('ignore')
@@ -47,7 +47,7 @@ def os_get_function_name():
 
 
 ####################################################################################
-config_file    = "cardif_classifier.py"
+config_file    = "classifier_cardiff.py"
 config_default = 'cardif_lightgbm'
 
 
@@ -246,11 +246,11 @@ def run_all():
 ###########################################################################################################
 ###########################################################################################################
 """
-python  cardif_classifier.py  preprocess
-python  cardif_classifier.py  train
-python  cardif_classifier.py  check
-python  cardif_classifier.py  predict
-python  cardif_classifier.py  run_all
+python  classifier_cardiff.py  preprocess
+python  classifier_cardiff.py  train
+python  classifier_cardiff.py  check
+python  classifier_cardiff.py  predict
+python  classifier_cardiff.py  run_all
 """
 if __name__ == "__main__":
     import fire

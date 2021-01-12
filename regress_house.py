@@ -3,9 +3,9 @@
 """
 You can put hardcode here, specific to titatinic dataet
 All in one file config
-  python house_regression.py  train    > zlog/log-house.txt 2>&1
-!  python house_regression.py  check
-!  python house_regression.py  predict
+  python regress_house.py  train    > zlog/log-house.txt 2>&1
+!  python regress_house.py  check
+!  python regress_house.py  predict
 
 
 # 'pipe_list'  :
@@ -65,7 +65,7 @@ def os_get_function_name():
 
 
 ####################################################################################
-config_file  = "house_regression.py"
+config_file  = "regress_house.py"
 data_name    = "house_price"
 
 
@@ -316,11 +316,11 @@ def run_all():
 ###########################################################################################################
 ###########################################################################################################
 """
-python  house_regression.py  preprocess
-python  house_regression.py  train
-python  house_regression.py  check
-python  house_regression.py  predict
-python  house_regression.py  run_all
+python  regress_house.py  preprocess
+python  regress_house.py  train
+python  regress_house.py  check
+python  regress_house.py  predict
+python  regress_house.py  run_all
 """
 if __name__ == "__main__":
         import fire

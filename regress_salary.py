@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 
-  python salary_regression.py  train
-  python salary_regression.py  check
-  python salary_regression.py  predict
+  python regress_salary.py  train
+  python regress_salary.py  check
+  python regress_salary.py  predict
 
 
 """
@@ -372,11 +372,11 @@ from core_run import predict
 ###########################################################################################################
 ###########################################################################################################
 """
-python  salary_regression.py  preprocess
-python  salary_regression.py  train
-python  salary_regression.py  check
-python  salary_regression.py  predict
-python  salary_regression.py  run_all
+python  regress_salary.py  preprocess
+python  regress_salary.py  train
+python  regress_salary.py  check
+python  regress_salary.py  predict
+python  regress_salary.py  run_all
 """
 if __name__ == "__main__":
         import fire

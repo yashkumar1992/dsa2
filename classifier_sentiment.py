@@ -4,11 +4,11 @@
 You can put hardcode here, specific to titatinic dataet
 All in one file config
 
-  python sentiment_classifier.py  preprocess
+  python classifier_sentiment.py  preprocess
 
-  python sentiment_classifier.py  train    > zlog/log-airbnb.txt 2>&1
-  python sentiment_classifier.py  check    > zlog/log-airbnb.txt 2>&1
-  python sentiment_classifier.py  predict  > zlog/log-airbnb.txt 2>&1
+  python classifier_sentiment.py  train    > zlog/log-airbnb.txt 2>&1
+  python classifier_sentiment.py  check    > zlog/log-airbnb.txt 2>&1
+  python classifier_sentiment.py  predict  > zlog/log-airbnb.txt 2>&1
 
 
 
@@ -56,7 +56,7 @@ def os_get_function_name():
 
 
 ####################################################################################
-config_file     = "sentiment_classifier.py"
+config_file     = "classifier_sentiment.py"
 config_default  = 'sentiment_lightgbm'
 
 
@@ -237,11 +237,11 @@ def run_all():
 ###########################################################################################################
 ###########################################################################################################
 """
-python  sentiment_classifier.py  preprocess
-python  sentiment_classifier.py  train
-python  sentiment_classifier.py  check
-python  sentiment_classifier.py  predict
-python  sentiment_classifier.py  run_all
+python  classifier_sentiment.py  preprocess
+python  classifier_sentiment.py  train
+python  classifier_sentiment.py  check
+python  classifier_sentiment.py  predict
+python  classifier_sentiment.py  run_all
 """
 if __name__ == "__main__":
         import fire

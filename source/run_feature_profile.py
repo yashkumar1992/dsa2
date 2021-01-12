@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*- 
 """
-python adfraud.py  data_profile  --path_data_train data/input/adfraud/raw/raw_10m.zip
+python classifier_adfraud.py  data_profile  --path_data_train data/input/adfraud/raw/raw_10m.zip
 """
 import gc, os, logging
 from datetime import datetime
