@@ -93,36 +93,37 @@ def airline_lightgbm(path_model_out=""):
 
     model_dict = {'model_pars': {
         # LightGBM API model   #######################################
-        'model_path': path_model_out, 'model_class': model_class, 'model_pars': {'boosting_type': 'gbdt', 'class_weight': None, 'colsample_bytree': 1.0,
-                                                                                 'importance_type': 'split', 'learning_rate': 0.001, 'max_depth': -1,
-                                                                                 'min_child_samples': 20, 'min_child_weight': 0.001, 'min_split_gain': 0,
-                                                                                 'n_estimators': 5000,
-                                                                                 'n_jobs': -1, 'num_leaves': 31, 'objective': None,
-                                                                                 'random_state': None, 'reg_alpha': 0, 'reg_lambda': 0.0, 'silent': True,
-                                                                                 'subsample': 1.0, 'subsample_for_bin': 200000, 'subsample_freq': 0
-                                                                                 }, 'post_process_fun': post_process_fun, 'pre_process_pars': {'y_norm_fun':  pre_process_fun,
+        'model_class': model_class,
+        'model_pars': {'boosting_type': 'gbdt', 'class_weight': None, 'colsample_bytree': 1.0,
+                     'importance_type': 'split', 'learning_rate': 0.001, 'max_depth': -1,
+                     'min_child_samples': 20, 'min_child_weight': 0.001, 'min_split_gain': 0,
+                     'n_estimators': 5000,
+                     'n_jobs': -1, 'num_leaves': 31, 'objective': None,
+                     'random_state': None, 'reg_alpha': 0, 'reg_lambda': 0.0, 'silent': True,
+                     'subsample': 1.0, 'subsample_for_bin': 200000, 'subsample_freq': 0
+                     }, 'post_process_fun': post_process_fun, 'pre_process_pars': {'y_norm_fun':  pre_process_fun,
 
 
-                                                                                                                                               ### Pipeline for data processing ##############################
-                                                                                                                                               'pipe_list': [
-                                                                                                                                                   # {'uri': 'data/input/income/manual_preprocessing.py::pd_income_processor',      'pars': {}, 'cols_family': 'colall',   'cols_out': 'colall',
-                                                                                                                                                   #        'type': 'filter'         },
-                                                                                                                                                   {'uri': 'source/prepro.py::pd_coly',                 'pars': {
-                                                                                                                                                   }, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'},
-                                                                                                                                                   {'uri': 'source/prepro.py::pd_colnum_bin',           'pars': {
-                                                                                                                                                   }, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''},
-                                                                                                                                                   {'uri': 'source/prepro.py::pd_colcat_bin',           'pars': {
-                                                                                                                                                   }, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''},
+       ### Pipeline for data processing ##############################
+       'pipe_list': [
+           # {'uri': 'data/input/income/manual_preprocessing.py::pd_income_processor',      'pars': {}, 'cols_family': 'colall',   'cols_out': 'colall',
+           #        'type': 'filter'         },
+           {'uri': 'source/prepro.py::pd_coly',                 'pars': {
+           }, 'cols_family': 'coly',       'cols_out': 'coly',           'type': 'coly'},
+           {'uri': 'source/prepro.py::pd_colnum_bin',           'pars': {
+           }, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''},
+           {'uri': 'source/prepro.py::pd_colcat_bin',           'pars': {
+           }, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''},
 
-                                                                                                                                                   # Cross Features
-                                                                                                                                                   {'uri': 'source/prepro.py::pd_colcat_to_onehot',     'pars': {},
-                                                                                                                                                    'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''},
-                                                                                                                                                   {'uri': 'source/prepro.py::pd_colnum_binto_onehot',  'pars': {},
-                                                                                                                                                    'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''},
-                                                                                                                                                   {'uri': 'source/prepro.py::pd_colcross',             'pars': {
-                                                                                                                                                   }, 'cols_family': 'colcross',   'cols_out': 'colcross_pair',  'type': 'cross'},
-                                                                                                                                               ],
-                                                                                                                                               }
+           # Cross Features
+           {'uri': 'source/prepro.py::pd_colcat_to_onehot',     'pars': {},
+            'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''},
+           {'uri': 'source/prepro.py::pd_colnum_binto_onehot',  'pars': {},
+            'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''},
+           {'uri': 'source/prepro.py::pd_colcross',             'pars': {
+           }, 'cols_family': 'colcross',   'cols_out': 'colcross_pair',  'type': 'cross'},
+       ],
+       }
     },
 
         'compute_pars': {'metric_list': ['accuracy_score', 'average_precision_score'],
@@ -137,26 +138,25 @@ def airline_lightgbm(path_model_out=""):
         'data_pars': {'n_sample': n_sample,
                       'cols_input_type': cols_input_type_1,
 
-                      ### family of columns for MODEL  ########################################################
-                      #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
-                      #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
-                      #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
-                      #  'coldate',  'coltext',
-                      'cols_model_group': [
-                          'colnum_bin',
-                          'colcat_bin',
-                          'colcat_onehot',
-                          'colnum_onehot',
-                          'colcross_pair',
-                      ]  # Filter data rows   ##################################################################
-                      , 'filter_pars': {'ymax': 2, 'ymin': -1}
+          ### family of columns for MODEL  ########################################################
+          #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
+          #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
+          #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
+          #  'coldate',  'coltext',
+          'cols_model_group': [
+              'colnum_bin',
+              'colcat_bin',
+              'colcat_onehot',
+              'colnum_onehot',
+              'colcross_pair',
+          ]  # Filter data rows   ##################################################################
+          , 'filter_pars': {'ymax': 2, 'ymin': -1}
 
-                      }
+          }
     }
 
     ##### Filling Global parameters    ############################################################
-    model_dict = global_pars_update(
-        model_dict, data_name, config_name=os_get_function_name())
+    model_dict = global_pars_update(  model_dict, data_name, config_name=os_get_function_name())
     return model_dict
 
 
