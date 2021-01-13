@@ -131,7 +131,7 @@ def featurestore_get_filelist_fromcolname(selected_cols, colid):
 
 def featurestore_generate_feature(dir_in, dir_out, my_fun_features, features_group_name, input_raw_path = None,
                                   auxiliary_csv_path = None, coldrop = None, index_cols = None,
-                                  merge_cols_mapping = None, colcat = None, colid=None, coly = None,
+                                  merge_cols_mapping = None, colcat = None, colid=None, coly = None, coldate = None,
                                   max_rows = 5, step_wise_saving = False) :
 
     # from util_feat_m5  import lag_featrues
@@ -141,7 +141,7 @@ def featurestore_generate_feature(dir_in, dir_out, my_fun_features, features_gro
 
     dfnew, colcat= my_fun_features(df_merged, input_raw_path, dir_out, features_group_name, auxiliary_csv_path,
                                      coldrop, index_cols, merge_cols_mapping,
-                                     colcat, colid, coly, max_rows)
+                                     colcat, colid, coly, coldate, max_rows)
     if not step_wise_saving:
         dfnew.to_parquet(f'{dir_out}/{features_group_name}.parquet')
     # num_cols = list(set(dfnew._get_numeric_data().columns))
@@ -276,7 +276,7 @@ def pd_tsfresh_m5data(df):
 
 
 
-def pd_ts_tsfresh(df, input_raw_path, dir_out, features_group_name, auxiliary_csv_path, drop_cols, index_cols, merge_cols_mapping, cat_cols = None, id_cols = None, dep_col = None, max_rows = 10):
+def pd_ts_tsfresh(df, input_raw_path, dir_out, features_group_name, auxiliary_csv_path, drop_cols, index_cols, merge_cols_mapping, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
     # df is taken as an argument to make it work in the existing pipeline of saving features in meta_csv
     df_sales_val              = pd.read_csv(input_raw_path)
     df_calendar               = pd.read_csv(auxiliary_csv_path)
@@ -342,10 +342,10 @@ def custom_rawdata_merge( out_path='out/', max_rows=10):
 
 data_path = "data/input/tseries/tseries_m5/processed"
 def custom_generate_feature_all(input_path = data_path, out_path=".", input_raw_path =".", auxiliary_csv_path = None,
-                                coldrop = None, colindex = None, merge_cols_mapping = None,
+                                coldrop = None, colindex = None, merge_cols_mapping = None, coldate = None,
                                 colcat = None, colid = None, coly = None, max_rows = 10):
 
-    featurestore_generate_feature(data_path , input_path , pd_ts_basic    , "basic_time" , colid = colid)
+    featurestore_generate_feature(data_path , input_path , pd_ts_basic    , "basic_time" , colid = colid, coldate = coldate)
     featurestore_generate_feature(data_path , input_path , pd_ts_rolling  , "rolling"    , coly = coly     , colid = colid)
     featurestore_generate_feature(data_path , input_path , pd_ts_lag      , "lag"        , coly = coly     , colid = colid)
     featurestore_generate_feature(data_path , input_path , pd_ts_tsfresh  , "tsfresh"    , input_raw_path  , auxiliary_csv_path , coldrop , colindex , merge_cols_mapping , max_rows , step_wise_saving = True , colid = colid)
@@ -353,8 +353,8 @@ def custom_generate_feature_all(input_path = data_path, out_path=".", input_raw_
 
 
 
-def run_train(input_path ="data/input/m5/raw", out_path=data_path,
-              do_generate_raw=True, do_generate_feature=True, do_train=True,
+def run_train(input_path ="data/input/tseries/tseries_m5/raw", out_path=data_path,
+              do_generate_raw=True, do_generate_feature=True, do_train=False,
               max_rows = 10):
 
     if do_generate_raw :
@@ -372,7 +372,8 @@ def run_train(input_path ="data/input/m5/raw", out_path=data_path,
                                   colcat    = ['item_id_col', 'dept_id_col', 'cat_id_col', 'store_id_col', 'state_id_col', 'event_name_1_col', 'event_type_1_col', 'event_name_2_col', 'event_type_2_col'],
                                   colid     = ["date", "item_id_col"],
                                   coly      = "demand",
-                                  max_rows  = max_rows)
+                                  max_rows  = max_rows,
+                                  coldate = "date")
 
     if do_train :
         train(input_path="data/output", colid = ["date", "item_id_col"], coly ="demand")
