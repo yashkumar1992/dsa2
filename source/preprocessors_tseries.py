@@ -224,24 +224,24 @@ def test_prepro_all():
 
 
 
-def pd_ts_basic(df, coldate):
+def pd_ts_basic(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
     df['date_t'] = pd.to_datetime(df[coldate])
     df['year'] = df['date_t'].dt.year
     df['month'] = df['date_t'].dt.month
     df['week'] = df['date_t'].dt.week
     df['day'] = df['date_t'].dt.day
     df['dayofweek'] = df['date_t'].dt.dayofweek
-    return df[['year', 'month', 'week', 'day', 'dayofweek'] ]
+    return df[['year', 'month', 'week', 'day', 'dayofweek'] ], []
 
 
 
-def pd_ts_identity(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, max_rows = 10):
+def pd_ts_identity(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
     df_drop_cols = [x for x in df.columns.tolist() if x in drop_cols]
     df = df.drop(df_drop_cols, axis = 1)
     return df, cat_cols
 
 
-def pd_ts_rolling(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, max_rows = 10):
+def pd_ts_rolling(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
     cat_cols = []
     created_cols = []
 
@@ -270,7 +270,7 @@ def pd_ts_rolling(df, input_raw_path = None, dir_out = None, features_group_name
 
 
 
-def pd_ts_lag(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, max_rows = 10):
+def pd_ts_lag(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
     created_cols = []
     cat_cols = []
 
@@ -329,4 +329,3 @@ def pd_tsfresh_features_single_row(df_single_row, cols):
 
 
 ########################################################################################################################
-
