@@ -357,6 +357,119 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
 
 
 
+def pd_generic_transform(df, col=None, pars={}, model=None)  :
+    '''
+     Transform or Samples using  model.fit()   model.sample()  or model.transform()
+    params:
+            df    : (pandas dataframe) original dataframe
+            col   : column name for data enancement
+            pars  : (dict - optional) contains:                                          
+                path_model_save: saving location if save_model is set to True
+                path_model_load: saved model location to skip training
+                path_data_new  : new data where saved 
+    returns:
+            model, df_new, col, pars
+    '''
+    path_model_save = pars.get('path_model_save', 'data/output/ztmp/')
+    pars_model      = pars.get('pars_model', {} )
+    model_method    = pars.get('method', 'transform')
+    
+    # model fitting 
+    if 'path_model_load' in pars:
+            model = load(pars['path_model_load'])
+    else:
+            log('##### Training Started #####')
+            model = model( **pars_model)
+            model.fit(df)
+            log('##### Training Finshed #####')
+            try:
+                 save(model, path_model_save )
+                 log('model saved at: ' + path_model_save  )
+            except:
+                 log('saving model failed: ', path_model_save)
+
+    log('##### Generating Samples/transform #############')    
+    if model_method == 'sample' :
+        n_samples =pars.get('n_samples', max(1, 0.10 * len(df) ) )
+        new_data  = model.sample(n_samples)
+        
+    elif model_method == 'transform' :
+        new_data = model.transform(df.values)
+    else :
+        raise Exception("Unknown", model_method)
+        
+    log_pd( new_data, n=7)    
+    if 'path_newdata' in pars :
+        new_data.to_parquet( pars['path_newdata'] + '/features.parquet' ) 
+        log('###### df transform save on disk', pars['path_newdata'] )    
+    
+    return model, df_new, col, pars
+
+
+
+
+def pd_augmentation_sdv2(df, col=None, pars={})  :
+    '''
+    Using Variation Autoencoders, the function augments more data into the dataset
+    params:
+            df          : (pandas dataframe) original dataframe
+            col : column name for data enancement
+            pars        : (dict - optional) contains:                                          
+                n_samples     : (int - optional) number of samples you would like to add, defaul is 10%
+                primary_key   : (String - optional) the primary key of dataframe
+                metrics_type  : (boolean - optional) if False, prints SVD metrics, else it averages them
+                path_model_save: saving location if save_model is set to True
+                path_model_load: saved model location to skip training
+                path_data_new  : new data where saved
+            
+                          #, n_samples=None, primary_key=None, aggregate=False, save_model=False):  
+    returns:
+            df_new      : (pandas dataframe) df with more augmented data
+            col         : (list of strings) same columns
+    '''
+    n_samples       = pars.get('n_samples', max(1, int(len(df) * 0.10) ) )   ## Add 10% or 1 sample by default value
+    primary_key     = pars.get('colid', "")  ### Custom can be created on the fly
+    metrics_type    = pars.get('metrics_type', "aggregate")
+    model_name      = pars.get('model_name', "TVAE")
+    
+    # importing libraries
+    try:
+        #from sdv.demo import load_tabular_demo
+        from sdv.tabular import TVAE
+        from sdv.evaluation import evaluate
+    except:
+        os.system("pip install sdv")
+        from sdv.tabular import TVAE
+        from sdv.evaluation import evaluate      
+
+    if primary_key == "" :
+        primary_key     = "_colid"
+        df[primary_key] = np.arange(0, len(df))
+
+    model                = {'TVAE' : TVAE}[ model_name  ]                
+    pars['model_method'] = 'sample'
+    
+    #####################
+    model, new_data, col, pars =  pd_generic_transform(df, col=col, pars=pars, model=modeL)
+    
+    
+    log('######### Evaluation Results ###############')
+    if metrics_type == 'aggregate':
+      evals = evaluate(new_data, df, aggregate= True )        
+      log(evals)
+    else:
+      evals = evaluate(new_data, df, aggregate= False )        
+      log_pd(evals, n=7)
+    
+    # appending new data    
+    df_new = df.append(new_data)   ### Check primayr_key
+    log(str(len(df_new) - len(df)) + ' new data added')
+    
+    log('###### augmentation complete ######')
+    return df_new, col
+
+
+
 def pd_augmentation_sdv(df, col=None, pars={})  :
     '''
     Using Variation Autoencoders, the function augments more data into the dataset
@@ -416,13 +529,13 @@ def pd_augmentation_sdv(df, col=None, pars={})  :
     new_data = model.sample(n_samples)
     log_pd( new_data, n=7)
     
-    
-    log('######### Evaluation Started #########')
-    evals = evaluate(new_data, df, aggregate=aggregate)
+   
     log('######### Evaluation Results #########')
     if metrics_type == 'aggregate':
+      evals = evaluate(new_data, df, aggregate= True )        
       log(evals)
     else:
+      evals = evaluate(new_data, df, aggregate= False )        
       log_pd(evals, n=7)
     
     # appending new data    
