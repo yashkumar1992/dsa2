@@ -360,20 +360,30 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
 Using Variation Autoencoders, the function augments more data into the dataset
 params:
         df          : (pandas dataframe) original dataframe
-        n_samples   : (int) number of samples you would like to add, defaul is 10%
-        primary_key : (String) the primary key of dataframe
-        aggregate   : (boolean) if False, prints SVD metrics, else it averages them
-        
+        n_samples   : (int - optional) number of samples you would like to add, defaul is 10%
+        primary_key : (String - optional) the primary key of dataframe
+        aggregate   : (boolean - optional) if False, prints SVD metrics, else it averages them
+        save_model  : (boolean - optional) if true, saves the model from
+        pars        : (dict - optional) contains:
+                        save_model_path: saving location if save_model is set to True
+                        load_model_path: saved model location to skip training
 returns:
         df_new      : (pandas dataframe) df with more augmented data
-        col         : (list of strings) same columns 
+        col         : (list of strings) same columns
 '''
-def pd_vae_augmentation(df, col=None, pars=None, n_samples=None, primary_key=None, aggregate=True):
+def pd_vae_augmentation(df, col=None, pars=None, n_samples=None, primary_key=None, aggregate=False, save_model=False):
     
-    from sdv.demo import load_tabular_demo
-    from sdv.tabular import TVAE
-    from sdv.evaluation import evaluate
-
+    # importing libraries
+    try:
+        from sdv.demo import load_tabular_demo
+        from sdv.tabular import TVAE
+        from sdv.evaluation import evaluate
+    except:
+        os.system("pip install sdv")
+        from sdv.demo import load_tabular_demo
+        from sdv.tabular import TVAE
+        from sdv.evaluation import evaluate      
+    
 
     # add 10% more samples
     if n_samples == None:
@@ -385,13 +395,33 @@ def pd_vae_augmentation(df, col=None, pars=None, n_samples=None, primary_key=Non
           n_samples = 1
     
     # model fitting
-    model = TVAE(primary_key=primary_key)
-    model.fit(df)
+    if pars: 
+        if 'load_model_path' in pars:
+            model = load(pars['load_model_path'])
+        else:
+            log('##### Training Started #####')
+            model = TVAE(primary_key=primary_key)
+            model.fit(df)
+            log('##### Training Finshed #####')
+            if save_model:
+                try:
+                    log('saving model...')
+                    save(model, pars['save_model_path'])
+                    log('model saved at: ' + pars['save_model_path'])
+                except:
+                    log('saving model failed, did you choose a valid location?')
+    else:
+        model = TVAE(primary_key=primary_key)
+        log('##### Training Started #####')
+        model.fit(df)
+        log('##### Training Finshed #####')
     
     # generating new samples
+    log('##### Generating Samples #####')
     new_data = model.sample(n_samples)
     
     # log the evaluations
+    log('######### Evaluation Started #########')
     evals = evaluate(new_data, df, aggregate=aggregate)
     log('######### Evaluation Results #########')
     if aggregate:
@@ -402,7 +432,34 @@ def pd_vae_augmentation(df, col=None, pars=None, n_samples=None, primary_key=Non
     # appending new data    
     df_new = df.append(new_data)
     
+    log(str(len(df_new) - len(df)) + ' new data added')
+    
+    log('###### augmentation complete ######')
+    
     return df_new, col
+
+
+def test_sdv():
+    from sklearn.datasets import load_boston
+    
+    # loading boston data
+    data = load_boston()
+    df = pd.DataFrame(data.data, columns=data.feature_names)
+    df.head()    
+    
+    log('##### testing augmentation #####')
+    
+    # training new data test
+    path = os.getcwd() + '\model.pkl'
+    pars = {'save_model_path': path}
+    df_new, _ = pd_vae_augmentation(df, save_model=True, pars=pars)
+    
+    log('####### Generating using saved model test started #######')
+    
+    # generating data from existing model test
+    pars = {'load_model_path': path}
+    df_new, _ = pd_vae_augmentation(df, pars=pars)
+
 
 def pd_col_covariate_shift_adjustment():
    """
