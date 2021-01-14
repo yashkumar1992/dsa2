@@ -306,6 +306,35 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     feature_name_ = colX
 
     def squaree(x):  return x * x
+
+    def few_genetic(data_path, genetic_param_path, coly):
+        import few
+
+        train_dataset_path = data_path + "train01.zip"
+        params = pd.read_csv(genetic_param_path)
+
+
+        dfTrain = pd.read_csv(train_dataset_path)
+
+        y_train = ((dfTrain["resp"] * dfTrain['weight']) > 0).astype(np.int)
+        dfTrain = dfTrain.drop(columns=coly)
+        X_train = dfTrain.to_numpy()
+
+        for i in range(params.shape[0]):
+            cur_param = params.iloc[i]
+            _few = few.FEW(random_state=5577,
+                           verbosity=1,
+                           generations=cur_param.generations.astype(int),
+                           population_size=cur_param.population_size.astype(int),
+                           mutation_rate=cur_param.mutation_rate,
+                           crossover_rate=cur_param.crossover_rate)
+
+            _few.fit(X_train, y_train)
+            log('\Model: {}'.format(_few.print_model()))
+            # TODO : extract relevant features given by the model
+            # Look at _few._best_inds. Need to run some test, that will take time to verify everything works well
+        return
+
     square_ = make_function(function=squaree, name='square_', arity=1)
 
     function_set = pars.get('function_set',
