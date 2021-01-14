@@ -357,7 +357,7 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
 
 
 
-def pd_vae_augmentation(df, col=None, pars={})  :
+def pd_augmentation_sdv(df, col=None, pars={})  :
     '''
     Using Variation Autoencoders, the function augments more data into the dataset
     params:
@@ -369,6 +369,7 @@ def pd_vae_augmentation(df, col=None, pars={})  :
                 metrics_type  : (boolean - optional) if False, prints SVD metrics, else it averages them
                 path_model_save: saving location if save_model is set to True
                 path_model_load: saved model location to skip training
+                path_data_new  : new data where saved
             
                           #, n_samples=None, primary_key=None, aggregate=False, save_model=False):  
     returns:
@@ -379,6 +380,7 @@ def pd_vae_augmentation(df, col=None, pars={})  :
     primary_key     = pars.get('colid', "")  ### Custom can be created on the fly
     metrics_type    = pars.get('metrics_type', "aggregate")
     path_model_save = pars.get('path_model_save', 'data/output/ztmp/')
+    model_name      = pars.get('model_name', "TVAE")
     
     # importing libraries
     try:
@@ -387,7 +389,6 @@ def pd_vae_augmentation(df, col=None, pars={})  :
         from sdv.evaluation import evaluate
     except:
         os.system("pip install sdv")
-        # from sdv.demo import load_tabular_demo
         from sdv.tabular import TVAE
         from sdv.evaluation import evaluate      
     
@@ -400,7 +401,9 @@ def pd_vae_augmentation(df, col=None, pars={})  :
             if primary_key == "" :
                 primary_key     = "_colid"
                 df[primary_key] = np.arange(0, len(df))
-            model = TVAE(primary_key=primary_key)
+                
+            model = {'TVAE' : TVAE}[model_name]    
+            model = model(primary_key=primary_key)
             model.fit(df)
             log('##### Training Finshed #####')
             try:
@@ -425,10 +428,10 @@ def pd_vae_augmentation(df, col=None, pars={})  :
     # appending new data    
     df_new = df.append(new_data)   ### Check primayr_key
     log(str(len(df_new) - len(df)) + ' new data added')
-    log('###### df augmentation save on disk ######')
     
-    
-    
+    if 'path_newdata' in pars :
+        new_data.to_parquet( pars['path_newdata'] + '/features.parquet' ) 
+        log('###### df augmentation save on disk', pars['path_newdata'] )    
     
     log('###### augmentation complete ######')
     return df_new, col
@@ -445,7 +448,7 @@ def test_sdv():
     log('##### testing augmentation #####')    
     path = os.getcwd() + '\zz_model_vae_augmentation.pkl'
     pars = {'path_model_save': path}
-    df_new, _ = pd_vae_augmentation(df, pars=pars)
+    df_new, _ = pd_augmentation_sdv(df, pars=pars)
     
     log('####### Generating using saved model test started #######')    
     pars = {'path_model_load': path}
