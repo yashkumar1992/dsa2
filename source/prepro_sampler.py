@@ -356,22 +356,30 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     return df_genetic, col_pars
 
 
-'''
-Using Variation Autoencoders, the function augments more data into the dataset
-params:
-        df          : (pandas dataframe) original dataframe
-        n_samples   : (int - optional) number of samples you would like to add, defaul is 10%
-        primary_key : (String - optional) the primary key of dataframe
-        aggregate   : (boolean - optional) if False, prints SVD metrics, else it averages them
-        save_model  : (boolean - optional) if true, saves the model from
-        pars        : (dict - optional) contains:
-                        save_model_path: saving location if save_model is set to True
-                        load_model_path: saved model location to skip training
-returns:
-        df_new      : (pandas dataframe) df with more augmented data
-        col         : (list of strings) same columns
-'''
-def pd_vae_augmentation(df, col=None, pars=None, n_samples=None, primary_key=None, aggregate=False, save_model=False):
+
+def pd_vae_augmentation(df, col=None, pars={})  :
+    '''
+    Using Variation Autoencoders, the function augments more data into the dataset
+    params:
+            df          : (pandas dataframe) original dataframe
+            pars        : (dict - optional) contains:
+                            save_model_path: saving location if save_model is set to True
+                            load_model_path: saved model location to skip training
+                            
+            pars                
+            n_samples   : (int - optional) number of samples you would like to add, defaul is 10%
+            primary_key : (String - optional) the primary key of dataframe
+            aggregate   : (boolean - optional) if False, prints SVD metrics, else it averages them
+            save_model  : (boolean - optional) if true, saves the model from                            
+                          #, n_samples=None, primary_key=None, aggregate=False, save_model=False):  
+    returns:
+            df_new      : (pandas dataframe) df with more augmented data
+            col         : (list of strings) same columns
+    '''
+    n_samples       = pars.get('n_samples', 10)
+    primary_key     = pars.get('colid', "")  ### Custom can be created on the fly
+    aggregate       = pars.get('metrics_aggregate', True)
+    path_model_save = pars.get('path_model_save', 'data/output/ztmp/')
     
     # importing libraries
     try:
@@ -386,41 +394,34 @@ def pd_vae_augmentation(df, col=None, pars=None, n_samples=None, primary_key=Non
     
 
     # add 10% more samples
-    if n_samples == None:
-        if len(df) >= 10:
+    if len(df) >= 10:
           log('samples amount not specified, adding 10%')
           n_samples = len(df) // 10
-        else:
+    else:
           log('dataframe too small, adding only 1')
           n_samples = 1
     
-    # model fitting
-    if pars: 
-        if 'load_model_path' in pars:
-            model = load(pars['load_model_path'])
-        else:
+    # model fitting 
+    if 'model_path_load' in pars:
+            model = load(pars['model_path_load'])
+    else:
             log('##### Training Started #####')
+            if primary_key == "" :
+                primary_key == "_colid"
+                df[primary_key] = np.arange(0, len(df))
             model = TVAE(primary_key=primary_key)
             model.fit(df)
             log('##### Training Finshed #####')
-            if save_model:
-                try:
+            try:
                     log('saving model...')
-                    save(model, pars['save_model_path'])
-                    log('model saved at: ' + pars['save_model_path'])
-                except:
+                    save(model, path_model_save )
+                    log('model saved at: ' + path_model_save  )
+            except:
                     log('saving model failed, did you choose a valid location?')
-    else:
-        model = TVAE(primary_key=primary_key)
-        log('##### Training Started #####')
-        model.fit(df)
-        log('##### Training Finshed #####')
-    
-    # generating new samples
+
     log('##### Generating Samples #####')
     new_data = model.sample(n_samples)
     
-    # log the evaluations
     log('######### Evaluation Started #########')
     evals = evaluate(new_data, df, aggregate=aggregate)
     log('######### Evaluation Results #########')
@@ -431,8 +432,11 @@ def pd_vae_augmentation(df, col=None, pars=None, n_samples=None, primary_key=Non
     
     # appending new data    
     df_new = df.append(new_data)
-    
     log(str(len(df_new) - len(df)) + ' new data added')
+    log('###### augmentation save on disk ######')
+    
+    
+    
     
     log('###### augmentation complete ######')
     
