@@ -449,19 +449,19 @@ def test_sdv():
     # loading boston data
     data = load_boston()
     df = pd.DataFrame(data.data, columns=data.feature_names)
-    df.head()    
+    log(df.head())    
     
     log('##### testing augmentation #####')
     
     # training new data test
-    path = os.getcwd() + '\model.pkl'
-    pars = {'save_model_path': path}
-    df_new, _ = pd_vae_augmentation(df, save_model=True, pars=pars)
+    path = os.getcwd() + '\zz_model_vae_augmentation.pkl'
+    pars = {'model_path_save': path}
+    df_new, _ = pd_vae_augmentation(df, pars=pars)
     
     log('####### Generating using saved model test started #######')
     
     # generating data from existing model test
-    pars = {'load_model_path': path}
+    pars = {'model_path_load': path, 'save_model': True}
     df_new, _ = pd_vae_augmentation(df, pars=pars)
 
 
