@@ -8,20 +8,22 @@ import os
 import pandas_profiling
 import json
 from sklearn.model_selection import train_test_split
-
 #######################################################################################
 
 
+
 ##### Load from samples   ##################
-df = pd.read_csv('raw/online_shoppers_intention.csv',nrows= 12317)
+df = pd.read_csv('raw/online_shoppers_intention.zip',nrows= 12317)
 print(df.head(5).T)
 print(df.tail(5).T)
 print(df.dtypes)
 
+
+
 #######################################################################################
-colid=""
-colcat,colnum,coltext = [],[],[]
-coly = "Revenue"
+colid = ""
+colcat, colnum,coltext = [],[],[]
+coly  = "Revenue"
 def cols_group():
   global colid,colcat,colnum,coltext
   Num = ['int','int32','int64','float','float32','float64']
@@ -31,17 +33,21 @@ def cols_group():
     if cols != coly:
       col_size = df[cols].unique().size
       if col_size == df_size and colid == "":
-        colid = str(cols)
+        colid    = str(cols)
         df[cols] = df[cols].astype(df[cols].dtype)
+
       elif df[cols].dtype in Num:
         colnum.append(cols)
-        df[cols] =df[cols].astype(df[cols].dtype)
+        df[cols] = df[cols].astype(df[cols].dtype)
+
       elif col_size > (df_size/2):
         coltext.append(cols)
         df[cols] = df[cols].astype(str)
+
       else:
         colcat.append(cols)
         df[cols] = df[cols].astype('category')
+
   ddict = {
     'colid' : colid,
     'colnum' : colnum,
@@ -53,14 +59,13 @@ def cols_group():
   json.dump(ddict,out_file)
 
 
-
-
-
 ###########################################################################################
-
 """
 Put manually column by data type :
 """
+
+
+
 
 ##########################################################################################
 '''
@@ -118,8 +123,9 @@ def train_test_split():
     df1_test[[coly]] = df[[coly]].iloc[icol:, :]
     df1_test.to_csv("test/test.csv")
 
-########################################################################################
 
+
+########################################################################################
 def save_features(df, name, path):
     if path is not None :
        os.makedirs( f"{path}/{name}" , exist_ok=True)
@@ -139,5 +145,9 @@ python  clean.py  to_test
 """
 if __name__ == "__main__":
     import fire
-
     fire.Fire()
+
+
+
+
+

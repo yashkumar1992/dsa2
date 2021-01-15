@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 
-  python titanic_classifier.py  train    > zlog/log_titanic_train.txt 2>&1
-  python titanic_classifier.py  predict  > zlog/log_titanic_predict.txt 2>&1
+  python online_shopping.py  train    > zlog/log_online_train.txt 2>&1
+  python online_shopping.py  predict  > zlog/log_online_predict.txt 2>&1
 
 
 """
@@ -33,26 +33,26 @@ def global_pars_update(model_dict, data_name, config_name):
     m['path_data_preprocess'] = dir_data + f'/input/{data_name}/train/'
 
     #### train input path
-    m['path_data_train'] = dir_data + f'/input/{data_name}/train/'
-    m['path_data_test'] = dir_data + f'/input/{data_name}/test/'
-    # m['path_data_val']       = dir_data + f'/input/{data_name}/test/'
+    m['path_data_train']      = dir_data + f'/input/{data_name}/train/'
+    m['path_data_test']       = dir_data + f'/input/{data_name}/test/'
+    # m['path_data_val']      = dir_data + f'/input/{data_name}/test/'
 
     #### train output path
-    m['path_train_output'] = dir_data + f'/output/{data_name}/{config_name}/'
-    m['path_train_model'] = dir_data + f'/output/{data_name}/{config_name}/model/'
-    m['path_features_store'] = dir_data + f'/output/{data_name}/{config_name}/features_store/'
-    m['path_pipeline'] = dir_data + f'/output/{data_name}/{config_name}/pipeline/'
+    m['path_train_output']    = dir_data + f'/output/{data_name}/{config_name}/'
+    m['path_train_model']     = dir_data + f'/output/{data_name}/{config_name}/model/'
+    m['path_features_store']  = dir_data + f'/output/{data_name}/{config_name}/features_store/'
+    m['path_pipeline']        = dir_data + f'/output/{data_name}/{config_name}/pipeline/'
 
     #### predict  input path
-    m['path_pred_data'] = dir_data + f'/input/{data_name}/test/'
-    m['path_pred_pipeline'] = dir_data + f'/output/{data_name}/{config_name}/pipeline/'
-    m['path_pred_model'] = dir_data + f'/output/{data_name}/{config_name}/model/'
+    m['path_pred_data']       = dir_data + f'/input/{data_name}/test/'
+    m['path_pred_pipeline']   = dir_data + f'/output/{data_name}/{config_name}/pipeline/'
+    m['path_pred_model']      = dir_data + f'/output/{data_name}/{config_name}/model/'
 
     #### predict  output path
-    m['path_pred_output'] = dir_data + f'/output/{data_name}/pred_{config_name}/'
+    m['path_pred_output']     = dir_data + f'/output/{data_name}/pred_{config_name}/'
 
     #####  Generic
-    m['n_sample'] = model_dict['data_pars'].get('n_sample', 3816)
+    m['n_sample']             = model_dict['data_pars'].get('n_sample', 3816)
 
     model_dict['global_pars'] = m
     return model_dict
@@ -110,32 +110,27 @@ def online_lightgbm():
         , 'post_process_fun': post_process_fun  ### After prediction  ##########################################
         , 'pre_process_pars': {'y_norm_fun': pre_process_fun,  ### Before training  ##########################
 
-                               ### Pipeline for data processing ##############################
-                               'pipe_list': [
-                                   #### coly target prorcessing
-                                   {'uri': 'source/prepro.py::pd_coly', 'pars': {}, 'cols_family': 'coly',
-                                    'cols_out': 'coly', 'type': 'coly'},
+           ### Pipeline for data processing ##############################
+           'pipe_list': [
+               #### coly target prorcessing
+               {'uri': 'source/prepro.py::pd_coly', 'pars': {}, 'cols_family': 'coly', 'cols_out': 'coly', 'type': 'coly'},
 
-                                   {'uri': 'source/prepro.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum',
-                                    'cols_out': 'colnum_bin', 'type': ''},
-                                   {'uri': 'source/prepro.py::pd_colnum_binto_onehot', 'pars': {},
-                                    'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''},
 
-                                   #### catcol INTO integer,   colcat into OneHot
-                                   {'uri': 'source/prepro.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat',
-                                    'cols_out': 'colcat_bin', 'type': ''},
-                                   {'uri': 'source/prepro.py::pd_colcat_to_onehot', 'pars': {},
-                                    'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''},
+               {'uri': 'source/prepro.py::pd_colnum_bin', 'pars': {}, 'cols_family': 'colnum', 'cols_out': 'colnum_bin', 'type': ''},
 
-                                   ### Cross_feat = feat1 X feat2
-                                   {'uri': 'source/prepro.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross',
-                                    'cols_out': 'colcross_pair', 'type': 'cross'},
+               {'uri': 'source/prepro.py::pd_colnum_binto_onehot', 'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot', 'type': ''},
 
-                                   #### Example of Custom processor
-                                   {'uri': THIS_FILEPATH + '::pd_col_myfun', 'pars': {}, 'cols_family': 'colnum',
-                                    'cols_out': 'col_myfun', 'type': ''},
+               #### catcol INTO integer,   colcat into OneHot
+               {'uri': 'source/prepro.py::pd_colcat_bin', 'pars': {}, 'cols_family': 'colcat', 'cols_out': 'colcat_bin', 'type': ''},
 
-                               ],
+               {'uri': 'source/prepro.py::pd_colcat_to_onehot', 'pars': {},'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot', 'type': ''},
+
+
+               ### Cross_feat = feat1 X feat2
+               {'uri': 'source/prepro.py::pd_colcross', 'pars': {}, 'cols_family': 'colcross', 'cols_out': 'colcross_pair', 'type': 'cross'},
+
+
+           ],
                                }
     },
 
@@ -156,7 +151,7 @@ def online_lightgbm():
                                            'colcross_pair',
 
                                            ### example of custom
-                                           'col_myfun'
+                                           # 'col_myfun'
                                            ]
 
                       ### Filter data rows   ##################################################################
@@ -170,35 +165,6 @@ def online_lightgbm():
     return model_dict
 
 
-def pd_col_myfun(df=None, col=None, pars={}):
-    """
-         Example of custom Processor
-    """
-    from source.util_feature import save, load
-    prefix = 'col_myfun`'
-    if 'path_pipeline' in pars:  #### Inference time LOAD previous pars
-        prepro = load(pars['path_pipeline'] + f"/{prefix}_model.pkl")
-        pars = load(pars['path_pipeline'] + f"/{prefix}_pars.pkl")
-        pars = {} if pars is None else pars
-    #### Do something #################################################################
-    df_new = df[col]  ### Do nithi
-    df_new.columns = [col + "_myfun" for col in df.columns]
-    cols_new = list(df_new.columns)
-
-    prepro = None
-    pars_new = None
-
-    ###################################################################################
-    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
-        save(prepro, pars['path_pipeline_export'] + f"/{prefix}_model.pkl")
-        save(cols_new, pars['path_pipeline_export'] + f"/{prefix}.pkl")
-        save(pars_new, pars['path_pipeline_export'] + f"/{prefix}_pars.pkl")
-
-    col_pars = {'prefix': prefix, 'path': pars.get('path_pipeline_export', pars.get('path_pipeline', None))}
-    col_pars['cols_new'] = {
-        'col_myfun': cols_new  ### list
-    }
-    return df_new, col_pars
 
 
 #####################################################################################
@@ -284,11 +250,11 @@ def predict(config=None, nsample=None):
 ###########################################################################################################
 ###########################################################################################################
 """
-python  titanic_classifier.py  data_profile
-python  titanic_classifier.py  preprocess  --nsample 100
-python  titanic_classifier.py  train       --nsample 200
-python  titanic_classifier.py  check
-python  titanic_classifier.py  predict
+python  online_shopping.py  data_profile
+python  online_shopping.py  preprocess  --nsample 100
+python  online_shopping.py  train       --nsample 200
+python  online_shopping.py  check
+python  online_shopping.py  predict
 
 
 """
