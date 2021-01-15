@@ -34,19 +34,26 @@ def cols_group():
       col_size = df[cols].unique().size
       if col_size == df_size and colid == "":
         colid    = str(cols)
-        df[cols] = df[cols].astype(df[cols].dtype)
+
+
+      elif df[cols].dtype in Num and  col_size < ( df_size / 2) :
+        colcat.append(cols)
+
 
       elif df[cols].dtype in Num:
         colnum.append(cols)
-        df[cols] = df[cols].astype(df[cols].dtype)
 
-      elif col_size > (df_size/2):
+
+      elif col_size > (df_size/2) and  df[cols].dtype in [ 'str' ] :
+         ### len of string > 30  and unique values > 50%
         coltext.append(cols)
         df[cols] = df[cols].astype(str)
 
-      else:
+
+      else:  ### category
         colcat.append(cols)
-        df[cols] = df[cols].astype('category')
+
+
 
   ddict = {
     'colid' : colid,
