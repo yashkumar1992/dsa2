@@ -356,23 +356,6 @@ def pd_col_genetic_transform(df=None, col=None, pars=None):
     return df_genetic, col_pars
 
 
-'''
-Using Variation Autoencoders, the function augments more data into the dataset
-params:
-        df          : (pandas dataframe) original dataframe
-        n_samples   : (int) number of samples you would like to add, defaul is 10%
-        primary_key : (String) the primary key of dataframe
-        aggregate   : (boolean) if False, prints SVD metrics, else it averages them
-        
-returns:
-        df_new      : (pandas dataframe) df with more augmented data
-        col         : (list of strings) same columns 
-'''
-def pd_vae_augmentation(df, col=None, pars=None, n_samples=None, primary_key=None, aggregate=True):
-    
-    from sdv.demo import load_tabular_demo
-    from sdv.tabular import TVAE
-    from sdv.evaluation import evaluate
 
 params:
         df          : (pandas dataframe) original dataframe
@@ -390,63 +373,102 @@ def pd_vae_augmentation(df, col=None, pars=None, n_samples=None, primary_key=Non
     from sdv.tabular import TVAE
     from sdv.evaluation import evaluate
 
-    # add 10% more samples
-    if n_samples == None:
-        if len(df) >= 10:
-          log('samples amount not specified, adding 10%')
-          n_samples = len(df) // 10
-        else:
-          log('dataframe too small, adding only 1')
-          n_samples = 1
+
+def pd_augmentation_sdv(df, col=None, pars={})  :
+    '''
+    Using SDV Variation Autoencoders, the function augments more data into the dataset
+    params:
+            df          : (pandas dataframe) original dataframe
+            col : column name for data enancement
+            pars        : (dict - optional) contains:                                          
+                n_samples     : (int - optional) number of samples you would like to add, defaul is 10%
+                primary_key   : (String - optional) the primary key of dataframe
+                metrics_type  : (boolean - optional) if False, prints SVD metrics, else it averages them
+                path_model_save: saving location if save_model is set to True
+                path_model_load: saved model location to skip training
+                path_data_new  : new data where saved
+    returns:
+            df_new      : (pandas dataframe) df with more augmented data
+            col         : (list of strings) same columns
+    '''
+    n_samples       = pars.get('n_samples', max(1, int(len(df) * 0.10) ) )   ## Add 10% or 1 sample by default value
+    primary_key     = pars.get('colid', "")  ### Custom can be created on the fly
+    metrics_type    = pars.get('metrics_type', "aggregate")
+    path_model_save = pars.get('path_model_save', 'data/output/ztmp/')
+    model_name      = pars.get('model_name', "TVAE")
     
-    # model fitting
-    model = TVAE(primary_key=primary_key)
-    model.fit(df)
+    # importing libraries
+    try:
+        #from sdv.demo import load_tabular_demo
+        from sdv.tabular import TVAE
+        from sdv.evaluation import evaluate
+    except:
+        os.system("pip install sdv")
+        from sdv.tabular import TVAE
+        from sdv.evaluation import evaluate      
     
-    # generating new samples
+
+    # model fitting 
+    if 'path_model_load' in pars:
+            model = load(pars['path_model_load'])
+    else:
+            log('##### Training Started #####')
+            if primary_key == "" :
+                primary_key     = "_colid"
+                df[primary_key] = np.arange(0, len(df))
+                
+            model = {'TVAE' : TVAE}[model_name]    
+            model = model(primary_key=primary_key)
+            model.fit(df)
+            log('##### Training Finshed #####')
+            try:
+                 save(model, path_model_save )
+                 log('model saved at: ', path_model_save  )
+            except:
+                 log('saving model failed: ', path_model_save)
+
+    log('##### Generating Samples #############')
     new_data = model.sample(n_samples)
+    log_pd( new_data, n=7)
     
-    # log the evaluations
-    evals = evaluate(new_data, df, aggregate=aggregate)
+   
     log('######### Evaluation Results #########')
-    if aggregate:
+    if metrics_type == 'aggregate':
+      evals = evaluate(new_data, df, aggregate= True )        
       log(evals)
     else:
+      evals = evaluate(new_data, df, aggregate= False )        
       log_pd(evals, n=7)
     
     # appending new data    
-    df_new = df.append(new_data)
+    df_new = df.append(new_data)   ### Check primayr_key
+    log(str(len(df_new) - len(df)) + ' new data added')
     
+    if 'path_newdata' in pars :
+        new_data.to_parquet( pars['path_newdata'] + '/features.parquet' ) 
+        log('###### df augmentation save on disk', pars['path_newdata'] )    
+    
+    log('###### augmentation complete ######')
     return df_new, col
 
-    # add 10% more samples
-    if n_samples == None:
-        if len(df) >= 10:
-          log('samples amount not specified, adding 10%')
-          n_samples = len(df) // 10
-        else:
-          log('dataframe too small, adding only 1')
-          n_samples = 1
+
+def test_sdv():
+    from sklearn.datasets import load_boston
     
-    # model fitting
-    model = TVAE(primary_key=primary_key)
-    model.fit(df)
+    # loading boston data
+    data = load_boston()
+    df = pd.DataFrame(data.data, columns=data.feature_names)
+    log_pd(df)    
     
-    # generating new samples
-    new_data = model.sample(n_samples)
+    log('##### testing augmentation #####')    
+    path = os.getcwd() + '\zz_model_vae_augmentation.pkl'
+    pars = {'path_model_save': path}
+    df_new, _ = pd_augmentation_sdv(df, pars=pars)
     
-    # log the evaluations
-    evals = evaluate(new_data, df, aggregate=aggregate)
-    log('######### Evaluation Results #########')
-    if aggregate:
-      log(evals)
-    else:
-      log_pd(evals, n=7)
-    
-    # appending new data    
-    df_new = df.append(new_data)
-    
-    return df_new, col
+    log('####### Generating using saved model test started #######')    
+    pars = {'path_model_load': path}
+    df_new, _ = pd_vae_augmentation(df, pars=pars)
+
 
 def pd_col_covariate_shift_adjustment():
    """
@@ -507,3 +529,68 @@ print('Sparsity of solution: %s%%' % (sparsity * 100))
 if __name__ == "__main__":
     import fire
     fire.Fire()
+    
+    
+    
+    
+    
+    
+    
+    
+"""
+
+
+def pd_generic_transform(df, col=None, pars={}, model=None)  :
+ 
+     Transform or Samples using  model.fit()   model.sample()  or model.transform()
+    params:
+            df    : (pandas dataframe) original dataframe
+            col   : column name for data enancement
+            pars  : (dict - optional) contains:                                          
+                path_model_save: saving location if save_model is set to True
+                path_model_load: saved model location to skip training
+                path_data_new  : new data where saved 
+    returns:
+            model, df_new, col, pars
+   
+    path_model_save = pars.get('path_model_save', 'data/output/ztmp/')
+    pars_model      = pars.get('pars_model', {} )
+    model_method    = pars.get('method', 'transform')
+    
+    # model fitting 
+    if 'path_model_load' in pars:
+            model = load(pars['path_model_load'])
+    else:
+            log('##### Training Started #####')
+            model = model( **pars_model)
+            model.fit(df)
+            log('##### Training Finshed #####')
+            try:
+                 save(model, path_model_save )
+                 log('model saved at: ' + path_model_save  )
+            except:
+                 log('saving model failed: ', path_model_save)
+
+    log('##### Generating Samples/transform #############')    
+    if model_method == 'sample' :
+        n_samples =pars.get('n_samples', max(1, 0.10 * len(df) ) )
+        new_data  = model.sample(n_samples)
+        
+    elif model_method == 'transform' :
+        new_data = model.transform(df.values)
+    else :
+        raise Exception("Unknown", model_method)
+        
+    log_pd( new_data, n=7)    
+    if 'path_newdata' in pars :
+        new_data.to_parquet( pars['path_newdata'] + '/features.parquet' ) 
+        log('###### df transform save on disk', pars['path_newdata'] )    
+    
+    return model, df_new, col, pars
+
+
+
+"""
+    
+    
+    

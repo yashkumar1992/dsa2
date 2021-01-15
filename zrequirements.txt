@@ -1,15 +1,12 @@
 lightgbm 
 optuna
-pyro-ppl
 pandas
 scikit-learn 
 scipy 
 matplotlib
 pyarrow
-pyod
 fire
-# tensorflow_text
-tensorflow_text>=2.0.0rc0
+tqdm
 #cycler==0.10.0
 #joblib==0.16.0
 #kiwisolver==1.2.0
@@ -20,7 +17,10 @@ numba==0.50.1
 #pyparsing
 #python-dateutil==2.8.1
 #pytz==2020.1
-tqdm
+#############3# Optional 
+# pyro-ppl
+# pyod
+tensorflow_text>=2.0.0rc0
 gplearn
 
 sdv==0.6.1
