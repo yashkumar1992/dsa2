@@ -24,6 +24,53 @@ print(df.dtypes)
 
 
 
+
+
+#######################################################################################
+colid = ""
+colcat, colnum,coltext = [],[],[]
+coly  = "Revenue"
+def cols_group():
+  global colid,colcat,colnum,coltext
+  Num = ['int','int32','int64','float','float32','float64']
+  df_size = len(df)
+  for cols in df.columns:
+    print(cols)
+    if cols != coly:
+      col_size = df[cols].unique().size
+      if col_size == df_size and colid == "":
+        colid    = str(cols)
+
+
+      elif df[cols].dtype in Num and  col_size < ( df_size / 2) :
+        colcat.append(cols)
+
+
+      elif df[cols].dtype in Num:
+        colnum.append(cols)
+
+
+      elif col_size > (df_size/2) and  df[cols].dtype in [ 'str' ] :
+         ### len of string > 30  and unique values > 50%
+        coltext.append(cols)
+        df[cols] = df[cols].astype(str)
+
+
+      else:  ### category
+        colcat.append(cols)
+
+  ddict = {
+    'colid' : colid,
+    'colnum' : colnum,
+    'colcat' : colcat,
+    'coltext' : coltext
+  }
+  print('ddict' ,ddict)
+  out_file = open('cols_group.json','w')
+  json.dump(ddict,out_file)
+
+
+
  
 #######################################################################################
 """
