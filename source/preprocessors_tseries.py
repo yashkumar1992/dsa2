@@ -150,15 +150,15 @@ def data_copy():
   return df
 
 
-def pd_colts_transform(df=None, col=None, pars={}):
+def pd_colts_generate(df=None, col=None, pars={}):
     """
-       pars : {  'model_name' :  "robust_scaler",
+       pars : {  'model_name' :  "transform.robust_scaler",
                  'model_pars'  :  {}
 
 
        }
     """
-    prefix = 'colts_transform'
+    prefix = 'colts_generate'
 
     ###### Custom code ################################################################
     dfin       = df[col].fillna(method='ffill')
@@ -172,8 +172,9 @@ def pd_colts_transform(df=None, col=None, pars={}):
     else :     ### Training time  : Dynamic function load
         from util_feature import  load_function_uri
         ##### transform.robust_scaler(df, drop=["Close_1"])
-        model = load_function_uri('transform' + "::" + model_name )
+        model = load_function_uri( model_name )
 
+    model_name = model_name.replace(".","_")    
 
     ##### Transform Data  ############################################################
     df_out         = model(dfin, col, **model_pars)                           
