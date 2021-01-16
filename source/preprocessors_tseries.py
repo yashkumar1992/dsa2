@@ -203,12 +203,22 @@ def pd_colts_generate(df=None, col=None, pars={}):
 def test_prepro_1():
   df = data_copy(); df.head()
 
-  for model_name in  [ "robust_scaler" ] :
+  for model_name in  [ "transform.robust_scaler", 
+                       "transform.standard_scaler",
+                     
+                     
+                     
+                     
+                     
+                     
+                     
+                     
+                     ] :
      pars : {  'model_name' :  model_name,
             'model_pars'  :  {}
      }
  
-     df_out, col_pars =pd_colts_transform(df=None, col=None, pars={})
+     df_out, col_pars =pd_colts_generate(df=None, col=None, pars={})
 
 
 
