@@ -137,7 +137,7 @@ def log_remote_push(name=None):
    tag = "m_" + str(name)
    s = f""" cd /home/runner/work/  && git clone git@github.com:arita37/log.git  &&  ls && pwd
            mv -f /home/runner/work/log_tmp/*   /home/runner/work/log/dsa/
-           cd /home/runner/work/log/
+           cd /home/runner/work/log/dsa/
            pip3 freeze > deps.txt
            ls
            git config --local user.email "noelkev0@gmail.com" && git config --local user.name "arita37"        

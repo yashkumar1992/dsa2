@@ -26,28 +26,19 @@ jobs:
       uses: dschep/install-pipenv-action@v1
       
 
-    ##### Log Start  ######################################################
-
-    #- name: ssh_gen
-    #  uses: webfactory/ssh-agent@v0.2.0
-      #with:
-      #  ssh-private-key: ${{ secrets.GIT_RSA }}
+    ##### Git Credemtials  ##################################################
+    - name: ssh_gen
+      uses: webfactory/ssh-agent@v0.2.0
+      with:
+        ssh-private-key: ${{ secrets.GIT_RSA }}
                 
-    - name: log_start
-      run: |
-           ls .
+    #- name: log_start
+    #  run: |
+    #       ls .
            # cd /home/runner/work/mlmodels/  && git clone git@github.com:arita37/mlmodels_store.git  &&  ls && pwd
            # cd /home/runner/work/mlmodels/mlmodels/
 
     ########################################################################
-                
-
-    # - name: log_start
-    #  run: |
-    #       cd /home/runner/work/mlmodels/  && git clone git@github.com:arita37/mlmodels_store.git  &&  ls && pwd
-    #       cd /home/runner/work/mlmodels/mlmodels/
-            
-
     #- uses: actions/cache@v1
     #  id: cache
     #  with:
@@ -57,15 +48,12 @@ jobs:
     #      ${{ runner.os }}-pip-
    
 
-
     - name: Cache pipenv virtualenv
       id: cache-pipenv
       uses: actions/cache@v1
       with:
         path: /opt/hostedtoolcache/Python/
         key: ${{ runner.os }}-pipenv-${{ hashFiles('**/install/py36.txt') }}
-
-
           
 
     - name: Install numpy
@@ -89,10 +77,6 @@ jobs:
     #  run: pip install -e . -r install/py36.txt  --no-deps
 
 
-    # - name: log_start
-    #  run: ml_test --do log_remote_start
-
-
     - name: test_import
       run: |
            python -c "import core_run;   print(core_run)"
@@ -110,8 +94,6 @@ jobs:
 
     #- name: ml_test_function
     #  run: ml_test --do test_functions    2>&1 | tee  cd /home/runner/work/mlmodels/mlmodels_store/log_import/log_functions.py
-
-
 
 
     #- name: ml_test
