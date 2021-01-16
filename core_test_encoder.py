@@ -76,6 +76,7 @@ def titanic1(path_model_out="") :
        Contains all needed informations for Light GBM Classifier model,
        used for titanic classification task
     """
+    config_name  = os_get_function_name()
     data_name    = "titanic"         ### in data/input/
     model_class  = 'LGBMClassifier'  ### ACTUAL Class name for model_sklearn.py
     n_sample     = 1000
