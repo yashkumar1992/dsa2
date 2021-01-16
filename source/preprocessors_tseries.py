@@ -309,12 +309,12 @@ def test_prepro_all():
 
 ###########################################################################################
 ###########################################################################################
-def pd_ts_basic(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
-    df['date_t'] = pd.to_datetime(df[coldate])
-    df['year'] = df['date_t'].dt.year
-    df['month'] = df['date_t'].dt.month
-    df['week'] = df['date_t'].dt.week
-    df['day'] = df['date_t'].dt.day
+def pd_ts_basic(df, coldate='date'):
+    df['date_t']    = pd.to_datetime(df[coldate])
+    df['year']      = df['date_t'].dt.year
+    df['month']     = df['date_t'].dt.month
+    df['week']      = df['date_t'].dt.week
+    df['day']       = df['date_t'].dt.day
     df['dayofweek'] = df['date_t'].dt.dayofweek
     return df[['year', 'month', 'week', 'day', 'dayofweek'] ], []
 
@@ -382,12 +382,12 @@ def pd_tsfresh_features_single_row(df_single_row, cols):
 
 
 
-    df_cols = df_single_row.columns.tolist()
-    selected_cols = [x for x in df_cols if re.match("d_[0-9]",x)]
-    single_row_df_T = df_single_row[selected_cols].T
-    single_row_df_T["time"] = range(0, len(single_row_df_T.index))
-    single_row_df_T["id"] = range(0, len(single_row_df_T.index))
-    single_row_df_T.rename(columns={ single_row_df_T.columns[0]: "val" }, inplace = True)
+    df_cols                        = df_single_row.columns.tolist()
+    selected_cols                  = [x for x in df_cols if re.match("d_[0-9]",x)]
+    single_row_df_T                = df_single_row[selected_cols].T
+    single_row_df_T["time"]        = range(0, len(single_row_df_T.index))
+    single_row_df_T["id"]          = range(0, len(single_row_df_T.index))
+    single_row_df_T.rename(columns = { single_row_df_T.columns[0]: "val" }, inplace = True)
 
     X_feat = extract_features(single_row_df_T, column_id='id', column_sort='time')
 
