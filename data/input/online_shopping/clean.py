@@ -8,20 +8,22 @@ import os
 import pandas_profiling
 import json
 from sklearn.model_selection import train_test_split
-
 #######################################################################################
 
 
+
 ##### Load from samples   ##################
-df = pd.read_csv('raw/online_shoppers_intention.csv',nrows= 12317)
+df = pd.read_csv('raw/online_shoppers_intention.zip',nrows= 12317)
 print(df.head(5).T)
 print(df.tail(5).T)
 print(df.dtypes)
 
+
+
 #######################################################################################
-colid=""
-colcat,colnum,coltext = [],[],[]
-coly = "Revenue"
+colid = ""
+colcat, colnum,coltext = [],[],[]
+coly  = "Revenue"
 def cols_group():
   global colid,colcat,colnum,coltext
   Num = ['int','int32','int64','float','float32','float64']
@@ -31,17 +33,28 @@ def cols_group():
     if cols != coly:
       col_size = df[cols].unique().size
       if col_size == df_size and colid == "":
-        colid = str(cols)
-        df[cols] = df[cols].astype(df[cols].dtype)
+        colid    = str(cols)
+
+
+      elif df[cols].dtype in Num and  col_size < ( df_size / 2) :
+        colcat.append(cols)
+
+
       elif df[cols].dtype in Num:
         colnum.append(cols)
-        df[cols] =df[cols].astype(df[cols].dtype)
-      elif col_size > (df_size/2):
+
+
+      elif col_size > (df_size/2) and  df[cols].dtype in [ 'str' ] :
+         ### len of string > 30  and unique values > 50%
         coltext.append(cols)
         df[cols] = df[cols].astype(str)
-      else:
+
+
+      else:  ### category
         colcat.append(cols)
-        df[cols] = df[cols].astype('category')
+
+
+
   ddict = {
     'colid' : colid,
     'colnum' : colnum,
@@ -53,14 +66,13 @@ def cols_group():
   json.dump(ddict,out_file)
 
 
-
-
-
 ###########################################################################################
-
 """
 Put manually column by data type :
 """
+
+
+
 
 ##########################################################################################
 '''
@@ -118,8 +130,9 @@ def train_test_split():
     df1_test[[coly]] = df[[coly]].iloc[icol:, :]
     df1_test.to_csv("test/test.csv")
 
-########################################################################################
 
+
+########################################################################################
 def save_features(df, name, path):
     if path is not None :
        os.makedirs( f"{path}/{name}" , exist_ok=True)
@@ -139,5 +152,9 @@ python  clean.py  to_test
 """
 if __name__ == "__main__":
     import fire
-
     fire.Fire()
+
+
+
+
+

@@ -102,13 +102,29 @@ For example, there are thousands of ways to smooth a time-series, but we have on
 
 
 """
-import warnings, os, sys
+import warnings, os, sys, re
 warnings.filterwarnings('ignore')
-
 import pandas as pd, numpy as np
-import re
+####################################################################################################
+#### Add path for python import
+sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
+
+#### Root folder analysis
+root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
+print(root)
 
 
+####################################################################################################
+from util_feature import   load, save_list, load_function_uri, save
+
+def log(*s, n=0, m=0):
+    sspace = "#" * n
+    sjump = "\n" * m
+    ### Implement pseudo Logging
+
+
+
+####################################################################################################
 try :
     from tsfresh import extract_relevant_features, extract_features
     from tsfresh.utilities.dataframe_functions import roll_time_series
@@ -132,6 +148,68 @@ def data_copy():
   df["Date"] = pd.to_datetime(df["Date"])
   df = df.set_index("Date")
   return df
+
+
+def pd_colts_generate(df=None, col=None, pars={}):
+    """
+       pars : {  'model_name' :  "transform.robust_scaler",
+                 'model_pars'  :  {}
+
+
+       }
+    """
+    prefix = 'colts_generate'
+
+    ###### Custom code ################################################################
+    dfin       = df[col].fillna(method='ffill')
+    model_name = pars['model_name']
+    model_pars = pars.get('model_pars',   {})  
+
+    if 'path_pipeline' in pars :   #### Prediction time
+        model  = load(pars['path_pipeline'] + f"/{prefix}_model.pkl" )
+        pars   = load(pars['path_pipeline'] + f"/{prefix}_pars.pkl" )
+
+    else :     ### Training time  : Dynamic function load
+        from util_feature import  load_function_uri
+        ##### transform.robust_scaler(df, drop=["Close_1"])
+        model = load_function_uri( model_name )
+
+    model_name = model_name.replace(".","_")    
+
+    ##### Transform Data  ############################################################
+    df_out         = model(dfin, col, **model_pars)                           
+    col_out        = [  coli + "_" + model_name for coli in df_out.columns]
+    df_out.columns = col_out
+    df_out.index   = train_X.index
+    col_new        = col_out
+
+
+    ###### Export #####################################################################
+    if 'path_features_store' in pars and 'path_pipeline_export' in pars:
+       save_features(df_out, 'df_' + prefix, pars['path_features_store'])
+       save(model,     pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
+       save(col_new,   pars['path_pipeline_export'] + f"/{prefix}.pkl" )
+       save(pars,      pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+
+
+    col_pars = {'prefix' : prefix , 'path' :   pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
+    col_pars['cols_new'] = {
+       prefix :  col_new  ### list of columns
+    }
+    return df_out, col_pars                           
+                           
+
+
+def test_prepro_1():
+  df = data_copy(); df.head()
+
+  for model_name in  [ "robust_scaler" ] :
+     pars : {  'model_name' :  model_name,
+            'model_pars'  :  {}
+     }
+ 
+     df_out, col_pars =pd_colts_transform(df=None, col=None, pars={})
+
 
 
 
@@ -225,6 +303,12 @@ def test_prepro_all():
 
 
 
+
+
+
+
+###########################################################################################
+###########################################################################################
 def pd_ts_basic(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
     df['date_t'] = pd.to_datetime(df[coldate])
     df['year'] = df['date_t'].dt.year

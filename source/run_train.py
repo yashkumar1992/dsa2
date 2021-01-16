@@ -60,10 +60,22 @@ def model_dict_load(model_dict, config_path, config_name, verbose=True):
 def map_model(model_name):
     """
       Get the Class of the object stored in source/models/
-    :param model_name:   model_sklearn.py
+    :param model_name:   model_sklearn
     :return: model module
+
     """
-    model_file = model_name
+
+    #### Custom folder 
+    if ".py" in model_name :
+       path = os.path.parent(model_name)
+       sys.path.append(path)
+       mod = os.path.basename(model_name)
+       modelx = importlib.import_module(mod)
+       return modelx
+
+
+    ##### Local folder
+    model_file = model_name.split(":")[0]
     if  'optuna' in model_name : model_file = 'model_optuna'
 
     try :
@@ -73,10 +85,12 @@ def map_model(model_name):
 
     except :
         ### All SKLEARN API
-        #['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
+        ### ['ElasticNet', 'ElasticNetCV', 'LGBMRegressor', 'LGBMModel', 'TweedieRegressor', 'Ridge']:
        mod    = 'models.model_sklearn'
        modelx = importlib.import_module(mod)
+
     return modelx
+
 
 
 def train(model_dict, dfX, cols_family, post_process_fun):
