@@ -62,12 +62,6 @@ Preprocessors Check
 
         
 
-### data/input  : Input data format
-    data/input/titanic/raw/      : the raw files
-    data/input/titanic/clean.py  : basic data cleaner
-           -->    data/input/titanic//train/
-           -->    data/input/titanic//test/
-
 
 
 ```
