@@ -102,13 +102,29 @@ For example, there are thousands of ways to smooth a time-series, but we have on
 
 
 """
-import warnings, os, sys
+import warnings, os, sys, re
 warnings.filterwarnings('ignore')
-
 import pandas as pd, numpy as np
-import re
+####################################################################################################
+#### Add path for python import
+sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
+
+#### Root folder analysis
+root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
+print(root)
 
 
+####################################################################################################
+from util_feature import   load, save_list, load_function_uri, save
+
+def log(*s, n=0, m=0):
+    sspace = "#" * n
+    sjump = "\n" * m
+    ### Implement pseudo Logging
+
+
+
+####################################################################################################
 try :
     from tsfresh import extract_relevant_features, extract_features
     from tsfresh.utilities.dataframe_functions import roll_time_series
