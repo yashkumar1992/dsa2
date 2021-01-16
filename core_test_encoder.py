@@ -178,8 +178,10 @@ def get_test_data(name='boston'):
     if name == 'boston' :
         from sklearn.datasets import load_boston
         d = load_boston(return_X_y=False)
+        target = pd.DataFrame(d['target'], columns=['price'])
         col = d['feature_names']
         df = pd.DataFrame( d['data'], columns=col)
+        df = pd.concat((df,target), axis=1)
     return df, col
 
 
@@ -194,11 +196,18 @@ def check1():
 
     ############################################################
     for name in  ['boston'] :
+        ## condition for gplearn.SymbolicTransformer:
+        ## len(col) < population_size
+        ## for boston dataset, the number of features is 13, so pupulation_size should be greater than 13
         df, col = get_test_data(name)
+        print(len(col))
+        pars = {
+            'coly': 'price',
+            'pars_genetic': {'population_size': 14}
+        }
         dfnew, col_pars = pd_prepro(df, col, pars)
         print(pd_prepro, name)
-        print(dfnew[col].head(3).T,  col)
-        print(dfnew.head(3).T,  col_pars)
+        print(dfnew.head(3).T)
 
 
 
