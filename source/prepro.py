@@ -674,52 +674,50 @@ def pd_coldate(df, col, pars):
 def pd_autoencoder(df, col, pars):
     """"
     (4) Autoencoder
-An autoencoder is a type of artificial neural network used to learn efficient data codings in an unsupervised manner. The aim of an autoencoder is to learn a representation (encoding) for a set of data, typically for dimensionality reduction, by training the network to ignore noise.
+    An autoencoder is a type of artificial neural network used to learn efficient data codings in an unsupervised manner. The aim of an autoencoder is to learn a representation (encoding) for a set of data, typically for dimensionality reduction, by training the network to ignore noise.
 
-(i) Feed Forward
+    (i) Feed Forward
 
-The simplest form of an autoencoder is a feedforward, non-recurrent neural network similar to single layer perceptrons that participate in multilayer perceptrons
-
-from sklearn.preprocessing import minmax_scale
-import tensorflow as tf
-import numpy as np
-
-def encoder_dataset(df, drop=None, dimesions=20):
-
-  if drop:
-    train_scaled = minmax_scale(df.drop(drop,axis=1).values, axis = 0)
-  else:
-    train_scaled = minmax_scale(df.values, axis = 0)
-
-  # define the number of encoding dimensions
-  encoding_dim = dimesions
-  # define the number of features
-  ncol = train_scaled.shape[1]
-  input_dim = tf.keras.Input(shape = (ncol, ))
-
-  # Encoder Layers
-  encoded1 = tf.keras.layers.Dense(3000, activation = 'relu')(input_dim)
-  encoded2 = tf.keras.layers.Dense(2750, activation = 'relu')(encoded1)
-  encoded3 = tf.keras.layers.Dense(2500, activation = 'relu')(encoded2)
-  encoded4 = tf.keras.layers.Dense(750, activation = 'relu')(encoded3)
-  encoded5 = tf.keras.layers.Dense(500, activation = 'relu')(encoded4)
-  encoded6 = tf.keras.layers.Dense(250, activation = 'relu')(encoded5)
-  encoded7 = tf.keras.layers.Dense(encoding_dim, activation = 'relu')(encoded6)
-
-  encoder = tf.keras.Model(inputs = input_dim, outputs = encoded7)
-  encoded_input = tf.keras.Input(shape = (encoding_dim, ))
-
-  encoded_train = pd.DataFrame(encoder.predict(train_scaled),index=df.index)
-  encoded_train = encoded_train.add_prefix('encoded_')
-  if drop:
-    encoded_train = pd.concat((df[drop],encoded_train),axis=1)
-
-  return encoded_train
-
-df_out = mapper.encoder_dataset(df.copy(), ["Close_1"], 15); df_out.head()
-
+    The simplest form of an autoencoder is a feedforward, non-recurrent neural network similar to single layer perceptrons that participate in multilayer perceptrons
     """
-    pass
+    from sklearn.preprocessing import minmax_scale
+    import tensorflow as tf
+    import numpy as np
+
+    def encoder_dataset(df, drop=None, dimesions=20):
+
+      if drop:
+        train_scaled = minmax_scale(df.drop(drop,axis=1).values, axis = 0)
+      else:
+        train_scaled = minmax_scale(df.values, axis = 0)
+
+      # define the number of encoding dimensions
+      encoding_dim = dimesions
+      # define the number of features
+      ncol = train_scaled.shape[1]
+      input_dim = tf.keras.Input(shape = (ncol, ))
+
+      # Encoder Layers
+      encoded1 = tf.keras.layers.Dense(3000, activation = 'relu')(input_dim)
+      encoded2 = tf.keras.layers.Dense(2750, activation = 'relu')(encoded1)
+      encoded3 = tf.keras.layers.Dense(2500, activation = 'relu')(encoded2)
+      encoded4 = tf.keras.layers.Dense(750, activation = 'relu')(encoded3)
+      encoded5 = tf.keras.layers.Dense(500, activation = 'relu')(encoded4)
+      encoded6 = tf.keras.layers.Dense(250, activation = 'relu')(encoded5)
+      encoded7 = tf.keras.layers.Dense(encoding_dim, activation = 'relu')(encoded6)
+
+      encoder = tf.keras.Model(inputs = input_dim, outputs = encoded7)
+      encoded_input = tf.keras.Input(shape = (encoding_dim, ))
+
+      encoded_train = pd.DataFrame(encoder.predict(train_scaled),index=df.index)
+      encoded_train = encoded_train.add_prefix('encoded_')
+      if drop:
+        encoded_train = pd.concat((df[drop],encoded_train),axis=1)
+
+      # df_out = mapper.encoder_dataset(df.copy(), ["Close_1"], 15); df_out.head()
+      return encoded_train
+
+
 
 
 def pd_colcat_encoder_generic(df, col, pars):
