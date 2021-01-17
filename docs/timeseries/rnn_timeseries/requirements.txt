@@ -1,6 +1,0 @@
-numpy
-pandas
-tqdm
-matplotlib
-tensorflow-gpu>=1.10
-

@@ -1,5 +1,0 @@
-pandas
-numpy
-nltk
-stop_words
-textblob
