@@ -13,20 +13,25 @@ See the [Skeleton Example](#example), for a combination of multiple methods that
 Test sets should ideally not be preprocessed with the training data, as in such a way one could be peaking ahead in the training data. The preprocessing parameters should be identified on the test set and then applied on the test set, i.e., the test set should not have an impact on the transformation applied. As an example, you would learn the parameters of PCA decomposition on the training set and then apply the parameters to both the train and the test set.
 The benefit of pipelines become clear when one wants to apply multiple augmentation methods. It makes it easy to learn the parameters and then apply them widely. For the most part, this notebook does not concern itself with 'peaking ahead' or pipelines, for some functions, one might have to restructure to code and make use of open source pacakages to create your preferred solution.
 
-
-**Notebook Dependencies**
 pip install deltapy pykalman tsaug ta tsaug pandasvault gplearn ta seasonal pandasvault
 
-
-"""
-
-
-"""Some of these categories are fluid and some techniques could fit into multiple buckets.
+Some of these categories are fluid and some techniques could fit into multiple buckets.
 This is an attempt to find an exhaustive number of techniques, but not an exhuastive list of implementations of the techniques.
 
 For example, there are thousands of ways to smooth a time-series, but we have only includes 1-2 techniques of interest under each category.
 
-### **(1) [<font color="black">Transformation:</font>](#transformation)**
+
+
+####
+date addon
+groupby (date, cat2, cat2) statistics.
+
+autoregressive  : past data avg.
+
+
+
+
+(#transformation)**
 -----------------
 1. Scaling/Normalisation
 2. Standardisation
@@ -43,7 +48,7 @@ For example, there are thousands of ways to smooth a time-series, but we have on
 12. Lagging
 14. Forecast Model
 
-### **(2) [<font color="black">Interaction:</font>](#interaction)**
+(#interaction)**
 -----------------
 1. Regressions
 2. Operators
@@ -53,7 +58,7 @@ For example, there are thousands of ways to smooth a time-series, but we have on
 6. Speciality
 7. Genetic
 
-### **(3) [<font color="black">Mapping:</font>](#mapping)**
+(#mapping)**
 -----------------
 1. Eigen Decomposition
 2. Cross Decomposition
@@ -63,7 +68,8 @@ For example, there are thousands of ways to smooth a time-series, but we have on
 6. Clustering
 7. Neighbouring
 
-### **(4) [<font color="black">Extraction:</font>](#extraction)**
+
+(#extraction)**
 -----------------
 1. Energy
 2. Distance
@@ -151,7 +157,7 @@ def get_sampledata():
 
 
 
-def pd_coldate(df, col, pars):
+def pd_ts_coldate(df, col, pars):
     log("##### Coldate processing   ##########################################")
     from utils import util_date
     coldate = col
@@ -172,6 +178,31 @@ def pd_coldate(df, col, pars):
         'dfdate': list(dfdate.columns)  ### list
     }
     return dfdate, col_pars
+
+
+
+def pd_ts_groupby(df, col, pars):
+   """
+       groupby(key_lis).agg( col_stat )   
+   
+   """
+   pass
+
+
+
+def pd_ts_autoregressive(df, col, pars):
+   """
+       moving average....
+       
+   
+   """
+   pass
+
+
+
+
+
+
 
 
 
