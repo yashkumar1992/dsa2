@@ -17,7 +17,6 @@ obj_fun
 
 
 """
-
 DEBUG = True
 
 def log(*s):
@@ -76,7 +75,7 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
     log("###### Hyper-optimization through study   ##################################")
     pruner = optuna.pruners.MedianPruner() if engine_pars.get("method", '') == 'prune' else None
 
-    if engine_pars.get("study_name") is not None:
+    if "study_name" in engine_pars:
         study_name = engine_pars['study_name']
         storage    = engine_pars.get('storage', 'optunadb.db')
         # study = optuna.load_study(study_name='distributed-example', storage='sqlite:///example.db')
@@ -103,18 +102,45 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
 
 
 
+
 def test_hyper():
+    model_pars ={
+
+
+
+    }
+
+
+    pars_range ={
+
+
+
+    }
+
+    from source import run_train
+    def objective1(ddict):
+         res = run_train.run_train(model_pars = model_pars,
+                             n_sample          =  nsample,
+                        )
+         return res
+
+    engine_pars = {}
+    result_p = run_hyper_optuna(objective1, model_pars, pars_range, engine_pars, ntrials= 3)
+    log(result_p)
+
+
+
+
+
+def test_hyper3():
     import pandas as pd
     import numpy as np
 
-    #Running the function for quadratic and cubic equations
     pars = {'x':2,
-                 'y':{'z':3, 't':2}}
-
+            'y':{'z':3, 't':2}}
 
     pars_range = {'x': ('uniform',  -10,10),
                   'y': {'z':('int',-10, 10)}
-
                   }
 
     def objective1(ddict):

@@ -131,11 +131,13 @@ def log_remote_start(arg=None):
    os.system(cmd)
 
 
-def log_remote_push(arg=None):
+def log_remote_push(name=None):
    ### Pushing to dsa2_store   with --force
    # tag ="ml_store" & arg.name
-   tag = "m_" + str(arg.name)
-   s = f""" cd /home/runner/work/dsa2/dsa2_store/
+   tag = "m_" + str(name)
+   s = f""" cd /home/runner/work/  && git clone git@github.com:arita37/log.git  &&  ls && pwd
+           mv -f /home/runner/work/log_tmp/*   /home/runner/work/log/dsa/
+           cd /home/runner/work/log/dsa/
            pip3 freeze > deps.txt
            ls
            git config --local user.email "noelkev0@gmail.com" && git config --local user.name "arita37"        
@@ -515,21 +517,6 @@ def test_custom():
         ### Keras
         f"model_keras/01_deepctr.py",
         f"model_keras/charcnn.py",
-
-        f"model_keras/01_deepctr.py",
-        f"model_keras/textcnn.py",
-
-        ### SKLearn
-        f"model_sklearn/sklearn.py",
-
-        ### Torch
-        f"model_tch/03_nbeats.py",
-        f"model_tch/textcnn.py",
-        f"model_tch/transformer_classifier.py",
-
-        ### Glueon
-        f"model_gluon/gluon_deepar.py",
-        f"model_glufon/gluon_ffn.py",
     ]
     test_list(test_list0)
 
@@ -547,14 +534,16 @@ def test_fast_linux():
 def log(*s):
   print(*s, flush=True)
 
-  
-def test_all_data():
+
+
+##############################################################################################  
+def test_all_files():
     # log_info_repo(arg)
     log("os.getcwd", os.getcwd())
     import time, glob
     
     block_list =  []  # [ "core_run.py", "core_test_auto.py"  ]
-    flist = glob.glob(".py")      
+    flist = glob.glob("*.py")      
     flist = [ t for t in flist if t not in block_list ]  
 
     ## Block list
@@ -569,11 +558,38 @@ def test_all_data():
         os.system(cmd)
         # log_remote_push()
         # time.sleep(1)
+
+##############################################################################################  
+def test_all_data():
+    # log_info_repo(arg)
+    log("os.getcwd", os.getcwd())
+    import time, glob
     
+    block_list =  []  # [ "core_run.py", "core_test_auto.py"  ]
+    flist = glob.glob("example/*.py")      
+    flist = [ t for t in flist if t not in block_list ]  
+
+    ## Block list
+    path = os.getcwd()
+    path = path.replace("\\", "//")
+    test_list = [f"python {path}/example/" + t  + "   train"  for t in flist]
+    log("Used", test_list)
+
+    for cmd in test_list:
+        log_separator()
+        log( cmd)
+        os.system(cmd)
+        # log_remote_push()
+        # time.sleep(1)
+    
+
+
 
 if __name__ == "__main__":
     import fire
     fire.Fire()
+
+
 
 
 

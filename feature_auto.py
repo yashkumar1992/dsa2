@@ -1,57 +1,52 @@
 # pylint: disable=C0321,C0103,E1221,C0301,E1305,E1121,C0302,C0330
 # -*- coding: utf-8 -*-
 """
-To test encoding
+Automatic Feature generator
 
 """
 import warnings, copy, os, sys
 warnings.filterwarnings('ignore')
 
-
+####################################################################################
 ###### Path ########################################################################
-from source import util_feature
-config_file  = os.path.basename(__file__)  ### name of file which contains data configuration
-
-print( os.getcwd())
-root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
-print(root)
-
-#dir_data  = os.path.abspath( root + "/data/" ) + "/"
-#dir_data  = dir_data.replace("\\", "/")
-import zlocal
-dir_data = zlocal.dir_data
-dir_data = dir_data.replace("\\", "/")
-print(dir_data)
+root_repo      =  os.path.abspath(os.getcwd()).replace("\\", "/") + "/"     ; print(root_repo)
+THIS_FILEPATH  =  os.path.abspath(__file__) 
 
 
-def os_get_function_name():
-    import sys
-    return sys._getframe(1).f_code.co_name
+sys.path.append(root_repo)
+from source.util_feature import save,os_get_function_name
 
 
 def global_pars_update(model_dict,  data_name, config_name):
+    print("config_name", config_name)
+    dir_data  = root_repo + "/data/"  ; print("dir_data", dir_data)
+
     m                      = {}
-    m['config_path']       = dir_data + f"/{config_file}"
+    m['config_path']       = THIS_FILEPATH  
     m['config_name']       = config_name
 
-    ##### run_Preoprocess ONLY
+    #### peoprocess input path
     m['path_data_preprocess'] = dir_data + f'/input/{data_name}/train/'
 
-    ##### run_Train  ONLY
-    m['path_data_train']   = dir_data + f'/input/{data_name}/train/'
-    m['path_data_test']    = dir_data + f'/input/{data_name}/test/'
-    #m['path_data_val']    = dir_data + f'/input/{data_name}/test/'
+    #### train input path
+    m['path_data_train']      = dir_data + f'/input/{data_name}/train/'
+    m['path_data_test']       = dir_data + f'/input/{data_name}/test/'
+    #m['path_data_val']       = dir_data + f'/input/{data_name}/test/'
+
+    #### train output path
     m['path_train_output']    = dir_data + f'/output/{data_name}/{config_name}/'
     m['path_train_model']     = dir_data + f'/output/{data_name}/{config_name}/model/'
     m['path_features_store']  = dir_data + f'/output/{data_name}/{config_name}/features_store/'
     m['path_pipeline']        = dir_data + f'/output/{data_name}/{config_name}/pipeline/'
 
 
-    ##### Prediction
-    m['path_pred_data']    = dir_data + f'/input/{data_name}/test/'
-    m['path_pred_pipeline']= dir_data + f'/output/{data_name}/{config_name}/pipeline/'
-    m['path_pred_model']   = dir_data + f'/output/{data_name}/{config_name}/model/'
-    m['path_pred_output']  = dir_data + f'/output/{data_name}/pred_{config_name}/'
+    #### predict  input path
+    m['path_pred_data']       = dir_data + f'/input/{data_name}/test/'
+    m['path_pred_pipeline']   = dir_data + f'/output/{data_name}/{config_name}/pipeline/'
+    m['path_pred_model']      = dir_data + f'/output/{data_name}/{config_name}/model/'
+
+    #### predict  output path
+    m['path_pred_output']     = dir_data + f'/output/{data_name}/pred_{config_name}/'
 
     #####  Generic
     m['n_sample']             = model_dict['data_pars'].get('n_sample', 5000)
@@ -195,19 +190,6 @@ def titanic1(path_model_out="") :
     ##### Filling Global parameters    ############################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name )
     return model_dict
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

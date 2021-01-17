@@ -180,6 +180,39 @@ def pd_read_file(path_glob="*.pkl", ignore_index=True,  cols=None,
   return dfall
 
 
+def load_function_uri2(uri_name="module_name.function_or_class"):
+    """
+    #load dynamically function from URI pattern
+    #"dataset"        : "mlmodels.preprocess.generic:pandasDataset"
+    ###### External File processor :
+    #"dataset"        : "MyFolder/preprocess/myfile.py:pandasDataset"
+    """
+    import importlib, sys
+    from pathlib import Path
+    pkg = uri_name.split("::")
+
+    assert len(pkg) > 1, "  Missing :   in  uri_name module_name:function_or_class "
+    package, name = pkg[0], pkg[1]
+
+    try:
+        #### Import from package mlmodels sub-folder
+        return  getattr(importlib.import_module(package), name)
+
+    except Exception as e1:
+        try:
+            ### Add Folder to Path and Load absoluate path module
+            path_parent = str(Path(package).parent.parent.absolute())
+            sys.path.append(path_parent)
+            log(path_parent)
+
+            #### import Absolute Path model_tf.1_lstm
+            model_name   = Path(package).stem  # remove .py
+            package_name = str(Path(package).parts[-2]) + "." + str(model_name)
+            #log(package_name, config_name)
+            return  getattr(importlib.import_module(package_name), name)
+
+        except Exception as e2:
+            raise NameError(f"Module {pkg} notfound, {e1}, {e2}")
 
 def load_function_uri(uri_name="myfolder/myfile.py::myFunction"):
     """
