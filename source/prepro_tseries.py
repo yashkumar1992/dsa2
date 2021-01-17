@@ -140,7 +140,7 @@ except :
 
 ###########################################################################################
 ###########################################################################################
-def data_copy():
+def get_sampledata():
   df = pd.read_csv("https://github.com/firmai/random-assets-two/raw/master/numpy/tsla.csv")
   df["Close_1"] = df["Close"].shift(-1)
   with pd.option_context('mode.use_inf_as_na', True):
@@ -150,7 +150,32 @@ def data_copy():
   return df
 
 
-def pd_colts_transform2(df=None, pars={}, col=None):
+
+def pd_coldate(df, col, pars):
+    log("##### Coldate processing   ##########################################")
+    from utils import util_date
+    coldate = col
+    dfdate  = None
+    for coldate_i in coldate :
+        dfdate_i = util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
+        dfdate   = pd.concat((dfdate, dfdate_i),axis=1)  if dfdate is not None else dfdate_i
+        # if 'path_features_store' in pars :
+        #    path_features_store = pars['path_features_store']
+        #    #save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
+
+    if 'path_features_store' in pars :
+        save_features(dfdate, 'dfdate', pars['path_features_store'])
+
+    col_pars = {}
+    col_pars['cols_new'] = {
+        # 'colcross_single'     :  col ,    ###list
+        'dfdate': list(dfdate.columns)  ### list
+    }
+    return dfdate, col_pars
+
+
+
+def pd_colts_transform(df=None, pars={}, col=None):
     """
        pars : {  'model_name' :  "robust_scaler",
                  'model_pars'  :  {}
@@ -285,31 +310,31 @@ def test_get_methods(df):
   return functions_methods
 
 def test_prepro_1():
-  df = data_copy(); df.head()
+  df = get_sampledata(); df.head()
   functions_methods = test_get_methods(df)
 
   for model in  functions_methods :
      pars = {  'model_name' :  model['model_name'],
-            'model_pars'  :  model['model_pars']
+              'model_pars'  :  model['model_pars']
      }
      # print("[TESTING]",pars['model_name'],"...")
      df_input = copy.deepcopy(df)
      if 'a_chi' in pars['model_name']:
-      # Normalize the input for the chi
-      # print("    [INFO] Chi model...")
-      df_input = (df_input-df_input.min())/(df_input.max()-df_input.min())
+        # Normalize the input for the chi
+        # print("    [INFO] Chi model...")
+        df_input = (df_input-df_input.min())/(df_input.max()-df_input.min())
 
      if 'extract' in pars['model_name']:
-      # print("    [INFO] Extract model...")
-      df_input = df_input["Close"]
+        # print("    [INFO] Extract model...")
+        df_input = df_input["Close"]
  
-     df_out, col_pars =pd_colts_transform2(df=df_input, pars=pars)
+     df_out, col_pars =pd_colts_transform(df=df_input, pars=pars)
 
 
 
 
 def test_prepro_all():
-  df = data_copy(); df.head()
+  df = get_sampledata(); df.head()
 
   df_out = transform.robust_scaler(df, drop=["Close_1"])
   df_out = transform.standard_scaler(df, drop=["Close"])

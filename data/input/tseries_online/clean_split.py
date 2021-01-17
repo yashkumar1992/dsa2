@@ -14,7 +14,7 @@ print(root)
 
 
 colnums = ["Quan_4", "Quan_5", "Quan_6", "Quan_7", "Quan_8", "Quan_9", "Quan_10", "Quan_11", "Quan_12", "Quan_13", "Quan_14", "Quan_15", "Quan_16", "Quan_17", "Quan_18", "Quan_19", "Quan_21", "Quan_22", "Quan_27", "Quan_28", "Quan_29", "Quant_22", "Quant_24", "Quant_25"]
-def preprocess(df):
+def split_train_test(df):
     """
     fill null values with median of the column
     Dates are inserted multiple times: number of days, year, month, day
@@ -124,7 +124,7 @@ def main():
     print ("df:", df)
     ids = df.values[:,0].astype(np.int)
 
-    X_train, X_test, targets, columns = preprocess(df)
+    X_train, X_test, targets, columns = split_train_test(df)
     
     #adding column names
     cat_cols = ["cat_"+str(x) for x in range(1,1742+1)]
