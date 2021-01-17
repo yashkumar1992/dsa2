@@ -528,3 +528,4 @@ def pd_tsfresh_features_single_row(df_single_row, cols):
 if __name__ == "__main__":
   import fire
   fire.Fire()
+
