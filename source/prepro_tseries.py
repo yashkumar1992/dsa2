@@ -122,8 +122,7 @@ def log(*s, n=0, m=0):
     sjump = "\n" * m
     ### Implement pseudo Logging
 
-
-
+    
 ####################################################################################################
 try :
     from tsfresh import extract_relevant_features, extract_features
@@ -155,8 +154,6 @@ def pd_colts_transform2(df=None, pars={}, col=None):
     """
        pars : {  'model_name' :  "robust_scaler",
                  'model_pars'  :  {}
-
-
        }
     """
     prefix = 'colts_transform'
@@ -180,6 +177,7 @@ def pd_colts_transform2(df=None, pars={}, col=None):
     df_out         = model(dfin, **model_pars)
 
     # Extract only returns one value, so no columns to loop over.
+    model_name2 = model_name.replace("::", "-" )
     if 'extract' in model_name:
       col_out = "0_" + model_name
     else:
@@ -204,7 +202,7 @@ def pd_colts_transform2(df=None, pars={}, col=None):
     return df_out, col_pars                           
                            
 
-def get_methods(df):
+def test_get_methods(df):
   functions_methods = [ 
       { 'model_name': 'deltapy.transform::robust_scaler',                 'model_pars': {'drop':["Close_1"]} },
       { 'model_name': 'deltapy.transform::standard_scaler',               'model_pars': {'drop':["Close_1"]} },
@@ -288,7 +286,7 @@ def get_methods(df):
 
 def test_prepro_1():
   df = data_copy(); df.head()
-  functions_methods = get_methods(df)
+  functions_methods = test_get_methods(df)
 
   for model in  functions_methods :
      pars = {  'model_name' :  model['model_name'],
@@ -412,22 +410,19 @@ def test_prepro_all():
 
 
 
-
-
-
 ###########################################################################################
 ###########################################################################################
-def pd_ts_basic(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
+def pd_ts_basic(df, coldate='date_t", **kw):
     df['date_t'] = pd.to_datetime(df[coldate])
     df['year'] = df['date_t'].dt.year
     df['month'] = df['date_t'].dt.month
     df['week'] = df['date_t'].dt.week
     df['day'] = df['date_t'].dt.day
     df['dayofweek'] = df['date_t'].dt.dayofweek
-    return df[['year', 'month', 'week', 'day', 'dayofweek'] ], []
+    return df[['year', 'month', 'week', 'day', 'dayofweek'] ]
 
 
-
+                
 def pd_ts_identity(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
     df_drop_cols = [x for x in df.columns.tolist() if x in drop_cols]
     df = df.drop(df_drop_cols, axis = 1)
