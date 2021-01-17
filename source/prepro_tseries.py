@@ -1,113 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 
-Original file is located at    https://colab.research.google.com/drive/1-uJqGeKZfJegX0TmovhsO90iasyxZYiT
+coldate
 
-### Introduction
-Tabular augmentation is a new experimental space that makes use of novel and traditional data generation and synthesisation techniques to improve model prediction success. It is in essence a process of modular feature engineering and observation engineering while emphasising the order of augmentation to achieve the best predicted outcome from a given information set.
-Data augmentation can be defined as any method that could increase the size or improve the quality of a dataset by generating new features or instances without the collection of additional data-points. Data augmentation is of particular importance in image classification tasks where additional data can be created by cropping, padding, or flipping existing images.
-Tabular cross-sectional and time-series prediction tasks can also benefit from augmentation. Here we divide tabular augmentation into columnular and row-wise methods. Row-wise methods are further divided into extraction and data synthesisation techniques, whereas columnular methods are divided into transformation, interaction, and mapping methods.
-To take full advantage of tabular augmentation for time-series you would perform the techniques in the following order: (1) transforming, (2) interacting, (3) mapping, (4) extracting, and (5) synthesising (forthcoming). What follows is a practical example of how the above methodology can be used. The purpose here is to establish a framework for table augmentation and to point and guide the user to existing packages.
-See the [Skeleton Example](#example), for a combination of multiple methods that lead to a halfing of the mean squared error.
+smooth, autoregressive
 
-Test sets should ideally not be preprocessed with the training data, as in such a way one could be peaking ahead in the training data. The preprocessing parameters should be identified on the test set and then applied on the test set, i.e., the test set should not have an impact on the transformation applied. As an example, you would learn the parameters of PCA decomposition on the training set and then apply the parameters to both the train and the test set.
-The benefit of pipelines become clear when one wants to apply multiple augmentation methods. It makes it easy to learn the parameters and then apply them widely. For the most part, this notebook does not concern itself with 'peaking ahead' or pipelines, for some functions, one might have to restructure to code and make use of open source pacakages to create your preferred solution.
+groupby features
 
-pip install deltapy pykalman tsaug ta tsaug pandasvault gplearn ta seasonal pandasvault
-
-Some of these categories are fluid and some techniques could fit into multiple buckets.
-This is an attempt to find an exhaustive number of techniques, but not an exhuastive list of implementations of the techniques.
-
-For example, there are thousands of ways to smooth a time-series, but we have only includes 1-2 techniques of interest under each category.
-
-
-
-####
-date addon
-groupby (date, cat2, cat2) statistics.
-
-autoregressive  : past data avg.
-
-
-
-
-(#transformation)**
------------------
-1. Scaling/Normalisation
-2. Standardisation
-10. Differencing
-3. Capping
-13. Operations
-4. Smoothing
-5. Decomposing
-6. Filtering
-7. Spectral Analysis
-8. Waveforms
-9. Modifications
-11. Rolling
-12. Lagging
-14. Forecast Model
-
-(#interaction)**
------------------
-1. Regressions
-2. Operators
-3. Discretising
-4. Normalising
-5. Distance
-6. Speciality
-7. Genetic
-
-(#mapping)**
------------------
-1. Eigen Decomposition
-2. Cross Decomposition
-3. Kernel Approximation
-4. Autoencoder
-5. Manifold Learning
-6. Clustering
-7. Neighbouring
-
-
-(#extraction)**
------------------
-1. Energy
-2. Distance
-3. Differencing
-4. Derivative
-5. Volatility
-6. Shape
-7. Occurence
-8. Autocorrelation
-9. Stochasticity
-10. Averages
-11. Size
-13. Count
-14. Streaks
-14. Location
-15. Model Coefficients
-16. Quantile
-17. Peaks
-18. Density
-20. Linearity
-20. Non-linearity
-21. Entropy
-22. Fixed Points
-23. Amplitude
-23. Probability
-24. Crossings
-25. Fluctuation
-26. Information
-27. Fractals
-29. Exponent
-30. Spectral Analysis
-31. Percentile
-32. Range
-33. Structural
-12. Distribution
 
 
 """
+
 import warnings, os, sys, re
 warnings.filterwarnings('ignore')
 import pandas as pd, numpy as np, copy
@@ -579,3 +482,116 @@ def pd_tsfresh_features_single_row(df_single_row, cols):
 if __name__ == "__main__":
   import fire
   fire.Fire()
+
+                
+"""
+
+Original file is located at    https://colab.research.google.com/drive/1-uJqGeKZfJegX0TmovhsO90iasyxZYiT
+
+### Introduction
+Tabular augmentation is a new experimental space that makes use of novel and traditional data generation and synthesisation techniques to improve model prediction success. It is in essence a process of modular feature engineering and observation engineering while emphasising the order of augmentation to achieve the best predicted outcome from a given information set.
+Data augmentation can be defined as any method that could increase the size or improve the quality of a dataset by generating new features or instances without the collection of additional data-points. Data augmentation is of particular importance in image classification tasks where additional data can be created by cropping, padding, or flipping existing images.
+Tabular cross-sectional and time-series prediction tasks can also benefit from augmentation. Here we divide tabular augmentation into columnular and row-wise methods. Row-wise methods are further divided into extraction and data synthesisation techniques, whereas columnular methods are divided into transformation, interaction, and mapping methods.
+To take full advantage of tabular augmentation for time-series you would perform the techniques in the following order: (1) transforming, (2) interacting, (3) mapping, (4) extracting, and (5) synthesising (forthcoming). What follows is a practical example of how the above methodology can be used. The purpose here is to establish a framework for table augmentation and to point and guide the user to existing packages.
+See the [Skeleton Example](#example), for a combination of multiple methods that lead to a halfing of the mean squared error.
+
+Test sets should ideally not be preprocessed with the training data, as in such a way one could be peaking ahead in the training data. The preprocessing parameters should be identified on the test set and then applied on the test set, i.e., the test set should not have an impact on the transformation applied. As an example, you would learn the parameters of PCA decomposition on the training set and then apply the parameters to both the train and the test set.
+The benefit of pipelines become clear when one wants to apply multiple augmentation methods. It makes it easy to learn the parameters and then apply them widely. For the most part, this notebook does not concern itself with 'peaking ahead' or pipelines, for some functions, one might have to restructure to code and make use of open source pacakages to create your preferred solution.
+
+pip install deltapy pykalman tsaug ta tsaug pandasvault gplearn ta seasonal pandasvault
+
+Some of these categories are fluid and some techniques could fit into multiple buckets.
+This is an attempt to find an exhaustive number of techniques, but not an exhuastive list of implementations of the techniques.
+
+For example, there are thousands of ways to smooth a time-series, but we have only includes 1-2 techniques of interest under each category.
+
+
+
+####
+date addon
+groupby (date, cat2, cat2) statistics.
+
+autoregressive  : past data avg.
+
+
+
+
+(#transformation)**
+-----------------
+1. Scaling/Normalisation
+2. Standardisation
+10. Differencing
+3. Capping
+13. Operations
+4. Smoothing
+5. Decomposing
+6. Filtering
+7. Spectral Analysis
+8. Waveforms
+9. Modifications
+11. Rolling
+12. Lagging
+14. Forecast Model
+
+(#interaction)**
+-----------------
+1. Regressions
+2. Operators
+3. Discretising
+4. Normalising
+5. Distance
+6. Speciality
+7. Genetic
+
+(#mapping)**
+-----------------
+1. Eigen Decomposition
+2. Cross Decomposition
+3. Kernel Approximation
+4. Autoencoder
+5. Manifold Learning
+6. Clustering
+7. Neighbouring
+
+
+(#extraction)**
+-----------------
+1. Energy
+2. Distance
+3. Differencing
+4. Derivative
+5. Volatility
+6. Shape
+7. Occurence
+8. Autocorrelation
+9. Stochasticity
+10. Averages
+11. Size
+13. Count
+14. Streaks
+14. Location
+15. Model Coefficients
+16. Quantile
+17. Peaks
+18. Density
+20. Linearity
+20. Non-linearity
+21. Entropy
+22. Fixed Points
+23. Amplitude
+23. Probability
+24. Crossings
+25. Fluctuation
+26. Information
+27. Fractals
+29. Exponent
+30. Spectral Analysis
+31. Percentile
+32. Range
+33. Structural
+12. Distribution
+
+
+"""                
+                
+                
