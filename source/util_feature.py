@@ -44,6 +44,34 @@ def os_getcwd():
 
 
 #############################################################################################
+def save_features(df, name, path=None):
+    """ Save dataframe on disk
+    :param df:
+    :param name:
+    :param path:
+    :return:
+    """
+    if path is not None :
+       os.makedirs( f"{path}/{name}" , exist_ok=True)
+       if isinstance(df, pd.Series):
+           df0=df.to_frame()
+       else:
+           df0=df
+       log( f"{path}/{name}/features.parquet" )
+       log(df0, list(df0.columns))
+       df0.to_parquet( f"{path}/{name}/features.parquet")
+    else:
+       log("No saved features, path is none")
+
+
+def load_features(name, path):
+    try:
+        return pd.read_parquet(f"{path}/{name}/features.parquet")
+    except:
+        log("Not available", path, name)
+        return None
+
+
 def save_list(path, name_list, glob):
     import pickle, os
     os.makedirs(path, exist_ok=True)
