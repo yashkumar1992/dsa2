@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+ Time Series preprocessing tools :
 
-coldate
+  coldate  --> Parse the date and split date into columns
 
-smooth, autoregressive
+  groupby features  : Using data within a group.
 
-groupby features
-
+  smooth, autoregressive feature : Using Past data.
 
 
 """
@@ -61,6 +61,10 @@ def get_sampledata():
 
 
 def pd_ts_coldate(df, col, pars):
+    """
+        Parse and Split the date.
+    
+    """
     log("##### Coldate processing   ##########################################")
     from utils import util_date
     coldate = col
@@ -89,22 +93,33 @@ def pd_ts_groupby(df, col, pars):
        groupby(key_lis).agg( col_stat )   
    
    """
-   pass
+   colgroup = []
+   colstat   = pars.get('colstat'
+   calc_list  = set( pats.get('calc_list' : {'mean'}) )                    
+   for colgroupi in colgroup :
+      df1  =df.groupby( colgroupi ).agg( {  coli : calc_set for coli in colstat    })
+      dfall = dfall.join( df1  , on= colgroup, how='left')    
 
-
+   return dfall      
+        
 
 def pd_ts_autoregressive(df, col, pars):
    """
+       Using past data for same column
        moving average....
-       
-   
+        
    """
    pass
 
+                        
 
-
-
-
+def pd_ts_onehot(df, col, pars):
+   """
+      Split category or date into OneHot       
+   
+   """
+   pass                        
+   
 
 
 
