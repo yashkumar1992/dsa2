@@ -4,9 +4,9 @@
 
   coldate  --> Parse the date and split date into columns
 
-  groupby features  : Using data within a group.
+  groupby features  : Using data within a group ;  For each date,  aggregate col. over the groupby
 
-  smooth, autoregressive feature : Using Past data.
+  smooth, autoregressive feature : Using Past data :   For each date, a Fixed column,  aggregate over past time window.
 
 
 """
