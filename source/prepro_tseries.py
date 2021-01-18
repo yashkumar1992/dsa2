@@ -2,12 +2,19 @@
 """
  Time Series preprocessing tools :
 
-  coldate  --> Parse the date and split date into columns
-
-  groupby features  : Using data within a group ;  For each date,  aggregate col. over the groupby
-
+  coldate                        : Parse the date and split date into columns
+  groupby features               : Using data within a group ;  For each date,  aggregate col. over the groupby
   smooth, autoregressive feature : Using Past data :   For each date, a Fixed column,  aggregate over past time window.
 
+  Example: Daily sales per item_id, shop_id, zone_id
+
+       date --> pd_coldate
+         
+       groupby(shop_id) ---> per each date,  mean, max, min ...
+
+       groupby(zone_id) ---> per each date,  mean, max, min ...
+
+       item_id sales -->  per each date, Moving Average, Min, Max over 1month, ...
 
 """
 
@@ -60,7 +67,7 @@ def get_sampledata():
 
 
 
-def pd_ts_coldate(df, col, pars):
+def pd_ts_date(df, col, pars):
     """
         Parse and Split the date.
     
@@ -90,6 +97,9 @@ def pd_ts_coldate(df, col, pars):
 
 def pd_ts_groupby(df, col, pars):
    """
+       groupby(shop_id) ---> per each date,  mean, max, min ...
+       groupby(zone_id) ---> per each date,  mean, max, min ...
+
        groupby(key_lis).agg( col_stat )   
    
    """
@@ -106,8 +116,9 @@ def pd_ts_groupby(df, col, pars):
 def pd_ts_autoregressive(df, col, pars):
    """
        Using past data for same column
-       moving average....
-        
+       item_id sales -->  per each date, Moving Average, Min, Max over 1month, ...
+       shop_id sales -->  per each date, Moving Average, Min, Max over 1month, ...
+             
    """
    pass
 
@@ -124,7 +135,7 @@ def pd_ts_onehot(df, col, pars):
 
 
 
-def pd_colts_transform(df=None, pars={}, col=None):
+def pd_ts_transform(df=None, pars={}, col=None):
     """
        pars : {  'model_name' :  "robust_scaler",
                  'model_pars'  :  {}
@@ -258,6 +269,7 @@ def test_get_methods(df):
 
   return functions_methods
 
+                        
 def test_prepro_1():
   df = get_sampledata(); df.head()
   functions_methods = test_get_methods(df)
@@ -277,7 +289,7 @@ def test_prepro_1():
         # print("    [INFO] Extract model...")
         df_input = df_input["Close"]
  
-     df_out, col_pars =pd_colts_transform(df=df_input, pars=pars)
+     df_out, col_pars =pd_ts_transform(df=df_input, pars=pars)
 
 
 
