@@ -359,7 +359,9 @@ def test_get_methods(df):
 
 
 """
-The code below extracts all the available features on an example dataset file.
+https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html
+
+
 
 import tsfel
 import pandas as pd

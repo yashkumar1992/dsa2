@@ -8,22 +8,20 @@ import os
 import pandas_profiling
 import json
 from sklearn.model_selection import train_test_split
+
 #######################################################################################
 
 
-
 ##### Load from samples   ##################
-df = pd.read_csv('raw/online_shoppers_intention.zip',nrows= 12317)
+df = pd.read_csv('raw/online_shoppers_intention.csv',nrows= 12317)
 print(df.head(5).T)
 print(df.tail(5).T)
 print(df.dtypes)
 
-
-
 #######################################################################################
-colid = ""
-colcat, colnum,coltext = [],[],[]
-coly  = "Revenue"
+colid=""
+colcat,colnum,coltext = [],[],[]
+coly = "Revenue"
 def cols_group():
   global colid,colcat,colnum,coltext
   Num = ['int','int32','int64','float','float32','float64']
@@ -33,28 +31,17 @@ def cols_group():
     if cols != coly:
       col_size = df[cols].unique().size
       if col_size == df_size and colid == "":
-        colid    = str(cols)
-
-
-      elif df[cols].dtype in Num and  col_size < ( df_size / 2) :
-        colcat.append(cols)
-
-
+        colid = str(cols)
+        df[cols] = df[cols].astype(df[cols].dtype)
       elif df[cols].dtype in Num:
         colnum.append(cols)
-
-
-      elif col_size > (df_size/2) and  df[cols].dtype in [ 'str' ] :
-         ### len of string > 30  and unique values > 50%
+        df[cols] =df[cols].astype(df[cols].dtype)
+      elif col_size > (df_size/2):
         coltext.append(cols)
         df[cols] = df[cols].astype(str)
-
-
-      else:  ### category
+      else:
         colcat.append(cols)
-
-
-
+        df[cols] = df[cols].astype('category')
   ddict = {
     'colid' : colid,
     'colnum' : colnum,
@@ -66,21 +53,24 @@ def cols_group():
   json.dump(ddict,out_file)
 
 
+
+
+
 ###########################################################################################
+
 """
 Put manually column by data type :
 """
 
-
-
-
 ##########################################################################################
-'''
-colsX = colcat + colnum
-
-print('coly', coly)
-print('colsX', colsX)
-'''
+def down_sample(df):
+    class_0, class_1 = df[coly].value_counts()
+    print("1", class_1, '0', class_0)
+    df_class_1 = df[df[coly] == 1]
+    df_class_0 = df[df[coly] == 0]
+    df_class_0_down_sample = df_class_0.sample(class_1)
+    df1 = pd.concat([df_class_0_down_sample, df_class_1], axis=0)
+    return df1
 
 #######################################################################################
 #######################################################################################
@@ -116,6 +106,8 @@ def train_test_split():
     os.makedirs("train/", exist_ok=True)
     os.makedirs("test/", exist_ok=True)
     df1 = df.dropna()
+    df1 = down_sample(df1)
+
     df1_train = pd.DataFrame()
     df1_test = pd.DataFrame()
     icol = int(0.8 * len(df1))
@@ -130,9 +122,8 @@ def train_test_split():
     df1_test[[coly]] = df[[coly]].iloc[icol:, :]
     df1_test.to_csv("test/test.csv")
 
-
-
 ########################################################################################
+
 def save_features(df, name, path):
     if path is not None :
        os.makedirs( f"{path}/{name}" , exist_ok=True)
@@ -152,9 +143,5 @@ python  clean.py  to_test
 """
 if __name__ == "__main__":
     import fire
+
     fire.Fire()
-
-
-
-
-
