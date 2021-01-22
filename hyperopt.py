@@ -69,11 +69,11 @@ cols_input_type_2 = {
     ,"coldate" :  []
     ,"colcross" : [ "Name", "Sex", "Ticket","Embarked","Pclass", "Age","SibSp", "Parch","Fare" ]
 
-    ,'colgen'  : [   "Pclass", "Age","SibSp", "Parch","Fare" ]
+    ,'colgen'  :  [   "Pclass", "Age","SibSp", "Parch","Fare" ]
 }
 
 
-####################################################################################
+#################################################################################
 def titanic1(path_model_out="") :
     """
        Contains all needed informations for Light GBM Classifier model,
@@ -92,7 +92,7 @@ def titanic1(path_model_out="") :
 
 
     model_dict = {'model_pars': {
-    ### LightGBM API model   #######################################
+    ### LightGBM API model   ######################################
      'model_class': model_class
     ,'model_pars' : {'objective': 'binary', 'n_estimators':100,
                     }
@@ -120,7 +120,7 @@ def titanic1(path_model_out="") :
 
   'data_pars': { 'n_sample' : n_sample,
       'cols_input_type' : cols_input_type_2,
-      ### family of columns for MODEL  #########################################################
+      ### family of columns for MODEL  ########################################################
       #  "colnum", "colnum_bin", "colnum_onehot", "colnum_binmap",  #### Colnum columns
       #  "colcat", "colcat_bin", "colcat_onehot", "colcat_bin_map",  #### colcat columns
       #  'colcross_single_onehot_select', "colcross_pair_onehot",  'colcross_pair',  #### colcross columns
@@ -136,13 +136,13 @@ def titanic1(path_model_out="") :
          }
       }
 
-    ##### Filling Global parameters    ############################################################
+    ##### Filling Global parameters    ########################################################
     model_dict        = global_pars_update(model_dict, data_name, config_name )
     return model_dict
 
 
 
-def run_hyper():
+def hyperparam_optim():
     from source.run_train import  run_train
     from source.run_hyperopt import run_hyper_optuna
 
@@ -170,8 +170,6 @@ def run_hyper():
     return result_p
 
 
-
-
 ###################################################################################
 ########## Preprocess #############################################################
 ### def preprocess(config='', nsample=1000):
@@ -192,16 +190,12 @@ from core_run import predict
 
 
 
-
 ###########################################################################################################
 ###########################################################################################################
 """
-python  core_test_encoder.py  data_profile
-python  core_test_encoder.py  preprocess  --nsample 100
-python  core_test_encoder.py  train       --nsample 200
-python  core_test_encoder.py  check
-python  core_test_encoder.py  predict
-python  core_test_encoder.py  run_all
+python  hyperopt.py  train   --nsample 200
+
+python  hyperopt.py  hyperparam_optim
 
 
 """
