@@ -188,13 +188,13 @@ def train(model_dict, dfX, cols_family, post_process_fun):
     a = load(model_path + "/model.pkl")
     log("Reload model pars", a.model_pars)
     
-    return dfX.iloc[:ival, :].reset_index(), dfX.iloc[ival:, :].reset_index()
+    return dfX.iloc[:ival, :].reset_index(), dfX.iloc[ival:, :].reset_index(), stats
 
 
 ####################################################################################################
 ############CLI Command ############################################################################
-def run_train(config_name, path_data_train=None, path_output=None, config_path="source/config_model.py", n_sample=5000,
-              mode="run_preprocess", model_dict=None):
+def run_train(config_name, config_path="source/config_model.py", n_sample=5000,
+              mode="run_preprocess", model_dict=None, return_mode='file'):
     """
       Configuration of the model is in config_model.py file
     :param config_name:
@@ -227,15 +227,20 @@ def run_train(config_name, path_data_train=None, path_output=None, config_path="
 
     log("#### Preprocess  ################################################################")
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
-    #filter_pars     = model_dict['data_pars']['filter_pars']
      
     if mode == "run_preprocess" :
-        dfXy, cols      = preprocess(path_train_X, path_train_y, path_pipeline, cols_group, n_sample,
-                                     preprocess_pars,  path_features_store=path_features_store)
+        dfXy, cols      = preprocess(path_train_X, path_train_y,
+                                     path_pipeline,    ### path to save preprocessing pipeline
+                                     cols_group,       ### dict of column family
+                                     n_sample,
+                                     preprocess_pars,
+                                     path_features_store  ### Store intermediate dataframe
+                                     )
 
-    elif mode == "load_preprocess" :  #### Load existing data
+    elif mode == "load_preprocess"  :  #### Load existing data
         dfXy, cols      = preprocess_load(path_train_X, path_train_y, path_pipeline, cols_group, n_sample,
                                      preprocess_pars,  path_features_store=path_features_store)
+
 
     ### Actual column for label y and Input X (colnum , colcat
     model_dict['data_pars']['coly']       = cols['coly']
@@ -244,19 +249,23 @@ def run_train(config_name, path_data_train=None, path_output=None, config_path="
    
     log("#### Train model: #############################################################")
     log(str(model_dict)[:1000])
-    post_process_fun = model_dict['model_pars']['post_process_fun']
-    dfXy, dfXytest   = train(model_dict, dfXy, cols, post_process_fun)
+    post_process_fun      = model_dict['model_pars']['post_process_fun']
+    dfXy, dfXytest,stats  = train(model_dict, dfXy, cols, post_process_fun)
 
 
-    log("#### Export ##################################################################")
-    os.makedirs(path_check_out, exist_ok=True)
-    colexport = [cols['colid'], cols['coly'], cols['coly'] + "_pred"]
-    dfXy[colexport].reset_index().to_csv(path_check_out + "/pred_check.csv")  # Only results
-    dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data generate parquet
-    #dfXy.to_csv(path_check_out + "/dfX.csv")  # train input data generate csv
-    dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data  generate parquet
-    #dfXytest.to_csv(path_check_out + "/dfXtest.csv")  # Test input data  generate csv
-    log("######### Finish #############################################################", )
+    if return_mode == 'dict' :
+        return { 'dfXy' : dfXy, 'dfXytest': dfXytest, 'stats' : stats   }
+
+    else :
+        log("#### Export ##################################################################")
+        os.makedirs(path_check_out, exist_ok=True)
+        colexport = [cols['colid'], cols['coly'], cols['coly'] + "_pred"]
+        dfXy[colexport].reset_index().to_csv(path_check_out + "/pred_check.csv")  # Only results
+        dfXy.to_parquet(path_check_out + "/dfX.parquet")  # train input data generate parquet
+        #dfXy.to_csv(path_check_out + "/dfX.csv")  # train input data generate csv
+        dfXytest.to_parquet(path_check_out + "/dfXtest.parquet")  # Test input data  generate parquet
+        #dfXytest.to_csv(path_check_out + "/dfXtest.csv")  # Test input data  generate csv
+        log("######### Finish #############################################################", )
 
 
 
