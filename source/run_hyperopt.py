@@ -39,11 +39,14 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
       obj_fun(pars_dict) :  Objective function
       engine_pars :    {   }  optuna parameters
     """
-
+    print(pars_dict_init)
     def parse_dict(mdict, trial):
         #### Recursive parse the dict
         mnew = copy.deepcopy((mdict))
+        print(mnew)
         for t, p in mdict.items():
+            if t=="objective":
+                continue
             if isinstance(p, dict) :
                 pres = parse_dict(p, trial)
 
@@ -63,11 +66,21 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
             if DEBUG : log(t, pres)
         return mnew
 
+    def merge_dict(src, dst):
+        for key, value in src.items():
+            if isinstance(value, dict):
+                node = dst.setdefault(key, {})
+                merge_dict(value, node)
+            else:
+                dst[key] = value
+
+        return dst
 
     def obj_custom(trial) :
         model_pars = copy.deepcopy( pars_dict_init )
         model_add  = parse_dict(pars_dict_range, trial)
-        model_pars = {**model_pars, **model_add}  ### Merge overwrite
+        #model_pars = {**model_pars, **model_add}  ### Merge overwrite
+        model_pars = merge_dict(model_pars,model_add)
         score      = obj_fun(model_pars)
         return score
 
@@ -85,8 +98,8 @@ def run_hyper_optuna(obj_fun, pars_dict_init,  pars_dict_range,  engine_pars, nt
             study = optuna.create_study(study_name, storage, pruner=pruner)
     else:
         study = optuna.create_study(pruner=pruner)
-
-
+        
+    print(pars_dict_init)
     study.optimize(obj_custom, n_trials=ntrials)  # Invoke optimization of the objective function.
     log("Optim, finished", ntrials)
     pars_best  = study.best_params

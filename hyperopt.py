@@ -74,6 +74,8 @@ cols_input_type_2 = {
 
 
 #################################################################################
+
+
 def titanic1(path_model_out="") :
     """
        Contains all needed informations for Light GBM Classifier model,
@@ -85,10 +87,10 @@ def titanic1(path_model_out="") :
     n_sample     = 500
 
     def post_process_fun(y):
-        return  int(y)
+     return  int(y)
 
     def pre_process_fun(y):
-        return  int(y)
+     return  int(y)
 
 
     model_dict = {'model_pars': {
@@ -107,7 +109,7 @@ def titanic1(path_model_out="") :
         {'uri': 'source/prepro.py::pd_colnum_bin',           'pars': {}, 'cols_family': 'colnum',     'cols_out': 'colnum_bin',     'type': ''             },
 
         # {'uri': 'source/prepro.py::pd_colnum_binto_onehot',  'pars': {}, 'cols_family': 'colnum_bin', 'cols_out': 'colnum_onehot',  'type': ''             },
-        # {'uri': 'source/prepro.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
+        {'uri': 'source/prepro.py::pd_colcat_bin',           'pars': {}, 'cols_family': 'colcat',     'cols_out': 'colcat_bin',     'type': ''             },
 
         # {'uri': 'source/prepro.py::pd_colcat_to_onehot',     'pars': {}, 'cols_family': 'colcat_bin', 'cols_out': 'colcat_onehot',  'type': ''             },
         # {'uri': 'source/prepro.py::pd_colcross',             'pars': {}, 'cols_family': 'colcross',   'cols_out': 'colcross_pair_onehot',  'type': 'cross'},
@@ -141,13 +143,26 @@ def titanic1(path_model_out="") :
     return model_dict
 
 
-
 def hyperparam_optim():
     from source.run_train import  run_train
     from source.run_hyperopt import run_hyper_optuna
 
     ####### Initial dict
     mdict = titanic1()
+    
+    def objective_fun(mdict):
+        metric_name = "accuracy_score"
+        print(mdict)
+        ddict       = run_train(config_name="", config_path="", n_sample=5000,
+                             mode="run_preprocess", model_dict=mdict,
+                             return_mode='dict')
+        print(ddict['stats']['metrics_test'].to_dict('records')[0])
+        ddict['stats']['accuracy_score'] = ddict['stats']['metrics_test'].to_dict('records')[0]['metric_val']
+        
+        print(ddict)
+        res = ddict['stats'][metric_name]
+        return res
+  
 
     ###### Range in parameters
     mdict_range =   {'model_pars': {
@@ -157,14 +172,10 @@ def hyperparam_optim():
                        },
           }
     }
+    
+ 
 
-    def objective_fun(mdict) :
-      metric_name = "accuracy"
-      ddict       = run_train(config_name="", config_path="", n_sample=5000,
-                             mode="run_preprocess", model_dict=mdict,
-                             return_mode='ram')
-      res = ddict['stats'][metric_name]
-      return res
+    
 
     engine_pars = {'metric_target':'loss'}
     result_p    = run_hyper_optuna(objective_fun, mdict, mdict_range, engine_pars, ntrials= 3)
@@ -200,8 +211,16 @@ python  hyperopt.py  hyperparam_optim
 
 
 """
+
+def test():
+    hyperparam_optim()
+    
+
+
+
 if __name__ == "__main__":
     import fire
     fire.Fire()
+    #test()
 
 

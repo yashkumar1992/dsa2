@@ -226,6 +226,8 @@ def run_train(config_name, config_path="source/config_model.py", n_sample=5000,
 
 
     log("#### Preprocess  ################################################################")
+    
+        
     preprocess_pars = model_dict['model_pars']['pre_process_pars']
      
     if mode == "run_preprocess" :
