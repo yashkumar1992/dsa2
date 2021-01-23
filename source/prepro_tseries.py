@@ -9,7 +9,7 @@
   Example: Daily sales per item_id, shop_id, zone_id
 
        date --> pd_coldate
-         
+
        groupby(shop_id) ---> per each date,  mean, max, min ...
 
        groupby(zone_id) ---> per each date,  mean, max, min ...
@@ -18,97 +18,120 @@
 
 """
 import warnings, os, sys, re
+
 warnings.filterwarnings('ignore')
 import pandas as pd, numpy as np, copy
+
 ####################################################################################################
 #### Add path for python import
-sys.path.append( os.path.dirname(os.path.abspath(__file__)) + "/")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/")
 
 #### Root folder analysis
 root = os.path.abspath(os.getcwd()).replace("\\", "/") + "/"
 print(root)
 
-
 ####################################################################################################
-from util_feature import   (load, save_list, load_function_uri, load_function_uri2, save, \
-                            save_features, load_features )
+from util_feature import (load, save_list, load_function_uri, load_function_uri2, save, \
+                          save_features, load_features)
+
 
 def log(*s, n=0, m=0):
     sspace = "#" * n
     sjump = "\n" * m
     ### Implement pseudo Logging
 
-    
+
 ####################################################################################################
-try :
+try:
     from tsfresh import extract_relevant_features, extract_features
     from tsfresh.utilities.dataframe_functions import roll_time_series
     from deltapy import transform, interact, mapper, extract
-    import pandasvault, tsfel
+    import pandasvault, tsfel, datetime as dt
 
-except :
+except:
     os.system(" pip install  tsfresh pandasvault tsfel")
     os.system(" pip install deltapy ")
 
     from tsfresh import extract_relevant_features, extract_features
     from tsfresh.utilities.dataframe_functions import roll_time_series
     from deltapy import transform, interact, mapper, extract
-    import pandasvault
-
-
-
+    import pandasvault, datetime as dt
 
 
 ###########################################################################################
 ###########################################################################################
 def get_sampledata():
-  df = pd.read_csv("https://github.com/firmai/random-assets-two/raw/master/numpy/tsla.csv")
-  df["Close_1"] = df["Close"].shift(-1)
-  with pd.option_context('mode.use_inf_as_na', True):
-    df = df.dropna()
-  df["Date"] = pd.to_datetime(df["Date"])
-  df = df.set_index("Date")
-  return df
+    df = pd.read_csv("https://github.com/firmai/random-assets-two/raw/master/numpy/tsla.csv")
+    df["Close_1"] = df["Close"].shift(-1)
+    with pd.option_context('mode.use_inf_as_na', True):
+        df = df.dropna()
+    df["Date"] = pd.to_datetime(df["Date"])
+    df = df.set_index("Date")
+    return df
 
 
-
-def pd_ts_date(df, col, pars):
+def pd_ts_date(df, col, pars=None):
     """
         Parse and Split the date.
-    
+
     """
+
     from utils import util_date
     coldate = col
-    dfdate  = None
-    for coldate_i in coldate :
-        dfdate_i         = util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
-        dfdate_i.columns = [  coldate_i + "_" + t for t in coldate  ]
-        dfdate           = pd.concat((dfdate, dfdate_i),axis=1)  if dfdate is not None else dfdate_i
+    dfdate = None
+    for coldate_i in coldate:
+        dfdate_i = util_date.pd_datestring_split(df[[coldate_i]], coldate_i, fmt="auto", return_val="split")
+        dfdate_i.columns = [coldate_i + "_" + t for t in coldate]
+        dfdate = pd.concat((dfdate, dfdate_i), axis=1) if dfdate is not None else dfdate_i
 
     return dfdate
 
 
+def pd_ts_date2(df, col):
+    coldate = col
+    for coldate_i in coldate:
+        df[coldate_i] = pd.to_datetime(df[coldate_i], errors='coerce')
+        df[coldate_i + '_day'] = df[coldate_i].dt.day
+        df[coldate_i + '_month'] = df[coldate_i].dt.month
+        df[coldate_i + '_year'] = df[coldate_i].dt.year
+        df[coldate_i + '_hour'] = df[coldate_i].dt.hour
+        df[coldate_i + '_minute'] = df[coldate_i].dt.minute
+        df[coldate_i + '_second'] = df[coldate_i].dt.second
+        df[coldate_i + '_weekday'] = df[coldate_i].dt.weekday
+        df[coldate_i + '_day_of_year'] = df[coldate_i].dt.dayofyear
+        df[coldate_i + '_week_of_year'] = df[coldate_i].dt.weekofyear
+        #weekday_mask = {0: 'Sunday', 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday',
+        #                6: 'Saturday'}
+        #df[coldate_i + '_weekday_name'] = df[coldate_i + '_weekday'].map(weekday_mask).astype('category')
+
+        df = df.loc[:, (df != 0).any(axis=0)]
+
+        # dfdate_i = dsa.da.util_date.pd_datestring_split(df[[coldate_i]], coldate_i, fmt="auto", return_val="split")
+        # dfdate_i.columns = [coldate_i + "_" + t for t in coldate]
+        # dfdate = pd.concat((dfdate, dfdate_i), axis=1) if dfdate is not None else dfdate_i
+    return df
+
 
 def pd_ts_groupby(df, col, pars):
-   """
-       groupby(shop_id) ---> per each date,  mean, max, min ...
-       groupby(zone_id) ---> per each date,  mean, max, min ...
+    """
+        groupby(shop_id) ---> per each date,  mean, max, min ...
+        groupby(zone_id) ---> per each date,  mean, max, min ...
 
-       groupby(key_lis).agg( col_stat )   
-   
-   """
-   colgroup  = pars.get('colgroup')
-   colstat   = pars.get('colstat')
-   dfall     = None
-   calc_list = pars.get('calc_list',    {'mean'})
-   for colgroupi in colgroup :
-      df1   = df.groupby( colgroupi ).agg( {  coli : set(calc_list) for coli in colstat    })
-      dfall = dfall.join( df1  , on= colgroup, how='left')    if dfall is not None else df1
+        groupby(key_lis).agg( col_stat )
 
-   return dfall      
+    """
+    colgroup = pars.get('colgroup')
+    colstat = pars.get('colstat')
+    dfall = None
+    calc_list = pars.get('calc_list', {'mean'})
+    for colgroupi in colgroup:
+        df1 = df.groupby(colgroupi).agg({coli: set(calc_list) for coli in colstat})
+        dfall = dfall.join(df1, on=colgroup, how='left') if dfall is not None else df1
+
+    return dfall
 
 
-def pd_ts_onehot(df, col, pars):
+def pd_ts_onehot(df, col, pars=None):
     """
        category to oneHot (ie week, weekday, shop, ..)
     :param df:
@@ -116,43 +139,48 @@ def pd_ts_onehot(df, col, pars):
     :param pars:
     :return:
     """
-    pass
+    df = pd.read_csv(df)
+    dummy_cols = pd.get_dummies(df[col])
+    df = pd.concat([df, dummy_cols], axis=1)
 
+    print(df)
+    return df
 
 
 def pd_ts_autoregressive(df, col, pars):
-   """
-       Using past data for same column ; Rolling
-       item_id sales -->  per each date, Moving Average, Min, Max over 1month, ...
-       shop_id sales -->  per each date, Moving Average, Min, Max over 1month, ...
-   """
-   pass
-
+    """
+        Using past data for same column ; Rolling
+        item_id sales -->  per each date, Moving Average, Min, Max over 1month, ...
+        shop_id sales -->  per each date, Moving Average, Min, Max over 1month, ...
+    """
+    pass
 
 
 def pd_ts_rolling(df, col, pars):
-    cat_cols     = []
+    cat_cols = []
     created_cols = []
-    colgroup     = 'id'
-    colstat      ='mdi'
+    colgroup = 'id'
+    colstat = 'mdi'
 
     len_shift = 28
-    for i in [7,14,30,60,180]:
+    for i in [7, 14, 30, 60, 180]:
         print('Rolling period:', i)
-        df['rolling_mean_'+str(i)] = df.groupby(colgroup)[colstat].transform(lambda x: x.shift(len_shift).rolling(i).mean())
-        df['rolling_std_'+str(i)]  = df.groupby(colgroup)[colstat].transform(lambda x: x.shift(len_shift).rolling(i).std())
-        created_cols.append('rolling_mean_'+str(i))
-        created_cols.append('rolling_std_'+str(i))
+        df['rolling_mean_' + str(i)] = df.groupby(colgroup)[colstat].transform(
+            lambda x: x.shift(len_shift).rolling(i).mean())
+        df['rolling_std_' + str(i)] = df.groupby(colgroup)[colstat].transform(
+            lambda x: x.shift(len_shift).rolling(i).std())
+        created_cols.append('rolling_mean_' + str(i))
+        created_cols.append('rolling_std_' + str(i))
 
     # Rollings
     # with sliding shift
-    for len_shift in [1,7,14]:
+    for len_shift in [1, 7, 14]:
         print('Shifting period:', len_shift)
-        for len_window in [7,14,30,60]:
-            col_name = 'rolling_mean_tmp_'+str(len_shift)+'_'+str(len_window)
-            df[col_name] = df.groupby(['id'])[dep_col].transform(lambda x: x.shift(len_shift).rolling(len_window).mean())
+        for len_window in [7, 14, 30, 60]:
+            col_name = 'rolling_mean_tmp_' + str(len_shift) + '_' + str(len_window)
+            df[col_name] = df.groupby(['id'])[dep_col].transform(
+                lambda x: x.shift(len_shift).rolling(len_window).mean())
             created_cols.append(col_name)
-
 
     for col_name in id_cols:
         created_cols.append(col_name)
@@ -160,208 +188,190 @@ def pd_ts_rolling(df, col, pars):
     return df[created_cols], cat_cols
 
 
-def pd_ts_lag(df, col, pars):
+def pd_ts_lag(df, col, pars, id_cols=None, dep_col=None):
     created_cols = []
     cat_cols = []
 
-    lag_days = [col for col in range(28, 28+15)]
+    lag_days = [col for col in range(28, 28 + 15)]
     for lag_day in lag_days:
         created_cols.append('lag_' + str(lag_day))
         df['lag_' + str(lag_day)] = df.groupby(['id'])[dep_col].transform(lambda x: x.shift(lag_day))
 
-
     for col_name in id_cols:
         created_cols.append(col_name)
 
     return df[created_cols], cat_cols
 
 
-def pd_ts_generic(df, col=None, pars={}, ):
+def pd_ts_generic(df, col=None, pars=None, ):
     """
        { 'name': 'deltapy.transform::robust_scaler',                 'pars': {'drop':["Close_1"]} },
 
     """
     ###### Custom code ################################################################
     model_name = pars['name']
-    model_pars = pars.get('pars',   {})
-
+    model_pars = pars.get('pars', {})
 
     dfin = df[col]
     dfin = dfin.fillna(method='ffill')
 
     if 'a_chi' in model_name:
-      # Normalize the input for the chi
-      dfin = (dfin-dfin.min())/(dfin.max()-dfin.min())
-
+        # Normalize the input for the chi
+        dfin = (dfin - dfin.min()) / (dfin.max() - dfin.min())
 
     ##### Transform Data  ############################################################
-    model  = load_function_uri( model_name )
+    model = load_function_uri(model_name)
     df_out = model(dfin, **model_pars)
 
-
     if 'extract' in model_name:
-       # Extract only returns one value, so no columns to loop over.
-       col_out = "0_" + model_name
+        # Extract only returns one value, so no columns to loop over.
+        col_out = "0_" + model_name
 
     else:
-        model_name2 = model_name.replace("::", "-" )
-        col_out        = [  coli + "_" + model_name2 for coli in df_out.columns]
+        model_name2 = model_name.replace("::", "-")
+        col_out = [coli + "_" + model_name2 for coli in df_out.columns]
         df_out.columns = col_out
-        df_out.index   = df.index
+        df_out.index = df.index
 
     return df_out
 
 
-
-def pd_ts_template(df, col, pars) :
-   """
-
-
-      'colnum' : ['sales1' 'units' ]
+def pd_ts_template(df, col, pars):
+    """
+       'colnum' : ['sales1' 'units' ]
 
 
-     'pars_function_list' :  [
-      { 'name': 'deltapy.transform::robust_scaler',                 'pars': {'drop':["Close_1"]} },
-      { 'name': 'deltapy.transform::standard_scaler',               'pars': {'drop':["Close_1"]} },
-      ]e
+      'pars_function_list' :  [
+       { 'name': 'deltapy.transform::robust_scaler',                 'pars': {'drop':["Close_1"]} },
+       { 'name': 'deltapy.transform::standard_scaler',               'pars': {'drop':["Close_1"]} },
+       ]e
 
-   :param df:
-   :param col:
-   :param pars:
-   :return:
-   """
+    :param df:
+    :param col:
+    :param pars:
+    :return:
+    """
 
-   df       = df[col]
-   coldate  = pars['coldate']
-   colnum   = pars['colnum']
-   colcat   = pars['colcat']
+    df = df[col]
+    coldate = pars['coldate']
+    colnum = pars['colnum']
+    colcat = pars['colcat']
 
-   colgroups = pars['colgroup']
-   colgstat  = pars['colstat']
+    colgroups = pars['colgroup']
+    colgstat = pars['colstat']
 
-   ### Only dates
-   df1      = pd_ts_date(df,  coldate, pars)
-   coldate1 = list( df1.columns)
+    ### Only dates
+    df1 = pd_ts_date(df, coldate, pars)
+    coldate1 = list(df1.columns)
 
+    ### Initial features
+    df1 = df1.join(df, on=coldate, how='left')
 
-   ### Initial features
-   df1    = df1.join(df, on= coldate, how='left' )
+    ### Groupby features
+    df2 = pd_ts_groupby(df, col, pars)
+    df1 = df1.join(df2, on=coldate, how='left')
 
+    ### Numerical features
+    colnum2 = list(df2.columns) + colnum
+    df1 = df1.set_index(coldate1)
 
-   ### Groupby features
-   df2    = pd_ts_groupby(df,  col, pars)
-   df1    = df1.join(df2, on= coldate, how='left' )
+    for pars_function_dict_i in pars.get('pars_function_list', []):
+        dfi = pd_ts_generic(df1, col=colnum2, pars=pars_function_dict_i)
+        df1 = df1.join(dfi, on=coldate, how='left')
 
-
-   ### Numerical features
-   colnum2 = list(df2.columns)  + colnum
-   df1     = df1.set_index(coldate1)
-
-   for pars_function_dict_i in pars.get('pars_function_list', []) :
-        dfi = pd_ts_generic(df1, col=colnum2, pars =pars_function_dict_i)
-        df1 = df1.join( dfi, on = coldate, how='left')
-
-   return df1
-
-
-
-
+    return df1
 
 
 #########################################################################################
 #########################################################################################
 def test_get_methods(df):
-  functions_methods = [ 
-      { 'name': 'deltapy.transform::robust_scaler',                 'pars': {'drop':["Close_1"]} },
-      { 'name': 'deltapy.transform::standard_scaler',               'pars': {'drop':["Close_1"]} },
-      { 'name': 'deltapy.transform::fast_fracdiff',                 'pars': {'cols':["Close","Open"], 'd':0.5} },
-      { 'name': 'deltapy.transform::operations',                    'pars': {'features':["Close"]} },
-      { 'name': 'deltapy.transform::triple_exponential_smoothing',  'pars': {'cols':["Close"], 'slen':12, 'alpha':.2, 'beta':.5, 'gamma':.5, 'n_preds':0} },
-      { 'name': 'deltapy.transform::naive_dec',                     'pars': {'columns':["Close","Open"]} },
-      { 'name': 'deltapy.transform::bkb',                           'pars': {'cols':["Close"]} },
-      { 'name': 'deltapy.transform::butter_lowpass_filter',         'pars': {'cols':["Close"], 'cutoff':4} },
-      { 'name': 'deltapy.transform::instantaneous_phases',          'pars': {'cols':["Close"]} },
-      { 'name': 'deltapy.transform::kalman_feat',                   'pars': {'cols':["Close"]} },
-      { 'name': 'deltapy.transform::perd_feat',                     'pars': {'cols':["Close"]} },
-      { 'name': 'deltapy.transform::fft_feat',                      'pars': {'cols':["Close"]} },
-      { 'name': 'deltapy.transform::harmonicradar_cw',              'pars': {'cols':["Close"], 'fs':0.3,'fc':0.2} },
-      { 'name': 'deltapy.transform::saw',                           'pars': {'cols':["Close","Open"]} },
-      { 'name': 'deltapy.transform::multiple_rolling',              'pars': {'columns':["Close"]} },
-      { 'name': 'deltapy.transform::multiple_lags',                 'pars': {'columns':["Close"], 'start':1, 'end':3} },
-      
-      { 'name': 'deltapy.interact::lowess',                         'pars': {'cols':["Open","Volume"], 'y': df["Close"], 'f':0.25, 'iter':3} },
-      { 'name': 'deltapy.interact::autoregression',                 'pars': {} },
-      { 'name': 'deltapy.interact::muldiv',                         'pars': {'feature_list':["Close","Open"]} },
-      { 'name': 'deltapy.interact::decision_tree_disc',             'pars': {'cols':["Close"]} },
-      { 'name': 'deltapy.interact::quantile_normalize',             'pars': {'drop':["Close"]} },
-      { 'name': 'deltapy.interact::tech',                           'pars': {} },
-      { 'name': 'deltapy.interact::genetic_feat',                   'pars': {} },
+    functions_methods = [
+        {'name': 'deltapy.transform::robust_scaler', 'pars': {'drop': ["Close_1"]}},
+        {'name': 'deltapy.transform::standard_scaler', 'pars': {'drop': ["Close_1"]}},
+        {'name': 'deltapy.transform::fast_fracdiff', 'pars': {'cols': ["Close", "Open"], 'd': 0.5}},
+        {'name': 'deltapy.transform::operations', 'pars': {'features': ["Close"]}},
+        {'name': 'deltapy.transform::triple_exponential_smoothing',
+         'pars': {'cols': ["Close"], 'slen': 12, 'alpha': .2, 'beta': .5, 'gamma': .5, 'n_preds': 0}},
+        {'name': 'deltapy.transform::naive_dec', 'pars': {'columns': ["Close", "Open"]}},
+        {'name': 'deltapy.transform::bkb', 'pars': {'cols': ["Close"]}},
+        {'name': 'deltapy.transform::butter_lowpass_filter', 'pars': {'cols': ["Close"], 'cutoff': 4}},
+        {'name': 'deltapy.transform::instantaneous_phases', 'pars': {'cols': ["Close"]}},
+        {'name': 'deltapy.transform::kalman_feat', 'pars': {'cols': ["Close"]}},
+        {'name': 'deltapy.transform::perd_feat', 'pars': {'cols': ["Close"]}},
+        {'name': 'deltapy.transform::fft_feat', 'pars': {'cols': ["Close"]}},
+        {'name': 'deltapy.transform::harmonicradar_cw', 'pars': {'cols': ["Close"], 'fs': 0.3, 'fc': 0.2}},
+        {'name': 'deltapy.transform::saw', 'pars': {'cols': ["Close", "Open"]}},
+        {'name': 'deltapy.transform::multiple_rolling', 'pars': {'columns': ["Close"]}},
+        {'name': 'deltapy.transform::multiple_lags', 'pars': {'columns': ["Close"], 'start': 1, 'end': 3}},
 
-      { 'name': 'deltapy.mapper::pca_feature',                      'pars': {'variance_or_components':0.80,'drop_cols':["Close_1"]} },
-      { 'name': 'deltapy.mapper::cross_lag',                        'pars': {} },
-      { 'name': 'deltapy.mapper::a_chi',                            'pars': {} },
-      { 'name': 'deltapy.mapper::encoder_dataset',                  'pars': {'drop':["Close_1"], 'dimesions':15} },
-      { 'name': 'deltapy.mapper::lle_feat',                         'pars': {'drop':["Close_1"], 'components':4} },
-      { 'name': 'deltapy.mapper::feature_agg',                      'pars': {'drop':["Close_1"], 'components':4} },
-      { 'name': 'deltapy.mapper::neigh_feat',                       'pars': {'drop':["Close_1"], 'neighbors':4} },
+        {'name': 'deltapy.interact::lowess',
+         'pars': {'cols': ["Open", "Volume"], 'y': df["Close"], 'f': 0.25, 'iter': 3}},
+        {'name': 'deltapy.interact::autoregression', 'pars': {}},
+        {'name': 'deltapy.interact::muldiv', 'pars': {'feature_list': ["Close", "Open"]}},
+        {'name': 'deltapy.interact::decision_tree_disc', 'pars': {'cols': ["Close"]}},
+        {'name': 'deltapy.interact::quantile_normalize', 'pars': {'drop': ["Close"]}},
+        {'name': 'deltapy.interact::tech', 'pars': {}},
+        {'name': 'deltapy.interact::genetic_feat', 'pars': {}},
 
-      { 'name': 'deltapy.extract::abs_energy',                      'pars': {} },
-      { 'name': 'deltapy.extract::cid_ce',                          'pars': {'normalize':True} },
-      { 'name': 'deltapy.extract::mean_abs_change',                 'pars': {} },
-      { 'name': 'deltapy.extract::mean_second_derivative_central',  'pars': {} },
-      { 'name': 'deltapy.extract::variance_larger_than_standard_deviation',                'pars': {} },
-      { 'name': 'deltapy.extract::symmetry_looking',                'pars': {} },
-      { 'name': 'deltapy.extract::has_duplicate_max',               'pars': {} },
-      { 'name': 'deltapy.extract::partial_autocorrelation',         'pars': {} },
-      { 'name': 'deltapy.extract::augmented_dickey_fuller',         'pars': {} },
-      { 'name': 'deltapy.extract::gskew',                           'pars': {} },
-      { 'name': 'deltapy.extract::stetson_mean',                    'pars': {} },
-      { 'name': 'deltapy.extract::length',                          'pars': {} },
-      { 'name': 'deltapy.extract::count_above_mean',                'pars': {} },
-      { 'name': 'deltapy.extract::longest_strike_below_mean',       'pars': {} },
-      { 'name': 'deltapy.extract::wozniak',                         'pars': {} },
-      { 'name': 'deltapy.extract::last_location_of_maximum',        'pars': {} },
-      { 'name': 'deltapy.extract::fft_coefficient',                 'pars': {} },
-      { 'name': 'deltapy.extract::ar_coefficient',                  'pars': {} },
-      { 'name': 'deltapy.extract::index_mass_quantile',             'pars': {} },
-      { 'name': 'deltapy.extract::number_cwt_peaks',                'pars': {} },
-      { 'name': 'deltapy.extract::spkt_welch_density',              'pars': {} },
-      { 'name': 'deltapy.extract::linear_trend_timewise',           'pars': {} },
-      { 'name': 'deltapy.extract::c3',                              'pars': {} },
-      { 'name': 'deltapy.extract::binned_entropy',                  'pars': {} },
-      { 'name': 'deltapy.extract::svd_entropy',                     'pars': {} },
-      { 'name': 'deltapy.extract::hjorth_complexity',               'pars': {} },
-      { 'name': 'deltapy.extract::max_langevin_fixed_point',        'pars': {} },
-      { 'name': 'deltapy.extract::percent_amplitude',               'pars': {} },
-      { 'name': 'deltapy.extract::cad_prob',                        'pars': {} },
-      { 'name': 'deltapy.extract::zero_crossing_derivative',        'pars': {} },
-      { 'name': 'deltapy.extract::detrended_fluctuation_analysis',  'pars': {} },
-      { 'name': 'deltapy.extract::fisher_information',              'pars': {} },
-      { 'name': 'deltapy.extract::higuchi_fractal_dimension',       'pars': {} },
-      { 'name': 'deltapy.extract::petrosian_fractal_dimension',     'pars': {} },
-      { 'name': 'deltapy.extract::hurst_exponent',                  'pars': {} },
-      { 'name': 'deltapy.extract::largest_lyauponov_exponent',      'pars': {} },
-      { 'name': 'deltapy.extract::whelch_method',                   'pars': {} },
-      { 'name': 'deltapy.extract::find_freq',                       'pars': {} },
-      { 'name': 'deltapy.extract::flux_perc',                       'pars': {} },
-      { 'name': 'deltapy.extract::range_cum_s',                     'pars': {} },
-      { 'name': 'deltapy.extract::structure_func',                  'pars': {'param':{"Volume":df["Volume"].values, "Open": df["Open"].values}} },
-      { 'name': 'deltapy.extract::kurtosis',                        'pars': {} },
-      { 'name': 'deltapy.extract::stetson_k',                       'pars': {} }
-      ]
+        {'name': 'deltapy.mapper::pca_feature', 'pars': {'variance_or_components': 0.80, 'drop_cols': ["Close_1"]}},
+        {'name': 'deltapy.mapper::cross_lag', 'pars': {}},
+        {'name': 'deltapy.mapper::a_chi', 'pars': {}},
+        {'name': 'deltapy.mapper::encoder_dataset', 'pars': {'drop': ["Close_1"], 'dimesions': 15}},
+        {'name': 'deltapy.mapper::lle_feat', 'pars': {'drop': ["Close_1"], 'components': 4}},
+        {'name': 'deltapy.mapper::feature_agg', 'pars': {'drop': ["Close_1"], 'components': 4}},
+        {'name': 'deltapy.mapper::neigh_feat', 'pars': {'drop': ["Close_1"], 'neighbors': 4}},
 
-  return functions_methods
+        {'name': 'deltapy.extract::abs_energy', 'pars': {}},
+        {'name': 'deltapy.extract::cid_ce', 'pars': {'normalize': True}},
+        {'name': 'deltapy.extract::mean_abs_change', 'pars': {}},
+        {'name': 'deltapy.extract::mean_second_derivative_central', 'pars': {}},
+        {'name': 'deltapy.extract::variance_larger_than_standard_deviation', 'pars': {}},
+        {'name': 'deltapy.extract::symmetry_looking', 'pars': {}},
+        {'name': 'deltapy.extract::has_duplicate_max', 'pars': {}},
+        {'name': 'deltapy.extract::partial_autocorrelation', 'pars': {}},
+        {'name': 'deltapy.extract::augmented_dickey_fuller', 'pars': {}},
+        {'name': 'deltapy.extract::gskew', 'pars': {}},
+        {'name': 'deltapy.extract::stetson_mean', 'pars': {}},
+        {'name': 'deltapy.extract::length', 'pars': {}},
+        {'name': 'deltapy.extract::count_above_mean', 'pars': {}},
+        {'name': 'deltapy.extract::longest_strike_below_mean', 'pars': {}},
+        {'name': 'deltapy.extract::wozniak', 'pars': {}},
+        {'name': 'deltapy.extract::last_location_of_maximum', 'pars': {}},
+        {'name': 'deltapy.extract::fft_coefficient', 'pars': {}},
+        {'name': 'deltapy.extract::ar_coefficient', 'pars': {}},
+        {'name': 'deltapy.extract::index_mass_quantile', 'pars': {}},
+        {'name': 'deltapy.extract::number_cwt_peaks', 'pars': {}},
+        {'name': 'deltapy.extract::spkt_welch_density', 'pars': {}},
+        {'name': 'deltapy.extract::linear_trend_timewise', 'pars': {}},
+        {'name': 'deltapy.extract::c3', 'pars': {}},
+        {'name': 'deltapy.extract::binned_entropy', 'pars': {}},
+        {'name': 'deltapy.extract::svd_entropy', 'pars': {}},
+        {'name': 'deltapy.extract::hjorth_complexity', 'pars': {}},
+        {'name': 'deltapy.extract::max_langevin_fixed_point', 'pars': {}},
+        {'name': 'deltapy.extract::percent_amplitude', 'pars': {}},
+        {'name': 'deltapy.extract::cad_prob', 'pars': {}},
+        {'name': 'deltapy.extract::zero_crossing_derivative', 'pars': {}},
+        {'name': 'deltapy.extract::detrended_fluctuation_analysis', 'pars': {}},
+        {'name': 'deltapy.extract::fisher_information', 'pars': {}},
+        {'name': 'deltapy.extract::higuchi_fractal_dimension', 'pars': {}},
+        {'name': 'deltapy.extract::petrosian_fractal_dimension', 'pars': {}},
+        {'name': 'deltapy.extract::hurst_exponent', 'pars': {}},
+        {'name': 'deltapy.extract::largest_lyauponov_exponent', 'pars': {}},
+        {'name': 'deltapy.extract::whelch_method', 'pars': {}},
+        {'name': 'deltapy.extract::find_freq', 'pars': {}},
+        {'name': 'deltapy.extract::flux_perc', 'pars': {}},
+        {'name': 'deltapy.extract::range_cum_s', 'pars': {}},
+        {'name': 'deltapy.extract::structure_func',
+         'pars': {'param': {"Volume": df["Volume"].values, "Open": df["Open"].values}}},
+        {'name': 'deltapy.extract::kurtosis', 'pars': {}},
+        {'name': 'deltapy.extract::stetson_k', 'pars': {}}
+    ]
 
-
-
-
-
+    return functions_methods
 
 
 """
-https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html
-
-
+The code below extracts all the available features on an example dataset file.
 
 import tsfel
 import pandas as pd
@@ -448,33 +458,6 @@ Citing
 """
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def pd_ts_deltapy2(df=None, col=None, pars={}, ):
     """
        pars : {  'name' :  "robust_scaler",
@@ -484,69 +467,67 @@ def pd_ts_deltapy2(df=None, col=None, pars={}, ):
     prefix = 'colts_deltapy'
 
     ###### Custom code ################################################################
-    dfin       = df.fillna(method='ffill')
+    dfin = df.fillna(method='ffill')
     model_name = pars['name']
-    model_pars = pars.get('pars',   {})
+    model_pars = pars.get('pars', {})
 
-    if 'path_pipeline' in pars :   #### Prediction time
-        model  = load(pars['path_pipeline'] + f"/{prefix}_model.pkl" )
-        pars   = load(pars['path_pipeline'] + f"/{prefix}_pars.pkl" )
+    if 'path_pipeline' in pars:  #### Prediction time
+        model = load(pars['path_pipeline'] + f"/{prefix}_model.pkl")
+        pars = load(pars['path_pipeline'] + f"/{prefix}_pars.pkl")
 
-    else :     ### Training time  : Dynamic function load
-        from util_feature import  load_function_uri
+    else:  ### Training time  : Dynamic function load
+        from util_feature import load_function_uri
         ##### transform.robust_scaler(df, drop=["Close_1"])
-        model = load_function_uri2( model_name )
-
+        model = load_function_uri2(model_name)
 
     ##### Transform Data  ############################################################
-    df_out         = model(dfin, **model_pars)
+    df_out = model(dfin, **model_pars)
 
     # Extract only returns one value, so no columns to loop over.
-    model_name2 = model_name.replace("::", "-" )
+    model_name2 = model_name.replace("::", "-")
     if 'extract' in model_name:
-      col_out = "0_" + model_name
+        col_out = "0_" + model_name
     else:
-      col_out        = [  coli + "_" + model_name for coli in df_out.columns]
-      df_out.columns = col_out
-      df_out.index   = df_out.index
-    col_new        = col_out
-
+        col_out = [coli + "_" + model_name for coli in df_out.columns]
+        df_out.columns = col_out
+        df_out.index = df_out.index
+    col_new = col_out
 
     ###### Export #####################################################################
     if 'path_features_store' in pars and 'path_pipeline_export' in pars:
-       save_features(df_out, 'df_' + prefix, pars['path_features_store'])
-       save(model,     pars['path_pipeline_export'] + f"/{prefix}_model.pkl" )
-       save(col_new,   pars['path_pipeline_export'] + f"/{prefix}.pkl" )
-       save(pars,      pars['path_pipeline_export'] + f"/{prefix}_pars.pkl" )
+        save_features(df_out, 'df_' + prefix, pars['path_features_store'])
+        save(model, pars['path_pipeline_export'] + f"/{prefix}_model.pkl")
+        save(col_new, pars['path_pipeline_export'] + f"/{prefix}.pkl")
+        save(pars, pars['path_pipeline_export'] + f"/{prefix}_pars.pkl")
 
-
-    col_pars = {'prefix' : prefix , 'path' :   pars.get('path_pipeline_export', pars.get('path_pipeline', None)) }
+    col_pars = {'prefix': prefix, 'path': pars.get('path_pipeline_export', pars.get('path_pipeline', None))}
     col_pars['cols_new'] = {
-       prefix :  col_new  ### list of columns
+        prefix: col_new  ### list of columns
     }
     return df_out, col_pars
 
-                        
+
 def test_prepro_1():
-  df = get_sampledata(); df.head()
-  functions_methods = test_get_methods(df)
+    df = get_sampledata();
+    df.head()
+    functions_methods = test_get_methods(df)
 
-  for model in  functions_methods :
-     pars = {  'name' :  model['name'],
-              'pars'  :  model['pars']
-     }
-     # print("[TESTING]",pars['name'],"...")
-     df_input = copy.deepcopy(df)
-     if 'a_chi' in pars['name']:
-        # Normalize the input for the chi
-        # print("    [INFO] Chi model...")
-        df_input = (df_input-df_input.min())/(df_input.max()-df_input.min())
+    for model in functions_methods:
+        pars = {'name': model['name'],
+                'pars': model['pars']
+                }
+        # print("[TESTING]",pars['name'],"...")
+        df_input = copy.deepcopy(df)
+        if 'a_chi' in pars['name']:
+            # Normalize the input for the chi
+            # print("    [INFO] Chi model...")
+            df_input = (df_input - df_input.min()) / (df_input.max() - df_input.min())
 
-     if 'extract' in pars['name']:
-        # print("    [INFO] Extract model...")
-        df_input = df_input["Close"]
- 
-     df_out, col_pars =pd_ts_generic(df=df_input, pars=pars)
+        if 'extract' in pars['name']:
+            # print("    [INFO] Extract model...")
+            df_input = df_input["Close"]
+
+        df_out, col_pars = pd_ts_generic(df=df_input, pars=pars)
 
 
 def pd_ts_date2(df, col, pars):
@@ -557,10 +538,10 @@ def pd_ts_date2(df, col, pars):
     log("##### Coldate processing   ##########################################")
     from utils import util_date
     coldate = col
-    dfdate  = None
-    for coldate_i in coldate :
-        dfdate_i = util_date.pd_datestring_split( df[[coldate_i]] , coldate_i, fmt="auto", return_val= "split" )
-        dfdate   = pd.concat((dfdate, dfdate_i),axis=1)  if dfdate is not None else dfdate_i
+    dfdate = None
+    for coldate_i in coldate:
+        dfdate_i = util_date.pd_datestring_split(df[[coldate_i]], coldate_i, fmt="auto", return_val="split")
+        dfdate = pd.concat((dfdate, dfdate_i), axis=1) if dfdate is not None else dfdate_i
         # if 'path_features_store' in pars :
         #    path_features_store = pars['path_features_store']
         #    #save_features(dfdate_i, 'dfdate_' + coldate_i, path_features_store)
@@ -573,108 +554,105 @@ def pd_ts_date2(df, col, pars):
     return dfdate, col_pars
 
 
-
-
 def test_prepro_all():
-  df = get_sampledata(); df.head()
+    df = get_sampledata();
+    df.head()
 
-  df_out = transform.robust_scaler(df, drop=["Close_1"])
-  df_out = transform.standard_scaler(df, drop=["Close"])
-  df_out = transform.fast_fracdiff(df, ["Close","Open"],0.5)
-  #df_out = transform.windsorization(df,"Close",para,strategy='both')
-  df_out = transform.operations(df,["Close"])
-  df_out= transform.triple_exponential_smoothing(df,["Close"], 12, .2,.2,.2,0);
-  df_out = transform.naive_dec(copy.deepcopy(df), ["Close","Open"]) # The function parameter df is changed within the function causing upcoming functions to crash, passing a copy solves this
-  df_out = transform.bkb(df, ["Close"])
-  df_out = transform.butter_lowpass_filter(df,["Close"],4)
-  df_out = transform.instantaneous_phases(df, ["Close"])
-  df_out = transform.kalman_feat(df, ["Close"])
-  df_out = transform.perd_feat(df,["Close"])
-  df_out = transform.fft_feat(df, ["Close"])
-  df_out = transform.harmonicradar_cw(df, ["Close"],0.3,0.2)
-  df_out = transform.saw(df,["Close","Open"])
-  df_out = transform.modify(df,["Close"])
-  df_out = transform.multiple_rolling(df, columns=["Close"])
-  df_out = transform.multiple_lags(df, start=1, end=3, columns=["Close"])
-  df_out  = transform.prophet_feat(df.reset_index(),["Close","Open"],"Date", "D")
+    df_out = transform.robust_scaler(df, drop=["Close_1"])
+    df_out = transform.standard_scaler(df, drop=["Close"])
+    df_out = transform.fast_fracdiff(df, ["Close", "Open"], 0.5)
+    # df_out = transform.windsorization(df,"Close",para,strategy='both')
+    df_out = transform.operations(df, ["Close"])
+    df_out = transform.triple_exponential_smoothing(df, ["Close"], 12, .2, .2, .2, 0);
+    df_out = transform.naive_dec(copy.deepcopy(df), ["Close",
+                                                     "Open"])  # The function parameter df is changed within the function causing upcoming functions to crash, passing a copy solves this
+    df_out = transform.bkb(df, ["Close"])
+    df_out = transform.butter_lowpass_filter(df, ["Close"], 4)
+    df_out = transform.instantaneous_phases(df, ["Close"])
+    df_out = transform.kalman_feat(df, ["Close"])
+    df_out = transform.perd_feat(df, ["Close"])
+    df_out = transform.fft_feat(df, ["Close"])
+    df_out = transform.harmonicradar_cw(df, ["Close"], 0.3, 0.2)
+    df_out = transform.saw(df, ["Close", "Open"])
+    df_out = transform.modify(df, ["Close"])
+    df_out = transform.multiple_rolling(df, columns=["Close"])
+    df_out = transform.multiple_lags(df, start=1, end=3, columns=["Close"])
+    df_out = transform.prophet_feat(df.reset_index(), ["Close", "Open"], "Date", "D")
 
-  #**Interaction**
-  # The function parameter df is changed within the function causing upcoming functions to crash, passing a copy solves this
-  df_out = interact.lowess(copy.deepcopy(df), ["Open","Volume"], df["Close"], f=0.25, iter=3)
-  df_out = interact.autoregression(copy.deepcopy(df))
-  df_out = interact.muldiv(copy.deepcopy(df), ["Close","Open"])
-  df_out = interact.decision_tree_disc(copy.deepcopy(df), ["Close"])
-  df_out = interact.quantile_normalize(copy.deepcopy(df), drop=["Close"])
-  df_out = interact.tech(copy.deepcopy(df))
-  df_out = interact.genetic_feat(copy.deepcopy(df))
+    # **Interaction**
+    # The function parameter df is changed within the function causing upcoming functions to crash, passing a copy solves this
+    df_out = interact.lowess(copy.deepcopy(df), ["Open", "Volume"], df["Close"], f=0.25, iter=3)
+    df_out = interact.autoregression(copy.deepcopy(df))
+    df_out = interact.muldiv(copy.deepcopy(df), ["Close", "Open"])
+    df_out = interact.decision_tree_disc(copy.deepcopy(df), ["Close"])
+    df_out = interact.quantile_normalize(copy.deepcopy(df), drop=["Close"])
+    df_out = interact.tech(copy.deepcopy(df))
+    df_out = interact.genetic_feat(copy.deepcopy(df))
 
-  #**Mapping**
-  df_out = mapper.pca_feature(df,variance_or_components=0.80,drop_cols=["Close_1"])
-  df_out = mapper.cross_lag(df)
-  '''
-  Regarding https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test chi square test assumes frequencies distribution
-  and a frequency can't be a negative number. No familiar with the data but if it is safe to either shift them to have min > 0 
-  or to normalize the data to be [0-1]. Since this is for the purpose of testing we'll be using: (df-df.min())/(df.max()-df.min())
-  '''
-  df_out = mapper.a_chi((df-df.min())/(df.max()-df.min()))
-  df_out = mapper.encoder_dataset(df, ["Close_1"], 15)
-  df_out = mapper.lle_feat(df,["Close_1"],4)
-  df_out = mapper.feature_agg(df,["Close_1"],4 )
-  df_out = mapper.neigh_feat(df,["Close_1"],4 )
+    # **Mapping**
+    df_out = mapper.pca_feature(df, variance_or_components=0.80, drop_cols=["Close_1"])
+    df_out = mapper.cross_lag(df)
+    '''
+    Regarding https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test chi square test assumes frequencies distribution
+    and a frequency can't be a negative number. No familiar with the data but if it is safe to either shift them to have min > 0 
+    or to normalize the data to be [0-1]. Since this is for the purpose of testing we'll be using: (df-df.min())/(df.max()-df.min())
+    '''
+    df_out = mapper.a_chi((df - df.min()) / (df.max() - df.min()))
+    df_out = mapper.encoder_dataset(df, ["Close_1"], 15)
+    df_out = mapper.lle_feat(df, ["Close_1"], 4)
+    df_out = mapper.feature_agg(df, ["Close_1"], 4)
+    df_out = mapper.neigh_feat(df, ["Close_1"], 4)
 
-
-  #**Extraction**
-  extract.abs_energy(df["Close"])
-  extract.cid_ce(df["Close"], True)
-  extract.mean_abs_change(df["Close"])
-  extract.mean_second_derivative_central(df["Close"])
-  extract.variance_larger_than_standard_deviation(df["Close"])
-  # extract.var_index(df["Close"].values,var_index_param)
-  extract.symmetry_looking(df["Close"])
-  extract.has_duplicate_max(df["Close"])
-  extract.partial_autocorrelation(df["Close"])
-  extract.augmented_dickey_fuller(df["Close"])
-  extract.gskew(df["Close"])
-  extract.stetson_mean(df["Close"])
-  extract.length(df["Close"])
-  extract.count_above_mean(df["Close"])
-  extract.longest_strike_below_mean(df["Close"])
-  extract.wozniak(df["Close"])
-  extract.last_location_of_maximum(df["Close"])
-  extract.fft_coefficient(df["Close"])
-  extract.ar_coefficient(df["Close"])
-  extract.index_mass_quantile(df["Close"])
-  extract.number_cwt_peaks(df["Close"])
-  extract.spkt_welch_density(df["Close"])
-  extract.linear_trend_timewise(df["Close"])
-  extract.c3(df["Close"])
-  extract.binned_entropy(df["Close"])
-  extract.svd_entropy(df["Close"].values)
-  extract.hjorth_complexity(df["Close"])
-  extract.max_langevin_fixed_point(df["Close"])
-  extract.percent_amplitude(df["Close"])
-  extract.cad_prob(df["Close"])
-  extract.zero_crossing_derivative(df["Close"])
-  extract.detrended_fluctuation_analysis(df["Close"])
-  extract.fisher_information(df["Close"])
-  extract.higuchi_fractal_dimension(df["Close"])
-  extract.petrosian_fractal_dimension(df["Close"])
-  extract.hurst_exponent(df["Close"])
-  extract.largest_lyauponov_exponent(df["Close"])
-  extract.whelch_method(df["Close"])
-  extract.find_freq(df["Close"])
-  extract.flux_perc(df["Close"])
-  extract.range_cum_s(df["Close"])
-  '''
-  From https://github.com/firmai/deltapy#extraction example, It seems like the second argument of the 
-  function must be: struct_param = {"Volume":df["Volume"].values, "Open": df["Open"].values}
-  '''
-  struct_param = {"Volume":df["Volume"].values, "Open": df["Open"].values}
-  extract.structure_func(df["Close"], struct_param)
-  extract.kurtosis(df["Close"])
-  extract.stetson_k(df["Close"])
-
-
+    # **Extraction**
+    extract.abs_energy(df["Close"])
+    extract.cid_ce(df["Close"], True)
+    extract.mean_abs_change(df["Close"])
+    extract.mean_second_derivative_central(df["Close"])
+    extract.variance_larger_than_standard_deviation(df["Close"])
+    # extract.var_index(df["Close"].values,var_index_param)
+    extract.symmetry_looking(df["Close"])
+    extract.has_duplicate_max(df["Close"])
+    extract.partial_autocorrelation(df["Close"])
+    extract.augmented_dickey_fuller(df["Close"])
+    extract.gskew(df["Close"])
+    extract.stetson_mean(df["Close"])
+    extract.length(df["Close"])
+    extract.count_above_mean(df["Close"])
+    extract.longest_strike_below_mean(df["Close"])
+    extract.wozniak(df["Close"])
+    extract.last_location_of_maximum(df["Close"])
+    extract.fft_coefficient(df["Close"])
+    extract.ar_coefficient(df["Close"])
+    extract.index_mass_quantile(df["Close"])
+    extract.number_cwt_peaks(df["Close"])
+    extract.spkt_welch_density(df["Close"])
+    extract.linear_trend_timewise(df["Close"])
+    extract.c3(df["Close"])
+    extract.binned_entropy(df["Close"])
+    extract.svd_entropy(df["Close"].values)
+    extract.hjorth_complexity(df["Close"])
+    extract.max_langevin_fixed_point(df["Close"])
+    extract.percent_amplitude(df["Close"])
+    extract.cad_prob(df["Close"])
+    extract.zero_crossing_derivative(df["Close"])
+    extract.detrended_fluctuation_analysis(df["Close"])
+    extract.fisher_information(df["Close"])
+    extract.higuchi_fractal_dimension(df["Close"])
+    extract.petrosian_fractal_dimension(df["Close"])
+    extract.hurst_exponent(df["Close"])
+    extract.largest_lyauponov_exponent(df["Close"])
+    extract.whelch_method(df["Close"])
+    extract.find_freq(df["Close"])
+    extract.flux_perc(df["Close"])
+    extract.range_cum_s(df["Close"])
+    '''
+    From https://github.com/firmai/deltapy#extraction example, It seems like the second argument of the 
+    function must be: struct_param = {"Volume":df["Volume"].values, "Open": df["Open"].values}
+    '''
+    struct_param = {"Volume": df["Volume"].values, "Open": df["Open"].values}
+    extract.structure_func(df["Close"], struct_param)
+    extract.kurtosis(df["Close"])
+    extract.stetson_k(df["Close"])
 
 
 ###########################################################################################
@@ -686,37 +664,42 @@ def pd_ts_basic(df, coldate='date_t', **kw):
     df['week'] = df['date_t'].dt.week
     df['day'] = df['date_t'].dt.day
     df['dayofweek'] = df['date_t'].dt.dayofweek
-    return df[['year', 'month', 'week', 'day', 'dayofweek'] ]
+    return df[['year', 'month', 'week', 'day', 'dayofweek']]
 
 
-                
-def pd_ts_identity(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
+def pd_ts_identity(df, input_raw_path=None, dir_out=None, features_group_name=None, auxiliary_csv_path=None,
+                   drop_cols=None, index_cols=None, merge_cols_mapping=None, cat_cols=None, id_cols=None, dep_col=None,
+                   coldate=None, max_rows=10):
     df_drop_cols = [x for x in df.columns.tolist() if x in drop_cols]
-    df = df.drop(df_drop_cols, axis = 1)
+    df = df.drop(df_drop_cols, axis=1)
     return df, cat_cols
 
 
-def pd_ts_rolling2(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
+def pd_ts_rolling2(df, input_raw_path=None, dir_out=None, features_group_name=None, auxiliary_csv_path=None,
+                   drop_cols=None, index_cols=None, merge_cols_mapping=None, cat_cols=None, id_cols=None, dep_col=None,
+                   coldate=None, max_rows=10):
     cat_cols = []
     created_cols = []
 
     len_shift = 28
-    for i in [7,14,30,60,180]:
+    for i in [7, 14, 30, 60, 180]:
         print('Rolling period:', i)
-        df['rolling_mean_'+str(i)] = df.groupby(['id'])[dep_col].transform(lambda x: x.shift(len_shift).rolling(i).mean())
-        df['rolling_std_'+str(i)]  = df.groupby(['id'])[dep_col].transform(lambda x: x.shift(len_shift).rolling(i).std())
-        created_cols.append('rolling_mean_'+str(i))
-        created_cols.append('rolling_std_'+str(i))
+        df['rolling_mean_' + str(i)] = df.groupby(['id'])[dep_col].transform(
+            lambda x: x.shift(len_shift).rolling(i).mean())
+        df['rolling_std_' + str(i)] = df.groupby(['id'])[dep_col].transform(
+            lambda x: x.shift(len_shift).rolling(i).std())
+        created_cols.append('rolling_mean_' + str(i))
+        created_cols.append('rolling_std_' + str(i))
 
     # Rollings
     # with sliding shift
-    for len_shift in [1,7,14]:
+    for len_shift in [1, 7, 14]:
         print('Shifting period:', len_shift)
-        for len_window in [7,14,30,60]:
-            col_name = 'rolling_mean_tmp_'+str(len_shift)+'_'+str(len_window)
-            df[col_name] = df.groupby(['id'])[dep_col].transform(lambda x: x.shift(len_shift).rolling(len_window).mean())
+        for len_window in [7, 14, 30, 60]:
+            col_name = 'rolling_mean_tmp_' + str(len_shift) + '_' + str(len_window)
+            df[col_name] = df.groupby(['id'])[dep_col].transform(
+                lambda x: x.shift(len_shift).rolling(len_window).mean())
             created_cols.append(col_name)
-
 
     for col_name in id_cols:
         created_cols.append(col_name)
@@ -724,22 +707,21 @@ def pd_ts_rolling2(df, input_raw_path = None, dir_out = None, features_group_nam
     return df[created_cols], cat_cols
 
 
-
-def pd_ts_lag2(df, input_raw_path = None, dir_out = None, features_group_name = None, auxiliary_csv_path = None, drop_cols = None, index_cols = None, merge_cols_mapping = None, cat_cols = None, id_cols = None, dep_col = None, coldate = None, max_rows = 10):
+def pd_ts_lag2(df, input_raw_path=None, dir_out=None, features_group_name=None, auxiliary_csv_path=None, drop_cols=None,
+               index_cols=None, merge_cols_mapping=None, cat_cols=None, id_cols=None, dep_col=None, coldate=None,
+               max_rows=10):
     created_cols = []
     cat_cols = []
 
-    lag_days = [col for col in range(28, 28+15)]
+    lag_days = [col for col in range(28, 28 + 15)]
     for lag_day in lag_days:
         created_cols.append('lag_' + str(lag_day))
         df['lag_' + str(lag_day)] = df.groupby(['id'])[dep_col].transform(lambda x: x.shift(lag_day))
 
-
     for col_name in id_cols:
         created_cols.append(col_name)
 
     return df[created_cols], cat_cols
-
 
 
 def pd_tsfresh_features_single_row(df_single_row, cols):
@@ -750,23 +732,21 @@ def pd_tsfresh_features_single_row(df_single_row, cols):
     :return:
     """
 
-
-
     df_cols = df_single_row.columns.tolist()
-    selected_cols = [x for x in df_cols if re.match("d_[0-9]",x)]
+    selected_cols = [x for x in df_cols if re.match("d_[0-9]", x)]
     single_row_df_T = df_single_row[selected_cols].T
     single_row_df_T["time"] = range(0, len(single_row_df_T.index))
     single_row_df_T["id"] = range(0, len(single_row_df_T.index))
-    single_row_df_T.rename(columns={ single_row_df_T.columns[0]: "val" }, inplace = True)
+    single_row_df_T.rename(columns={single_row_df_T.columns[0]: "val"}, inplace=True)
 
     X_feat = extract_features(single_row_df_T, column_id='id', column_sort='time')
 
     feat_col_names = X_feat.columns.tolist()
     feat_col_names_mapping = {}
     for feat_col_name in feat_col_names:
-        feat_col_names_mapping[feat_col_name] = feat_col_name.replace('"','').replace(',','')
+        feat_col_names_mapping[feat_col_name] = feat_col_name.replace('"', '').replace(',', '')
 
-    X_feat = X_feat.rename(columns = feat_col_names_mapping)
+    X_feat = X_feat.rename(columns=feat_col_names_mapping)
     X_feat_T = X_feat.T
 
     for col in cols:
@@ -780,18 +760,60 @@ def pd_tsfresh_features_single_row(df_single_row, cols):
     X_feat_T["variable"] = X_feat_T.index
 
     df_single_row["variable"] = pd.Series(["demand"])
-    X_feat_T = X_feat_T.append(df_single_row, ignore_index= True)
-    return X_feat_T.set_index(cols + ['variable']).rename_axis(['day'], axis=1).stack().unstack('variable').reset_index()
+    X_feat_T = X_feat_T.append(df_single_row, ignore_index=True)
+    return X_feat_T.set_index(cols + ['variable']).rename_axis(['day'], axis=1).stack().unstack(
+        'variable').reset_index()
 
 
+def pd_ts_dtypes(df, datecol=False, catcol=False):
+    """
+
+    Calls df.dtypes to show the columns data types.
+    """
+
+    df = pd.read_csv(df)
+
+    if datecol:
+        df[datecol] = pd.to_datetime(df[datecol])
+
+    if catcol:
+        df[catcol] = df[catcol].astype('category')
+
+    print(df.dtypes)
+    return df
+
+
+def pd_ts_remove_trends(df1, col):
+    df = pd.read_csv(df1)
+    df[col] = df[col].diff()
+
+    print(df)
+    return df
+
+
+def test_function1():
+    print('TESTING pd_ts_date2 \n')
+    time_eng = pd_ts_date2('all_stocks_2006-01-01_to_2018-01-01.csv', ['Date'])
+
+    print('\n\n\n TESTING pd_ts_onehot \n')
+    onehot = pd_ts_onehot('all_stocks_2006-01-01_to_2018-01-01.csv', 'Name')
+
+    print('\n\n\n TESTING pd_ts_dtypes \n')
+    dtypes = pd_ts_dtypes('all_stocks_2006-01-01_to_2018-01-01.csv')
+
+    print('\n\n\n TESTING pd_ts_remove_trends \n')
+    trendless = pd_ts_remove_trends('all_stocks_2006-01-01_to_2018-01-01.csv', 'Close')
+
+    return time_eng, onehot, dtypes, trendless
 
 
 ########################################################################################################################
 if __name__ == "__main__":
-  import fire
-  fire.Fire()
 
-                
+    import fire
+
+    fire.Fire()
+
 """
 
 Original file is located at    https://colab.research.google.com/drive/1-uJqGeKZfJegX0TmovhsO90iasyxZYiT
@@ -900,6 +922,5 @@ autoregressive  : past data avg.
 12. Distribution
 
 
-"""                
-                
-                
+"""
+
