@@ -111,7 +111,7 @@ def predict(Xpred=None, data_pars={}, compute_pars={}, out_pars={}, **kw):
         Xpred              = get_dataset(data_pars, task_type="predict")
 
     ypred, y_prob = model.model.classify(Xpred, classcol = Xpred.shape[1], return_prob=True)
-    ypred         = post_process_fun(y
+    ypred         = post_process_fun(ypred)
     y_prob        = np.max(y_prob, axis=1)
     
     ypred_proba = y_prob  if compute_pars.get("probability", False) else None
@@ -375,7 +375,7 @@ def test_model():
     model_white.model.fit(X_train_white, y_train_white)
     gef_white = model_white.model.topc(learnspn=np.Inf)
 
-    print('ok')
+    log('gefs model test ok')
 
                                      
 if __name__ == "__main__":
