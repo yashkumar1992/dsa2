@@ -765,25 +765,7 @@ def pd_tsfresh_features_single_row(df_single_row, cols):
         'variable').reset_index()
 
 
-def pd_ts_dtypes(df, datecol=False, catcol=False):
-    """
-
-    Calls df.dtypes to show the columns data types.
-    """
-
-    df = pd.read_csv(df)
-
-    if datecol:
-        df[datecol] = pd.to_datetime(df[datecol])
-
-    if catcol:
-        df[catcol] = df[catcol].astype('category')
-
-    print(df.dtypes)
-    return df
-
-
-def pd_ts_remove_trends(df1, col):
+def pd_ts_detrend(df1, col):
     df = pd.read_csv(df1)
     df[col] = df[col].diff()
 
@@ -792,19 +774,12 @@ def pd_ts_remove_trends(df1, col):
 
 
 def test_function1():
-    print('TESTING pd_ts_date2 \n')
     time_eng = pd_ts_date2('all_stocks_2006-01-01_to_2018-01-01.csv', ['Date'])
 
-    print('\n\n\n TESTING pd_ts_onehot \n')
     onehot = pd_ts_onehot('all_stocks_2006-01-01_to_2018-01-01.csv', 'Name')
 
-    print('\n\n\n TESTING pd_ts_dtypes \n')
-    dtypes = pd_ts_dtypes('all_stocks_2006-01-01_to_2018-01-01.csv')
-
-    print('\n\n\n TESTING pd_ts_remove_trends \n')
-    trendless = pd_ts_remove_trends('all_stocks_2006-01-01_to_2018-01-01.csv', 'Close')
-
-    return time_eng, onehot, dtypes, trendless
+    print('\n\n\n TESTING pd_ts_detrend \n')
+    trendless = pd_ts_detrend('all_stocks_2006-01-01_to_2018-01-01.csv', 'Close')
 
 
 ########################################################################################################################
