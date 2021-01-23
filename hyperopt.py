@@ -149,7 +149,7 @@ def hyperparam_optim():
     ####### Initial dict
     mdict = titanic1()
 
-    #####3# Range in parameters
+    ###### Range in parameters
     mdict_range =   {'model_pars': {
         ### LightGBM API model   #######################################
         'model_pars' : { 'objective': 'binary',
@@ -159,10 +159,11 @@ def hyperparam_optim():
     }
 
     def objective_fun(mdict) :
-      ddict = run_train(config_name="", config_path="", n_sample=5000,
-                        mode="run_preprocess", model_dict=mdict,
-                        return_mode='ram')
-      res = ddict['stats']['accuracy']
+      metric_name = "accuracy"
+      ddict       = run_train(config_name="", config_path="", n_sample=5000,
+                             mode="run_preprocess", model_dict=mdict,
+                             return_mode='ram')
+      res = ddict['stats'][metric_name]
       return res
 
     engine_pars = {'metric_target':'loss'}
