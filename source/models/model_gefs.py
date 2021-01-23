@@ -37,8 +37,8 @@ class Model(object):
         if model_pars is None:
             self.model = None
         else:
-            self.n_estimators = model_pars['model_pars'].get('n_estimators', 100)
-            self.ncat = model_pars['model_pars'].get('ncat', None)  # Number of categories of each variable This is an ndarray
+            self.n_estimators = model_pars.get('n_estimators', 100)
+            self.ncat = model_pars.get('ncat', None)  # Number of categories of each variable This is an ndarray
             if self.ncat is None:
                 self.model = None  # In order to create an instance of the model we need to calculate the ncat mentioned above on our dataset
             else:
@@ -283,3 +283,140 @@ def get_params(param_pars={}, **kw):
 
     else:
         raise Exception(f"Not support choice {choice} yet")
+
+def test_model_gefs():
+    # Auxiliary functions
+    def learncats(data, classcol=None, continuous_ids=[]):
+        """
+            Learns the number of categories in each variable and standardizes the data.
+            Parameters
+            ----------
+            data: numpy n x m
+                Numpy array comprising n realisations (instances) of m variables.
+            classcol: int
+                The column index of the class variables (if any).
+            continuous_ids: list of ints
+                List containing the indices of known continuous variables. Useful for
+                discrete data like age, which is better modeled as continuous.
+            Returns
+            -------
+            ncat: numpy m
+                The number of categories of each variable. One if the variable is
+                continuous.
+        """
+        data = data.copy()
+        ncat = np.ones(data.shape[1])
+        if not classcol:
+            classcol = data.shape[1] - 1
+        for i in range(data.shape[1]):
+            if i != classcol and (i in continuous_ids or is_continuous(data[:, i])):
+                continue
+            else:
+                data[:, i] = data[:, i].astype(int)
+                ncat[i] = max(data[:, i]) + 1
+        return ncat
+
+    def get_stats(data, ncat=None):
+        """
+            Compute univariate statistics for continuous variables.
+            Parameters
+            ----------
+            data: numpy n x m
+                Numpy array comprising n realisations (instances) of m variables.
+            Returns
+            -------
+            data: numpy n x m
+                The normalized data.
+            maxv, minv: numpy m
+                The maximum and minimum values of each variable. One and zero, resp.
+                if the variable is categorical.
+            mean, std: numpy m
+                The mean and standard deviation of the variable. Zero and one, resp.
+                if the variable is categorical.
+        """
+        data = data.copy()
+        maxv = np.ones(data.shape[1])
+        minv = np.zeros(data.shape[1])
+        mean = np.zeros(data.shape[1])
+        std = np.zeros(data.shape[1])
+        if ncat is not None:
+            for i in range(data.shape[1]):
+                if ncat[i] == 1:
+                    maxv[i] = np.max(data[:, i])
+                    minv[i] = np.min(data[:, i])
+                    mean[i] = np.mean(data[:, i])
+                    std[i] = np.std(data[:, i])
+                    assert maxv[i] != minv[i], 'Cannot have constant continuous variable in the data'
+                    data[:, i] = (data[:, i] - minv[i]) / (maxv[i] - minv[i])
+        else:
+            for i in range(data.shape[1]):
+                if is_continuous(data[:, i]):
+                    maxv[i] = np.max(data[:, i])
+                    minv[i] = np.min(data[:, i])
+                    mean[i] = np.mean(data[:, i])
+                    std[i] = np.std(data[:, i])
+                    assert maxv[i] != minv[i], 'Cannot have constant continuous variable in the data'
+                    data[:, i] = (data[:, i] - minv[i]) / (maxv[i] - minv[i])
+        return data, maxv, minv, mean, std
+
+    def standardize_data(data, mean, std):
+        """
+            Standardizes the data given the mean and standard deviations values of
+            each variable.
+            Parameters
+            ----------
+            data: numpy n x m
+                Numpy array comprising n realisations (instances) of m variables.
+            mean, std: numpy m
+                The mean and standard deviation of the variable. Zero and one, resp.
+                if the variable is categorical.
+            Returns
+            -------
+            data: numpy n x m
+                The standardized data.
+        """
+        data = data.copy()
+        for v in range(data.shape[1]):
+            if std[v] > 0:
+                data[:, v] = (data[:, v] - mean[v]) / (std[v])
+                #  Clip values more than 6 standard deviations from the mean
+                data[:, v] = np.clip(data[:, v], -6, 6)
+        return data
+
+    def train_test(data, ncat, train_ratio=0.7, prep='std'):
+        assert train_ratio >= 0
+        assert train_ratio <= 1
+        shuffle = np.random.choice(range(data.shape[0]), data.shape[0], replace=False)
+        data_train = data[shuffle[:int(train_ratio * data.shape[0])], :]
+        data_test = data[shuffle[int(train_ratio * data.shape[0]):], :]
+        if prep == 'norm':
+            data_train, maxv, minv, _, _, = get_stats(data_train, ncat)
+            X_train, y_train = data_train[:, :-1], data_train[:, -1]
+            return X_train, y_train, data_train, data_test, maxv, minv
+        elif prep == 'std':
+            _, maxv, minv, mean, std = get_stats(data_train, ncat)
+            data_train = standardize_data(data_train, mean, std)
+            X_train, y_train = data_train[:, :-1], data_train[:, -1]
+            return X_train, y_train, data_train, data_test, mean, std
+
+    # Load toy dataset
+    df_white = pd.read_csv('../../data/input/wine-quality/raw/winequality-white.csv', sep=';').values
+    ncat_white = learncats(df_white, classcol=-1)
+    ncat_white[-1] = 2
+
+    X_train_white, y_train_white, data_train_white, data_test_white, mean_white, std_white = train_test(df_white,
+                                                                                                        ncat_white, 0.7)
+    y_train_white = np.where(y_train_white <= 6, 0, 1)
+    
+    model_pars = {
+        'n_estimators':100,
+        'ncat': ncat_white
+    }
+    model_white = Model(model_pars=model_pars)
+
+    model_white.model.fit(X_train_white, y_train_white)
+    gef_white = model_white.model.topc(learnspn=np.Inf)
+
+    print('ok')
+
+test_model_gefs()
